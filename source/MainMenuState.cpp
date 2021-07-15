@@ -7,7 +7,6 @@ MainMenuState::MainMenuState(sf::RenderWindow* pWindow,
                              )
     : State(pWindow, pSupportedKeys, pStates)
 {
-    initKeybinds("Config//main_menu_state_keybinds.ini");
     initFont();
     initButtons();
     initBackground();
@@ -25,18 +24,15 @@ MainMenuState::~MainMenuState()
 
 void MainMenuState::update(const float deltaTime)
 {
-    updateActivityStatus();
-
-    updateKeyboardInput(deltaTime);
-
     updateMousePosition();
 
-    updateButtons();
+    updateKeyboardInput(deltaTime);
 }
 
 
 void MainMenuState::updateKeyboardInput(const float deltaTime)
 {
+    updateButtons();
 }
 
 
@@ -52,11 +48,6 @@ void MainMenuState::render(sf::RenderTarget* pTarget)
 }
 
 
-void MainMenuState::endState()
-{
-}
-
-
 void MainMenuState::updateButtons()
 {
     for (auto b = buttons.begin(); b != buttons.end(); ++b)
@@ -66,7 +57,7 @@ void MainMenuState::updateButtons()
 
     if (buttons["EXIT_STATE"]->isPressed()) // Exit the state
     {
-        stateIsActive = false;
+        endActivity();
     }
     else if (buttons["GAME_STATE"]->isPressed()) // Starting new game
     {
@@ -93,14 +84,21 @@ void MainMenuState::initFont()
 void MainMenuState::initButtons()
 {
     // Button width and height must be integers (otherwise the text will render badly)
-    buttons["GAME_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 2.f, 
+    buttons["GAME_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 2.2f, 
                                        pWindow->getSize().x / 6, pWindow->getSize().y / 10,
                                        &font, "New game",
                                        sf::Color(70, 70, 70), sf::Color(150, 150, 150),
                                        sf::Color(20, 20, 20, 200)
                                        );
 
-    buttons["EXIT_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 1.5f, 
+    buttons["SETTINGS_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 1.7f, 
+                                           pWindow->getSize().x / 6, pWindow->getSize().y / 10,
+                                           &font, "Settings",
+                                           sf::Color(70, 70, 70), sf::Color(150, 150, 150),
+                                           sf::Color(20, 20, 20, 200)
+                                           );
+
+    buttons["EXIT_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 1.25f, 
                                        pWindow->getSize().x / 6, pWindow->getSize().y / 10, 
                                        &font, "Quit",
                                        sf::Color(70, 70, 70), sf::Color(150, 150, 150),

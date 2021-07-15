@@ -29,7 +29,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\gamestate_keybinds.ini" />
-    <None Include="Config\main_menu_state_keybinds.ini" />
     <None Include="Config\supported_keys.ini" />
     <None Include="Config\window.ini" />
   </ItemGroup>

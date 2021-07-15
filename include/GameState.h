@@ -16,7 +16,6 @@ public:
     virtual void update(const float deltaTime);
     virtual void updateKeyboardInput(const float deltaTime);
     virtual void render(sf::RenderTarget* pTarget = nullptr);
-    virtual void endState();
 
 private:
 

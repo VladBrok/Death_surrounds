@@ -63,7 +63,6 @@ void Game::update()
 
         if (!states.top()->isActive())
         {
-            states.top()->endState();
             delete states.top();
             states.pop();
         }
@@ -91,7 +90,6 @@ void Game::render()
 void Game::initWindow()
 {
     const std::vector<sf::VideoMode>* videoModes = &sf::VideoMode::getFullscreenModes();
-    //sf::ContextSettings windowSettings;
 
     window.create(/*(*videoModes)[videoModes->size() - 1],*/ (*videoModes)[0],
                   "Death surrounds",

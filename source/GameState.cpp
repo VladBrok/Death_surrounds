@@ -13,8 +13,8 @@ GameState::GameState(sf::RenderWindow* pWindow,
 
 void GameState::update(const float deltaTime)
 {
-    updateActivityStatus();
     updateKeyboardInput(deltaTime);
+
     updateMousePosition();
 }
 
@@ -37,6 +37,11 @@ void GameState::updateKeyboardInput(const float deltaTime)
     {
         player.move(1.f, 0.f, deltaTime);
     }
+
+    if (sf::Keyboard::isKeyPressed(keybinds.at("CLOSE_STATE")))
+    {
+        endActivity();
+    }
 }
 
 
@@ -47,9 +52,4 @@ void GameState::render(sf::RenderTarget* pTarget)
         pTarget = pWindow;
     }
     player.render(pTarget);
-}
-
-
-void GameState::endState()
-{
 }

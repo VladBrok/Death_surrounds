@@ -16,12 +16,9 @@ const bool State::isActive() const
 }
 
 
-void State::updateActivityStatus()
+void State::endActivity()
 {
-    if (sf::Keyboard::isKeyPressed(keybinds.at("CLOSE_STATE")))
-    {
-        stateIsActive = false;
-    }
+    stateIsActive = false;
 }
 
 

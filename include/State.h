@@ -20,10 +20,9 @@ public:
     virtual void update(const float deltaTime) = 0;
     virtual void updateKeyboardInput(const float deltaTime) = 0;
     virtual void render(sf::RenderTarget* pTarget = nullptr) = 0;
-    virtual void endState() = 0; // Should be called before ending the state, for example, to play final animation
  
     const bool isActive() const;
-    void updateActivityStatus();
+    void endActivity();
     void updateMousePosition();
 
 protected:
