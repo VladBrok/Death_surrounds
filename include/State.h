@@ -12,32 +12,35 @@ class State
 {
 public:
 
-    State(sf::RenderWindow* pWindow, 
-          const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
-          std::stack<State*>* const pStates
-          );
+                        State(sf::RenderWindow* pWindow, 
+                              const std::unordered_map<std::string, 
+                              sf::Keyboard::Key>* const pSupportedKeys,
+                              std::stack<State*>* const pStates
+                              );
+    virtual             ~State();
+    virtual void        update(const float deltaTime) = 0;
+    virtual void        updateKeyboardInput(const float deltaTime) = 0;
+    virtual void        render(sf::RenderTarget* pTarget = nullptr) = 0;
  
-    virtual void update(const float deltaTime) = 0;
-    virtual void updateKeyboardInput(const float deltaTime) = 0;
-    virtual void render(sf::RenderTarget* pTarget = nullptr) = 0;
- 
-    const bool isActive() const;
-    void endActivity();
-    void updateMousePosition();
+    const bool          isActive() const;
+    void                endActivity();
+    void                updateMousePosition();
 
 protected:
 
-    sf::RenderWindow* pWindow;
-    const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys;
-    std::stack<State*>* const pStates;
-    std::unordered_map<std::string, sf::Keyboard::Key> keybinds;
-    bool stateIsActive;
+    sf::RenderWindow*                                                   pWindow;
+    const std::unordered_map<std::string, sf::Keyboard::Key>* const     pSupportedKeys;
+    std::unordered_map<std::string, sf::Keyboard::Key>                  keybinds;
+    std::stack<State*>* const                                           pStates;
+    bool                                                                stateIsActive;
+    std::unordered_map<std::string, sf::Texture>                        textures;
 
-    sf::Vector2i mousePosScreen;
-    sf::Vector2i mousePosWindow;
-    sf::Vector2f mousePosView;
+    sf::Vector2i        mousePosScreen;
+    sf::Vector2i        mousePosWindow;
+    sf::Vector2f        mousePosView;
 
-    virtual void initKeybinds(const std::string& filePath);
+    virtual void        initTextures() = 0;
+    virtual void        initKeybinds(const std::string& filePath);
 
 };
 

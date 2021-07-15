@@ -10,6 +10,11 @@ State::State(sf::RenderWindow* pWindow,
 }
 
 
+State::~State()
+{
+}
+
+
 const bool State::isActive() const 
 {
     return stateIsActive;
@@ -26,7 +31,7 @@ void State::updateMousePosition()
 {
     mousePosScreen = sf::Mouse::getPosition();
     mousePosWindow = sf::Mouse::getPosition(*pWindow);
-    mousePosView = pWindow->mapPixelToCoords(mousePosWindow);
+    mousePosView   = pWindow->mapPixelToCoords(mousePosWindow);
 }
 
 

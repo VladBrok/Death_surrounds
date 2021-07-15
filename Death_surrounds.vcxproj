@@ -17,6 +17,8 @@
     <ClCompile Include="source\GameState.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\MainMenuState.cpp" />
+    <ClCompile Include="source\MovementComponent.cpp" />
+    <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\State.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -25,6 +27,8 @@
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\GameState.h" />
     <ClInclude Include="include\MainMenuState.h" />
+    <ClInclude Include="include\MovementComponent.h" />
+    <ClInclude Include="include\Player.h" />
     <ClInclude Include="include\State.h" />
   </ItemGroup>
   <ItemGroup>

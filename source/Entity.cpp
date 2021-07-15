@@ -2,28 +2,51 @@
 
 
 Entity::Entity()
-    : movementSpeed(2.5f * 62.5f), entityShape(sf::Vector2f(50.f, 50.f))
+    : pSprite(nullptr), pTexture(nullptr), pMovementComponent(nullptr)
 { 
 }
 
 
 Entity::~Entity()
 {
+    delete pSprite;
+    delete pMovementComponent;
 }
 
 
-void Entity::update()
+void Entity::createSprite(sf::Texture* const texture)
 {
+    pTexture = texture;
+    pSprite = new sf::Sprite(*pTexture);
+}
+
+
+void Entity::createMovementComponent(const float maxVelocity)
+{
+    pMovementComponent = new MovementComponent(maxVelocity);
+}
+
+
+void Entity::setPosition(const float posX, const float posY)
+{
+    pSprite->setPosition(posX, posY);
 }
 
 
 void Entity::render(sf::RenderTarget* target)
 {
-    target->draw(entityShape);
+    if (pSprite)
+    {
+        target->draw(*pSprite);
+    }
 }
 
 
 void Entity::move(const float dirX, const float dirY, const float deltaTime)
 {
-    entityShape.move(dirX * movementSpeed * deltaTime, dirY * movementSpeed * deltaTime);
+    if (pSprite && pMovementComponent)
+    {
+        pMovementComponent->setVelocity(sf::Vector2f(dirX, dirY));
+        pSprite->move(pMovementComponent->getVelocity() * deltaTime);
+    }
 }

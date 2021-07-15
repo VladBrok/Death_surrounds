@@ -7,6 +7,7 @@ MainMenuState::MainMenuState(sf::RenderWindow* pWindow,
                              )
     : State(pWindow, pSupportedKeys, pStates)
 {
+    initTextures();
     initFont();
     initButtons();
     initBackground();
@@ -83,23 +84,25 @@ void MainMenuState::initFont()
 
 void MainMenuState::initButtons()
 {
+    const sf::Vector2i buttonSize(pWindow->getSize().x / 6, pWindow->getSize().y / 10);
+
     // Button width and height must be integers (otherwise the text will render badly)
     buttons["GAME_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 2.2f, 
-                                       pWindow->getSize().x / 6, pWindow->getSize().y / 10,
+                                       buttonSize.x, buttonSize.y,
                                        &font, "New game",
                                        sf::Color(70, 70, 70), sf::Color(150, 150, 150),
                                        sf::Color(20, 20, 20, 200)
                                        );
 
     buttons["SETTINGS_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 1.7f, 
-                                           pWindow->getSize().x / 6, pWindow->getSize().y / 10,
+                                           buttonSize.x, buttonSize.y,
                                            &font, "Settings",
                                            sf::Color(70, 70, 70), sf::Color(150, 150, 150),
                                            sf::Color(20, 20, 20, 200)
                                            );
 
     buttons["EXIT_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 1.25f, 
-                                       pWindow->getSize().x / 6, pWindow->getSize().y / 10, 
+                                       buttonSize.x, buttonSize.y, 
                                        &font, "Quit",
                                        sf::Color(70, 70, 70), sf::Color(150, 150, 150),
                                        sf::Color(20, 20, 20, 200)
@@ -110,6 +113,11 @@ void MainMenuState::initButtons()
 void MainMenuState::initBackground()
 {
     background.setSize(sf::Vector2f(pWindow->getSize().x, pWindow->getSize().y));
-    backgroundTexture.loadFromFile("Images\\Backgrounds\\main_menu_bg.png");
-    background.setTexture(&backgroundTexture);
+    background.setTexture(&textures.at("BACKGROUND"));
+}
+
+
+void MainMenuState::initTextures()
+{
+    textures["BACKGROUND"].loadFromFile("Images\\Backgrounds\\main_menu_bg.png");
 }

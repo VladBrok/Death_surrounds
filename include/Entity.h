@@ -1,23 +1,27 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "SFML/Graphics.hpp"
+#include "MovementComponent.h"
 
 
 class Entity
 {
 public:
 
-    Entity();
-    virtual ~Entity();
-    virtual void update();
-    virtual void render(sf::RenderTarget* target);
-    virtual void move(const float dirX, const float dirY, const float deltaTime);
+                        Entity();
+    virtual             ~Entity();
+    void                createSprite(sf::Texture* const texture);
+    void                createMovementComponent(const float maxVelocity);
+    void                setPosition(const float posX, const float posY);
+    virtual void        update(const float deltaTime) = 0;
+    virtual void        render(sf::RenderTarget* target);
+    virtual void        move(const float dirX, const float dirY, const float deltaTime);
 
 protected:
 
-    float movementSpeed;
-    sf::RectangleShape entityShape;
+    sf::Texture*        pTexture;
+    sf::Sprite*         pSprite;
+    MovementComponent*  pMovementComponent; // We won't be able to move entity if this equals nullptr
 
 };
 

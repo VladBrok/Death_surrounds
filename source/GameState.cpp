@@ -8,6 +8,14 @@ GameState::GameState(sf::RenderWindow* pWindow,
     : State(pWindow, pSupportedKeys, pStates)
 {
     initKeybinds("Config//gamestate_keybinds.ini");
+    initTextures();
+    initPlayer();
+}
+
+
+GameState::~GameState()
+{
+    delete pPlayer;
 }
 
 
@@ -23,19 +31,19 @@ void GameState::updateKeyboardInput(const float deltaTime)
 {
     if (sf::Keyboard::isKeyPressed(keybinds.at("MOVE_UP")))
     {
-        player.move(0.f, -1.f, deltaTime);
+        pPlayer->move(0.f, -1.f, deltaTime);
     }
     else if (sf::Keyboard::isKeyPressed(keybinds.at("MOVE_DOWN")))
     {
-        player.move(0.f, 1.f, deltaTime);
+        pPlayer->move(0.f, 1.f, deltaTime);
     }
     if (sf::Keyboard::isKeyPressed(keybinds.at("MOVE_LEFT")))
     {
-        player.move(-1.f, 0.f, deltaTime);
+        pPlayer->move(-1.f, 0.f, deltaTime);
     }
     else if (sf::Keyboard::isKeyPressed(keybinds.at("MOVE_RIGHT")))
     {
-        player.move(1.f, 0.f, deltaTime);
+        pPlayer->move(1.f, 0.f, deltaTime);
     }
 
     if (sf::Keyboard::isKeyPressed(keybinds.at("CLOSE_STATE")))
@@ -51,5 +59,17 @@ void GameState::render(sf::RenderTarget* pTarget)
     {
         pTarget = pWindow;
     }
-    player.render(pTarget);
+    pPlayer->render(pTarget);
+}
+
+
+void GameState::initTextures()
+{
+    textures["PLAYER_IDLE"].loadFromFile("Images\\Sprites\\Player\\player.png");
+}
+
+
+void GameState::initPlayer()
+{
+    pPlayer = new Player(0.f, 0.f, &textures["PLAYER_IDLE"]);
 }
