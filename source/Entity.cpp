@@ -2,24 +2,27 @@
 
 
 Entity::Entity(const sf::Texture& texture)
-    : sprite(texture), pMovementComponent(nullptr)
+    : sprite(texture), pMovementComponent(nullptr), pAnimationComponent(nullptr)
 { 
-
-    // FIXME
-    sprite.setScale(0.2f, 0.2f);
-
 }
 
 
 Entity::~Entity()
 {
     delete pMovementComponent;
+    delete pAnimationComponent;
 }
 
 
 void Entity::createMovementComponent(const float maxVelocity, const float acceleration, const float deceleration)
 {
     pMovementComponent = new MovementComponent(sprite, maxVelocity, acceleration, deceleration);
+}
+
+
+void Entity::createAnimationComponent(sf::Texture& textureSheet, sf::Sprite& sprite)
+{
+    pAnimationComponent = new AnimationComponent(textureSheet, sprite);
 }
 
 

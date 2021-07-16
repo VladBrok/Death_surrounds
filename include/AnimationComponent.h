@@ -5,13 +5,22 @@
 #include <unordered_map>
 
 
-class AnimationComponent
+class AnimationComponent: sf::NonCopyable
 {
 public:
 
                     AnimationComponent(sf::Texture& textureSheet, sf::Sprite& sprite);
                     ~AnimationComponent();
-    void            addAnimation(const std::string& animationKey);
+    
+    void            addAnimation(const std::string&    animationKey,
+                                 sf::Texture&          textureSheet, 
+                                 sf::Sprite&           sprite,
+                                 const int             startFrameNumber,
+                                 const int             endFrameNumber,
+                                 const int             frameWidth,
+                                 const int             frameHeight,
+                                 const float           timeToPlayAnimation
+                                 );
     void            play(const std::string& animationKey, const float deltaTime);
 
 private:
@@ -39,9 +48,9 @@ private:
                   )
                   : textureSheet        (textureSheet),
                     sprite              (sprite),
-                    startRect           (startFrameNumber * width, startFrameNumber * height, width, height),
+                    startRect           (startFrameNumber * width, 0, width, height),
                     currentRect         (startRect),
-                    endRect             (endFrameNumber * width, endFrameNumber * height, width, height),
+                    endRect             (endFrameNumber * width, 0, width, height),
                     timeToPlayAnimation (timeToPlayAnimation),
                     animationTimer      (0.f)
         {
@@ -52,7 +61,7 @@ private:
         
         void play(const float deltaTime)
         {
-            animationTimer += 10.f * deltaTime;
+            animationTimer += 100.f * deltaTime;
 
             if (animationTimer >= timeToPlayAnimation)
             {
@@ -65,7 +74,6 @@ private:
                 {
                     currentRect.left = startRect.left;
                 }
-
                 sprite.setTextureRect(currentRect);
             }
         }
