@@ -24,6 +24,8 @@ void GameState::update(const float deltaTime)
     updateKeyboardInput(deltaTime);
 
     updateMousePosition();
+
+    pPlayer->update(deltaTime);
 }
 
 
@@ -71,5 +73,5 @@ void GameState::initTextures()
 
 void GameState::initPlayer()
 {
-    pPlayer = new Player(0.f, 0.f, &textures["PLAYER_IDLE"]);
+    pPlayer = new Player(0.f, 0.f, textures["PLAYER_IDLE"]);
 }

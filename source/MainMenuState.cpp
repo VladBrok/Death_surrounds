@@ -84,35 +84,46 @@ void MainMenuState::initFont()
 
 void MainMenuState::initButtons()
 {
-    const sf::Vector2i buttonSize(pWindow->getSize().x / 6, pWindow->getSize().y / 10);
+    const sf::Vector2f buttonSize(
+        static_cast<float>(pWindow->getSize().x / 6),
+        static_cast<float>(pWindow->getSize().y / 10)
+    );
+    const sf::Color textIdleColor(sf::Color(150, 150, 150));
+    const sf::Color textHoverColor(sf::Color::White);
+    const sf::Color textActiveColor(sf::Color(20, 20, 20, 200));
 
-    // Button width and height must be integers (otherwise the text will render badly)
     buttons["GAME_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 2.2f, 
                                        buttonSize.x, buttonSize.y,
-                                       &font, "New game",
-                                       sf::Color(70, 70, 70), sf::Color(150, 150, 150),
-                                       sf::Color(20, 20, 20, 200)
+                                       &font, 
+                                       "New game",
+                                       textIdleColor,
+                                       textHoverColor,
+                                       textActiveColor
                                        );
 
-    buttons["SETTINGS_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 1.7f, 
+    buttons["SETTINGS_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 1.75f, 
                                            buttonSize.x, buttonSize.y,
-                                           &font, "Settings",
-                                           sf::Color(70, 70, 70), sf::Color(150, 150, 150),
-                                           sf::Color(20, 20, 20, 200)
+                                           &font, 
+                                           "Settings",
+                                           textIdleColor,
+                                           textHoverColor,
+                                           textActiveColor
                                            );
 
-    buttons["EXIT_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 1.25f, 
+    buttons["EXIT_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 1.3f, 
                                        buttonSize.x, buttonSize.y, 
-                                       &font, "Quit",
-                                       sf::Color(70, 70, 70), sf::Color(150, 150, 150),
-                                       sf::Color(20, 20, 20, 200)
+                                       &font, 
+                                       "Quit",
+                                       textIdleColor,
+                                       textHoverColor,
+                                       textActiveColor
                                        );
 }
 
 
 void MainMenuState::initBackground()
 {
-    background.setSize(sf::Vector2f(pWindow->getSize().x, pWindow->getSize().y));
+    background.setSize(sf::Vector2f((float)pWindow->getSize().x, (float)pWindow->getSize().y));
     background.setTexture(&textures.at("BACKGROUND"));
 }
 

@@ -18,9 +18,18 @@ class Button
 {
 public:
 
-    Button(const float posX, const float posY, const float width, const float height,
-           sf::Font* font, const std::string& msg, 
-           const sf::Color& idleColor, const sf::Color& hoverColor, const sf::Color& activeColor
+    Button(const float posX, const float posY, 
+           const float width, const float height,
+           sf::Font* font, 
+           const std::string& msg,
+
+           const sf::Color& textIdleColor, 
+           const sf::Color& textHoverColor, 
+           const sf::Color& textActiveColor,
+
+           const sf::Color& idleColor   = sf::Color::Transparent, 
+           const sf::Color& hoverColor  = sf::Color::Transparent,
+           const sf::Color& activeColor = sf::Color::Transparent
            );
     void update(const sf::Vector2f& mousePosition);
     void render(sf::RenderTarget& target);
@@ -36,6 +45,10 @@ private:
     sf::Color idleColor;
     sf::Color hoverColor;
     sf::Color activeColor;
+
+    sf::Color textIdleColor;
+    sf::Color textHoverColor;
+    sf::Color textActiveColor;
 
 };
 

@@ -16,21 +16,17 @@
     <Filter Include="Resources">
       <UniqueIdentifier>{c042611b-ea2f-4095-b4b1-af63179eadfa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    <Filter Include="Game">
+      <UniqueIdentifier>{fa99ac80-7db1-4e48-8422-dd3e22ff399d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source files">
+    <Filter Include="main">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Game.cpp">
-      <Filter>Source files</Filter>
+      <Filter>main</Filter>
     </ClCompile>
     <ClCompile Include="source\MovementComponent.cpp">
       <Filter>Components</Filter>
@@ -53,11 +49,11 @@
     <ClCompile Include="source\Button.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
+    <ClCompile Include="source\Game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Game.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="include\MovementComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -78,6 +74,9 @@
     </ClInclude>
     <ClInclude Include="include\Button.h">
       <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Game.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

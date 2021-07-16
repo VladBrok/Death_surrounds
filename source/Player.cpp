@@ -1,19 +1,14 @@
 #include "Player.h"
 
 
-Player::Player(const float posX, const float posY, sf::Texture* texture)
+Player::Player(const float posX, const float posY, const sf::Texture& texture)
+    : Entity(texture)
 {
-    createSprite(texture);
-    createMovementComponent(2.5f * 62.5f);
+    createMovementComponent(160.f, 1400.f, 1000.f);
     setPosition(posX, posY);
 }
 
 
 Player::~Player()
-{
-}
-
-
-void Player::update(const float deltaTime)
 {
 }

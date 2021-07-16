@@ -8,16 +8,23 @@ class MovementComponent
 {
 public:
 
-    MovementComponent(const float maxVelocity);
-    void setVelocity(const sf::Vector2f& movementDirection);
-    const sf::Vector2f& getVelocity() const;
+                            MovementComponent(sf::Sprite& sprite, const float maxVelocity,
+                                              const float acceleration, const float deceleration
+                                              );
+    void                    accelerateSprite(const sf::Vector2f& movementDirection, const float deltaTime);
+    const sf::Vector2f&     getVelocity() const;
+    void                    updateMovement(const float deltaTime); // Decelerates and moves the sprite
 
 private:
 
-    float maxVelocity;
-    sf::Vector2f velocity;
-    sf::Vector2f acceleration;
-    sf::Vector2f deceleration;
+    sf::Sprite&             sprite;   
+
+    float                   maxVelocity;
+    float                   acceleration;
+    float                   deceleration;
+    sf::Vector2f            velocity;
+
+    void                    decelerateSpriteAndCheckVelocityBounds(const float deltaTime);
 
 };
 

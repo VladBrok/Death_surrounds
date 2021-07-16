@@ -1,52 +1,53 @@
 #include "Entity.h"
 
 
-Entity::Entity()
-    : pSprite(nullptr), pTexture(nullptr), pMovementComponent(nullptr)
+Entity::Entity(const sf::Texture& texture)
+    : sprite(texture), pMovementComponent(nullptr)
 { 
+
+    // FIXME
+    sprite.setScale(0.2f, 0.2f);
+
 }
 
 
 Entity::~Entity()
 {
-    delete pSprite;
     delete pMovementComponent;
 }
 
 
-void Entity::createSprite(sf::Texture* const texture)
+void Entity::createMovementComponent(const float maxVelocity, const float acceleration, const float deceleration)
 {
-    pTexture = texture;
-    pSprite = new sf::Sprite(*pTexture);
-}
-
-
-void Entity::createMovementComponent(const float maxVelocity)
-{
-    pMovementComponent = new MovementComponent(maxVelocity);
+    pMovementComponent = new MovementComponent(sprite, maxVelocity, acceleration, deceleration);
 }
 
 
 void Entity::setPosition(const float posX, const float posY)
 {
-    pSprite->setPosition(posX, posY);
+    sprite.setPosition(posX, posY);
+}
+
+
+void Entity::update(const float deltaTime)
+{
+    if (pMovementComponent)
+    {
+        pMovementComponent->updateMovement(deltaTime);
+    }
 }
 
 
 void Entity::render(sf::RenderTarget* target)
 {
-    if (pSprite)
-    {
-        target->draw(*pSprite);
-    }
+    target->draw(sprite);
 }
 
 
 void Entity::move(const float dirX, const float dirY, const float deltaTime)
 {
-    if (pSprite && pMovementComponent)
+    if (pMovementComponent)
     {
-        pMovementComponent->setVelocity(sf::Vector2f(dirX, dirY));
-        pSprite->move(pMovementComponent->getVelocity() * deltaTime);
+        pMovementComponent->accelerateSprite(sf::Vector2f(dirX, dirY), deltaTime);
     }
 }

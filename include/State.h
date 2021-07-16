@@ -8,7 +8,7 @@
 #include <stack>
 
 
-class State
+class State: public sf::NonCopyable
 {
 public:
 

@@ -8,10 +8,8 @@ class Player: public Entity
 {
 public:
     
-    Player(const float posX, const float posY, sf::Texture* texture);
+    Player(const float posX, const float posY, const sf::Texture& texture);
     virtual ~Player();
-
-    virtual void update(const float deltaTime);
 
 private:
 };
