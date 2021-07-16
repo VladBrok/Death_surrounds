@@ -28,6 +28,9 @@
     <ClCompile Include="source\main.cpp">
       <Filter>main</Filter>
     </ClCompile>
+    <ClCompile Include="source\AnimationComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>	
     <ClCompile Include="source\MovementComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -54,6 +57,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\AnimationComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
     <ClInclude Include="include\MovementComponent.h">
       <Filter>Components</Filter>
     </ClInclude>

@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\AnimationComponent.cpp" />
     <ClCompile Include="source\Button.cpp" />
     <ClCompile Include="source\Entity.cpp" />
     <ClCompile Include="source\Game.cpp" />
@@ -22,6 +23,7 @@
     <ClCompile Include="source\State.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\AnimationComponent.h" />
     <ClInclude Include="include\Button.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\Game.h" />
