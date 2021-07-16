@@ -31,24 +31,22 @@ private:
 
         Animation(sf::Texture&          textureSheet, 
                   sf::Sprite&           sprite,
-                  const int             startX, 
-                  const int             startY,
-                  const int             endX, 
-                  const int             endY,
+                  const int             startFrameNumber,
+                  const int             endFrameNumber,
                   const int             width,
                   const int             height,
                   const float           timeToPlayAnimation
                   )
                   : textureSheet        (textureSheet),
                     sprite              (sprite),
-                    startRect           (startX, startY, width, height),
+                    startRect           (startFrameNumber * width, startFrameNumber * height, width, height),
                     currentRect         (startRect),
-                    endRect             (endX, endY, width, height),
+                    endRect             (endFrameNumber * width, endFrameNumber * height, width, height),
                     timeToPlayAnimation (timeToPlayAnimation),
                     animationTimer      (0.f)
         {
             this->sprite.setTexture(this->textureSheet, true);
-                this->sprite.setTextureRect(startRect);
+            this->sprite.setTextureRect(startRect);
         }
 
         
