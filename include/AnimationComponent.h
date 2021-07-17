@@ -15,8 +15,10 @@ public:
     void            addAnimation(const std::string&    animationKey,
                                  sf::Texture&          textureSheet, 
                                  sf::Sprite&           sprite,
-                                 const int             startFrameNumber,
-                                 const int             endFrameNumber,
+                                 const int             startFrameX,
+                                 const int             startFrameY,
+                                 const int             endFrameX,
+                                 const int             endFrameY,
                                  const int             frameWidth,
                                  const int             frameHeight,
                                  const float           timeToPlayAnimation
@@ -25,7 +27,7 @@ public:
 
 private:
 
-    class Animation
+    class Animation: public sf::NonCopyable
     {
     public:
 
@@ -38,22 +40,29 @@ private:
         float                   animationTimer;
 
 
+        /*
+            In this constructor, variables startFrameX and startFrameY are 
+            the numbers of the column and row (starting from 0) in which the starting frame is
+            located on the texture sheet. Same for endFrameX and endFrameY.
+        */
         Animation(sf::Texture&          textureSheet, 
                   sf::Sprite&           sprite,
-                  const int             startFrameNumber,
-                  const int             endFrameNumber,
-                  const int             width,
-                  const int             height,
-                  const float           timeToPlayAnimation
+                  const int             startFrameX,
+                  const int             startFrameY,
+                  const int             endFrameX,  
+                  const int             endFrameY,  
+                  const int             frameWidth, 
+                  const int             frameHeight,
+                  const float           timeToPlayAnimation  
                   )
                   : textureSheet        (textureSheet),
                     sprite              (sprite),
-                    startRect           (startFrameNumber * width, 0, width, height),
+                    startRect           (startFrameX * frameWidth, startFrameY * frameHeight, frameWidth, frameHeight),
                     currentRect         (startRect),
-                    endRect             (endFrameNumber * width, 0, width, height),
+                    endRect             (endFrameX * frameWidth, endFrameY * frameHeight, frameWidth, frameHeight),
                     timeToPlayAnimation (timeToPlayAnimation),
                     animationTimer      (0.f)
-        {
+        {         
             this->sprite.setTexture(this->textureSheet, true);
             this->sprite.setTextureRect(startRect);
         }

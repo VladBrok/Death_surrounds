@@ -29,8 +29,10 @@ const sf::Vector2f& MovementComponent::getVelocity() const
 
 void MovementComponent::updateMovement(const float deltaTime)
 {
-    if (velocity.x == 0.f && velocity.y == 0.f)
+    if (isIdle())
+    {
         return;
+    }
 
     decelerateSpriteAndCheckVelocityBounds(deltaTime);
 
@@ -39,7 +41,13 @@ void MovementComponent::updateMovement(const float deltaTime)
     ////////////////////
     // DEBUG
     std::cout << velocity.x << ' ' << velocity.y << '\n';
-    //////////////
+    /////////////////
+}
+
+
+const bool MovementComponent::isIdle() const
+{
+    return (velocity.x == 0.f) && (velocity.y == 0.f);
 }
 
 
@@ -48,12 +56,12 @@ void MovementComponent::decelerateSpriteAndCheckVelocityBounds(const float delta
     // Checking x
     if (velocity.x > 0.f)
     {
+        velocity.x -= deceleration * deltaTime;
+
         if (velocity.x > maxVelocity)
         {
             velocity.x = maxVelocity;
         }
-
-        velocity.x -= deceleration * deltaTime;
 
         if (velocity.x < 0.f)
         {
@@ -62,12 +70,13 @@ void MovementComponent::decelerateSpriteAndCheckVelocityBounds(const float delta
     }
     else if (velocity.x < 0.f)
     {
+        velocity.x += deceleration * deltaTime;
+
         if (velocity.x < -maxVelocity)
         {
             velocity.x = -maxVelocity;
         }
 
-        velocity.x += deceleration * deltaTime;
         if (velocity.x > 0.f)
         {
             velocity.x = 0.f;
@@ -77,12 +86,12 @@ void MovementComponent::decelerateSpriteAndCheckVelocityBounds(const float delta
     // Checking y
     if (velocity.y > 0.f)
     {
+        velocity.y -= deceleration * deltaTime;
+
         if (velocity.y > maxVelocity)
         {
             velocity.y = maxVelocity;
         }
-
-        velocity.y -= deceleration * deltaTime;
 
         if (velocity.y < 0.f)
         {
@@ -91,12 +100,12 @@ void MovementComponent::decelerateSpriteAndCheckVelocityBounds(const float delta
     }
     else if (velocity.y < 0.f)
     {
+        velocity.y += deceleration * deltaTime;
+
         if (velocity.y < -maxVelocity)
         {
             velocity.y = -maxVelocity;
         }
-
-        velocity.y += deceleration * deltaTime;
 
         if (velocity.y > 0.f)
         {

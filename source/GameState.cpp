@@ -67,11 +67,11 @@ void GameState::render(sf::RenderTarget* pTarget)
 
 void GameState::initTextures()
 {
-    textures["PLAYER_IDLE"].loadFromFile("Images\\Sprites\\Player\\player_sheet_idle.png");
+    textures["PLAYER_SHEET"].loadFromFile("Images\\Sprites\\Player\\player_sheet.png");
 }
 
 
 void GameState::initPlayer()
 {
-    pPlayer = new Player(0.f, 0.f, textures["PLAYER_IDLE"]);
+    pPlayer = new Player(0.f, 0.f, textures["PLAYER_SHEET"]);
 }

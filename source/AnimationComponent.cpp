@@ -20,8 +20,10 @@ void AnimationComponent::addAnimation(
     const std::string&    animationKey,
     sf::Texture&          textureSheet, 
     sf::Sprite&           sprite,
-    const int             startFrameNumber,
-    const int             endFrameNumber,
+    const int             startFrameX,
+    const int             startFrameY,
+    const int             endFrameX,
+    const int             endFrameY,
     const int             frameWidth,
     const int             frameHeight,
     const float           timeToPlayAnimation
@@ -30,8 +32,10 @@ void AnimationComponent::addAnimation(
     animations[animationKey] = new Animation(
                                     textureSheet, 
                                     sprite, 
-                                    startFrameNumber, 
-                                    endFrameNumber,
+                                    startFrameX, 
+                                    startFrameY,
+                                    endFrameX,
+                                    endFrameY,
                                     frameWidth,
                                     frameHeight,
                                     timeToPlayAnimation

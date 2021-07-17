@@ -4,7 +4,7 @@
 #include "SFML/Graphics.hpp"
 
 
-class MovementComponent
+class MovementComponent: public sf::NonCopyable
 {
 public:
 
@@ -14,6 +14,7 @@ public:
     void                    accelerateSprite(const sf::Vector2f& movementDirection, const float deltaTime);
     const sf::Vector2f&     getVelocity() const;
     void                    updateMovement(const float deltaTime); // Decelerates and moves the sprite
+    const bool              isIdle() const;
 
 private:
 

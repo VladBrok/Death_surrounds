@@ -3,7 +3,6 @@
 /**
     TODO:
     - read about proper commenting;
-    - make unordered map of textures in each state
  */
  
  
