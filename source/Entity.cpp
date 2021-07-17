@@ -2,7 +2,10 @@
 
 
 Entity::Entity(const sf::Texture& texture)
-    : sprite(texture), pMovementComponent(nullptr), pAnimationComponent(nullptr)
+    : sprite(texture), 
+      pMovementComponent(nullptr), 
+      pAnimationComponent(nullptr),
+      pHitboxComponent(nullptr)
 { 
 }
 
@@ -11,6 +14,7 @@ Entity::~Entity()
 {
     delete pMovementComponent;
     delete pAnimationComponent;
+    delete pHitboxComponent;
 }
 
 
@@ -20,9 +24,25 @@ void Entity::createMovementComponent(const float maxVelocity, const float accele
 }
 
 
-void Entity::createAnimationComponent(sf::Texture& textureSheet, sf::Sprite& sprite)
+void Entity::createAnimationComponent(sf::Texture& textureSheet)
 {
     pAnimationComponent = new AnimationComponent(textureSheet, sprite);
+}
+
+
+void Entity::createHitboxComponent(const float offsetFromSpritePositionX,
+                                   const float offsetFromSpritePositionY,
+                                   const float hitboxWidth,
+                                   const float hitboxHeight
+                                   )
+{
+    pHitboxComponent = new HitboxComponent(
+                              sprite, 
+                              offsetFromSpritePositionX, 
+                              offsetFromSpritePositionY,
+                              hitboxWidth,
+                              hitboxHeight
+                           );
 }
 
 
@@ -41,9 +61,13 @@ void Entity::update(const float deltaTime)
 }
 
 
-void Entity::render(sf::RenderTarget* target)
+void Entity::render(sf::RenderTarget& target)
 {
-    target->draw(sprite);
+    target.draw(sprite);
+    if (pHitboxComponent)
+    {
+        pHitboxComponent->render(target);
+    }
 }
 
 

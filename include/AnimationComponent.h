@@ -91,7 +91,7 @@ private:
         void reset()
         {
             animationTimer = 0.f;
-            currentRect = startRect;
+            currentRect.left = startRect.left;
         }
 
     };
@@ -99,6 +99,7 @@ private:
     sf::Texture&                                  textureSheet;
     sf::Sprite&                                   sprite;
     std::unordered_map<std::string, Animation*>   animations;
+    Animation*                                    pLastAnimation;
 
 };
 

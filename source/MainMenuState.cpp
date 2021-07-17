@@ -1,4 +1,5 @@
 #include "MainMenuState.h"
+#include "EditorState.h"
 
 
 MainMenuState::MainMenuState(sf::RenderWindow* pWindow,
@@ -27,13 +28,12 @@ void MainMenuState::update(const float deltaTime)
 {
     updateMousePosition();
 
-    updateKeyboardInput(deltaTime);
+    updateButtons();
 }
 
 
 void MainMenuState::updateKeyboardInput(const float deltaTime)
 {
-    updateButtons();
 }
 
 
@@ -56,13 +56,17 @@ void MainMenuState::updateButtons()
         b->second->update(mousePosView);
     }
 
-    if (buttons["EXIT_STATE"]->isPressed()) // Exit the state
-    {
-        endActivity();
-    }
-    else if (buttons["GAME_STATE"]->isPressed()) // Starting new game
+    if (buttons["GAME_STATE"]->isPressed()) // Starting new game
     {
         pStates->push(new GameState(pWindow, pSupportedKeys, pStates));
+    }
+    else if (buttons["EDITOR_STATE"]->isPressed()) // Going to editor state
+    {
+        pStates->push(new EditorState(pWindow, pSupportedKeys, pStates));
+    }
+    else if (buttons["EXIT_STATE"]->isPressed()) // Exit the state
+    {
+        endActivity();
     }
 }
 
@@ -92,7 +96,7 @@ void MainMenuState::initButtons()
     const sf::Color textHoverColor(sf::Color::White);
     const sf::Color textActiveColor(sf::Color(20, 20, 20, 200));
 
-    buttons["GAME_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 2.2f, 
+    buttons["GAME_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 2.4f, 
                                        buttonSize.x, buttonSize.y,
                                        &font, 
                                        "New game",
@@ -101,7 +105,7 @@ void MainMenuState::initButtons()
                                        textActiveColor
                                        );
 
-    buttons["SETTINGS_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 1.75f, 
+    buttons["SETTINGS_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 1.9f, 
                                            buttonSize.x, buttonSize.y,
                                            &font, 
                                            "Settings",
@@ -109,8 +113,16 @@ void MainMenuState::initButtons()
                                            textHoverColor,
                                            textActiveColor
                                            );
+    buttons["EDITOR_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 1.6f, 
+                                         buttonSize.x, buttonSize.y,
+                                         &font, 
+                                         "Editor",
+                                         textIdleColor,
+                                         textHoverColor,
+                                         textActiveColor
+                                         );
 
-    buttons["EXIT_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 1.3f, 
+    buttons["EXIT_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 1.2f, 
                                        buttonSize.x, buttonSize.y, 
                                        &font, 
                                        "Quit",

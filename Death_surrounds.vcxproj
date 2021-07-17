@@ -13,9 +13,11 @@
   <ItemGroup>
     <ClCompile Include="source\AnimationComponent.cpp" />
     <ClCompile Include="source\Button.cpp" />
+    <ClCompile Include="source\EditorState.cpp" />
     <ClCompile Include="source\Entity.cpp" />
     <ClCompile Include="source\Game.cpp" />
     <ClCompile Include="source\GameState.cpp" />
+    <ClCompile Include="source\HitboxComponent.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\MainMenuState.cpp" />
     <ClCompile Include="source\MovementComponent.cpp" />
@@ -25,18 +27,15 @@
   <ItemGroup>
     <ClInclude Include="include\AnimationComponent.h" />
     <ClInclude Include="include\Button.h" />
+    <ClInclude Include="include\EditorState.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\GameState.h" />
+    <ClInclude Include="include\HitboxComponent.h" />
     <ClInclude Include="include\MainMenuState.h" />
     <ClInclude Include="include\MovementComponent.h" />
     <ClInclude Include="include\Player.h" />
     <ClInclude Include="include\State.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Config\gamestate_keybinds.ini" />
-    <None Include="Config\supported_keys.ini" />
-    <None Include="Config\window.ini" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AD44A273-D811-4496-9635-D5147C651062}</ProjectGuid>

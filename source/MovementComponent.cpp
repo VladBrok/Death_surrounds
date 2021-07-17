@@ -2,6 +2,7 @@
 #include <iostream>
 
 
+
 MovementComponent::MovementComponent(sf::Sprite& sprite, const float maxVelocity,
                                      const float acceleration, const float deceleration
                                     )
@@ -29,25 +30,41 @@ const sf::Vector2f& MovementComponent::getVelocity() const
 
 void MovementComponent::updateMovement(const float deltaTime)
 {
-    if (isIdle())
+    if (getMovementState() == "IDLE")
     {
         return;
     }
 
     decelerateSpriteAndCheckVelocityBounds(deltaTime);
 
-    sprite.move(velocity * deltaTime);
-    
-    ////////////////////
-    // DEBUG
     std::cout << velocity.x << ' ' << velocity.y << '\n';
-    /////////////////
+
+    sprite.move(velocity * deltaTime);
 }
 
 
-const bool MovementComponent::isIdle() const
+const std::string MovementComponent::getMovementState() const
 {
-    return (velocity.x == 0.f) && (velocity.y == 0.f);
+    if (velocity.x == 0.f && velocity.y == 0.f)
+    {
+        return "IDLE";
+    }
+    if (velocity.x < 0.f)
+    {
+        return "MOVING_LEFT";
+    }
+    if (velocity.x > 0.f)
+    {
+        return "MOVING_RIGHT";
+    }
+    if (velocity.y < 0.f)
+    {
+        return "MOVING_UP";
+    }
+    if (velocity.y > 0.f)
+    {
+        return "MOVING_DOWN";
+    }
 }
 
 

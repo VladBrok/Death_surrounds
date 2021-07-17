@@ -2,7 +2,7 @@
 
 
 AnimationComponent::AnimationComponent(sf::Texture& textureSheet, sf::Sprite& sprite)
-    : textureSheet(textureSheet), sprite(sprite)
+    : textureSheet(textureSheet), sprite(sprite), pLastAnimation(nullptr)
 {
 }
 
@@ -45,5 +45,17 @@ void AnimationComponent::addAnimation(
 
 void AnimationComponent::play(const std::string& animationKey, const float deltaTime)
 {
+    if (animations.at(animationKey) != pLastAnimation)
+    {
+        if (!pLastAnimation) // No animations were played in this component before
+        {
+            pLastAnimation = animations[animationKey];
+        }
+        else
+        {
+            pLastAnimation->reset(); // Reseting the last played animation
+            pLastAnimation = animations[animationKey];
+        }
+    }
     animations[animationKey]->play(deltaTime);
 }

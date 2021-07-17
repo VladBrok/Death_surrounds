@@ -61,7 +61,7 @@ void GameState::render(sf::RenderTarget* pTarget)
     {
         pTarget = pWindow;
     }
-    pPlayer->render(pTarget);
+    pPlayer->render(*pTarget);
 }
 
 

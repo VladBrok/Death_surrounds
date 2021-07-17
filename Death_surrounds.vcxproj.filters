@@ -4,9 +4,6 @@
     <Filter Include="Components">
       <UniqueIdentifier>{ec7fddfd-5a99-4366-b1b5-afe244e6eb47}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Configuration">
-      <UniqueIdentifier>{d67757ee-4489-4b6e-9ba0-b8db906e7bfb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Entities">
       <UniqueIdentifier>{899cdfc6-d0f0-4716-99f6-3d49e12754c4}</UniqueIdentifier>
     </Filter>
@@ -30,7 +27,7 @@
     </ClCompile>
     <ClCompile Include="source\AnimationComponent.cpp">
       <Filter>Components</Filter>
-    </ClCompile>	
+    </ClCompile>
     <ClCompile Include="source\MovementComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -54,6 +51,12 @@
     </ClCompile>
     <ClCompile Include="source\Game.cpp">
       <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EditorState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="source\HitboxComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -84,16 +87,11 @@
     <ClInclude Include="include\Game.h">
       <Filter>Game</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Config\window.ini">
-      <Filter>Configuration</Filter>
-    </None>
-    <None Include="Config\supported_keys.ini">
-      <Filter>Configuration</Filter>
-    </None>
-    <None Include="Config\gamestate_keybinds.ini">
-      <Filter>Configuration</Filter>
-    </None>
+    <ClInclude Include="include\EditorState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="include\HitboxComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
