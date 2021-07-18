@@ -21,6 +21,7 @@
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\MainMenuState.cpp" />
     <ClCompile Include="source\MovementComponent.cpp" />
+    <ClCompile Include="source\PauseMenu.cpp" />
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\State.cpp" />
   </ItemGroup>
@@ -34,6 +35,7 @@
     <ClInclude Include="include\HitboxComponent.h" />
     <ClInclude Include="include\MainMenuState.h" />
     <ClInclude Include="include\MovementComponent.h" />
+    <ClInclude Include="include\PauseMenu.h" />
     <ClInclude Include="include\Player.h" />
     <ClInclude Include="include\State.h" />
   </ItemGroup>

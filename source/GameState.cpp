@@ -5,7 +5,7 @@ GameState::GameState(sf::RenderWindow& window,
                      const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
                      std::stack<State*>* const pStates
                      )
-    : State(window, pSupportedKeys, pStates)
+    : State(window, pSupportedKeys, pStates), pauseMenu(window)
 {
     initKeybinds("Config//gamestate_keybinds.ini");
     initTextures();
@@ -21,11 +21,18 @@ GameState::~GameState()
 
 void GameState::update(const float deltaTime)
 {
-    updateKeyboardInput(deltaTime);
+    if (!stateIsPaused)
+    {
+        updateKeyboardInput(deltaTime);
 
-    updateMousePosition();
+        updateMousePosition();
 
-    pPlayer->update(deltaTime);
+        pPlayer->update(deltaTime);
+    }
+    else
+    {
+        // FIXME: Update pause menu
+    }
 }
 
 
@@ -50,7 +57,9 @@ void GameState::updateKeyboardInput(const float deltaTime)
 
     if (sf::Keyboard::isKeyPressed(keybinds.at("CLOSE_STATE")))
     {
-        endActivity();
+        //endActivity();
+
+        pauseState();
     }
 }
 
@@ -62,6 +71,11 @@ void GameState::render(sf::RenderTarget* pTarget)
         pTarget = &window;
     }
     pPlayer->render(*pTarget);
+
+    if (stateIsPaused)
+    {
+        pauseMenu.render(*pTarget);
+    }
 }
 
 

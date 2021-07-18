@@ -3,6 +3,7 @@
 
 #include "State.h"
 #include "Player.h"
+#include "PauseMenu.h"
 
 
 class GameState: public State
@@ -21,6 +22,7 @@ public:
 private:
 
     Player*             pPlayer;
+    PauseMenu           pauseMenu;
 
     virtual void        initTextures();
     void                initPlayer();

@@ -5,7 +5,11 @@ State::State(sf::RenderWindow& window,
              const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
              std::stack<State*>* const pStates
             )
-    : window(window), pSupportedKeys(pSupportedKeys), pStates(pStates), stateIsActive(true)
+    : window(window), 
+      pSupportedKeys(pSupportedKeys), 
+      pStates(pStates), 
+      stateIsActive(true),
+      stateIsPaused(false)
 {
 }
 
@@ -24,6 +28,18 @@ bool State::isActive() const
 void State::endActivity()
 {
     stateIsActive = false;
+}
+
+
+void State::pauseState()
+{
+    stateIsPaused = true;
+}
+
+
+void State::unpauseState()
+{
+    stateIsPaused = false;
 }
 
 

@@ -2,6 +2,7 @@
 #define HITBOXCOMPONENT_H
 
 #include "SFML\Graphics.hpp"
+#include <iostream>
 
 
 class HitboxComponent: public sf::NonCopyable
@@ -9,8 +10,8 @@ class HitboxComponent: public sf::NonCopyable
 public:
 
                         HitboxComponent(sf::Sprite& sprite,
-                                        const float offsetFromSpriteOriginX,
-                                        const float offsetFromSpriteOriginY,
+                                        const float offsetFromSpritePositionX,
+                                        const float offsetFromSpritePositionY,
                                         const float hitboxWidth,
                                         const float hitboxHeight
                                         );
@@ -22,8 +23,8 @@ private:
 
     sf::RectangleShape  hitbox;
     sf::Sprite&         sprite;
-    float               offsetFromSpriteOriginX;
-    float               offsetFromSpriteOriginY;
+    float               offsetFromSpritePositionX;
+    float               offsetFromSpritePositionY;
 
 };
 

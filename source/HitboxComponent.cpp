@@ -2,14 +2,14 @@
 
 
 HitboxComponent::HitboxComponent(sf::Sprite& sprite,
-                                 const float offsetFromSpriteOriginX,
-                                 const float offsetFromSpriteOriginY,
+                                 const float offsetFromSpritePositionX,
+                                 const float offsetFromSpritePositionY,
                                  const float hitboxWidth,
                                  const float hitboxHeight
                                  )
     : sprite(sprite),
-      offsetFromSpriteOriginX(offsetFromSpriteOriginX),
-      offsetFromSpriteOriginY(offsetFromSpriteOriginY),
+      offsetFromSpritePositionX(offsetFromSpritePositionX),
+      offsetFromSpritePositionY(offsetFromSpritePositionY),
       hitbox(sf::Vector2f(hitboxWidth, hitboxHeight))
 {
     hitbox.setFillColor(sf::Color::Transparent);
@@ -23,9 +23,12 @@ HitboxComponent::HitboxComponent(sf::Sprite& sprite,
 void HitboxComponent::update()
 {
     hitbox.setPosition(
-        sprite.getPosition().x + offsetFromSpriteOriginX, 
-        sprite.getPosition().y + offsetFromSpriteOriginY
+        sprite.getPosition().x + offsetFromSpritePositionX, 
+        sprite.getPosition().y + offsetFromSpritePositionY
     );
+
+    std::cout << "\n\n" << sprite.getPosition().x << ' ' << sprite.getPosition().y << '\n' 
+              << sprite.getOrigin().x << ' ' << sprite.getOrigin().y << "\n\n";
 }
 
 

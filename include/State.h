@@ -20,11 +20,13 @@ public:
     virtual void        update(const float deltaTime) = 0;
     virtual void        updateKeyboardInput(const float deltaTime) = 0;
 
-    // If pTarget is nullptr, then we render the entity to a window
+    // If pTarget is nullptr, then we render the entity to the window
     virtual void        render(sf::RenderTarget* pTarget = nullptr) = 0;
  
     bool                isActive() const;
     void                endActivity();
+    void                pauseState();
+    void                unpauseState();
     void                updateMousePosition();
 
 protected:
@@ -34,14 +36,15 @@ protected:
     std::unordered_map<std::string, sf::Keyboard::Key>                  keybinds;
     std::stack<State*>* const                                           pStates;
     bool                                                                stateIsActive;
+    bool                                                                stateIsPaused;
     std::unordered_map<std::string, sf::Texture>                        textures;
 
-    sf::Vector2i        mousePosScreen;
-    sf::Vector2i        mousePosWindow;
-    sf::Vector2f        mousePosView;
-
-    virtual void        initTextures() = 0;
-    virtual void        initKeybinds(const std::string& filePath);
+    sf::Vector2i            mousePosScreen;
+    sf::Vector2i            mousePosWindow;
+    sf::Vector2f            mousePosView;
+                            
+    virtual void            initTextures() = 0;
+    virtual void            initKeybinds(const std::string& filePath);
 
 };
 

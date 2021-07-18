@@ -10,15 +10,15 @@
     <Filter Include="States">
       <UniqueIdentifier>{d912b8d9-f99e-44a1-8b89-2b5b3f7ead5c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources">
-      <UniqueIdentifier>{c042611b-ea2f-4095-b4b1-af63179eadfa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game">
       <UniqueIdentifier>{fa99ac80-7db1-4e48-8422-dd3e22ff399d}</UniqueIdentifier>
     </Filter>
     <Filter Include="main">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{a30aa947-45af-4f8c-8413-15593308e504}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -46,9 +46,6 @@
     <ClCompile Include="source\GameState.cpp">
       <Filter>States</Filter>
     </ClCompile>
-    <ClCompile Include="source\Button.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
     <ClCompile Include="source\Game.cpp">
       <Filter>Game</Filter>
     </ClCompile>
@@ -57,6 +54,12 @@
     </ClCompile>
     <ClCompile Include="source\HitboxComponent.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Button.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PauseMenu.cpp">
+      <Filter>GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -81,9 +84,6 @@
     <ClInclude Include="include\MainMenuState.h">
       <Filter>States</Filter>
     </ClInclude>
-    <ClInclude Include="include\Button.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
     <ClInclude Include="include\Game.h">
       <Filter>Game</Filter>
     </ClInclude>
@@ -92,6 +92,12 @@
     </ClInclude>
     <ClInclude Include="include\HitboxComponent.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Button.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PauseMenu.h">
+      <Filter>GUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
