@@ -12,23 +12,24 @@ class State: public sf::NonCopyable
 {
 public:
 
-                        State(sf::RenderWindow* pWindow, 
-                              const std::unordered_map<std::string, 
-                              sf::Keyboard::Key>* const pSupportedKeys,
+                        State(sf::RenderWindow& window, 
+                              const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
                               std::stack<State*>* const pStates
                               );
     virtual             ~State();
     virtual void        update(const float deltaTime) = 0;
     virtual void        updateKeyboardInput(const float deltaTime) = 0;
+
+    // If pTarget is nullptr, then we render the entity to a window
     virtual void        render(sf::RenderTarget* pTarget = nullptr) = 0;
  
-    const bool          isActive() const;
+    bool                isActive() const;
     void                endActivity();
     void                updateMousePosition();
 
 protected:
 
-    sf::RenderWindow*                                                   pWindow;
+    sf::RenderWindow&                                                   window;
     const std::unordered_map<std::string, sf::Keyboard::Key>* const     pSupportedKeys;
     std::unordered_map<std::string, sf::Keyboard::Key>                  keybinds;
     std::stack<State*>* const                                           pStates;

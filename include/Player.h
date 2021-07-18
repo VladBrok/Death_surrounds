@@ -13,6 +13,11 @@ public:
     virtual void    update(const float deltaTime);
 
 private:
+
+    bool            isAttacking;
+
+    void            updateAttack();
+    void            updateAnimation(const float deltaTime);
 };
 
 

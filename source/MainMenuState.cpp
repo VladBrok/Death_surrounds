@@ -2,11 +2,11 @@
 #include "EditorState.h"
 
 
-MainMenuState::MainMenuState(sf::RenderWindow* pWindow,
+MainMenuState::MainMenuState(sf::RenderWindow& window,
                              const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
                              std::stack<State*>* const pStates
                              )
-    : State(pWindow, pSupportedKeys, pStates)
+    : State(window, pSupportedKeys, pStates)
 {
     initTextures();
     initFont();
@@ -41,7 +41,7 @@ void MainMenuState::render(sf::RenderTarget* pTarget)
 {
     if (!pTarget)
     {
-        pTarget = pWindow;
+        pTarget = &window;
     }
     pTarget->draw(background);
 
@@ -58,11 +58,11 @@ void MainMenuState::updateButtons()
 
     if (buttons["GAME_STATE"]->isPressed()) // Starting new game
     {
-        pStates->push(new GameState(pWindow, pSupportedKeys, pStates));
+        pStates->push(new GameState(window, pSupportedKeys, pStates));
     }
     else if (buttons["EDITOR_STATE"]->isPressed()) // Going to editor state
     {
-        pStates->push(new EditorState(pWindow, pSupportedKeys, pStates));
+        pStates->push(new EditorState(window, pSupportedKeys, pStates));
     }
     else if (buttons["EXIT_STATE"]->isPressed()) // Exit the state
     {
@@ -75,7 +75,7 @@ void MainMenuState::renderButtons()
 {
     for (auto b = buttons.begin(); b != buttons.end(); ++b)
     {
-        b->second->render(*pWindow);
+        b->second->render(window);
     }
 }
 
@@ -89,42 +89,42 @@ void MainMenuState::initFont()
 void MainMenuState::initButtons()
 {
     const sf::Vector2f buttonSize(
-        static_cast<float>(pWindow->getSize().x / 6),
-        static_cast<float>(pWindow->getSize().y / 10)
+        static_cast<float>(window.getSize().x / 6),
+        static_cast<float>(window.getSize().y / 10)
     );
     const sf::Color textIdleColor(sf::Color(150, 150, 150));
     const sf::Color textHoverColor(sf::Color::White);
     const sf::Color textActiveColor(sf::Color(20, 20, 20, 200));
 
-    buttons["GAME_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 2.4f, 
+    buttons["GAME_STATE"] = new Button(window.getSize().x / 6.f, window.getSize().y / 2.4f, 
                                        buttonSize.x, buttonSize.y,
-                                       &font, 
+                                       font, 
                                        "New game",
                                        textIdleColor,
                                        textHoverColor,
                                        textActiveColor
                                        );
 
-    buttons["SETTINGS_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 1.9f, 
+    buttons["SETTINGS_STATE"] = new Button(window.getSize().x / 6.f, window.getSize().y / 1.9f, 
                                            buttonSize.x, buttonSize.y,
-                                           &font, 
+                                           font, 
                                            "Settings",
                                            textIdleColor,
                                            textHoverColor,
                                            textActiveColor
                                            );
-    buttons["EDITOR_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 1.6f, 
+    buttons["EDITOR_STATE"] = new Button(window.getSize().x / 6.f, window.getSize().y / 1.6f, 
                                          buttonSize.x, buttonSize.y,
-                                         &font, 
+                                         font, 
                                          "Editor",
                                          textIdleColor,
                                          textHoverColor,
                                          textActiveColor
                                          );
 
-    buttons["EXIT_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 1.2f, 
+    buttons["EXIT_STATE"] = new Button(window.getSize().x / 6.f, window.getSize().y / 1.2f, 
                                        buttonSize.x, buttonSize.y, 
-                                       &font, 
+                                       font, 
                                        "Quit",
                                        textIdleColor,
                                        textHoverColor,
@@ -135,7 +135,7 @@ void MainMenuState::initButtons()
 
 void MainMenuState::initBackground()
 {
-    background.setSize(sf::Vector2f((float)pWindow->getSize().x, (float)pWindow->getSize().y));
+    background.setSize(sf::Vector2f((float)window.getSize().x, (float)window.getSize().y));
     background.setTexture(&textures.at("BACKGROUND"));
 }
 

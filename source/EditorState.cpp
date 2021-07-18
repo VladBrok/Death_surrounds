@@ -1,11 +1,11 @@
 #include "EditorState.h"
 
 
-EditorState::EditorState(sf::RenderWindow* pWindow,
+EditorState::EditorState(sf::RenderWindow& window,
                              const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
                              std::stack<State*>* const pStates
                              )
-    : State(pWindow, pSupportedKeys, pStates)
+    : State(window, pSupportedKeys, pStates)
 {
     initKeybinds("Config//editorstate_keybinds.ini");
     initTextures();
@@ -46,7 +46,7 @@ void EditorState::render(sf::RenderTarget* pTarget)
 {
     if (!pTarget)
     {
-        pTarget = pWindow;
+        pTarget = &window;
     }
 
     renderButtons();
@@ -66,7 +66,7 @@ void EditorState::renderButtons()
 {
     for (auto b = buttons.begin(); b != buttons.end(); ++b)
     {
-        b->second->render(*pWindow);
+        b->second->render(window);
     }
 }
 

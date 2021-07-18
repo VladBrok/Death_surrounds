@@ -1,11 +1,11 @@
 #include "GameState.h"
 
 
-GameState::GameState(sf::RenderWindow* pWindow,
+GameState::GameState(sf::RenderWindow& window,
                      const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
                      std::stack<State*>* const pStates
                      )
-    : State(pWindow, pSupportedKeys, pStates)
+    : State(window, pSupportedKeys, pStates)
 {
     initKeybinds("Config//gamestate_keybinds.ini");
     initTextures();
@@ -59,7 +59,7 @@ void GameState::render(sf::RenderTarget* pTarget)
 {
     if (!pTarget)
     {
-        pTarget = pWindow;
+        pTarget = &window;
     }
     pPlayer->render(*pTarget);
 }

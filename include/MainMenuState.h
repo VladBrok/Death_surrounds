@@ -10,30 +10,29 @@ class MainMenuState: public State
 {
 public:
 
-                                                MainMenuState(sf::RenderWindow* pWindow, 
-                                                              const std::unordered_map<std::string, 
-                                                              sf::Keyboard::Key>* const pSupportedKeys,
-                                                              std::stack<State*>* const pStates
-                                                              );
-    virtual                                     ~MainMenuState();
-
-    virtual void                                update(const float deltaTime);
-    virtual void                                updateKeyboardInput(const float deltaTime);
-    virtual void                                render(sf::RenderTarget* pTarget = nullptr);
-
-    void                                        updateButtons();
-    void                                        renderButtons();
+                                             MainMenuState(sf::RenderWindow& window, 
+                                                           const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
+                                                           std::stack<State*>* const pStates
+                                                           );
+    virtual                                  ~MainMenuState();
+                                             
+    virtual void                             update(const float deltaTime);
+    virtual void                             updateKeyboardInput(const float deltaTime);
+    virtual void                             render(sf::RenderTarget* pTarget = nullptr);
+                                             
+    void                                     updateButtons();
+    void                                     renderButtons();
 
 private:
 
-    sf::RectangleShape                          background;
-    sf::Font                                    font;
-    std::unordered_map<std::string, Button*>    buttons;
+    sf::RectangleShape                       background;
+    sf::Font                                 font;
+    std::unordered_map<std::string, Button*> buttons;
 
-    void                                        initFont();
-    void                                        initButtons();
-    void                                        initBackground();
-    virtual void                                initTextures();
+    void                                     initFont();
+    void                                     initButtons();
+    void                                     initBackground();
+    virtual void                             initTextures();
 };
 
 

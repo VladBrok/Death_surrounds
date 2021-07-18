@@ -2,7 +2,7 @@
 
 
 AnimationComponent::AnimationComponent(sf::Texture& textureSheet, sf::Sprite& sprite)
-    : textureSheet(textureSheet), sprite(sprite), pLastAnimation(nullptr)
+    : textureSheet(textureSheet), sprite(sprite), pLastAnimation(nullptr), pPriorityAnimation(nullptr)
 {
 }
 
@@ -43,11 +43,68 @@ void AnimationComponent::addAnimation(
 }
 
 
-void AnimationComponent::play(const std::string& animationKey, const float deltaTime)
+void AnimationComponent::play(const std::string& animationKey, const float deltaTime, const bool priority)
 {
+    updateLastAnimation(animationKey);
+
+    if (!pPriorityAnimation)
+    {
+        animations[animationKey]->play(deltaTime);
+        if (priority)
+        {
+            pPriorityAnimation = animations[animationKey];
+        }
+    }
+    else
+    {
+        pPriorityAnimation->play(deltaTime);
+        if (pPriorityAnimation->isDone())
+        {
+            pPriorityAnimation = nullptr;
+        }
+    }
+}
+
+
+ void AnimationComponent::play(const std::string& animationKey, 
+                               const float deltaTime, 
+                               const float modifier, 
+                               const float modifierMax,
+                               const bool  priority
+                               )
+{
+    updateLastAnimation(animationKey);
+
+    if (!pPriorityAnimation)
+    {
+        animations[animationKey]->play(deltaTime, std::abs(modifier / modifierMax));
+        if (priority)
+        {
+            pPriorityAnimation = animations[animationKey];
+        }
+    }
+    else
+    {
+        pPriorityAnimation->play(deltaTime, std::abs(modifier / modifierMax));
+        if (pPriorityAnimation->isDone())
+        {
+            pPriorityAnimation = nullptr;
+        }
+    }
+}
+
+
+bool AnimationComponent::isDone(const std::string& animationKey) const
+{
+    return animations.at(animationKey)->isDone();
+}
+
+
+ void AnimationComponent::updateLastAnimation(const std::string& animationKey)
+ {
     if (animations.at(animationKey) != pLastAnimation)
     {
-        if (!pLastAnimation) // No animations were played in this component before
+        if (!pLastAnimation) // No animations were played before
         {
             pLastAnimation = animations[animationKey];
         }
@@ -57,5 +114,4 @@ void AnimationComponent::play(const std::string& animationKey, const float delta
             pLastAnimation = animations[animationKey];
         }
     }
-    animations[animationKey]->play(deltaTime);
-}
+ }

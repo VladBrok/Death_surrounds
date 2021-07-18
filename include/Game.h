@@ -11,28 +11,28 @@ class Game
 {
 public:
 
-    Game();
-    ~Game();
+                                                       Game();
+                                                       ~Game();
 
-    void run();
+    void                                               run();
 
 private:
 
-    sf::RenderWindow window;
-    sf::Clock clock;
-    float deltaTime;
-    std::unordered_map<std::string, sf::Keyboard::Key> supportedKeys;
-    std::stack<State*> states;
+    sf::RenderWindow                                   window;
+    sf::Clock                                          clock;
+    float                                              deltaTime; // For framerate independence
+    std::unordered_map<std::string, sf::Keyboard::Key> supportedKeys; // All keys that states can use
+    std::stack<State*>                                 states;
 
 
-    void updateDeltaTime();
-    void processEvents();
-    void update();
-    void render();
+    void                                               updateDeltaTime();
+    void                                               processEvents();
+    void                                               update();
+    void                                               render();
 
-    void initWindow();
-    void initSupportedKeys();
-    void initStates();
+    void                                               initWindow();
+    void                                               initSupportedKeys();
+    void                                               initStates();
 
 };
 

@@ -70,6 +70,7 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>D:\SFML\SFML-2.0\include;$(SolutionDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
+      <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

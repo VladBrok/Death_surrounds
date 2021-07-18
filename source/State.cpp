@@ -1,11 +1,11 @@
 #include "State.h"
 
 
-State::State(sf::RenderWindow* pWindow, 
+State::State(sf::RenderWindow& window, 
              const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
              std::stack<State*>* const pStates
             )
-    : pWindow(pWindow), pSupportedKeys(pSupportedKeys), pStates(pStates), stateIsActive(true)
+    : window(window), pSupportedKeys(pSupportedKeys), pStates(pStates), stateIsActive(true)
 {
 }
 
@@ -15,7 +15,7 @@ State::~State()
 }
 
 
-const bool State::isActive() const 
+bool State::isActive() const 
 {
     return stateIsActive;
 }
@@ -30,8 +30,8 @@ void State::endActivity()
 void State::updateMousePosition()
 {
     mousePosScreen = sf::Mouse::getPosition();
-    mousePosWindow = sf::Mouse::getPosition(*pWindow);
-    mousePosView   = pWindow->mapPixelToCoords(mousePosWindow);
+    mousePosWindow = sf::Mouse::getPosition(window);
+    mousePosView   = window.mapPixelToCoords(mousePosWindow);
 }
 
 

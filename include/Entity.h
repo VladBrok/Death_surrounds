@@ -27,7 +27,12 @@ public:
 protected:
 
     sf::Sprite          sprite;
-    MovementComponent*  pMovementComponent; // Entity is movable if pMovemenComponent != nullptr
+                        
+   /*
+       If the pointer to a component is nullptr, then
+       this component is missing.
+   */
+    MovementComponent*  pMovementComponent;
     AnimationComponent* pAnimationComponent;
     HitboxComponent*    pHitboxComponent;
 };

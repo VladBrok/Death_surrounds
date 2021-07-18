@@ -28,6 +28,12 @@ const sf::Vector2f& MovementComponent::getVelocity() const
 }
 
 
+float MovementComponent::getMaxVelocity() const
+{
+    return maxVelocity;
+}
+
+
 void MovementComponent::updateMovement(const float deltaTime)
 {
     if (getMovementState() == "IDLE")
@@ -65,6 +71,7 @@ const std::string MovementComponent::getMovementState() const
     {
         return "MOVING_DOWN";
     }
+    return "ERROR";
 }
 
 

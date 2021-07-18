@@ -3,7 +3,7 @@
 
 Button::Button(const float posX, const float posY, 
                const float width, const float height,
-               sf::Font* font, 
+               sf::Font& font, 
                const std::string& msg, 
 
                const sf::Color& textIdleColor, 
@@ -28,9 +28,9 @@ Button::Button(const float posX, const float posY,
     shape.setPosition(posX, posY);
     shape.setSize(sf::Vector2f(width, height));
 
-    text.setFont(*font);
+    text.setFont(font);
     text.setString(msg);
-    text.setCharacterSize(shape.getSize().x / 4);
+    text.setCharacterSize(static_cast<unsigned>(shape.getSize().x / 4));
     text.setColor(textIdleColor);
     text.setPosition(
         shape.getPosition().x + shape.getSize().x / 2.f - text.getGlobalBounds().width / 2.f,
@@ -80,7 +80,7 @@ void Button::render(sf::RenderTarget& target)
 }
 
 
-const bool Button::isPressed() const
+bool Button::isPressed() const
 {
     return buttonState == BTN_ACTIVE;
 }

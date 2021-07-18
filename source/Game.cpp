@@ -123,5 +123,5 @@ void Game::initSupportedKeys()
 
 void Game::initStates()
 {
-    states.push(new MainMenuState(&window, &supportedKeys, &states));
+    states.push(new MainMenuState(window, &supportedKeys, &states));
 }

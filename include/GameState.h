@@ -9,7 +9,7 @@ class GameState: public State
 {
 public:
 
-                        GameState(sf::RenderWindow* pWindow, 
+                        GameState(sf::RenderWindow& window, 
                                   const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
                                   std::stack<State*>* const pStates
                                   );
