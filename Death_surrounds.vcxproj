@@ -23,6 +23,7 @@
     <ClCompile Include="source\MovementComponent.cpp" />
     <ClCompile Include="source\PauseMenu.cpp" />
     <ClCompile Include="source\Player.cpp" />
+    <ClCompile Include="source\SettingsState.cpp" />
     <ClCompile Include="source\State.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -37,6 +38,7 @@
     <ClInclude Include="include\MovementComponent.h" />
     <ClInclude Include="include\PauseMenu.h" />
     <ClInclude Include="include\Player.h" />
+    <ClInclude Include="include\SettingsState.h" />
     <ClInclude Include="include\State.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

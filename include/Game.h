@@ -3,7 +3,6 @@
 
 #include "MainMenuState.h"
 
-
 const unsigned FPS_LIMIT = 60;
 
 

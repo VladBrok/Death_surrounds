@@ -18,7 +18,6 @@ public:
     virtual             ~State();
     virtual void        processEvents(const sf::Event& event);
     virtual void        update(const float deltaTime) = 0;
-    virtual void        updateKeyboardInput(const float deltaTime) = 0;
 
     // If pTarget is nullptr, then we render the entity to the window
     virtual void        render(sf::RenderTarget* pTarget = nullptr) = 0;

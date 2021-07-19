@@ -119,6 +119,6 @@ void GameState::initPauseMenu()
     font.loadFromFile("Fonts\\Dosis-Light.ttf");
     pPauseMenu = new PauseMenu(window, font);
 
-    pPauseMenu->addButton("QUIT", "Quit", 5);
+    pPauseMenu->addButton("QUIT", "Go to main menu", 5);
 }
 

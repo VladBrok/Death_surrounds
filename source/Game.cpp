@@ -50,7 +50,7 @@ void Game::processEvents()
         {
             window.close();
         }
-        else if (states.top()->isEventHandler())
+        else if (!states.empty() && states.top()->isEventHandler())
         {
             states.top()->processEvents(event);
         }
@@ -98,6 +98,7 @@ void Game::initWindow()
                   "Death surrounds",
                   sf::Style::Close
                   );
+
     window.setFramerateLimit(FPS_LIMIT);
 }
 

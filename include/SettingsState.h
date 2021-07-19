@@ -1,21 +1,22 @@
-#ifndef MAIN_MENU_STATE_H
-#define MAIN_MENU_STATE_H
+#ifndef SETTINGS_STATE_H
+#define SETTINGS_STATE_H
 
 #include "State.h"
 #include "Button.h"
 
 
-class MainMenuState: public State
+class SettingsState: public State
 {
 public:
 
-                                             MainMenuState(sf::RenderWindow& window, 
+                                             SettingsState(sf::RenderWindow& window, 
                                                            const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
                                                            std::stack<State*>* const pStates
                                                            );
-    virtual                                  ~MainMenuState();
+    virtual                                  ~SettingsState();
                                              
     virtual void                             update(const float deltaTime);
+    virtual void                             updateKeyboardInput(const float deltaTime);
     virtual void                             render(sf::RenderTarget* pTarget = nullptr);
                                              
     void                                     updateButtons();
@@ -34,4 +35,4 @@ private:
 };
 
 
-#endif // MAIN_MENU_STATE_H
+#endif // SETTINGS_STATE_H
