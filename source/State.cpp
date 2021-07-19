@@ -9,7 +9,8 @@ State::State(sf::RenderWindow& window,
       pSupportedKeys(pSupportedKeys), 
       pStates(pStates), 
       stateIsActive(true),
-      stateIsPaused(false)
+      stateIsPaused(false),
+      stateIsEventHandler(false)
 {
 }
 
@@ -19,9 +20,20 @@ State::~State()
 }
 
 
+void State::processEvents(const sf::Event& event)
+{
+}
+
+
 bool State::isActive() const 
 {
     return stateIsActive;
+}
+
+
+bool State::isEventHandler() const
+{
+    return stateIsEventHandler;
 }
 
 
@@ -77,3 +89,4 @@ void State::initKeybinds(const std::string& filePath)
         std::cout << "ERROR in State::initKeybinds: unable to open the file " + filePath << '\n';
     }
 }
+

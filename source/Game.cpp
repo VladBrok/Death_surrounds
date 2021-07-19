@@ -50,14 +50,17 @@ void Game::processEvents()
         {
             window.close();
         }
+        else if (states.top()->isEventHandler())
+        {
+            states.top()->processEvents(event);
+        }
     }
 }
 
 
 void Game::update()
 {
-    // Updating states
-    if (!states.empty())
+    if (!states.empty()) // Updating states
     {
         states.top()->update(deltaTime);
 
@@ -67,7 +70,7 @@ void Game::update()
             states.pop();
         }
     }
-    else // If there are no states left - close the window
+    else // Closing the window if there are no states left - close the window
     {
         window.close();
     }

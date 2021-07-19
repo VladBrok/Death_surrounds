@@ -82,21 +82,21 @@ void MainMenuState::renderButtons()
 
 void MainMenuState::initFont()
 {
-    font.loadFromFile("Fonts\\PixellettersFull.ttf");
+    font.loadFromFile("Fonts\\Dosis-Light.ttf");
 }
 
 
 void MainMenuState::initButtons()
 {
     const sf::Vector2f buttonSize(
-        static_cast<float>(window.getSize().x / 6),
-        static_cast<float>(window.getSize().y / 10)
+        static_cast<float>(window.getSize().x / 7),
+        static_cast<float>(window.getSize().y / 11)
     );
     const sf::Color textIdleColor(sf::Color(150, 150, 150));
     const sf::Color textHoverColor(sf::Color::White);
     const sf::Color textActiveColor(sf::Color(20, 20, 20, 200));
 
-    buttons["GAME_STATE"] = new Button(window.getSize().x / 6.f, window.getSize().y / 2.4f, 
+    buttons["GAME_STATE"] = new Button(window.getSize().x / 6.f, window.getSize().y / 2.3f, 
                                        buttonSize.x, buttonSize.y,
                                        font, 
                                        "New game",
@@ -105,7 +105,7 @@ void MainMenuState::initButtons()
                                        textActiveColor
                                        );
 
-    buttons["SETTINGS_STATE"] = new Button(window.getSize().x / 6.f, window.getSize().y / 1.9f, 
+    buttons["SETTINGS_STATE"] = new Button(window.getSize().x / 6.f, window.getSize().y / 1.8f, 
                                            buttonSize.x, buttonSize.y,
                                            font, 
                                            "Settings",
@@ -113,7 +113,7 @@ void MainMenuState::initButtons()
                                            textHoverColor,
                                            textActiveColor
                                            );
-    buttons["EDITOR_STATE"] = new Button(window.getSize().x / 6.f, window.getSize().y / 1.6f, 
+    buttons["EDITOR_STATE"] = new Button(window.getSize().x / 6.f, window.getSize().y / 1.5f, 
                                          buttonSize.x, buttonSize.y,
                                          font, 
                                          "Editor",
@@ -122,7 +122,7 @@ void MainMenuState::initButtons()
                                          textActiveColor
                                          );
 
-    buttons["EXIT_STATE"] = new Button(window.getSize().x / 6.f, window.getSize().y / 1.2f, 
+    buttons["EXIT_STATE"] = new Button(window.getSize().x / 6.f, window.getSize().y / 1.15f, 
                                        buttonSize.x, buttonSize.y, 
                                        font, 
                                        "Quit",

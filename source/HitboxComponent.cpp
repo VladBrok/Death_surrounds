@@ -26,9 +26,6 @@ void HitboxComponent::update()
         sprite.getPosition().x + offsetFromSpritePositionX, 
         sprite.getPosition().y + offsetFromSpritePositionY
     );
-
-    std::cout << "\n\n" << sprite.getPosition().x << ' ' << sprite.getPosition().y << '\n' 
-              << sprite.getOrigin().x << ' ' << sprite.getOrigin().y << "\n\n";
 }
 
 

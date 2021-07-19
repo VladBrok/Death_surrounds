@@ -6,19 +6,29 @@
 #include <unordered_map>
 
 
-class PauseMenu
+class PauseMenu: public sf::NonCopyable
 {
 public:
 
-                                             PauseMenu(const sf::RenderWindow& window);
+                                             PauseMenu(const sf::RenderWindow& window, sf::Font& font);
                                              ~PauseMenu();
+    void                                     addButton(const std::string& buttonKey, 
+                                                       const std::string& buttonText,
+                                                       const int verticalPositionFrom1To5
+                                                       );
+    bool                                     isButtonPressed(const std::string& buttonKey) const;
+    void                                     update(const sf::Vector2f& mousePosition);
     void                                     render(sf::RenderTarget& target);
 
 private:
 
     sf::RectangleShape                       background;
-    sf::RectangleShape                       menu;
+    sf::RectangleShape                       menuContainer;
     std::unordered_map<std::string, Button*> buttons; 
+    sf::Text                                 text;
+    sf::Font&                                font;
+
+    void                                     initText(const sf::RenderWindow& window);
 
 };
 

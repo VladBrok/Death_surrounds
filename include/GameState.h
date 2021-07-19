@@ -15,17 +15,23 @@ public:
                                   std::stack<State*>* const pStates
                                   );
     virtual             ~GameState();
+    virtual void        processEvents(const sf::Event& event);
     virtual void        update(const float deltaTime);
-    virtual void        updateKeyboardInput(const float deltaTime);
+    void                updatePlayerKeyboardInput(const float deltaTime);
+    void                updatePauseMenuButtons();
     virtual void        render(sf::RenderTarget* pTarget = nullptr);
 
 private:
 
     Player*             pPlayer;
-    PauseMenu           pauseMenu;
+    PauseMenu*          pPauseMenu;
+    sf::Font            font;
+
 
     virtual void        initTextures();
     void                initPlayer();
+    void                initPauseMenu();
+
 };
 
 

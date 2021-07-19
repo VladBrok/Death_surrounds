@@ -5,38 +5,59 @@ GameState::GameState(sf::RenderWindow& window,
                      const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
                      std::stack<State*>* const pStates
                      )
-    : State(window, pSupportedKeys, pStates), pauseMenu(window)
+    : State(window, pSupportedKeys, pStates)
 {
+    stateIsEventHandler = true;
+
     initKeybinds("Config//gamestate_keybinds.ini");
     initTextures();
     initPlayer();
+    initPauseMenu();
 }
 
 
 GameState::~GameState()
 {
     delete pPlayer;
+    delete pPauseMenu;
+}
+
+
+void GameState::processEvents(const sf::Event& event)
+{
+    if (event.type == sf::Event::KeyPressed &&
+        event.key.code == keybinds.at("CLOSE_STATE"))
+    {
+        if (!stateIsPaused)
+        {
+            pauseState();
+        }
+        else
+        {
+            unpauseState();
+        }
+    }
 }
 
 
 void GameState::update(const float deltaTime)
 {
+    updateMousePosition();
+
     if (!stateIsPaused)
     {
-        updateKeyboardInput(deltaTime);
-
-        updateMousePosition();
-
+        updatePlayerKeyboardInput(deltaTime);
         pPlayer->update(deltaTime);
     }
     else
     {
-        // FIXME: Update pause menu
+        pPauseMenu->update(mousePosView);
+        updatePauseMenuButtons();
     }
 }
 
 
-void GameState::updateKeyboardInput(const float deltaTime)
+void GameState::updatePlayerKeyboardInput(const float deltaTime)
 {
     if (sf::Keyboard::isKeyPressed(keybinds.at("MOVE_UP")))
     {
@@ -54,12 +75,14 @@ void GameState::updateKeyboardInput(const float deltaTime)
     {
         pPlayer->move(1.f, 0.f, deltaTime);
     }
+}
 
-    if (sf::Keyboard::isKeyPressed(keybinds.at("CLOSE_STATE")))
+
+void GameState::updatePauseMenuButtons()
+{
+    if (pPauseMenu->isButtonPressed("QUIT"))
     {
-        //endActivity();
-
-        pauseState();
+        endActivity();
     }
 }
 
@@ -74,7 +97,7 @@ void GameState::render(sf::RenderTarget* pTarget)
 
     if (stateIsPaused)
     {
-        pauseMenu.render(*pTarget);
+        pPauseMenu->render(*pTarget);
     }
 }
 
@@ -89,3 +112,13 @@ void GameState::initPlayer()
 {
     pPlayer = new Player(0.f, 0.f, textures["PLAYER_SHEET"]);
 }
+
+
+void GameState::initPauseMenu()
+{
+    font.loadFromFile("Fonts\\Dosis-Light.ttf");
+    pPauseMenu = new PauseMenu(window, font);
+
+    pPauseMenu->addButton("QUIT", "Quit", 5);
+}
+
