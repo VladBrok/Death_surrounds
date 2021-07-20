@@ -3,35 +3,41 @@
 
 #include "State.h"
 #include "Button.h"
+#include "DropDownList.h"
 
 
 class SettingsState: public State
 {
 public:
 
-                                             SettingsState(sf::RenderWindow& window, 
-                                                           const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
-                                                           std::stack<State*>* const pStates
-                                                           );
-    virtual                                  ~SettingsState();
-                                             
-    virtual void                             update(const float deltaTime);
-    virtual void                             updateKeyboardInput(const float deltaTime);
-    virtual void                             render(sf::RenderTarget* pTarget = nullptr);
-                                             
-    void                                     updateButtons();
-    void                                     renderButtons();
+                                                   SettingsState(sf::RenderWindow& window, 
+                                                                 const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
+                                                                 std::stack<State*>* const pStates
+                                                                 );
+    virtual                                        ~SettingsState();
+    
+    virtual void                                   processEvents(const sf::Event& event);
+
+    virtual void                                   update(const float deltaTime);
+    virtual void                                   updateKeyboardInput(const float deltaTime);
+    void                                           updateGui();
+
+    virtual void                                   render(sf::RenderTarget* pTarget = nullptr);
+    void                                           renderGui(sf::RenderTarget& target);
 
 private:
 
-    sf::RectangleShape                       background;
-    sf::Font                                 font;
-    std::unordered_map<std::string, Button*> buttons;
+    sf::RectangleShape                             background;
+    sf::Font                                       font;
+    std::unordered_map<std::string, Button*>       buttons;
+    std::unordered_map<std::string, DropDownList*> dropDownLists;
 
-    void                                     initFont();
-    void                                     initButtons();
-    void                                     initBackground();
-    virtual void                             initTextures();
+    void                                           initFont();
+    void                                           initGui();
+    void                                           initBackground();
+    virtual void                                   initTextures();
+
+    sf::Vector2i getResolutionFromString(const std::string& string); // String example: 800 x 600
 };
 
 

@@ -37,7 +37,7 @@ void PauseMenu::addButton(const std::string& buttonKey,
 
     const sf::Vector2f buttonSize(
         static_cast<float>(menuContainer.getSize().x / 2),
-        static_cast<float>(menuContainer.getSize().y / 6)
+        static_cast<float>(menuContainer.getSize().y / 8)
     );
     const sf::Color textIdleColor(sf::Color(150, 150, 150));
     const sf::Color textHoverColor(sf::Color::White);

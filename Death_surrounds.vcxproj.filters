@@ -64,6 +64,9 @@
     <ClCompile Include="source\SettingsState.cpp">
       <Filter>States</Filter>
     </ClCompile>
+    <ClCompile Include="source\DropDownList.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AnimationComponent.h">
@@ -104,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="include\SettingsState.h">
       <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DropDownList.h">
+      <Filter>GUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
