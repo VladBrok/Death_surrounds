@@ -76,16 +76,36 @@ void DropDownList::processMouseEvent(const sf::Event& event,
                                      const sf::Vector2f& mousePosition
                                      )
 {
-    if (!showList)
+    if (!showList) // Processing only title element
     {
         listElements[0]->processMouseEvent(event, mousePosition);
 
         if (listElements[0]->isPressed())
         {
-            showList = true;
+            handleListElementPress(0);
+            return;
         }
     }
-    else if (hoveredElementIndex == -1)
+    else if (hoveredElementIndex != -1) // Processing and resetting hovered element
+    {
+        listElements[hoveredElementIndex]->processMouseEvent(event, mousePosition);
+
+        if (listElements[hoveredElementIndex]->isPressed())
+        {
+            handleListElementPress(hoveredElementIndex);
+            if (hoveredElementIndex != 0)
+            {
+                hoveredElementIndex = -1;
+            }
+        }
+
+        else if (!listElements[hoveredElementIndex]->isHovered())
+        {
+            hoveredElementIndex = -1;
+        }
+    }
+
+    if (showList && hoveredElementIndex == -1) // Searching for new hovered element
     {
         for (int i = 0; (i < (int)listElements.size()) && hoveredElementIndex == -1 && showList; ++i)
         {
@@ -97,31 +117,8 @@ void DropDownList::processMouseEvent(const sf::Event& event,
             }
             else if (listElements[i]->isPressed())
             {
-                showList = false;
-                if (i != 0)
-                {
-                    swapListElementTexts(0, i);
-                }
+                handleListElementPress(i);
             }
-        }
-    }
-    else
-    {
-        listElements[hoveredElementIndex]->processMouseEvent(event, mousePosition);
-
-        if (listElements[hoveredElementIndex]->isPressed())
-        {
-            showList = false;
-            if (hoveredElementIndex != 0)
-            {
-                swapListElementTexts(0, hoveredElementIndex);
-                hoveredElementIndex = -1;
-            }
-        }
-
-        else if (!listElements[hoveredElementIndex]->isHovered())
-        {
-            hoveredElementIndex = -1;
         }
     }
 }
@@ -152,4 +149,18 @@ void DropDownList::swapListElementTexts(const int element1_index, const int elem
     std::string tmp = listElements[element1_index]->getText();
     listElements[element1_index]->setText(listElements[element2_index]->getText());
     listElements[element2_index]->setText(tmp);
+}
+
+
+void DropDownList::handleListElementPress(const int elementIndex)
+{
+    if (elementIndex == 0)
+    {
+        showList = !showList;
+    }
+    else
+    {
+        showList = false;
+        swapListElementTexts(0, elementIndex);
+    }
 }

@@ -29,9 +29,10 @@ private:
     sf::Font&               font;
     std::vector<Button*>    listElements;
     bool                    showList;
-    int                     hoveredElementIndex;
+    int                     hoveredElementIndex; // Used to prevent the selection of several list elements simultaneously
 
     void                    swapListElementTexts(const int element1_index, const int element2_index);
+    void                    handleListElementPress(const int elementIndex);
     
 };
 
