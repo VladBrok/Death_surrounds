@@ -1,8 +1,6 @@
 #ifndef MOVEMENT_COMPONENT_H
 #define MOVEMENT_COMPONENT_H
 
-#include "SFML/Graphics.hpp"
-
 
 class MovementComponent: public sf::NonCopyable
 {

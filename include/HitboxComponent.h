@@ -1,9 +1,6 @@
 #ifndef HITBOXCOMPONENT_H
 #define HITBOXCOMPONENT_H
 
-#include "SFML\Graphics.hpp"
-#include <iostream>
-
 
 class HitboxComponent: public sf::NonCopyable
 {

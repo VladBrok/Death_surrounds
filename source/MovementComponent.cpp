@@ -1,6 +1,5 @@
+#include "precompiled.h"
 #include "MovementComponent.h"
-#include <iostream>
-
 
 
 MovementComponent::MovementComponent(sf::Sprite& sprite, const float maxVelocity,

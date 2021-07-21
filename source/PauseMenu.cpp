@@ -1,5 +1,5 @@
+#include "precompiled.h"
 #include "PauseMenu.h"
-#include <cassert>
 
 
 PauseMenu::PauseMenu(const sf::RenderWindow& window, sf::Font& font)

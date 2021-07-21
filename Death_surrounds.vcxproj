@@ -24,8 +24,14 @@
     <ClCompile Include="source\MovementComponent.cpp" />
     <ClCompile Include="source\PauseMenu.cpp" />
     <ClCompile Include="source\Player.cpp" />
+    <ClCompile Include="source\precompiled.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">precompiled.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="source\SettingsState.cpp" />
     <ClCompile Include="source\State.cpp" />
+    <ClCompile Include="source\Tile.cpp" />
+    <ClCompile Include="source\TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AnimationComponent.h" />
@@ -40,8 +46,11 @@
     <ClInclude Include="include\MovementComponent.h" />
     <ClInclude Include="include\PauseMenu.h" />
     <ClInclude Include="include\Player.h" />
+    <ClInclude Include="include\precompiled.h" />
     <ClInclude Include="include\SettingsState.h" />
     <ClInclude Include="include\State.h" />
+    <ClInclude Include="include\Tile.h" />
+    <ClInclude Include="include\TileMap.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AD44A273-D811-4496-9635-D5147C651062}</ProjectGuid>
@@ -77,6 +86,8 @@
       <AdditionalIncludeDirectories>D:\SFML\SFML-2.0\include;$(SolutionDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <TreatWarningAsError>false</TreatWarningAsError>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

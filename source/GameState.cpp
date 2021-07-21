@@ -1,3 +1,4 @@
+#include "precompiled.h"
 #include "GameState.h"
 
 
@@ -5,7 +6,7 @@ GameState::GameState(sf::RenderWindow& window,
                      const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
                      std::stack<State*>* const pStates
                      )
-    : State(window, pSupportedKeys, pStates)
+    : State(window, pSupportedKeys, pStates), map(5, 5, 1)
 {
     stateIsEventHandler = true;
 
@@ -95,6 +96,8 @@ void GameState::render(sf::RenderTarget* pTarget)
     {
         pTarget = &window;
     }
+
+    map.render(*pTarget);
     pPlayer->render(*pTarget);
 
     if (stateIsPaused)

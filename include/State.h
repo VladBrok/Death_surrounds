@@ -1,12 +1,6 @@
 #ifndef STATE_H
 #define STATE_H
 
-#include "SFML/Graphics.hpp"
-#include <iostream> // Just for debug purposes
-#include <unordered_map>
-#include <fstream>
-#include <stack>
-
 
 class State: public sf::NonCopyable
 {

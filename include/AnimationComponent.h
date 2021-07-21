@@ -1,10 +1,6 @@
 #ifndef ANIMATION_COMPONENT_H
 #define ANIMATION_COMPONENT_H
 
-#include "SFML/Graphics.hpp"
-#include <unordered_map>
-#include <iostream>
-
 
 class AnimationComponent: sf::NonCopyable
 {

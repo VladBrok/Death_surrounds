@@ -1,5 +1,5 @@
+#include "precompiled.h"
 #include "Player.h"
-#include <iostream>
 
 
 Player::Player(const float posX, const float posY, sf::Texture& textureSheet)

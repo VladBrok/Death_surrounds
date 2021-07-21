@@ -1,5 +1,5 @@
+#include "precompiled.h"
 #include "SettingsState.h"
-#include <sstream>
 
 
 SettingsState::SettingsState(sf::RenderWindow& window,

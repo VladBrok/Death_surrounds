@@ -1,5 +1,5 @@
+#include "precompiled.h"
 #include "DropDownList.h"
-#include <cassert>
 
 
 DropDownList::DropDownList(const float posX,

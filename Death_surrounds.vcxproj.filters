@@ -20,6 +20,15 @@
     <Filter Include="GUI">
       <UniqueIdentifier>{a30aa947-45af-4f8c-8413-15593308e504}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Precompiled">
+      <UniqueIdentifier>{6252e07a-b5f7-472b-9309-743c25aa199f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tiles">
+      <UniqueIdentifier>{7925df65-0fe3-4e54-a077-6775d309db66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tile_map">
+      <UniqueIdentifier>{627ab2c7-b7ed-4b8b-98d5-fbfecc113bde}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
@@ -67,6 +76,15 @@
     <ClCompile Include="source\DropDownList.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="source\precompiled.cpp">
+      <Filter>Precompiled</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Tile.cpp">
+      <Filter>Tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TileMap.cpp">
+      <Filter>Tile_map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AnimationComponent.h">
@@ -110,6 +128,15 @@
     </ClInclude>
     <ClInclude Include="include\DropDownList.h">
       <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\precompiled.h">
+      <Filter>Precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Tile.h">
+      <Filter>Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TileMap.h">
+      <Filter>Tile_map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
