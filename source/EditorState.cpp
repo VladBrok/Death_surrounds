@@ -57,7 +57,7 @@ void EditorState::updateButtons()
 {
     for (auto b = buttons.begin(); b != buttons.end(); ++b)
     {
-        b->second->update(mousePosView);
+        //b->second->update(mousePosView);
     }
 }
 

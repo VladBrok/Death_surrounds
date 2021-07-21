@@ -10,7 +10,7 @@ DropDownList::DropDownList(const float posX,
                            const std::vector<std::string>& list,
                            const int activeElementIndex
                            )
-    : font(font), showList(false)
+    : font(font), showList(false), hoveredElementIndex(-1)
 {
     assert(activeElementIndex >= 0 && activeElementIndex < (int)list.size());
 
@@ -72,47 +72,56 @@ DropDownList::~DropDownList()
 }
 
 
-void DropDownList::processMouseEvent(const sf::Event& event)
+void DropDownList::processMouseEvent(const sf::Event& event,
+                                     const sf::Vector2f& mousePosition
+                                     )
 {
+    if (!showList)
+    {
+        listElements[0]->processMouseEvent(event, mousePosition);
 
-    if (listElements[0]->isPressed()) // Active list element is pressed
-    {
-        showList = !showList;
-    }
-    else
-    {
-        if (showList)
+        if (listElements[0]->isPressed())
         {
-            for (int i = 1; i < (int)listElements.size(); ++i)
-            {
-                //listElements[i]->update(mousePosition);
+            showList = true;
+        }
+    }
+    else if (hoveredElementIndex == -1)
+    {
+        for (int i = 0; (i < (int)listElements.size()) && hoveredElementIndex == -1 && showList; ++i)
+        {
+            listElements[i]->processMouseEvent(event, mousePosition);
 
-                if (listElements[i]->isPressed())
+            if (listElements[i]->isHovered())
+            {
+                hoveredElementIndex = i;
+            }
+            else if (listElements[i]->isPressed())
+            {
+                showList = false;
+                if (i != 0)
                 {
-                    showList = false;
                     swapListElementTexts(0, i);
                 }
             }
         }
     }
-}
-
-
-void DropDownList::update(const sf::Vector2f& mousePosition)
-{
-    listElements[0]->update(mousePosition);
-
-    if (showList)
+    else
     {
-        for (int i = 1; i < (int)listElements.size(); ++i)
-        {
-            listElements[i]->update(mousePosition);
+        listElements[hoveredElementIndex]->processMouseEvent(event, mousePosition);
 
-            //if (listElements[i]->isPressed())
-            //{
-            //    showList = false;
-            //    swapListElementTexts(0, i);
-            //}
+        if (listElements[hoveredElementIndex]->isPressed())
+        {
+            showList = false;
+            if (hoveredElementIndex != 0)
+            {
+                swapListElementTexts(0, hoveredElementIndex);
+                hoveredElementIndex = -1;
+            }
+        }
+
+        else if (!listElements[hoveredElementIndex]->isHovered())
+        {
+            hoveredElementIndex = -1;
         }
     }
 }

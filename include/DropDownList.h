@@ -18,8 +18,9 @@ public:
                                          );
                             ~DropDownList();
 
-    void                    processMouseEvent(const sf::Event& event);
-    void                    update(const sf::Vector2f& mousePosition);
+    void                    processMouseEvent(const sf::Event& event,
+                                              const sf::Vector2f& mousePosition
+                                              );
     void                    render(sf::RenderTarget& target);
     const std::string&      getActiveElementText() const;
 
@@ -28,6 +29,7 @@ private:
     sf::Font&               font;
     std::vector<Button*>    listElements;
     bool                    showList;
+    int                     hoveredElementIndex;
 
     void                    swapListElementTexts(const int element1_index, const int element2_index);
     

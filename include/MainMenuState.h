@@ -14,11 +14,11 @@ public:
                                                            std::stack<State*>* const pStates
                                                            );
     virtual                                  ~MainMenuState();
-                                             
+    
+    virtual void                             processEvents(const sf::Event& event);
     virtual void                             update(const float deltaTime);
     virtual void                             render(sf::RenderTarget* pTarget = nullptr);
                                              
-    void                                     updateButtons();
     void                                     renderButtons();
 
 private:

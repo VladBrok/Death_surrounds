@@ -17,11 +17,7 @@ public:
     virtual                                        ~SettingsState();
     
     virtual void                                   processEvents(const sf::Event& event);
-
     virtual void                                   update(const float deltaTime);
-    virtual void                                   updateKeyboardInput(const float deltaTime);
-    void                                           updateGui();
-
     virtual void                                   render(sf::RenderTarget* pTarget = nullptr);
     void                                           renderGui(sf::RenderTarget& target);
 

@@ -33,48 +33,14 @@ SettingsState::~SettingsState()
 
 void SettingsState::processEvents(const sf::Event& event)
 {
-    for (auto d = dropDownLists.begin(); d != dropDownLists.end(); ++d)
-    {
-        d->second->processMouseEvent(event);
-    }
-}
-
-
-void SettingsState::update(const float deltaTime)
-{
-    updateMousePosition();
-
-    updateGui();
-}
-
-
-void SettingsState::updateKeyboardInput(const float deltaTime)
-{
-}
-
-
-void SettingsState::render(sf::RenderTarget* pTarget)
-{
-    if (!pTarget)
-    {
-        pTarget = &window;
-    }
-    pTarget->draw(background);
-    
-    renderGui(*pTarget);
-}
-
-
-void SettingsState::updateGui()
-{
     for (auto b = buttons.begin(); b != buttons.end(); ++b)
     {
-        b->second->update(mousePosView);
+        b->second->processMouseEvent(event, mousePosView);
     }
 
     for (auto d = dropDownLists.begin(); d != dropDownLists.end(); ++d)
     {
-        d->second->update(mousePosView);
+        d->second->processMouseEvent(event, mousePosView);
     }
 
     // Reacting on the pressed buttons
@@ -91,8 +57,24 @@ void SettingsState::updateGui()
     {
         endActivity();
     }
+}
 
 
+void SettingsState::update(const float deltaTime)
+{
+    updateMousePosition();
+}
+
+
+void SettingsState::render(sf::RenderTarget* pTarget)
+{
+    if (!pTarget)
+    {
+        pTarget = &window;
+    }
+    pTarget->draw(background);
+    
+    renderGui(*pTarget);
 }
 
 
@@ -152,15 +134,25 @@ void SettingsState::initGui()
     std::vector<std::string> resolutions;
     resolutions.reserve(videoModes.size());
 
+    int activeResolutionIndex = 0;
+
     for (int i = 0; i < 7; ++i)
     {
         resolutions.push_back(
             std::to_string((long long)videoModes[i].width) + "x" + 
             std::to_string((long long)videoModes[i].height)
         );
+        if (videoModes[i].width == window.getSize().x &&
+            videoModes[i].height == window.getSize().y)
+        {
+            activeResolutionIndex = i;
+        }
     }
 
-    dropDownLists["RESOLUTION"] = new DropDownList(300.f, 300.f, 200.f, 50.f, font, resolutions);
+    dropDownLists["RESOLUTION"] = 
+        new DropDownList(
+             300.f, 300.f, 200.f, 50.f, font, resolutions, activeResolutionIndex
+        );
 }
 
 

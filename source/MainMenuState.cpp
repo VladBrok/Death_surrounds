@@ -10,6 +10,8 @@ MainMenuState::MainMenuState(sf::RenderWindow& window,
                              )
     : State(window, pSupportedKeys, pStates)
 {
+    stateIsEventHandler = true;
+
     initTextures();
     initFont();
     initButtons();
@@ -26,31 +28,11 @@ MainMenuState::~MainMenuState()
 }
 
 
-void MainMenuState::update(const float deltaTime)
-{
-    updateMousePosition();
-
-    updateButtons();
-}
-
-
-void MainMenuState::render(sf::RenderTarget* pTarget)
-{
-    if (!pTarget)
-    {
-        pTarget = &window;
-    }
-    pTarget->draw(background);
-
-    renderButtons();
-}
-
-
-void MainMenuState::updateButtons()
+void MainMenuState::processEvents(const sf::Event& event)
 {
     for (auto b = buttons.begin(); b != buttons.end(); ++b)
     {
-        b->second->update(mousePosView);
+        b->second->processMouseEvent(event, mousePosView);
     }
 
     // Pushing new states if the corresponding button is pressed
@@ -72,6 +54,24 @@ void MainMenuState::updateButtons()
     {
         endActivity();
     }
+}
+
+
+void MainMenuState::update(const float deltaTime)
+{
+    updateMousePosition();
+}
+
+
+void MainMenuState::render(sf::RenderTarget* pTarget)
+{
+    if (!pTarget)
+    {
+        pTarget = &window;
+    }
+    pTarget->draw(background);
+
+    renderButtons();
 }
 
 

@@ -25,6 +25,11 @@ GameState::~GameState()
 
 void GameState::processEvents(const sf::Event& event)
 {
+    if (stateIsPaused)
+    {
+        processPauseMenuButtonEvents(event);
+    }
+
     if (event.type == sf::Event::KeyPressed &&
         event.key.code == keybinds.at("CLOSE_STATE"))
     {
@@ -40,6 +45,17 @@ void GameState::processEvents(const sf::Event& event)
 }
 
 
+void GameState::processPauseMenuButtonEvents(const sf::Event& event)
+{
+    pPauseMenu->processMouseEvent(event, mousePosView);
+
+    if (pPauseMenu->isButtonPressed("QUIT"))
+    {
+        endActivity();
+    }
+}
+
+
 void GameState::update(const float deltaTime)
 {
     updateMousePosition();
@@ -48,11 +64,6 @@ void GameState::update(const float deltaTime)
     {
         updatePlayerKeyboardInput(deltaTime);
         pPlayer->update(deltaTime);
-    }
-    else
-    {
-        pPauseMenu->update(mousePosView);
-        updatePauseMenuButtons();
     }
 }
 
@@ -74,15 +85,6 @@ void GameState::updatePlayerKeyboardInput(const float deltaTime)
     else if (sf::Keyboard::isKeyPressed(keybinds.at("MOVE_RIGHT")))
     {
         pPlayer->move(1.f, 0.f, deltaTime);
-    }
-}
-
-
-void GameState::updatePauseMenuButtons()
-{
-    if (pPauseMenu->isButtonPressed("QUIT"))
-    {
-        endActivity();
     }
 }
 

@@ -17,7 +17,9 @@ public:
                                                        const int verticalPositionFrom1To5
                                                        );
     bool                                     isButtonPressed(const std::string& buttonKey) const;
-    void                                     update(const sf::Vector2f& mousePosition);
+    void                                     processMouseEvent(const sf::Event& event, 
+                                                               const sf::Vector2f& mousePosition
+                                                               );
     void                                     render(sf::RenderTarget& target);
 
 private:

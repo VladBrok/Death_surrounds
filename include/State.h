@@ -18,9 +18,7 @@ public:
     virtual             ~State();
     virtual void        processEvents(const sf::Event& event);
     virtual void        update(const float deltaTime) = 0;
-
-    // If pTarget is nullptr, then we render the entity to the window
-    virtual void        render(sf::RenderTarget* pTarget = nullptr) = 0;
+    virtual void        render(sf::RenderTarget* pTarget = nullptr) = 0; // If pTarget is nullptr, then we render the entity to the window
  
     bool                isActive() const;
     bool                isEventHandler() const; // Returns true if the state needs to process events

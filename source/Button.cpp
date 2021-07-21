@@ -50,41 +50,47 @@ Button::Button(const float posX, const float posY,
 }
 
 
-void Button::update(const sf::Vector2f& mousePosition)
+void Button::processMouseEvent(const sf::Event& event, const sf::Vector2f& mousePosition)
 {
-    buttonState = BTN_IDLE;
+    //if (event.type == sf::Event::MouseMoved ||
+    //    event.type == sf::Event::MouseButtonPressed)
+    //{
+        buttonState = BTN_IDLE;
 
-    if (shape.getGlobalBounds().contains(mousePosition))
-    {
-        buttonState = BTN_HOVER;
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        if (shape.getGlobalBounds().contains(mousePosition)) // Hover
         {
-            buttonState = BTN_ACTIVE;
+            buttonState = BTN_HOVER;
+            if (event.type == sf::Event::MouseButtonPressed &&
+                event.mouseButton.button == sf::Mouse::Left)  // Left button of the mouse pressed
+            {
+                buttonState = BTN_ACTIVE;
+            }
         }
-    }
-    
-    switch (buttonState)
-    {
-    case BTN_IDLE:
-        shape.setFillColor(idleColor);
-        shape.setOutlineColor(outlineIdleColor);
-        sfText.setColor(textIdleColor);
-        break;
-    case BTN_HOVER:
-        shape.setFillColor(hoverColor);
-        shape.setOutlineColor(outlineHoverColor);
-        sfText.setColor(textHoverColor);
-        break;
-    case BTN_ACTIVE:
-        shape.setFillColor(activeColor);
-        shape.setOutlineColor(outlineActiveColor);
-        sfText.setColor(textActiveColor);
-        break;
-    default: // This should never happen
-        shape.setFillColor(sf::Color::Red);
-        shape.setOutlineColor(sf::Color::Green);
-        sfText.setColor(sf::Color::Blue);
-    }
+        
+        // Changing button appearance in according to button state
+        switch (buttonState)
+        {
+        case BTN_IDLE:
+            shape.setFillColor(idleColor);
+            shape.setOutlineColor(outlineIdleColor);
+            sfText.setColor(textIdleColor);
+            break;
+        case BTN_HOVER:
+            shape.setFillColor(hoverColor);
+            shape.setOutlineColor(outlineHoverColor);
+            sfText.setColor(textHoverColor);
+            break;
+        case BTN_ACTIVE:
+            shape.setFillColor(activeColor);
+            shape.setOutlineColor(outlineActiveColor);
+            sfText.setColor(textActiveColor);
+            break;
+        default: // This should never happen
+            shape.setFillColor(sf::Color::Red);
+            shape.setOutlineColor(sf::Color::Green);
+            sfText.setColor(sf::Color::Blue);
+        }
+//    }
 }
 
 
@@ -95,9 +101,24 @@ void Button::render(sf::RenderTarget& target)
 }
 
 
-bool Button::isPressed() const
+bool Button::isPressed(const bool resetButtonStateToIdle)
 {
+    if (buttonState == BTN_ACTIVE && resetButtonStateToIdle)
+    {
+        buttonState = BTN_IDLE;
+        shape.setFillColor(idleColor);
+        shape.setOutlineColor(outlineIdleColor);
+        sfText.setColor(textIdleColor);
+
+        return true;
+    }
     return buttonState == BTN_ACTIVE;
+}
+
+
+bool Button::isHovered() const
+{
+    return buttonState == BTN_HOVER;
 }
 
 
