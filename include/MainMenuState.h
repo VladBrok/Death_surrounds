@@ -19,7 +19,7 @@ public:
     virtual void                             update(const float deltaTime);
     virtual void                             render(sf::RenderTarget* pTarget = nullptr);
                                              
-    void                                     renderButtons();
+    void                                     renderButtons(sf::RenderTarget& target);
 
 private:
 

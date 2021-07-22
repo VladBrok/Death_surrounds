@@ -1,17 +1,21 @@
 #include "precompiled.h"
 #include "EditorState.h"
+#include "constants.h"
 
 
 EditorState::EditorState(sf::RenderWindow& window,
                              const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
                              std::stack<State*>* const pStates
                              )
-    : State(window, pSupportedKeys, pStates)
+    : State(window, pSupportedKeys, pStates), tileMap(5, 5, 1)
 {
+    stateIsEventHandler = true;
+
     initKeybinds("Config//editorstate_keybinds.ini");
     initTextures();
-    initFont();
     initButtons();
+    initPauseMenu();
+    initTileSelector();
 }
 
 
@@ -21,25 +25,55 @@ EditorState::~EditorState()
     {
         delete b->second;
     }    
+
+    delete pPauseMenu;
+}
+
+
+void EditorState::processEvents(const sf::Event& event)
+{
+    if (stateIsPaused)
+    {
+        processPauseMenuButtonEvents(event);
+    }
+    else
+    {
+        updateTileSelector();
+
+        for (auto b = buttons.begin(); b != buttons.end(); ++b)
+        {
+            b->second->processMouseEvent(event, mousePosView);
+        }
+    }
+
+    if (event.type == sf::Event::KeyPressed &&
+        event.key.code == keybinds.at("CLOSE_STATE"))
+    {
+        stateIsPaused ? unpauseState(): pauseState();
+    }
+}
+
+
+void EditorState::processPauseMenuButtonEvents(const sf::Event& event)
+{
+    pPauseMenu->processMouseEvent(event, mousePosView);
+
+    if (pPauseMenu->isButtonPressed("QUIT"))
+    {
+        endActivity();
+    }
 }
 
 
 void EditorState::update(const float deltaTime)
 {
     updateMousePosition();
-
-    updateButtons();
-
-    updateKeyboardInput(deltaTime);
 }
 
 
-void EditorState::updateKeyboardInput(const float deltaTime)
+void EditorState::updateTileSelector()
 {
-    if (sf::Keyboard::isKeyPressed(keybinds.at("CLOSE_STATE")))
-    {
-        endActivity();
-    }
+    tileSelector.setPosition(mousePosGrid.x * GRID_SIZE, mousePosGrid.y * GRID_SIZE);
 }
 
 
@@ -50,31 +84,26 @@ void EditorState::render(sf::RenderTarget* pTarget)
         pTarget = &window;
     }
 
-    renderButtons();
-}
+    tileMap.render(*pTarget);
+    pTarget->draw(tileSelector);
 
-
-void EditorState::updateButtons()
-{
-    for (auto b = buttons.begin(); b != buttons.end(); ++b)
+    if (stateIsPaused)
     {
-        //b->second->update(mousePosView);
+        pPauseMenu->render(*pTarget);
+    }
+    else
+    {
+        renderButtons(*pTarget);
     }
 }
 
 
-void EditorState::renderButtons()
+void EditorState::renderButtons(sf::RenderTarget& target)
 {
     for (auto b = buttons.begin(); b != buttons.end(); ++b)
     {
-        b->second->render(window);
+        b->second->render(target);
     }
-}
-
-
-void EditorState::initFont()
-{
-    font.loadFromFile("Fonts\\PixellettersFull.ttf");
 }
 
 
@@ -120,4 +149,22 @@ void EditorState::initButtons()
 void EditorState::initTextures()
 {
     //textures["BACKGROUND"].loadFromFile("Images\\Backgrounds\\main_menu_bg.png");
+}
+
+
+void EditorState::initPauseMenu()
+{
+    font.loadFromFile("Fonts\\Dosis-Light.ttf");
+    pPauseMenu = new PauseMenu(window, font);
+
+    pPauseMenu->addButton("QUIT", "Go to main menu", 5);
+}
+
+
+void EditorState::initTileSelector()
+{
+    tileSelector.setSize(sf::Vector2f(GRID_SIZE, GRID_SIZE));
+    tileSelector.setFillColor(sf::Color::Transparent);
+    tileSelector.setOutlineThickness(1.f);
+    tileSelector.setOutlineColor(sf::Color::Magenta);
 }

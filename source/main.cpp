@@ -3,7 +3,8 @@
 
 /**
     TODO:
-    
+    - rename QUIT and CLOSE_STATE keybinds to something more specialized;
+    - in State, create enum with state types and make it required to specify the type in the constructor;
  */
  
  

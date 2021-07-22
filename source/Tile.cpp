@@ -1,10 +1,11 @@
 #include "precompiled.h"
 #include "Tile.h"
+#include "constants.h"
 
 
-Tile::Tile(const float posX, const float posY, const float gridSize)
+Tile::Tile(const float posX, const float posY)
 {
-    tile.setSize(sf::Vector2f(gridSize, gridSize));
+    tile.setSize(sf::Vector2f(GRID_SIZE, GRID_SIZE));
     tile.setPosition(posX, posY);
 
     tile.setFillColor(sf::Color::Green);

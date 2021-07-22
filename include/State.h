@@ -35,6 +35,7 @@ protected:
     sf::Vector2i                                                     mousePosScreen;
     sf::Vector2i                                                     mousePosWindow;
     sf::Vector2f                                                     mousePosView;
+    sf::Vector2i                                                     mousePosGrid;
                                                                      
     virtual void                                                     initTextures() = 0;
     virtual void                                                     initKeybinds(const std::string& filePath);

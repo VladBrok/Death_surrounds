@@ -6,7 +6,7 @@ class Tile
 {
 public:
 
-    Tile(const float posX, const float posY, const float gridSize);
+    Tile(const float posX, const float posY);
     virtual ~Tile();
 
     void render(sf::RenderTarget& target);

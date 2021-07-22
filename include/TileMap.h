@@ -4,20 +4,18 @@
 #include "Tile.h"
 
 
-const float GRID_SIZE = 50.f;
-
-
 class TileMap
 {
 public:
 
     TileMap(const int mapSizeX, const int mapSizeY, const int mapSizeZ);
+    ~TileMap();
 
     void render(sf::RenderTarget& target);
 
 private:
 
-    std::vector< std::vector< std::vector< Tile > > > map;
+    std::vector< std::vector< std::vector< Tile* > > > map;
 
 };
 

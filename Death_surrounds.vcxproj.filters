@@ -29,6 +29,9 @@
     <Filter Include="Tile_map">
       <UniqueIdentifier>{627ab2c7-b7ed-4b8b-98d5-fbfecc113bde}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Constants">
+      <UniqueIdentifier>{a1e365cf-22db-4dd9-9e77-6e64e378bfc4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
@@ -137,6 +140,9 @@
     </ClInclude>
     <ClInclude Include="include\TileMap.h">
       <Filter>Tile_map</Filter>
+    </ClInclude>
+    <ClInclude Include="include\constants.h">
+      <Filter>Constants</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

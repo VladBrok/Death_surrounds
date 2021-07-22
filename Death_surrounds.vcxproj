@@ -36,6 +36,7 @@
   <ItemGroup>
     <ClInclude Include="include\AnimationComponent.h" />
     <ClInclude Include="include\Button.h" />
+    <ClInclude Include="include\constants.h" />
     <ClInclude Include="include\DropDownList.h" />
     <ClInclude Include="include\EditorState.h" />
     <ClInclude Include="include\Entity.h" />

@@ -28,10 +28,10 @@ protected:
 
     sf::Sprite          sprite;
                         
-   /*
-       If the pointer to a component is nullptr, then
-       this component is missing.
-   */
+    /*
+        If the pointer to a component is nullptr, then
+        this component is missing.
+    */
     MovementComponent*  pMovementComponent;
     AnimationComponent* pAnimationComponent;
     HitboxComponent*    pHitboxComponent;

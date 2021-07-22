@@ -6,7 +6,7 @@ GameState::GameState(sf::RenderWindow& window,
                      const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
                      std::stack<State*>* const pStates
                      )
-    : State(window, pSupportedKeys, pStates), map(5, 5, 1)
+    : State(window, pSupportedKeys, pStates)
 {
     stateIsEventHandler = true;
 
@@ -34,14 +34,7 @@ void GameState::processEvents(const sf::Event& event)
     if (event.type == sf::Event::KeyPressed &&
         event.key.code == keybinds.at("CLOSE_STATE"))
     {
-        if (!stateIsPaused)
-        {
-            pauseState();
-        }
-        else
-        {
-            unpauseState();
-        }
+        stateIsPaused ? unpauseState(): pauseState();
     }
 }
 
@@ -97,7 +90,6 @@ void GameState::render(sf::RenderTarget* pTarget)
         pTarget = &window;
     }
 
-    map.render(*pTarget);
     pPlayer->render(*pTarget);
 
     if (stateIsPaused)

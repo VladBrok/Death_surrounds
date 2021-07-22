@@ -1,5 +1,6 @@
 #include "precompiled.h"
 #include "State.h"
+#include "constants.h"
 
 
 State::State(sf::RenderWindow& window, 
@@ -61,6 +62,9 @@ void State::updateMousePosition()
     mousePosScreen = sf::Mouse::getPosition();
     mousePosWindow = sf::Mouse::getPosition(window);
     mousePosView   = window.mapPixelToCoords(mousePosWindow);
+
+    mousePosGrid.x = static_cast<int>(mousePosView.x) / static_cast<int>(GRID_SIZE);
+    mousePosGrid.y = static_cast<int>(mousePosView.y) / static_cast<int>(GRID_SIZE);
 }
 
 

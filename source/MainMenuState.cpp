@@ -72,15 +72,15 @@ void MainMenuState::render(sf::RenderTarget* pTarget)
     }
     pTarget->draw(background);
 
-    renderButtons();
+    renderButtons(*pTarget);
 }
 
 
-void MainMenuState::renderButtons()
+void MainMenuState::renderButtons(sf::RenderTarget& target)
 {
     for (auto b = buttons.begin(); b != buttons.end(); ++b)
     {
-        b->second->render(window);
+        b->second->render(target);
     }
 }
 
