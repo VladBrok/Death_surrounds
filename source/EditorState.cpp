@@ -7,7 +7,7 @@ EditorState::EditorState(sf::RenderWindow& window,
                              const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
                              std::stack<State*>* const pStates
                              )
-    : State(window, pSupportedKeys, pStates), tileMap(5, 5, 1)
+    : State(window, pSupportedKeys, pStates), tileMap(10, 7, 1), textureSelector(GRID_SIZE / 2.f, GRID_SIZE / 2.f, GRID_SIZE * 10, GRID_SIZE * 2, tileMap.getTextureSheet())
 {
     stateIsEventHandler = true;
 
@@ -15,6 +15,7 @@ EditorState::EditorState(sf::RenderWindow& window,
     initTextures();
     initButtons();
     initPauseMenu();
+    initTextureRect();
     initTileSelector();
 }
 
@@ -38,14 +39,14 @@ void EditorState::processEvents(const sf::Event& event)
     }
     else
     {
-        updateTileSelector();
+        processButtonsEvent(event);
 
-        for (auto b = buttons.begin(); b != buttons.end(); ++b)
-        {
-            b->second->processMouseEvent(event, mousePosView);
-        }
+        processEditorEvent(event);
+
+        updateTileSelector();
     }
 
+    /* Pausing or unpausing the state */
     if (event.type == sf::Event::KeyPressed &&
         event.key.code == keybinds.at("CLOSE_STATE"))
     {
@@ -61,6 +62,65 @@ void EditorState::processPauseMenuButtonEvents(const sf::Event& event)
     if (pPauseMenu->isButtonPressed("QUIT"))
     {
         endActivity();
+    }
+}
+
+
+void EditorState::processButtonsEvent(const sf::Event& event)
+{
+    for (auto b = buttons.begin(); b != buttons.end(); ++b)
+    {
+        b->second->processMouseEvent(event, mousePosView);
+    }
+}
+
+
+void EditorState::processEditorEvent(const sf::Event& event)
+{
+    textureSelector.processEvent(event, mousePosWindow);
+
+    // Making sure that we won't update anything else here if the texture selector is active
+    if (textureSelector.isActive())
+    {
+        return;
+    }
+
+
+    if (event.type == sf::Event::MouseButtonPressed)
+    {
+        /* Adding the tile */
+        if (event.mouseButton.button == sf::Mouse::Left)
+        {
+            tileMap.addTile(mousePosGrid.x, mousePosGrid.y, 0, textureRect);
+        }
+
+        /* Removing the tile */
+        else if (event.mouseButton.button == sf::Mouse::Right)
+        {
+            tileMap.removeTile(mousePosGrid.x, mousePosGrid.y, 0);
+        }
+    } 
+
+    else if (event.type == sf::Event::KeyPressed)      
+    {
+        /* 
+            Switching the texture by adjusting a value 
+            of the textureRect.left
+        */
+
+        /* Switching to the next one */
+        if (event.key.code == keybinds.at("NEXT_TEXTURE"))
+        {
+            textureRect.left >= (tileMap.getTextureSheet().getSize().x - (int)GRID_SIZE) ? (textureRect.left = 0): textureRect.left += (int)GRID_SIZE;
+            tileSelector.setTextureRect(textureRect);
+        }
+
+        /* Switching to the previous one */
+        else if (event.key.code == keybinds.at("PREVIOUS_TEXTURE"))
+        {
+            textureRect.left <= 0 ? (textureRect.left = tileMap.getTextureSheet().getSize().x - (int)GRID_SIZE): textureRect.left -= (int)GRID_SIZE;
+            tileSelector.setTextureRect(textureRect);
+        }
     }
 }
 
@@ -84,8 +144,16 @@ void EditorState::render(sf::RenderTarget* pTarget)
         pTarget = &window;
     }
 
+
     tileMap.render(*pTarget);
-    pTarget->draw(tileSelector);
+
+    textureSelector.render(*pTarget);
+
+    if (!textureSelector.isActive())
+    {
+        pTarget->draw(tileSelector);
+    }
+
 
     if (stateIsPaused)
     {
@@ -125,24 +193,6 @@ void EditorState::initButtons()
     //                                   textHoverColor,
     //                                   textActiveColor
     //                                   );
-
-    //buttons["SETTINGS_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 1.75f, 
-    //                                       buttonSize.x, buttonSize.y,
-    //                                       &font, 
-    //                                       "Settings",
-    //                                       textIdleColor,
-    //                                       textHoverColor,
-    //                                       textActiveColor
-    //                                       );
-
-    //buttons["EXIT_STATE"] = new Button(pWindow->getSize().x / 6.f, pWindow->getSize().y / 1.3f, 
-    //                                   buttonSize.x, buttonSize.y, 
-    //                                   &font, 
-    //                                   "Quit",
-    //                                   textIdleColor,
-    //                                   textHoverColor,
-    //                                   textActiveColor
-    //                                   );
 }
 
 
@@ -161,10 +211,21 @@ void EditorState::initPauseMenu()
 }
 
 
+void EditorState::initTextureRect()
+{
+    textureRect.width  = static_cast<int>(GRID_SIZE);
+    textureRect.height = static_cast<int>(GRID_SIZE);
+}
+
+
 void EditorState::initTileSelector()
 {
     tileSelector.setSize(sf::Vector2f(GRID_SIZE, GRID_SIZE));
-    tileSelector.setFillColor(sf::Color::Transparent);
+    tileSelector.setFillColor(sf::Color(255, 255, 255, 140));
+
     tileSelector.setOutlineThickness(1.f);
-    tileSelector.setOutlineColor(sf::Color::Magenta);
+    tileSelector.setOutlineColor(sf::Color::White);
+
+    tileSelector.setTexture(&tileMap.getTextureSheet());
+    tileSelector.setTextureRect(textureRect);
 }

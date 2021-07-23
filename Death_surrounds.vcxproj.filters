@@ -88,6 +88,9 @@
     <ClCompile Include="source\TileMap.cpp">
       <Filter>Tile_map</Filter>
     </ClCompile>
+    <ClCompile Include="source\TextureSelector.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AnimationComponent.h">
@@ -143,6 +146,9 @@
     </ClInclude>
     <ClInclude Include="include\constants.h">
       <Filter>Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TextureSelector.h">
+      <Filter>GUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

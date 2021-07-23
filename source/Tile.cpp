@@ -3,14 +3,17 @@
 #include "constants.h"
 
 
-Tile::Tile(const float posX, const float posY)
+Tile::Tile(const float posX, 
+           const float posY, 
+           const sf::Texture& textureSheet, 
+           const sf::IntRect& textureRect
+           )
 {
     tile.setSize(sf::Vector2f(GRID_SIZE, GRID_SIZE));
     tile.setPosition(posX, posY);
 
-    tile.setFillColor(sf::Color::Green);
-    tile.setOutlineThickness(1.f);
-    tile.setOutlineColor(sf::Color::White);
+    tile.setTexture(&textureSheet, true);
+    tile.setTextureRect(textureRect);
 }
 
 

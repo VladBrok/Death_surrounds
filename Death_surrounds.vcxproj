@@ -30,6 +30,7 @@
     </ClCompile>
     <ClCompile Include="source\SettingsState.cpp" />
     <ClCompile Include="source\State.cpp" />
+    <ClCompile Include="source\TextureSelector.cpp" />
     <ClCompile Include="source\Tile.cpp" />
     <ClCompile Include="source\TileMap.cpp" />
   </ItemGroup>
@@ -50,6 +51,7 @@
     <ClInclude Include="include\precompiled.h" />
     <ClInclude Include="include\SettingsState.h" />
     <ClInclude Include="include\State.h" />
+    <ClInclude Include="include\TextureSelector.h" />
     <ClInclude Include="include\Tile.h" />
     <ClInclude Include="include\TileMap.h" />
   </ItemGroup>

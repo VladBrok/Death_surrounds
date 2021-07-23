@@ -16,17 +16,7 @@ TileMap::TileMap(const int mapSizeX, const int mapSizeY, const int mapSizeZ)
         )
     );
 
-    // TEST
-    for (size_t x = 0; x < map.size(); ++x)
-    {
-        for (size_t y = 0; y < map[x].size(); ++y)
-        {
-            for (size_t z = 0; z < map[x][y].size(); ++z)
-            {
-                map[x][y][z] = new Tile(x * GRID_SIZE, y * GRID_SIZE);
-            }
-        }
-    }
+    textureSheet.loadFromFile("Images\\Tiles\\tilesheet.png");
 }
 
 
@@ -45,6 +35,32 @@ TileMap::~TileMap()
 }
 
 
+void TileMap::addTile(const int gridPosX, const int gridPosY, const int gridPosZ, const sf::IntRect& textureRect)
+{
+    if (positionsAreCorrect(gridPosX, gridPosY, gridPosZ) &&
+        map[gridPosX][gridPosY][gridPosZ] == nullptr)
+    {
+        map[gridPosX][gridPosY][gridPosZ] = new Tile(
+                                                 gridPosX * GRID_SIZE, 
+                                                 gridPosY * GRID_SIZE, 
+                                                 textureSheet,
+                                                 textureRect
+                                                );
+    }
+}
+
+
+void TileMap::removeTile(const int gridPosX, const int gridPosY, const int gridPosZ)
+{
+    if (positionsAreCorrect(gridPosX, gridPosY, gridPosZ) &&
+        map[gridPosX][gridPosY][gridPosZ] != nullptr)
+    {
+        delete map[gridPosX][gridPosY][gridPosZ];
+        map[gridPosX][gridPosY][gridPosZ] = nullptr;
+    }
+}
+
+
 void TileMap::render(sf::RenderTarget& target)
 {
     for (size_t x = 0; x < map.size(); ++x)
@@ -53,8 +69,25 @@ void TileMap::render(sf::RenderTarget& target)
         {
             for (size_t z = 0; z < map[x][y].size(); ++z)
             {
-                map[x][y][z]->render(target);
+                if (map[x][y][z] != nullptr)
+                {
+                    map[x][y][z]->render(target);
+                }
             }
         }
     }
+}
+
+
+bool TileMap::positionsAreCorrect(const int gridPosX, const int gridPosY, const int gridPosZ) const
+{
+    return gridPosX >= 0 && gridPosX < map.size() &&
+           gridPosY >= 0 && gridPosY < map[gridPosX].size() &&
+           gridPosZ >= 0 && gridPosZ < map[gridPosX][gridPosY].size();
+}
+
+
+const sf::Texture& TileMap::getTextureSheet() const
+{
+    return textureSheet;
 }

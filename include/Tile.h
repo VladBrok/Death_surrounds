@@ -6,7 +6,11 @@ class Tile
 {
 public:
 
-    Tile(const float posX, const float posY);
+    Tile(const float posX, 
+         const float posY, 
+         const sf::Texture& textureSheet, 
+         const sf::IntRect& textureRect
+         );
     virtual ~Tile();
 
     void render(sf::RenderTarget& target);

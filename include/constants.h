@@ -4,7 +4,7 @@
 
 const unsigned    FPS_LIMIT = 60;
 
-const float       GRID_SIZE = 50.f;
+const float       GRID_SIZE = 100.f;
 
 
 #endif // CONSTANTS_H
