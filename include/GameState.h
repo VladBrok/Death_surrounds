@@ -16,8 +16,8 @@ public:
                                   );
     virtual             ~GameState();
 
-    virtual void        processEvents(const sf::Event& event);
-    void                processPauseMenuButtonEvents(const sf::Event& event);
+    virtual void        processEvent(const sf::Event& event);
+    void                processPauseMenuButtonsEvent(const sf::Event& event);
     virtual void        update(const float deltaTime);
     void                updatePlayerKeyboardInput(const float deltaTime);
     virtual void        render(sf::RenderTarget* pTarget = nullptr);

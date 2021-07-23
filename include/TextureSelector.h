@@ -2,7 +2,7 @@
 #define TEXTURE_SELECTOR_H
 
 
-class TextureSelector
+class TextureSelector: public sf::NonCopyable
 {
 public:
 

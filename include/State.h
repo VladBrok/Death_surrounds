@@ -2,6 +2,15 @@
 #define STATE_H
 
 
+enum StateType
+{
+    STATE_DEFAULT, // Type of base class State
+    STATE_UPDATES, // Has redefined "update" method
+    STATE_PROCESSES_EVENTS, // Has redefined "processEvent" method
+    STATE_UPDATES_AND_PROCESSES_EVENTS // Has both "update" and "processEvent" methods
+};
+
+
 class State: public sf::NonCopyable
 {
 public:
@@ -10,26 +19,28 @@ public:
                               std::stack<State*>* const pStates
                               );
     virtual             ~State();
-    virtual void        processEvents(const sf::Event& event);
-    virtual void        update(const float deltaTime) = 0;
+    virtual void        processEvent(const sf::Event& event);
+    virtual void        update(const float deltaTime);
     virtual void        render(sf::RenderTarget* pTarget = nullptr) = 0; // If pTarget is nullptr, then we render the entity to the window
  
     bool                isActive() const;
-    bool                isEventHandler() const; // Returns true if the state needs to process events
     void                endActivity();
     void                pauseState();
     void                unpauseState();
     void                updateMousePosition();
 
+    bool                needToCallUpdate() const;
+    bool                needToCallProcessEvent() const;
+
 protected:
 
     sf::RenderWindow&                                                window;
     const std::unordered_map<std::string, sf::Keyboard::Key>* const  pSupportedKeys;
-    std::unordered_map<std::string, sf::Keyboard::Key>               keybinds;
     std::stack<State*>* const                                        pStates;
+    std::unordered_map<std::string, sf::Keyboard::Key>               keybinds;
     bool                                                             stateIsActive;
     bool                                                             stateIsPaused;
-    bool                                                             stateIsEventHandler;
+    StateType                                                        stateType;
     std::unordered_map<std::string, sf::Texture>                     textures;
                                                                      
     sf::Vector2i                                                     mousePosScreen;

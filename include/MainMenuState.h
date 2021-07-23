@@ -15,8 +15,7 @@ public:
                                                            );
     virtual                                  ~MainMenuState();
     
-    virtual void                             processEvents(const sf::Event& event);
-    virtual void                             update(const float deltaTime);
+    virtual void                             processEvent(const sf::Event& event);
     virtual void                             render(sf::RenderTarget* pTarget = nullptr);
                                              
     void                                     renderButtons(sf::RenderTarget& target);

@@ -7,9 +7,11 @@ EditorState::EditorState(sf::RenderWindow& window,
                              const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
                              std::stack<State*>* const pStates
                              )
-    : State(window, pSupportedKeys, pStates), tileMap(10, 7, 1), textureSelector(GRID_SIZE / 2.f, GRID_SIZE / 2.f, GRID_SIZE * 10, GRID_SIZE * 2, tileMap.getTextureSheet())
+    : State(window, pSupportedKeys, pStates), 
+      tileMap(10, 7, 1),
+      textureSelector(GRID_SIZE / 2.f, GRID_SIZE / 2.f, GRID_SIZE * 10, GRID_SIZE * 2, tileMap.getTextureSheet())
 {
-    stateIsEventHandler = true;
+    stateType = STATE_PROCESSES_EVENTS;
 
     initKeybinds("Config//editorstate_keybinds.ini");
     initTextures();
@@ -31,11 +33,13 @@ EditorState::~EditorState()
 }
 
 
-void EditorState::processEvents(const sf::Event& event)
+void EditorState::processEvent(const sf::Event& event)
 {
+    updateMousePosition();
+
     if (stateIsPaused)
     {
-        processPauseMenuButtonEvents(event);
+        processPauseMenuButtonsEvent(event);
     }
     else
     {
@@ -55,9 +59,9 @@ void EditorState::processEvents(const sf::Event& event)
 }
 
 
-void EditorState::processPauseMenuButtonEvents(const sf::Event& event)
+void EditorState::processPauseMenuButtonsEvent(const sf::Event& event)
 {
-    pPauseMenu->processMouseEvent(event, mousePosView);
+    pPauseMenu->processEvent(event, mousePosView);
 
     if (pPauseMenu->isButtonPressed("QUIT"))
     {
@@ -70,7 +74,7 @@ void EditorState::processButtonsEvent(const sf::Event& event)
 {
     for (auto b = buttons.begin(); b != buttons.end(); ++b)
     {
-        b->second->processMouseEvent(event, mousePosView);
+        b->second->processEvent(event, mousePosView);
     }
 }
 
@@ -78,6 +82,8 @@ void EditorState::processButtonsEvent(const sf::Event& event)
 void EditorState::processEditorEvent(const sf::Event& event)
 {
     textureSelector.processEvent(event, mousePosWindow);
+    textureRect = textureSelector.getTextureRect();
+    tileSelector.setTextureRect(textureRect);
 
     // Making sure that we won't update anything else here if the texture selector is active
     if (textureSelector.isActive())
@@ -101,6 +107,8 @@ void EditorState::processEditorEvent(const sf::Event& event)
         }
     } 
 
+    //////////////////////////////////
+    // FIXME: now this section is not working!
     else if (event.type == sf::Event::KeyPressed)      
     {
         /* 
@@ -111,7 +119,7 @@ void EditorState::processEditorEvent(const sf::Event& event)
         /* Switching to the next one */
         if (event.key.code == keybinds.at("NEXT_TEXTURE"))
         {
-            textureRect.left >= (tileMap.getTextureSheet().getSize().x - (int)GRID_SIZE) ? (textureRect.left = 0): textureRect.left += (int)GRID_SIZE;
+            textureRect.left >= ((int)tileMap.getTextureSheet().getSize().x - (int)GRID_SIZE) ? (textureRect.left = 0): textureRect.left += (int)GRID_SIZE;
             tileSelector.setTextureRect(textureRect);
         }
 
@@ -122,12 +130,6 @@ void EditorState::processEditorEvent(const sf::Event& event)
             tileSelector.setTextureRect(textureRect);
         }
     }
-}
-
-
-void EditorState::update(const float deltaTime)
-{
-    updateMousePosition();
 }
 
 

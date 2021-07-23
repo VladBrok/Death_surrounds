@@ -11,7 +11,7 @@ MainMenuState::MainMenuState(sf::RenderWindow& window,
                              )
     : State(window, pSupportedKeys, pStates)
 {
-    stateIsEventHandler = true;
+    stateType = STATE_PROCESSES_EVENTS;
 
     initTextures();
     initFont();
@@ -29,11 +29,13 @@ MainMenuState::~MainMenuState()
 }
 
 
-void MainMenuState::processEvents(const sf::Event& event)
+void MainMenuState::processEvent(const sf::Event& event)
 {
+    updateMousePosition();
+
     for (auto b = buttons.begin(); b != buttons.end(); ++b)
     {
-        b->second->processMouseEvent(event, mousePosView);
+        b->second->processEvent(event, mousePosView);
     }
 
     // Pushing new states if the corresponding button is pressed
@@ -55,12 +57,6 @@ void MainMenuState::processEvents(const sf::Event& event)
     {
         endActivity();
     }
-}
-
-
-void MainMenuState::update(const float deltaTime)
-{
-    updateMousePosition();
 }
 
 

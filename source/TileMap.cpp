@@ -81,9 +81,9 @@ void TileMap::render(sf::RenderTarget& target)
 
 bool TileMap::positionsAreCorrect(const int gridPosX, const int gridPosY, const int gridPosZ) const
 {
-    return gridPosX >= 0 && gridPosX < map.size() &&
-           gridPosY >= 0 && gridPosY < map[gridPosX].size() &&
-           gridPosZ >= 0 && gridPosZ < map[gridPosX][gridPosY].size();
+    return gridPosX >= 0 && gridPosX < (int)map.size() &&
+           gridPosY >= 0 && gridPosY < (int)map[gridPosX].size() &&
+           gridPosZ >= 0 && gridPosZ < (int)map[gridPosX][gridPosY].size();
 }
 
 

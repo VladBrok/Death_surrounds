@@ -51,7 +51,7 @@ Button::Button(const float posX, const float posY,
 }
 
 
-void Button::processMouseEvent(const sf::Event& event, const sf::Vector2f& mousePosition)
+void Button::processEvent(const sf::Event& event, const sf::Vector2f& mousePosition)
 {
     //if (event.type == sf::Event::MouseMoved ||
     //    event.type == sf::Event::MouseButtonPressed)

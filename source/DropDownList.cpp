@@ -72,13 +72,13 @@ DropDownList::~DropDownList()
 }
 
 
-void DropDownList::processMouseEvent(const sf::Event& event,
+void DropDownList::processEvent(const sf::Event& event,
                                      const sf::Vector2f& mousePosition
                                      )
 {
     if (!showList) // Processing only title element
     {
-        listElements[0]->processMouseEvent(event, mousePosition);
+        listElements[0]->processEvent(event, mousePosition);
 
         if (listElements[0]->isPressed())
         {
@@ -88,7 +88,7 @@ void DropDownList::processMouseEvent(const sf::Event& event,
     }
     else if (hoveredElementIndex != -1) // Processing and resetting hovered element
     {
-        listElements[hoveredElementIndex]->processMouseEvent(event, mousePosition);
+        listElements[hoveredElementIndex]->processEvent(event, mousePosition);
 
         if (listElements[hoveredElementIndex]->isPressed())
         {
@@ -109,7 +109,7 @@ void DropDownList::processMouseEvent(const sf::Event& event,
     {
         for (int i = 0; (i < (int)listElements.size()) && hoveredElementIndex == -1 && showList; ++i)
         {
-            listElements[i]->processMouseEvent(event, mousePosition);
+            listElements[i]->processEvent(event, mousePosition);
 
             if (listElements[i]->isHovered())
             {

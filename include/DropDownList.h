@@ -18,7 +18,7 @@ public:
                                          );
                             ~DropDownList();
 
-    void                    processMouseEvent(const sf::Event& event,
+    void                    processEvent(const sf::Event& event,
                                               const sf::Vector2f& mousePosition
                                               );
     void                    render(sf::RenderTarget& target);

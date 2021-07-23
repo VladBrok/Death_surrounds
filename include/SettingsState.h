@@ -16,8 +16,7 @@ public:
                                                                  );
     virtual                                        ~SettingsState();
     
-    virtual void                                   processEvents(const sf::Event& event);
-    virtual void                                   update(const float deltaTime);
+    virtual void                                   processEvent(const sf::Event& event);
     virtual void                                   render(sf::RenderTarget* pTarget = nullptr);
     void                                           renderGui(sf::RenderTarget& target);
 

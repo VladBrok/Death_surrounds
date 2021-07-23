@@ -8,7 +8,7 @@ SettingsState::SettingsState(sf::RenderWindow& window,
                              )
     : State(window, pSupportedKeys, pStates)
 {
-    stateIsEventHandler = true;
+    stateType = STATE_PROCESSES_EVENTS;
 
     initTextures();
     initFont();
@@ -31,16 +31,18 @@ SettingsState::~SettingsState()
 }
 
 
-void SettingsState::processEvents(const sf::Event& event)
+void SettingsState::processEvent(const sf::Event& event)
 {
+    updateMousePosition();
+
     for (auto b = buttons.begin(); b != buttons.end(); ++b)
     {
-        b->second->processMouseEvent(event, mousePosView);
+        b->second->processEvent(event, mousePosView);
     }
 
     for (auto d = dropDownLists.begin(); d != dropDownLists.end(); ++d)
     {
-        d->second->processMouseEvent(event, mousePosView);
+        d->second->processEvent(event, mousePosView);
     }
 
     // Reacting on the pressed buttons
@@ -57,12 +59,6 @@ void SettingsState::processEvents(const sf::Event& event)
     {
         endActivity();
     }
-}
-
-
-void SettingsState::update(const float deltaTime)
-{
-    updateMousePosition();
 }
 
 

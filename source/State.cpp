@@ -12,7 +12,7 @@ State::State(sf::RenderWindow& window,
       pStates(pStates), 
       stateIsActive(true),
       stateIsPaused(false),
-      stateIsEventHandler(false)
+      stateType(STATE_DEFAULT)
 {
 }
 
@@ -22,7 +22,12 @@ State::~State()
 }
 
 
-void State::processEvents(const sf::Event& event)
+void State::processEvent(const sf::Event& event)
+{
+}
+
+
+void State::update(const float deltaTime)
 {
 }
 
@@ -30,12 +35,6 @@ void State::processEvents(const sf::Event& event)
 bool State::isActive() const 
 {
     return stateIsActive;
-}
-
-
-bool State::isEventHandler() const
-{
-    return stateIsEventHandler;
 }
 
 
@@ -65,6 +64,18 @@ void State::updateMousePosition()
 
     mousePosGrid.x = static_cast<int>(mousePosView.x) / static_cast<int>(GRID_SIZE);
     mousePosGrid.y = static_cast<int>(mousePosView.y) / static_cast<int>(GRID_SIZE);
+}
+
+
+bool State::needToCallUpdate() const
+{
+    return stateType == STATE_UPDATES || stateType == STATE_UPDATES_AND_PROCESSES_EVENTS;
+}
+
+
+bool State::needToCallProcessEvent() const
+{
+    return stateType == STATE_PROCESSES_EVENTS || stateType == STATE_UPDATES_AND_PROCESSES_EVENTS;
 }
 
 

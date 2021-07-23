@@ -8,7 +8,7 @@ GameState::GameState(sf::RenderWindow& window,
                      )
     : State(window, pSupportedKeys, pStates)
 {
-    stateIsEventHandler = true;
+    stateType = STATE_UPDATES_AND_PROCESSES_EVENTS;
 
     initKeybinds("Config//gamestate_keybinds.ini");
     initTextures();
@@ -24,11 +24,13 @@ GameState::~GameState()
 }
 
 
-void GameState::processEvents(const sf::Event& event)
+void GameState::processEvent(const sf::Event& event)
 {
+    updateMousePosition();
+
     if (stateIsPaused)
     {
-        processPauseMenuButtonEvents(event);
+        processPauseMenuButtonsEvent(event);
     }
 
     if (event.type == sf::Event::KeyPressed &&
@@ -39,9 +41,9 @@ void GameState::processEvents(const sf::Event& event)
 }
 
 
-void GameState::processPauseMenuButtonEvents(const sf::Event& event)
+void GameState::processPauseMenuButtonsEvent(const sf::Event& event)
 {
-    pPauseMenu->processMouseEvent(event, mousePosView);
+    pPauseMenu->processEvent(event, mousePosView);
 
     if (pPauseMenu->isButtonPressed("QUIT"))
     {
@@ -52,8 +54,6 @@ void GameState::processPauseMenuButtonEvents(const sf::Event& event)
 
 void GameState::update(const float deltaTime)
 {
-    updateMousePosition();
-
     if (!stateIsPaused)
     {
         updatePlayerKeyboardInput(deltaTime);

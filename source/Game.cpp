@@ -52,9 +52,9 @@ void Game::processEvents()
         {
             window.close();
         }
-        else if (!states.empty() && states.top()->isEventHandler())
+        else if (!states.empty() && states.top()->needToCallProcessEvent())
         {
-            states.top()->processEvents(event);
+            states.top()->processEvent(event);
         }
     }
 }
@@ -64,7 +64,10 @@ void Game::update()
 {
     if (!states.empty()) // Updating states
     {
-        states.top()->update(deltaTime);
+        if (states.top()->needToCallUpdate())
+        {
+            states.top()->update(deltaTime);
+        }
 
         if (!states.top()->isActive())
         {

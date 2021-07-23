@@ -37,10 +37,13 @@ void TextureSelector::processEvent(const sf::Event& event, const sf::Vector2i& m
     {
         active = bounds.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosWindow));
 
-        selector.setPosition(
-            (int)(mousePosWindow.x - bounds.getPosition().x) / (int)GRID_SIZE * GRID_SIZE + bounds.getPosition().x,
-            (int)(mousePosWindow.y - bounds.getPosition().y) / (int)GRID_SIZE * GRID_SIZE + bounds.getPosition().y
-        );
+        if (active)
+        {
+            selector.setPosition(
+                (int)(mousePosWindow.x - bounds.getPosition().x) / (int)GRID_SIZE * GRID_SIZE + bounds.getPosition().x,
+                (int)(mousePosWindow.y - bounds.getPosition().y) / (int)GRID_SIZE * GRID_SIZE + bounds.getPosition().y
+            );
+        }
     }
 
     /* Selecting a new texture */
