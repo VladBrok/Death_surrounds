@@ -20,7 +20,7 @@ EditorState::EditorState(sf::RenderWindow& window,
     initButtons();
     initPauseMenu();
     initTextureRect();
-    initTileSelector();
+    initTileAndTextureSelectors();
 }
 
 
@@ -41,8 +41,6 @@ void EditorState::processEvent(const sf::Event& event)
 {
     updateMousePosition();
 
-    updateSideBarActivity();
-
 
     if (stateIsPaused)
     {
@@ -51,25 +49,14 @@ void EditorState::processEvent(const sf::Event& event)
     else
     {
         processButtonsEvent(event);
+        updateSideBarActivity();
+        tileSelector.setPosition(mousePosGrid.x * GRID_SIZE, mousePosGrid.y * GRID_SIZE);
 
-        // Update editor
+        // Update the tile map and the texture selector
         if (!sideBarIsActive) 
         {
-            processEditorEvent(event);
-            
-            updateTileSelector();  
-        }
-        
-        // Open or close the texture selector
-        if (buttons["TEXTURE_SELECTOR"]->isPressed(false) ||
-           (event.type == sf::Event::KeyPressed &&
-            event.key.code ==  keybinds.at("TEXTURE_SELECTOR")))
-        {
-            hideTextureSelector = !hideTextureSelector;
-            if (hideTextureSelector)
-            {
-                pTextureSelector->endActivity();
-            }
+            processTextureSelectorEvent(event);
+            processTileMapEvent(event);  
         }
     }
 
@@ -110,18 +97,23 @@ void EditorState::processButtonsEvent(const sf::Event& event)
     {
         b->second->processEvent(event, mousePosView);
     }
+
+    // Open or close the texture selector
+    if (buttons["TEXTURE_SELECTOR"]->isPressed(false) ||
+       (event.type == sf::Event::KeyPressed &&
+        event.key.code ==  keybinds.at("TEXTURE_SELECTOR")))
+    {
+        hideTextureSelector = !hideTextureSelector;
+        if (hideTextureSelector)
+        {
+            pTextureSelector->endActivity();
+        }
+    }
 }
 
 
-void EditorState::processEditorEvent(const sf::Event& event)
+void EditorState::processTileMapEvent(const sf::Event& event)
 {
-    if (!hideTextureSelector)
-    {
-        pTextureSelector->processEvent(event, mousePosWindow);
-        textureRect = pTextureSelector->getTextureRect();
-        tileSelector.setTextureRect(textureRect);
-    }
-
     if (event.type == sf::Event::MouseButtonPressed && !pTextureSelector->isActive())
     {
         /* Adding the tile */
@@ -137,17 +129,50 @@ void EditorState::processEditorEvent(const sf::Event& event)
         }
     } 
 }
+   
 
-
-void EditorState::updateTileSelector()
+void EditorState::processTextureSelectorEvent(const sf::Event& event)
 {
-    tileSelector.setPosition(mousePosGrid.x * GRID_SIZE, mousePosGrid.y * GRID_SIZE);
+    if (!hideTextureSelector)
+    {
+        pTextureSelector->processEvent(event, mousePosWindow);
+        textureRect = pTextureSelector->getTextureRect();
+
+        tileSelector.setTextureRect(textureRect);
+    }
 }
 
 
 void EditorState::updateSideBarActivity()
 {
     sideBarIsActive = sideBar.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosWindow));
+}
+
+
+void EditorState::renderPauseMenu(sf::RenderTarget& target)
+{
+    if (stateIsPaused)
+    {
+        pPauseMenu->render(target);
+    }
+}
+
+
+void EditorState::renderTileSelector(sf::RenderTarget& target)
+{
+    if (!pTextureSelector->isActive() && !sideBarIsActive)
+    {
+        target.draw(tileSelector);
+    }
+}
+
+
+void EditorState::renderTextureSelector(sf::RenderTarget& target)
+{
+    if (!hideTextureSelector)
+    {
+        pTextureSelector->render(target);
+    }
 }
 
 
@@ -161,25 +186,12 @@ void EditorState::render(sf::RenderTarget* pTarget)
 
     tileMap.render(*pTarget);
 
-    if (!hideTextureSelector)
-    {
-        pTextureSelector->render(*pTarget);
-    }
-
-    if (!pTextureSelector->isActive() && !sideBarIsActive)
-    {
-        pTarget->draw(tileSelector);
-    }
-
     pTarget->draw(sideBar);
 
+    renderTileSelector(*pTarget);
+    renderTextureSelector(*pTarget);
     renderButtons(*pTarget);
-
-
-    if (stateIsPaused)
-    {
-        pPauseMenu->render(*pTarget);
-    }
+    renderPauseMenu(*pTarget);
 }
 
 
@@ -253,7 +265,7 @@ void EditorState::initTextureRect()
 }
 
 
-void EditorState::initTileSelector()
+void EditorState::initTileAndTextureSelectors()
 {
     tileSelector.setSize(sf::Vector2f(GRID_SIZE, GRID_SIZE));
     tileSelector.setFillColor(sf::Color(255, 255, 255, 140));

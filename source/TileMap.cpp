@@ -98,12 +98,12 @@ void TileMap::loadFromFile(const std::string& fileName)
                                             textureSheet,
                                             textureRect
                                          );
+        if (file.fail() || mapSizeX <= 0 || mapSizeY <= 0 || mapSizeZ <= 0)
+        {
+            std::cout << "ERROR in TileMap::loadFromFile: the data in the file " << fileName << " are damaged. Tilemap is not loaded.\n";
+            return;
+        } 
     }
-
-    if (file.fail() || mapSizeX <= 0 || mapSizeY <= 0 || mapSizeZ <= 0)
-    {
-        std::cout << "ERROR in TileMap::loadFromFile: the data in the file " << fileName << " are damaged. Tilemap is not loaded.\n";
-    } 
 }
 
 

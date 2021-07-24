@@ -52,7 +52,9 @@ void Game::processEvents()
         {
             window.close();
         }
-        else if (!states.empty() && states.top()->needToCallProcessEvent())
+        else if (!states.empty() &&
+                 states.top()->needToCallProcessEvent() && 
+                 event.type != sf::Event::MouseLeft)
         {
             states.top()->processEvent(event);
         }

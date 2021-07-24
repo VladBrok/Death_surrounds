@@ -21,13 +21,16 @@ public:
     virtual void                             processEvent(const sf::Event& event);
     void                                     processPauseMenuEvent(const sf::Event& event);
     void                                     processButtonsEvent(const sf::Event& event);
-    void                                     processEditorEvent(const sf::Event& event);
+    void                                     processTileMapEvent(const sf::Event& event);
+    void                                     processTextureSelectorEvent(const sf::Event& event);
 
-    void                                     updateTileSelector();
     void                                     updateSideBarActivity();
 
     virtual void                             render(sf::RenderTarget* pTarget = nullptr);
+    void                                     renderPauseMenu(sf::RenderTarget& target);
     void                                     renderButtons(sf::RenderTarget& target);
+    void                                     renderTileSelector(sf::RenderTarget& target);
+    void                                     renderTextureSelector(sf::RenderTarget& target);
 
 private:
 
@@ -48,7 +51,7 @@ private:
     void                                     initButtons();
     void                                     initPauseMenu();
     void                                     initTextureRect();
-    void                                     initTileSelector();
+    void                                     initTileAndTextureSelectors();
 };
 
 

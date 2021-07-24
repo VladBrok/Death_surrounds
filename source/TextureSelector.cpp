@@ -15,7 +15,7 @@ TextureSelector::TextureSelector(const float posX,
     bounds.setPosition(posX, posY);
     bounds.setFillColor(sf::Color(50, 50, 50, 100));
     bounds.setOutlineColor(sf::Color::White);
-    bounds.setOutlineThickness(1.f);
+    bounds.setOutlineThickness(1.5f);
 
     sheet.setTexture(textureSheet);
     sheet.setPosition(posX, posY);
