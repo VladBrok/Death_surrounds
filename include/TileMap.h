@@ -10,7 +10,6 @@ public:
 
                             TileMap(const int mapSizeX, const int mapSizeY, const int mapSizeZ);
                             ~TileMap();
-    void                    clear();
 
     void                    saveToFile(const std::string& fileName);
     void                    loadFromFile(const std::string& fileName);
@@ -27,6 +26,9 @@ private:
     sf::Texture                                        textureSheet;
 
     bool positionsAreCorrect(const int gridPosX, const int gridPosY, const int gridPosZ) const;
+
+    void clearMap();
+    void createEmptyMap(const int mapSizeX, const int mapSizeY, const int mapSizeZ);
 
 };
 

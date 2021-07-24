@@ -15,7 +15,7 @@ public:
 
     void                    render(sf::RenderTarget& target);
 
-    // Returns string with the grid position and the texture rectangle position
+    // Returns string with the texture rectangle position
     const std::string       getAsString() const; 
 
 private:

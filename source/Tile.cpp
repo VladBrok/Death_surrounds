@@ -34,7 +34,6 @@ const std::string Tile::getAsString() const
 {
     std::stringstream data;
 
-    data << (int)(tile.getPosition().x / GRID_SIZE) << ' ' << (int)(tile.getPosition().y / GRID_SIZE) << ' ';
     data << textureRect.left << ' ' << textureRect.top << ' ';
 
     return data.str();
