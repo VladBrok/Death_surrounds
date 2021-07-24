@@ -86,13 +86,20 @@ void EditorState::processPauseMenuEvent(const sf::Event& event)
 {
     pPauseMenu->processEvent(event, mousePosView);
 
-    if (pPauseMenu->isButtonPressed("GO_TO_MAIN_MENU"))
+
+    if (pPauseMenu->isButtonPressed("LOAD"))
     {
-        endActivity();
+        tileMap.loadFromFile("Resources\\Data\\tile_map.txt");
     }
+
     else if (pPauseMenu->isButtonPressed("SAVE"))
     {
         tileMap.saveToFile("Resources\\Data\\tile_map.txt");
+    }
+
+    else if (pPauseMenu->isButtonPressed("GO_TO_MAIN_MENU"))
+    {
+        endActivity();
     }
 }
 
@@ -231,9 +238,11 @@ void EditorState::initPauseMenu()
 {
     pPauseMenu = new PauseMenu(window, font);
 
-    pPauseMenu->addButton("GO_TO_MAIN_MENU", "Go to main menu", 5);
+    pPauseMenu->addButton("LOAD", "Load", 2);
 
-    pPauseMenu->addButton("SAVE", "Save", 4);
+    pPauseMenu->addButton("SAVE", "Save", 3);
+
+    pPauseMenu->addButton("GO_TO_MAIN_MENU", "Go to main menu", 5);
 }
 
 

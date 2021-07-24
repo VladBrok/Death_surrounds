@@ -22,6 +22,12 @@ TileMap::TileMap(const int mapSizeX, const int mapSizeY, const int mapSizeZ)
 
 TileMap::~TileMap()
 {
+    clear();
+}
+
+
+void TileMap::clear()
+{
     for (size_t x = 0; x < map.size(); ++x)
     {
         for (size_t y = 0; y < map[x].size(); ++y)
@@ -29,6 +35,7 @@ TileMap::~TileMap()
             for (size_t z = 0; z < map[x][y].size(); ++z)
             {
                 delete map[x][y][z];
+                map[x][y][z] = nullptr;
             }
         }
     }
@@ -52,7 +59,7 @@ void TileMap::saveToFile(const std::string& fileName)
 
     if (!file.is_open())
     {
-        std::cout << "ERROR in TileMap::saveToFile: unable to save the tile map to file " << fileName << '\n';
+        std::cout << "ERROR in TileMap::saveToFile: unable to save the tile map to the file " << fileName << '\n';
         return;
     }
 
@@ -70,6 +77,55 @@ void TileMap::saveToFile(const std::string& fileName)
                 }
             }
         }
+    } 
+}
+
+
+void TileMap::loadFromFile(const std::string& fileName)
+{
+    /*
+        The loading format is the same as the saving format.
+    */
+
+    std::ifstream file;
+    file.open(fileName);
+
+    if (!file.is_open())
+    {
+        std::cout << "ERROR in TileMap::loadFromFile: unable to load the tile map from the file " << fileName << '\n';
+        return;
+    }
+
+
+    int mapSizeX = 0;
+    int mapSizeY = 0;
+    int mapSizeZ = 0;
+
+    file >> mapSizeX >> mapSizeY >> mapSizeZ;
+
+    if (!file.fail() && mapSizeX > 0 && mapSizeY > 0 && mapSizeZ > 0)
+    {
+         clear();
+    }
+
+
+    int gridPosX = 0;
+    int gridPosY = 0;
+    sf::IntRect textureRect(0, 0, (int)GRID_SIZE, (int)GRID_SIZE);
+    
+    while (file >> gridPosX >> gridPosY >> textureRect.left >> textureRect.top)
+    {
+        map[gridPosX][gridPosY][0] = new Tile(
+                                            gridPosX * GRID_SIZE, 
+                                            gridPosY * GRID_SIZE, 
+                                            textureSheet,
+                                            textureRect
+                                         );
+    }
+
+    if (file.fail() || mapSizeX <= 0 || mapSizeY <= 0 || mapSizeZ <= 0)
+    {
+        std::cout << "ERROR in TileMap::loadFromFile: the data in the file " << fileName << " are damaged. Tilemap is not loaded.\n";
     } 
 }
 
