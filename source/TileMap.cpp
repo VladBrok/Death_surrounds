@@ -16,7 +16,7 @@ TileMap::TileMap(const int mapSizeX, const int mapSizeY, const int mapSizeZ)
         )
     );
 
-    textureSheet.loadFromFile("Images\\Tiles\\tilesheet.png");
+    textureSheet.loadFromFile("Resources\\Images\\Tiles\\tilesheet.png");
 }
 
 
@@ -32,6 +32,45 @@ TileMap::~TileMap()
             }
         }
     }
+}
+
+
+void TileMap::saveToFile(const std::string& fileName)
+{
+    /*
+        Saving format:
+            Map:
+                1) map size               - x y z.
+
+            All tiles:
+                1) tile grid position     - gridPosX gridPosY;
+                2) tile texture rectangle - x y.
+    */
+
+    std::ofstream file;
+    file.open(fileName);
+
+    if (!file.is_open())
+    {
+        std::cout << "ERROR in TileMap::saveToFile: unable to save the tile map to file " << fileName << '\n';
+        return;
+    }
+
+    file << map.size() << ' ' << map[0].size() << ' ' << map[0][0].size() << '\n';
+
+    for (size_t x = 0; x < map.size(); ++x)
+    {
+        for (size_t y = 0; y < map[x].size(); ++y)
+        {
+            for (size_t z = 0; z < map[x][y].size(); ++z)
+            {
+                if (map[x][y][z] != nullptr)
+                {
+                    file << map[x][y][z]->getAsString();
+                }
+            }
+        }
+    } 
 }
 
 

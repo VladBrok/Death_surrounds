@@ -90,6 +90,10 @@ void EditorState::processPauseMenuEvent(const sf::Event& event)
     {
         endActivity();
     }
+    else if (pPauseMenu->isButtonPressed("SAVE"))
+    {
+        tileMap.saveToFile("Resources\\Data\\tile_map.txt");
+    }
 }
 
 
@@ -228,6 +232,8 @@ void EditorState::initPauseMenu()
     pPauseMenu = new PauseMenu(window, font);
 
     pPauseMenu->addButton("GO_TO_MAIN_MENU", "Go to main menu", 5);
+
+    pPauseMenu->addButton("SAVE", "Save", 4);
 }
 
 

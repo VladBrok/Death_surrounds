@@ -58,7 +58,7 @@ void PauseMenu::addButton(const std::string& buttonKey,
 
 bool PauseMenu::isButtonPressed(const std::string& buttonKey) const
 {
-    return buttons.at(buttonKey)->isPressed();
+    return buttons.at(buttonKey)->isPressed(false);
 }
 
 

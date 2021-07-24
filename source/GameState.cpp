@@ -101,7 +101,7 @@ void GameState::render(sf::RenderTarget* pTarget)
 
 void GameState::initTextures()
 {
-    textures["PLAYER_SHEET"].loadFromFile("Images\\Sprites\\Player\\player_sheet.png");
+    textures["PLAYER_SHEET"].loadFromFile("Resources\\Images\\Entities\\Player\\player_sheet.png");
 }
 
 

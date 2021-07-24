@@ -143,5 +143,5 @@ void MainMenuState::initBackground()
 
 void MainMenuState::initTextures()
 {
-    textures["BACKGROUND"].loadFromFile("Images\\Backgrounds\\main_menu_bg.png");
+    textures["BACKGROUND"].loadFromFile("Resources\\Images\\Backgrounds\\main_menu_bg.png");
 }

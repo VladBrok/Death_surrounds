@@ -11,9 +11,13 @@ public:
                             TileMap(const int mapSizeX, const int mapSizeY, const int mapSizeZ);
                             ~TileMap();
 
+    void                    saveToFile(const std::string& fileName);
+    //void                    loadFromFile(const std::string& fileName);
+
     void                    addTile(const int gridPosX, const int gridPosY, const int gridPosZ, const sf::IntRect& textureRect);
     void                    removeTile(const int gridPosX, const int gridPosY, const int gridPosZ);
     void                    render(sf::RenderTarget& target);
+
     const sf::Texture&      getTextureSheet() const;
 
 private:
