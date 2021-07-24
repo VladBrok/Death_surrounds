@@ -34,7 +34,7 @@ void GameState::processEvent(const sf::Event& event)
     }
 
     if (event.type == sf::Event::KeyPressed &&
-        event.key.code == keybinds.at("CLOSE_STATE"))
+        event.key.code == keybinds.at("PAUSE"))
     {
         stateIsPaused ? unpauseState(): pauseState();
     }
@@ -45,7 +45,7 @@ void GameState::processPauseMenuButtonsEvent(const sf::Event& event)
 {
     pPauseMenu->processEvent(event, mousePosView);
 
-    if (pPauseMenu->isButtonPressed("QUIT"))
+    if (pPauseMenu->isButtonPressed("GO_TO_MAIN_MENU"))
     {
         endActivity();
     }
@@ -116,6 +116,6 @@ void GameState::initPauseMenu()
     font.loadFromFile("Fonts\\Dosis-Light.ttf");
     pPauseMenu = new PauseMenu(window, font);
 
-    pPauseMenu->addButton("QUIT", "Go to main menu", 5);
+    pPauseMenu->addButton("GO_TO_MAIN_MENU", "Go to main menu", 5);
 }
 

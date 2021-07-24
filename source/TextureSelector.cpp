@@ -40,8 +40,11 @@ void TextureSelector::processEvent(const sf::Event& event, const sf::Vector2i& m
         if (active)
         {
             selector.setPosition(
-                (int)(mousePosWindow.x - bounds.getPosition().x) / (int)GRID_SIZE * GRID_SIZE + bounds.getPosition().x,
-                (int)(mousePosWindow.y - bounds.getPosition().y) / (int)GRID_SIZE * GRID_SIZE + bounds.getPosition().y
+                (int)(mousePosWindow.x - bounds.getPosition().x) / 
+                (int)GRID_SIZE * GRID_SIZE + bounds.getPosition().x,
+
+                (int)(mousePosWindow.y - bounds.getPosition().y) / 
+                (int)GRID_SIZE * GRID_SIZE + bounds.getPosition().y
             );
         }
     }
@@ -56,7 +59,6 @@ void TextureSelector::processEvent(const sf::Event& event, const sf::Vector2i& m
         textureRect.left = (int)(selector.getPosition().x - bounds.getPosition().x);
         textureRect.top  = (int)(selector.getPosition().y - bounds.getPosition().y);
     }
-            
 }
 
 
@@ -75,6 +77,12 @@ void TextureSelector::render(sf::RenderTarget& target)
 bool TextureSelector::isActive() const
 {
     return active;
+}
+
+
+void TextureSelector::endActivity()
+{
+    active = false;
 }
 
 

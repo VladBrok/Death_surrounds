@@ -19,11 +19,12 @@ public:
     virtual                                  ~EditorState();
 
     virtual void                             processEvent(const sf::Event& event);
-    void                                     processPauseMenuButtonsEvent(const sf::Event& event);
+    void                                     processPauseMenuEvent(const sf::Event& event);
     void                                     processButtonsEvent(const sf::Event& event);
     void                                     processEditorEvent(const sf::Event& event);
 
     void                                     updateTileSelector();
+    void                                     updateSideBarActivity();
 
     virtual void                             render(sf::RenderTarget* pTarget = nullptr);
     void                                     renderButtons(sf::RenderTarget& target);
@@ -35,12 +36,16 @@ private:
     std::unordered_map<std::string, Button*> buttons;
     TileMap                                  tileMap;
     sf::RectangleShape                       tileSelector;
-    TextureSelector                          textureSelector;
+    TextureSelector*                         pTextureSelector;
     sf::IntRect                              textureRect;
-
-    void                                     initFont();
-    void                                     initButtons();
+    sf::RectangleShape                       sideBar;
+    bool                                     sideBarIsActive;
+    bool                                     hideTextureSelector;
+    
     virtual void                             initTextures();
+    void                                     initFont();
+    void                                     initSideBar();
+    void                                     initButtons();
     void                                     initPauseMenu();
     void                                     initTextureRect();
     void                                     initTileSelector();

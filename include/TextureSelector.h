@@ -17,6 +17,7 @@ public:
     void                    render(sf::RenderTarget& target);
 
     bool                    isActive() const;
+    void                    endActivity();
     const sf::IntRect&      getTextureRect() const;
 
 private:
