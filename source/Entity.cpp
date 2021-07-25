@@ -49,13 +49,34 @@ void Entity::move(const float dirX, const float dirY, const float deltaTime)
 
 void Entity::setPosition(const float posX, const float posY)
 {
-    sprite.setPosition(posX, posY);
+    if (pHitboxComponent)
+    {
+        pHitboxComponent->setPosition(posX, posY);
+    }
+    else
+    {
+        sprite.setPosition(posX, posY);
+    }
 }
 
 
 const sf::Vector2f& Entity::getPosition() const
 {
+    if (pHitboxComponent)
+    {
+        return pHitboxComponent->getPosition();
+    }
     return sprite.getPosition();
+}
+
+
+const sf::FloatRect Entity::getGlobalBounds() const
+{
+    if (pHitboxComponent)
+    {
+        return pHitboxComponent->getGlobalBounds();
+    }
+    return sprite.getGlobalBounds();
 }
 
 

@@ -186,9 +186,9 @@ void Tilemap::updateCollision(Entity& entity)
     }
 
     // Right
-    else if (entity.getPosition().x > mapSize.x)
+    else if (entity.getPosition().x + entity.getGlobalBounds().width > mapSize.x)
     {
-        entity.setPosition(mapSize.x, entity.getPosition().y);
+        entity.setPosition(mapSize.x - entity.getGlobalBounds().width, entity.getPosition().y);
     }
 
     // Top
@@ -198,9 +198,9 @@ void Tilemap::updateCollision(Entity& entity)
     }
 
     // Bottom
-    else if (entity.getPosition().y > mapSize.y)
+    else if (entity.getPosition().y + entity.getGlobalBounds().height > mapSize.y)
     {
-        entity.setPosition(entity.getPosition().x, mapSize.y);
+        entity.setPosition(entity.getPosition().x, mapSize.y - entity.getGlobalBounds().height);
     }
 }
 

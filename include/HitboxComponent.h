@@ -6,22 +6,26 @@ class HitboxComponent: public sf::NonCopyable
 {
 public:
 
-                        HitboxComponent(sf::Sprite& sprite,
-                                        const float offsetFromSpritePositionX,
-                                        const float offsetFromSpritePositionY,
-                                        const float hitboxWidth,
-                                        const float hitboxHeight
-                                        );
-    void                update();
-    void                render(sf::RenderTarget& target);
-    bool                checkIntersection(const sf::FloatRect& bounds) const;
-
-private:
-
-    sf::RectangleShape  hitbox;
-    sf::Sprite&         sprite;
-    float               offsetFromSpritePositionX;
-    float               offsetFromSpritePositionY;
+                         HitboxComponent(sf::Sprite& sprite,
+                                         const float offsetFromSpritePositionX,
+                                         const float offsetFromSpritePositionY,
+                                         const float hitboxWidth,
+                                         const float hitboxHeight
+                                         );
+    void                 update();
+    void                 render(sf::RenderTarget& target);
+                        
+    bool                 intersects(const sf::FloatRect& bounds) const;
+    void                 setPosition(const float posX, const float posY);
+    const sf::Vector2f&  getPosition() const;
+    const sf::FloatRect  getGlobalBounds() const;
+                        
+private:                
+                        
+    sf::RectangleShape   hitbox;
+    sf::Sprite&          sprite;
+    float                offsetFromSpritePositionX;
+    float                offsetFromSpritePositionY;
 
 };
 

@@ -61,17 +61,20 @@ void GameState::update(const float deltaTime)
 {
     if (!stateIsPaused)
     {
-        updatePlayerKeyboardInput(deltaTime);
-        pPlayer->update(deltaTime);
         updateView();
+        updatePlayerKeyboardInput(deltaTime);
         updateTilemap();
+        pPlayer->update(deltaTime);
     }
 }
 
 
 void GameState::updateView()
 {
-    view.setCenter(pPlayer->getPosition());
+    view.setCenter(
+        pPlayer->getPosition().x + pPlayer->getGlobalBounds().width / 2.f,
+        pPlayer->getPosition().y + pPlayer->getGlobalBounds().height / 2.f
+    );
 }
 
 

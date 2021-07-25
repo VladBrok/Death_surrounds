@@ -16,7 +16,7 @@ HitboxComponent::HitboxComponent(sf::Sprite& sprite,
     hitbox.setFillColor(sf::Color::Transparent);
     hitbox.setOutlineThickness(1.f);
     hitbox.setOutlineColor(sf::Color::Green);
-
+ 
     update();
 }
 
@@ -36,7 +36,30 @@ void HitboxComponent::render(sf::RenderTarget& target)
 }
 
 
-bool HitboxComponent::checkIntersection(const sf::FloatRect& bounds) const
+bool HitboxComponent::intersects(const sf::FloatRect& bounds) const
 {
     return this->hitbox.getGlobalBounds().intersects(bounds);
+}
+
+
+void HitboxComponent::setPosition(const float posX, const float posY)
+{
+    hitbox.setPosition(posX, posY);
+
+    sprite.setPosition(
+        posX - offsetFromSpritePositionX,
+        posY - offsetFromSpritePositionY
+    );
+}
+
+
+const sf::Vector2f& HitboxComponent::getPosition() const
+{
+    return hitbox.getPosition();
+}
+
+
+const sf::FloatRect HitboxComponent::getGlobalBounds() const
+{
+    return hitbox.getGlobalBounds();
 }
