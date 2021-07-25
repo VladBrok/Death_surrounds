@@ -2,6 +2,7 @@
 #define TILEMAP_H
 
 #include "Tile.h"
+#include "Entity.h"
 
 
 class Tilemap
@@ -22,6 +23,7 @@ public:
                                     );
     void                    removeTile(const int gridPosX, const int gridPosY, const int gridPosZ);
     void                    render(sf::RenderTarget& target);
+    void                    updateCollision(Entity& entity);
 
     const sf::Texture&      getTextureSheet() const;
 
@@ -30,6 +32,7 @@ private:
     std::vector< std::vector< std::vector< Tile* > > > map;
     sf::Texture                                        textureSheet;
     sf::RectangleShape                                 collisionBox;
+    sf::Vector2f                                       mapSize;
 
     bool positionsAreCorrect(const int gridPosX, const int gridPosY, const int gridPosZ) const;
     void clearMap();

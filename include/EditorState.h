@@ -42,7 +42,7 @@ private:
     std::unordered_map<std::string, Button*> buttons;
     sf::View                                 view;
 
-    // Tilemap and tiles
+    // Tilemap and selectors
     Tilemap                                  tileMap;
     sf::RectangleShape                       tileSelector;
     TextureSelector*                         pTextureSelector;

@@ -64,6 +64,7 @@ void GameState::update(const float deltaTime)
         updatePlayerKeyboardInput(deltaTime);
         pPlayer->update(deltaTime);
         updateView();
+        updateTilemap();
     }
 }
 
@@ -92,6 +93,12 @@ void GameState::updatePlayerKeyboardInput(const float deltaTime)
     {
         pPlayer->move(1.f, 0.f, deltaTime);
     }
+}
+
+
+void GameState::updateTilemap()
+{
+    pTilemap->updateCollision(*pPlayer);
 }
 
 

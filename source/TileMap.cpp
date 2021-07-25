@@ -13,6 +13,9 @@ Tilemap::Tilemap(const int mapSizeX, const int mapSizeY, const int mapSizeZ)
     collisionBox.setFillColor(sf::Color(255, 0, 0, 45));
     collisionBox.setOutlineColor(sf::Color::Red);
     collisionBox.setOutlineThickness(1.f);
+
+    mapSize.x = mapSizeX * GRID_SIZE;
+    mapSize.y = mapSizeY * GRID_SIZE;
 }
 
 
@@ -168,6 +171,36 @@ void Tilemap::render(sf::RenderTarget& target)
                 }
             }
         }
+    }
+}
+
+
+void Tilemap::updateCollision(Entity& entity)
+{
+    // Checking collision with map bounds
+
+    // Left
+    if (entity.getPosition().x < 0.f)
+    {
+        entity.setPosition(0.f, entity.getPosition().y);
+    }
+
+    // Right
+    else if (entity.getPosition().x > mapSize.x)
+    {
+        entity.setPosition(mapSize.x, entity.getPosition().y);
+    }
+
+    // Top
+    if (entity.getPosition().y < 0.f)
+    {
+        entity.setPosition(entity.getPosition().x, 0.f);
+    }
+
+    // Bottom
+    else if (entity.getPosition().y > mapSize.y)
+    {
+        entity.setPosition(entity.getPosition().x, mapSize.y);
     }
 }
 
