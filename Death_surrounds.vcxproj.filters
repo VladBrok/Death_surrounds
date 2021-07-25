@@ -26,11 +26,11 @@
     <Filter Include="Tiles">
       <UniqueIdentifier>{7925df65-0fe3-4e54-a077-6775d309db66}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tile_map">
-      <UniqueIdentifier>{627ab2c7-b7ed-4b8b-98d5-fbfecc113bde}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Constants">
       <UniqueIdentifier>{a1e365cf-22db-4dd9-9e77-6e64e378bfc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tilemap">
+      <UniqueIdentifier>{105cde6f-8687-4320-8ddc-7dd4dbe15678}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -85,11 +85,11 @@
     <ClCompile Include="source\Tile.cpp">
       <Filter>Tiles</Filter>
     </ClCompile>
-    <ClCompile Include="source\TileMap.cpp">
-      <Filter>Tile_map</Filter>
-    </ClCompile>
     <ClCompile Include="source\TextureSelector.cpp">
       <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Tilemap.cpp">
+      <Filter>Tilemap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -141,14 +141,14 @@
     <ClInclude Include="include\Tile.h">
       <Filter>Tiles</Filter>
     </ClInclude>
-    <ClInclude Include="include\TileMap.h">
-      <Filter>Tile_map</Filter>
-    </ClInclude>
     <ClInclude Include="include\constants.h">
       <Filter>Constants</Filter>
     </ClInclude>
     <ClInclude Include="include\TextureSelector.h">
       <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Tilemap.h">
+      <Filter>Tilemap</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

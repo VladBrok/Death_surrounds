@@ -16,7 +16,7 @@ public:
                                                        );
     bool                                     isButtonPressed(const std::string& buttonKey) const;
     void                                     processEvent(const sf::Event& event, 
-                                                          const sf::Vector2f& mousePosition
+                                                          const sf::Vector2i& mousePosWindow
                                                           );
     void                                     render(sf::RenderTarget& target);
 

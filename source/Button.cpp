@@ -51,11 +51,11 @@ Button::Button(const float posX, const float posY,
 }
 
 
-void Button::processEvent(const sf::Event& event, const sf::Vector2f& mousePosition)
+void Button::processEvent(const sf::Event& event, const sf::Vector2i& mousePosWindow)
 {
     buttonState = BTN_IDLE;
 
-    if (shape.getGlobalBounds().contains(mousePosition)) // Hover
+    if (shape.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosWindow))) // Hover
     {
         buttonState = BTN_HOVER;
         if (event.type == sf::Event::MouseButtonPressed &&

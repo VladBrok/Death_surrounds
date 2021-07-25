@@ -31,7 +31,7 @@ public:
                                const sf::Color& outlineHoverColor  = sf::Color::Transparent, 
                                const sf::Color& outlineActiveColor = sf::Color::Transparent
                                );
-    void                processEvent(const sf::Event& event, const sf::Vector2f& mousePosition);
+    void                processEvent(const sf::Event& event, const sf::Vector2i& mousePosWindow);
     void                render(sf::RenderTarget& target);
     bool                isPressed(const bool resetButtonStateToIdle = true);
     bool                isHovered() const;

@@ -4,12 +4,12 @@
 #include "Tile.h"
 
 
-class TileMap
+class Tilemap
 {
 public:
 
-                            TileMap(const int mapSizeX, const int mapSizeY, const int mapSizeZ);
-                            ~TileMap();
+                            Tilemap(const int mapSizeX, const int mapSizeY, const int mapSizeZ);
+                            ~Tilemap();
 
     void                    saveToFile(const std::string& fileName);
     void                    loadFromFile(const std::string& fileName);

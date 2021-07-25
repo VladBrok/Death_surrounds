@@ -4,6 +4,7 @@
 #include "State.h"
 #include "Player.h"
 #include "PauseMenu.h"
+#include "Tilemap.h"
 
 
 class GameState: public State
@@ -19,16 +20,20 @@ public:
     virtual void        processEvent(const sf::Event& event);
     void                processPauseMenuButtonsEvent(const sf::Event& event);
     virtual void        update(const float deltaTime);
+    void                updateView();
     void                updatePlayerKeyboardInput(const float deltaTime);
     virtual void        render(sf::RenderTarget* pTarget = nullptr);
 
 private:
 
+    sf::View            view;
+    Tilemap*            pTilemap;
     Player*             pPlayer;
     PauseMenu*          pPauseMenu;
     sf::Font            font;
 
-
+    void                initView();
+    void                initTilemap();
     virtual void        initTextures();
     void                initPlayer();
     void                initPauseMenu();

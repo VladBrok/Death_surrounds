@@ -37,12 +37,12 @@ void SettingsState::processEvent(const sf::Event& event)
 
     for (auto b = buttons.begin(); b != buttons.end(); ++b)
     {
-        b->second->processEvent(event, mousePosView);
+        b->second->processEvent(event, mousePosWindow);
     }
 
     for (auto d = dropDownLists.begin(); d != dropDownLists.end(); ++d)
     {
-        d->second->processEvent(event, mousePosView);
+        d->second->processEvent(event, mousePosWindow);
     }
 
     // Reacting on the pressed buttons

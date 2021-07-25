@@ -19,8 +19,8 @@ public:
                             ~DropDownList();
 
     void                    processEvent(const sf::Event& event,
-                                              const sf::Vector2f& mousePosition
-                                              );
+                                         const sf::Vector2i& mousePosWindow
+                                         );
     void                    render(sf::RenderTarget& target);
     const std::string&      getActiveElementText() const;
 

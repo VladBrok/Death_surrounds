@@ -8,11 +8,11 @@ EditorState::EditorState(sf::RenderWindow& window,
                              std::stack<State*>* const pStates
                              )
     : State(window, pSupportedKeys, pStates), 
-      tileMap(10, 7, 1),
+      tileMap(TILEMAP_SIZE_X, TILEMAP_SIZE_Y, TILEMAP_SIZE_Z),
       sideBarIsActive(false),
       hideTextureSelector(false)
 {
-    stateType = STATE_PROCESSES_EVENTS;
+    stateType = STATE_UPDATES_AND_PROCESSES_EVENTS;
 
     initKeybinds("Config//editorstate_keybinds.ini");
     initFont();
@@ -21,6 +21,7 @@ EditorState::EditorState(sf::RenderWindow& window,
     initPauseMenu();
     initTextureRect();
     initTileAndTextureSelectors();
+    initView();
 }
 
 
@@ -39,9 +40,6 @@ EditorState::~EditorState()
 
 void EditorState::processEvent(const sf::Event& event)
 {
-    updateMousePosition();
-
-
     if (stateIsPaused)
     {
         processPauseMenuEvent(event);
@@ -56,7 +54,7 @@ void EditorState::processEvent(const sf::Event& event)
         if (!sideBarIsActive) 
         {
             processTextureSelectorEvent(event);
-            processTileMapEvent(event);  
+            processTilemapEvent(event);  
         }
     }
 
@@ -71,7 +69,7 @@ void EditorState::processEvent(const sf::Event& event)
 
 void EditorState::processPauseMenuEvent(const sf::Event& event)
 {
-    pPauseMenu->processEvent(event, mousePosView);
+    pPauseMenu->processEvent(event, mousePosWindow);
 
 
     if (pPauseMenu->isButtonPressed("LOAD"))
@@ -95,7 +93,7 @@ void EditorState::processButtonsEvent(const sf::Event& event)
 {
     for (auto b = buttons.begin(); b != buttons.end(); ++b)
     {
-        b->second->processEvent(event, mousePosView);
+        b->second->processEvent(event, mousePosWindow);
     }
 
     // Open or close the texture selector
@@ -112,7 +110,7 @@ void EditorState::processButtonsEvent(const sf::Event& event)
 }
 
 
-void EditorState::processTileMapEvent(const sf::Event& event)
+void EditorState::processTilemapEvent(const sf::Event& event)
 {
     if (event.type == sf::Event::MouseButtonPressed && !pTextureSelector->isActive())
     {
@@ -143,17 +141,50 @@ void EditorState::processTextureSelectorEvent(const sf::Event& event)
 }
 
 
+void EditorState::update(const float deltaTime)
+{
+    updateMousePosition(&view);
+    updateView(deltaTime);
+}
+
+
 void EditorState::updateSideBarActivity()
 {
     sideBarIsActive = sideBar.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosWindow));
 }
 
 
-void EditorState::renderPauseMenu(sf::RenderTarget& target)
+void EditorState::updateView(const float deltaTime)
 {
-    if (stateIsPaused)
+    const float viewSpeed = 260.f * deltaTime;
+
+    if (sf::Keyboard::isKeyPressed(keybinds.at("MOVE_VIEW_UP")))
     {
-        pPauseMenu->render(target);
+        view.move(0.f, -viewSpeed);
+
+        // Adjusting the view vertical position 
+        if (view.getCenter().y - view.getSize().y / 2.f < 0.f)
+        {
+            view.setCenter(view.getCenter().x, view.getSize().y / 2.f);
+        }
+    }
+    else if (sf::Keyboard::isKeyPressed(keybinds.at("MOVE_VIEW_DOWN")))
+    {
+        view.move(0.f, viewSpeed);
+    }
+    if (sf::Keyboard::isKeyPressed(keybinds.at("MOVE_VIEW_LEFT")))
+    {
+        view.move(-viewSpeed, 0.f);
+
+        // Adjusting the view horizontal position
+        if (view.getCenter().x - view.getSize().x / 2.f < 0.f - sideBar.getSize().x)
+        {
+            view.setCenter(view.getSize().x / 2.f - sideBar.getSize().x, view.getCenter().y);
+        }
+    }
+    else if (sf::Keyboard::isKeyPressed(keybinds.at("MOVE_VIEW_RIGHT")))
+    {
+        view.move(viewSpeed, 0.f);
     }
 }
 
@@ -162,7 +193,9 @@ void EditorState::renderTileSelector(sf::RenderTarget& target)
 {
     if (!pTextureSelector->isActive() && !sideBarIsActive)
     {
+        target.setView(view);
         target.draw(tileSelector);
+        target.setView(window.getDefaultView());
     }
 }
 
@@ -184,14 +217,23 @@ void EditorState::render(sf::RenderTarget* pTarget)
     }
 
 
+    pTarget->setView(view);
+
     tileMap.render(*pTarget);
+
+    pTarget->setView(pTarget->getDefaultView());
+
 
     pTarget->draw(sideBar);
 
     renderTileSelector(*pTarget);
     renderTextureSelector(*pTarget);
     renderButtons(*pTarget);
-    renderPauseMenu(*pTarget);
+
+    if (stateIsPaused)
+    {
+        pPauseMenu->render(*pTarget);
+    }
 }
 
 
@@ -283,4 +325,11 @@ void EditorState::initTileAndTextureSelectors()
                                GRID_SIZE * 2, 
                                tileMap.getTextureSheet()
                            );
+}
+
+
+void EditorState::initView()
+{
+    view.setSize(sf::Vector2f((float)window.getSize().x, (float)window.getSize().y));
+    view.setCenter(window.getSize().x / 2.f, window.getSize().y / 2.f);
 }

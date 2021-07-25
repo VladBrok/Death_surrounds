@@ -1,5 +1,6 @@
 #include "precompiled.h"
 #include "GameState.h"
+#include "constants.h"
 
 
 GameState::GameState(sf::RenderWindow& window,
@@ -11,6 +12,8 @@ GameState::GameState(sf::RenderWindow& window,
     stateType = STATE_UPDATES_AND_PROCESSES_EVENTS;
 
     initKeybinds("Config//gamestate_keybinds.ini");
+    initView();
+    initTilemap();
     initTextures();
     initPlayer();
     initPauseMenu();
@@ -19,6 +22,7 @@ GameState::GameState(sf::RenderWindow& window,
 
 GameState::~GameState()
 {
+    delete pTilemap;
     delete pPlayer;
     delete pPauseMenu;
 }
@@ -26,7 +30,7 @@ GameState::~GameState()
 
 void GameState::processEvent(const sf::Event& event)
 {
-    updateMousePosition();
+    updateMousePosition(&view);
 
     if (stateIsPaused)
     {
@@ -43,7 +47,7 @@ void GameState::processEvent(const sf::Event& event)
 
 void GameState::processPauseMenuButtonsEvent(const sf::Event& event)
 {
-    pPauseMenu->processEvent(event, mousePosView);
+    pPauseMenu->processEvent(event, mousePosWindow);
 
     if (pPauseMenu->isButtonPressed("GO_TO_MAIN_MENU"))
     {
@@ -58,7 +62,14 @@ void GameState::update(const float deltaTime)
     {
         updatePlayerKeyboardInput(deltaTime);
         pPlayer->update(deltaTime);
+        updateView();
     }
+}
+
+
+void GameState::updateView()
+{
+    view.setCenter(pPlayer->getPosition());
 }
 
 
@@ -90,7 +101,14 @@ void GameState::render(sf::RenderTarget* pTarget)
         pTarget = &window;
     }
 
+
+    pTarget->setView(view);
+
+    pTilemap->render(*pTarget);
     pPlayer->render(*pTarget);
+
+    pTarget->setView(pTarget->getDefaultView());
+
 
     if (stateIsPaused)
     {
@@ -102,6 +120,19 @@ void GameState::render(sf::RenderTarget* pTarget)
 void GameState::initTextures()
 {
     textures["PLAYER_SHEET"].loadFromFile("Resources\\Images\\Entities\\Player\\player_sheet.png");
+}
+
+
+void GameState::initView()
+{
+    view.setSize(sf::Vector2f((float)window.getSize().x, (float)window.getSize().y));
+}
+
+
+void GameState::initTilemap()
+{
+    pTilemap = new Tilemap(TILEMAP_SIZE_X, TILEMAP_SIZE_Y, TILEMAP_SIZE_Z);
+    pTilemap->loadFromFile("Resources\\Data\\tile_map.txt");
 }
 
 

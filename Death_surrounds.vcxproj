@@ -32,7 +32,7 @@
     <ClCompile Include="source\State.cpp" />
     <ClCompile Include="source\TextureSelector.cpp" />
     <ClCompile Include="source\Tile.cpp" />
-    <ClCompile Include="source\TileMap.cpp" />
+    <ClCompile Include="source\Tilemap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AnimationComponent.h" />
@@ -53,7 +53,7 @@
     <ClInclude Include="include\State.h" />
     <ClInclude Include="include\TextureSelector.h" />
     <ClInclude Include="include\Tile.h" />
-    <ClInclude Include="include\TileMap.h" />
+    <ClInclude Include="include\Tilemap.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AD44A273-D811-4496-9635-D5147C651062}</ProjectGuid>

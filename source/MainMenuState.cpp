@@ -35,7 +35,7 @@ void MainMenuState::processEvent(const sf::Event& event)
 
     for (auto b = buttons.begin(); b != buttons.end(); ++b)
     {
-        b->second->processEvent(event, mousePosView);
+        b->second->processEvent(event, mousePosWindow);
     }
 
     // Pushing new states if the corresponding button is pressed

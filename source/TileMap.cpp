@@ -1,9 +1,9 @@
 #include "precompiled.h"
-#include "TileMap.h"
+#include "Tilemap.h"
 #include "constants.h"
 
 
-TileMap::TileMap(const int mapSizeX, const int mapSizeY, const int mapSizeZ)
+Tilemap::Tilemap(const int mapSizeX, const int mapSizeY, const int mapSizeZ)
 {
     createEmptyMap(mapSizeX, mapSizeY, mapSizeZ);
 
@@ -11,13 +11,13 @@ TileMap::TileMap(const int mapSizeX, const int mapSizeY, const int mapSizeZ)
 }
 
 
-TileMap::~TileMap()
+Tilemap::~Tilemap()
 {
     clearMap();
 }
 
 
-void TileMap::saveToFile(const std::string& fileName)
+void Tilemap::saveToFile(const std::string& fileName)
 {
     /*
         Saving format:
@@ -34,7 +34,7 @@ void TileMap::saveToFile(const std::string& fileName)
 
     if (!file.is_open())
     {
-        std::cout << "ERROR in TileMap::saveToFile: unable to save the tile map to the file " << fileName << '\n';
+        std::cout << "ERROR in Tilemap::saveToFile: unable to save the tile map to the file " << fileName << '\n';
         return;
     }
 
@@ -56,7 +56,7 @@ void TileMap::saveToFile(const std::string& fileName)
 }
 
 
-void TileMap::loadFromFile(const std::string& fileName)
+void Tilemap::loadFromFile(const std::string& fileName)
 {
     /*
         The loading format is the same as the saving format.
@@ -67,7 +67,7 @@ void TileMap::loadFromFile(const std::string& fileName)
 
     if (!file.is_open())
     {
-        std::cout << "ERROR in TileMap::loadFromFile: unable to load the tile map from the file " << fileName << '\n';
+        std::cout << "ERROR in Tilemap::loadFromFile: unable to load the tile map from the file " << fileName << '\n';
         return;
     }
 
@@ -100,14 +100,14 @@ void TileMap::loadFromFile(const std::string& fileName)
                                          );
         if (file.fail() || mapSizeX <= 0 || mapSizeY <= 0 || mapSizeZ <= 0)
         {
-            std::cout << "ERROR in TileMap::loadFromFile: the data in the file " << fileName << " are damaged. Tilemap is not loaded.\n";
+            std::cout << "ERROR in Tilemap::loadFromFile: the data in the file " << fileName << " are damaged. Tilemap is not loaded.\n";
             return;
         } 
     }
 }
 
 
-void TileMap::addTile(const int gridPosX, const int gridPosY, const int gridPosZ, const sf::IntRect& textureRect)
+void Tilemap::addTile(const int gridPosX, const int gridPosY, const int gridPosZ, const sf::IntRect& textureRect)
 {
     if (positionsAreCorrect(gridPosX, gridPosY, gridPosZ) &&
         map[gridPosX][gridPosY][gridPosZ] == nullptr)
@@ -122,7 +122,7 @@ void TileMap::addTile(const int gridPosX, const int gridPosY, const int gridPosZ
 }
 
 
-void TileMap::removeTile(const int gridPosX, const int gridPosY, const int gridPosZ)
+void Tilemap::removeTile(const int gridPosX, const int gridPosY, const int gridPosZ)
 {
     if (positionsAreCorrect(gridPosX, gridPosY, gridPosZ) &&
         map[gridPosX][gridPosY][gridPosZ] != nullptr)
@@ -133,7 +133,7 @@ void TileMap::removeTile(const int gridPosX, const int gridPosY, const int gridP
 }
 
 
-void TileMap::render(sf::RenderTarget& target)
+void Tilemap::render(sf::RenderTarget& target)
 {
     for (size_t x = 0; x < map.size(); ++x)
     {
@@ -151,7 +151,7 @@ void TileMap::render(sf::RenderTarget& target)
 }
 
 
-bool TileMap::positionsAreCorrect(const int gridPosX, const int gridPosY, const int gridPosZ) const
+bool Tilemap::positionsAreCorrect(const int gridPosX, const int gridPosY, const int gridPosZ) const
 {
     return gridPosX >= 0 && gridPosX < (int)map.size() &&
            gridPosY >= 0 && gridPosY < (int)map[gridPosX].size() &&
@@ -159,13 +159,13 @@ bool TileMap::positionsAreCorrect(const int gridPosX, const int gridPosY, const 
 }
 
 
-const sf::Texture& TileMap::getTextureSheet() const
+const sf::Texture& Tilemap::getTextureSheet() const
 {
     return textureSheet;
 }
 
 
-void TileMap::clearMap()
+void Tilemap::clearMap()
 {
     for (size_t x = 0; x < map.size(); ++x)
     {
@@ -184,7 +184,7 @@ void TileMap::clearMap()
 }
 
 
-void TileMap::createEmptyMap(const int mapSizeX, const int mapSizeY, const int mapSizeZ)
+void Tilemap::createEmptyMap(const int mapSizeX, const int mapSizeY, const int mapSizeZ)
 {
     assert(mapSizeX > 0 && mapSizeY > 0 && mapSizeZ > 0);
 

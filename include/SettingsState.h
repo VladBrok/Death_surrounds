@@ -32,7 +32,7 @@ private:
     void                                           initBackground();
     virtual void                                   initTextures();
 
-    sf::Vector2i getResolutionFromString(const std::string& string); // String example: 800 x 600
+    sf::Vector2i                                   getResolutionFromString(const std::string& string); // String example: 800 x 600
 };
 
 

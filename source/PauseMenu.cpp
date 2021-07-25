@@ -74,11 +74,11 @@ void PauseMenu::initText(const sf::RenderWindow& window)
 }
 
 
-void PauseMenu::processEvent(const sf::Event& event, const sf::Vector2f& mousePosition)
+void PauseMenu::processEvent(const sf::Event& event, const sf::Vector2i& mousePosWindow)
 {
     for (auto b = buttons.begin(); b != buttons.end(); ++b)
     {
-        b->second->processEvent(event, mousePosition);
+        b->second->processEvent(event, mousePosWindow);
     }
 }
 

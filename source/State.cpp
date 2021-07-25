@@ -56,11 +56,17 @@ void State::unpauseState()
 }
 
 
-void State::updateMousePosition()
+void State::updateMousePosition(sf::View* pView)
 {
     mousePosScreen = sf::Mouse::getPosition();
     mousePosWindow = sf::Mouse::getPosition(window);
+
+    if (pView)
+    {
+        window.setView(*pView);
+    }
     mousePosView   = window.mapPixelToCoords(mousePosWindow);
+    window.setView(window.getDefaultView());
 
     mousePosGrid.x = static_cast<int>(mousePosView.x) / static_cast<int>(GRID_SIZE);
     mousePosGrid.y = static_cast<int>(mousePosView.y) / static_cast<int>(GRID_SIZE);
