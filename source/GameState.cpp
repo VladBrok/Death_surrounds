@@ -13,6 +13,7 @@ GameState::GameState(sf::RenderWindow& window,
 
     initKeybinds("Config//gamestate_keybinds.ini");
     initView();
+    initRenderTexture();
     initTilemap();
     initTextures();
     initPlayer();
@@ -101,19 +102,38 @@ void GameState::render(sf::RenderTarget* pTarget)
         pTarget = &window;
     }
 
+    renderTexture.clear();
 
-    pTarget->setView(view);
 
-    pTilemap->render(*pTarget);
-    pPlayer->render(*pTarget);
+    renderTexture.setView(view);
 
-    pTarget->setView(pTarget->getDefaultView());
+    pTilemap->render(renderTexture);
+    pPlayer->render(renderTexture);
 
+    renderTexture.setView(renderTexture.getDefaultView());
 
     if (stateIsPaused)
     {
-        pPauseMenu->render(*pTarget);
+        pPauseMenu->render(renderTexture);
     }
+
+
+    renderTexture.display();
+
+    renderSprite.setTexture(renderTexture.getTexture());
+    pTarget->draw(renderSprite);
+
+    //pTarget->setView(view);
+
+    //pTilemap->render(*pTarget);
+    //pPlayer->render(*pTarget);
+
+    //pTarget->setView(renderTexture.getDefaultView());
+
+    //if (stateIsPaused)
+    //{
+    //    pPauseMenu->render(*pTarget);
+    //}
 }
 
 
@@ -126,6 +146,12 @@ void GameState::initTextures()
 void GameState::initView()
 {
     view.setSize(sf::Vector2f((float)window.getSize().x, (float)window.getSize().y));
+}
+
+
+void GameState::initRenderTexture()
+{
+    renderTexture.create(window.getSize().x, window.getSize().y);
 }
 
 

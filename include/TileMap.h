@@ -14,7 +14,12 @@ public:
     void                    saveToFile(const std::string& fileName);
     void                    loadFromFile(const std::string& fileName);
 
-    void                    addTile(const int gridPosX, const int gridPosY, const int gridPosZ, const sf::IntRect& textureRect);
+    void                    addTile(const int gridPosX, 
+                                    const int gridPosY, 
+                                    const int gridPosZ, 
+                                    const sf::IntRect& textureRect,
+                                    const bool canCollide
+                                    );
     void                    removeTile(const int gridPosX, const int gridPosY, const int gridPosZ);
     void                    render(sf::RenderTarget& target);
 
@@ -24,12 +29,11 @@ private:
 
     std::vector< std::vector< std::vector< Tile* > > > map;
     sf::Texture                                        textureSheet;
+    sf::RectangleShape                                 collisionBox;
 
     bool positionsAreCorrect(const int gridPosX, const int gridPosY, const int gridPosZ) const;
-
     void clearMap();
     void createEmptyMap(const int mapSizeX, const int mapSizeY, const int mapSizeZ);
-
 };
 
 

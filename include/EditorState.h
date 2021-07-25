@@ -27,25 +27,36 @@ public:
     virtual void                             update(const float deltaTime);
     void                                     updateSideBarActivity();
     void                                     updateView(const float deltaTime);
+    void                                     updateCursorText();
 
     virtual void                             render(sf::RenderTarget* pTarget = nullptr);
     void                                     renderButtons(sf::RenderTarget& target);
-    void                                     renderTileSelector(sf::RenderTarget& target);
+    void                                     renderTileSelectorAndCursorText(sf::RenderTarget& target);
     void                                     renderTextureSelector(sf::RenderTarget& target);
 
 private:
 
+    // Base
     sf::Font                                 font;
     PauseMenu*                               pPauseMenu;
     std::unordered_map<std::string, Button*> buttons;
+    sf::View                                 view;
+
+    // Tilemap and tiles
     Tilemap                                  tileMap;
     sf::RectangleShape                       tileSelector;
     TextureSelector*                         pTextureSelector;
+    bool                                     hideTextureSelector;
     sf::IntRect                              textureRect;
+
+    // Side bar
     sf::RectangleShape                       sideBar;
     bool                                     sideBarIsActive;
-    bool                                     hideTextureSelector;
-    sf::View                                 view;
+
+    // Cursor text
+    sf::Text                                 cursorText;
+    bool                                     tileCanCollide;
+
     
     virtual void                             initTextures();
     void                                     initFont();
@@ -55,6 +66,7 @@ private:
     void                                     initTextureRect();
     void                                     initTileAndTextureSelectors();
     void                                     initView();
+    void                                     initCursorText();
 
 };
 

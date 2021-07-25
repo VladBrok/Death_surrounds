@@ -10,7 +10,8 @@ EditorState::EditorState(sf::RenderWindow& window,
     : State(window, pSupportedKeys, pStates), 
       tileMap(TILEMAP_SIZE_X, TILEMAP_SIZE_Y, TILEMAP_SIZE_Z),
       sideBarIsActive(false),
-      hideTextureSelector(false)
+      hideTextureSelector(false),
+      tileCanCollide(false)
 {
     stateType = STATE_UPDATES_AND_PROCESSES_EVENTS;
 
@@ -22,6 +23,7 @@ EditorState::EditorState(sf::RenderWindow& window,
     initTextureRect();
     initTileAndTextureSelectors();
     initView();
+    initCursorText();
 }
 
 
@@ -37,6 +39,8 @@ EditorState::~EditorState()
     delete pTextureSelector;
 }
 
+
+/*=============== Event processors ===============*/
 
 void EditorState::processEvent(const sf::Event& event)
 {
@@ -58,11 +62,20 @@ void EditorState::processEvent(const sf::Event& event)
         }
     }
 
-    /* Pausing or unpausing the state */
-    if (event.type == sf::Event::KeyPressed &&
-        event.key.code == keybinds.at("PAUSE"))
+
+    if (event.type == sf::Event::KeyPressed)
     {
-        stateIsPaused ? unpauseState(): pauseState();
+        // Pausing or unpausing the state
+        if (event.key.code == keybinds.at("PAUSE"))
+        {
+            stateIsPaused ? unpauseState(): pauseState();
+        }
+
+        // Changing the tileCanCollide status
+        else if (event.key.code == keybinds.at("TILE_COLLISION"))
+        {
+            tileCanCollide = !tileCanCollide;
+        }
     }
 }
 
@@ -114,13 +127,13 @@ void EditorState::processTilemapEvent(const sf::Event& event)
 {
     if (event.type == sf::Event::MouseButtonPressed && !pTextureSelector->isActive())
     {
-        /* Adding the tile */
+        // Adding the tile
         if (event.mouseButton.button == sf::Mouse::Left)
         {
-            tileMap.addTile(mousePosGrid.x, mousePosGrid.y, 0, textureRect);
+            tileMap.addTile(mousePosGrid.x, mousePosGrid.y, 0, textureRect, tileCanCollide);
         }
 
-        /* Removing the tile */
+        // Removing the tile
         else if (event.mouseButton.button == sf::Mouse::Right)
         {
             tileMap.removeTile(mousePosGrid.x, mousePosGrid.y, 0);
@@ -141,10 +154,17 @@ void EditorState::processTextureSelectorEvent(const sf::Event& event)
 }
 
 
+/*=============== Update functions ===============*/ 
+
 void EditorState::update(const float deltaTime)
 {
     updateMousePosition(&view);
     updateView(deltaTime);
+
+    if (!stateIsPaused)
+    {
+        updateCursorText();
+    }
 }
 
 
@@ -189,12 +209,26 @@ void EditorState::updateView(const float deltaTime)
 }
 
 
-void EditorState::renderTileSelector(sf::RenderTarget& target)
+void EditorState::updateCursorText()
+{
+    std::stringstream sstream;
+    sstream << "Grid position:     (" << mousePosGrid.x << ';' << mousePosGrid.y << ")\n";
+    sstream << "Tile can collide:  " << (tileCanCollide ? "true": "false") << '\n';
+
+    cursorText.setString(sstream.str());
+    cursorText.setPosition(mousePosView.x + 15.f, mousePosView.y);
+}
+
+
+/*=============== Render functions ===============*/
+
+void EditorState::renderTileSelectorAndCursorText(sf::RenderTarget& target)
 {
     if (!pTextureSelector->isActive() && !sideBarIsActive)
     {
         target.setView(view);
         target.draw(tileSelector);
+        target.draw(cursorText);
         target.setView(window.getDefaultView());
     }
 }
@@ -226,9 +260,10 @@ void EditorState::render(sf::RenderTarget* pTarget)
 
     pTarget->draw(sideBar);
 
-    renderTileSelector(*pTarget);
+    renderTileSelectorAndCursorText(*pTarget);
     renderTextureSelector(*pTarget);
     renderButtons(*pTarget);
+
 
     if (stateIsPaused)
     {
@@ -245,6 +280,8 @@ void EditorState::renderButtons(sf::RenderTarget& target)
     }
 }
 
+
+/*=============== Initializers ===============*/
 
 void EditorState::initTextures()
 {
@@ -332,4 +369,11 @@ void EditorState::initView()
 {
     view.setSize(sf::Vector2f((float)window.getSize().x, (float)window.getSize().y));
     view.setCenter(window.getSize().x / 2.f, window.getSize().y / 2.f);
+}
+
+
+void EditorState::initCursorText()
+{
+    cursorText.setCharacterSize(window.getSize().y / 35);
+    cursorText.setFont(font);
 }

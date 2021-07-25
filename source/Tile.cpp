@@ -6,9 +6,10 @@
 Tile::Tile(const float posX, 
            const float posY, 
            const sf::Texture& textureSheet, 
-           const sf::IntRect& textureRect
+           const sf::IntRect& textureRect,
+           const bool canCollide
            )
-    : textureRect(textureRect)
+    : textureRect(textureRect), canCollide(canCollide)
 {
     tile.setSize(sf::Vector2f(GRID_SIZE, GRID_SIZE));
     tile.setPosition(posX, posY);
@@ -30,6 +31,12 @@ void Tile::render(sf::RenderTarget& target)
 }
 
 
+const sf::Vector2f& Tile::getPosition() const
+{
+    return tile.getPosition();
+}
+
+
 const std::string Tile::getAsString() const
 {
     std::stringstream data;
@@ -37,4 +44,10 @@ const std::string Tile::getAsString() const
     data << textureRect.left << ' ' << textureRect.top << ' ';
 
     return data.str();
+}
+
+
+bool Tile::tileCanCollide() const
+{
+    return canCollide;
 }

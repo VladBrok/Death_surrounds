@@ -8,6 +8,11 @@ Tilemap::Tilemap(const int mapSizeX, const int mapSizeY, const int mapSizeZ)
     createEmptyMap(mapSizeX, mapSizeY, mapSizeZ);
 
     textureSheet.loadFromFile("Resources\\Images\\Tiles\\tilesheet.png");
+
+    collisionBox.setSize(sf::Vector2f(GRID_SIZE, GRID_SIZE));
+    collisionBox.setFillColor(sf::Color(255, 0, 0, 45));
+    collisionBox.setOutlineColor(sf::Color::Red);
+    collisionBox.setOutlineThickness(1.f);
 }
 
 
@@ -26,7 +31,8 @@ void Tilemap::saveToFile(const std::string& fileName)
 
             All tiles:
                 1) tile grid position     - gridPosX gridPosY gridPosZ;
-                2) tile texture rectangle - x y.
+                2) tile collision ability - canCollide
+                3) tile texture rectangle - x y.
     */
 
     std::ofstream file;
@@ -48,7 +54,8 @@ void Tilemap::saveToFile(const std::string& fileName)
             {
                 if (map[x][y][z] != nullptr)
                 {
-                    file << x << ' ' << y << ' '<< z << ' ' << map[x][y][z]->getAsString();
+                    file << x << ' ' << y << ' '<< z << ' ' << map[x][y][z]->tileCanCollide()
+                         << ' ' << map[x][y][z]->getAsString();
                 }
             }
         }
@@ -88,15 +95,17 @@ void Tilemap::loadFromFile(const std::string& fileName)
     int gridPosX = 0;
     int gridPosY = 0;
     int gridPosZ = 0;
+    bool canCollide = false;
     sf::IntRect textureRect(0, 0, (int)GRID_SIZE, (int)GRID_SIZE);
     
-    while (file >> gridPosX >> gridPosY >> gridPosZ >> textureRect.left >> textureRect.top)
+    while (file >> gridPosX >> gridPosY >> gridPosZ >> canCollide >> textureRect.left >> textureRect.top)
     {
         map[gridPosX][gridPosY][gridPosZ] = new Tile(
                                             gridPosX * GRID_SIZE, 
                                             gridPosY * GRID_SIZE, 
                                             textureSheet,
-                                            textureRect
+                                            textureRect,
+                                            canCollide
                                          );
         if (file.fail() || mapSizeX <= 0 || mapSizeY <= 0 || mapSizeZ <= 0)
         {
@@ -107,7 +116,12 @@ void Tilemap::loadFromFile(const std::string& fileName)
 }
 
 
-void Tilemap::addTile(const int gridPosX, const int gridPosY, const int gridPosZ, const sf::IntRect& textureRect)
+void Tilemap::addTile(const int gridPosX, 
+                      const int gridPosY, 
+                      const int gridPosZ, 
+                      const sf::IntRect& textureRect,
+                      const bool canCollide
+                      )
 {
     if (positionsAreCorrect(gridPosX, gridPosY, gridPosZ) &&
         map[gridPosX][gridPosY][gridPosZ] == nullptr)
@@ -116,7 +130,8 @@ void Tilemap::addTile(const int gridPosX, const int gridPosY, const int gridPosZ
                                                  gridPosX * GRID_SIZE, 
                                                  gridPosY * GRID_SIZE, 
                                                  textureSheet,
-                                                 textureRect
+                                                 textureRect,
+                                                 canCollide
                                                 );
     }
 }
@@ -141,9 +156,15 @@ void Tilemap::render(sf::RenderTarget& target)
         {
             for (size_t z = 0; z < map[x][y].size(); ++z)
             {
-                if (map[x][y][z] != nullptr)
+                if (map[x][y][z] != nullptr) // Rendering the tile
                 {
                     map[x][y][z]->render(target);
+
+                    if (map[x][y][z]->tileCanCollide()) // Rendering the collision box
+                    {
+                        collisionBox.setPosition(map[x][y][z]->getPosition());
+                        target.draw(collisionBox);
+                    }
                 }
             }
         }

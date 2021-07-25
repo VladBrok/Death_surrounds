@@ -27,12 +27,15 @@ public:
 private:
 
     sf::View            view;
+    sf::RenderTexture   renderTexture;
+    sf::Sprite          renderSprite;
     Tilemap*            pTilemap;
     Player*             pPlayer;
     PauseMenu*          pPauseMenu;
     sf::Font            font;
 
     void                initView();
+    void                initRenderTexture();
     void                initTilemap();
     virtual void        initTextures();
     void                initPlayer();
