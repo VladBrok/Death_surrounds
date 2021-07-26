@@ -21,6 +21,22 @@ void MovementComponent::accelerateSprite(const sf::Vector2f& movementDirection, 
 }
 
 
+void MovementComponent::updateMovement(const float deltaTime)
+{
+    if (getMovementState() == "IDLE")
+    {
+        return;
+    }
+
+    decelerateSpriteAndCheckVelocityBounds(deltaTime);
+    
+    // DEBUG print
+    //std::cout << velocity.x << ' ' << velocity.y << '\n';
+
+    sprite.move(velocity * deltaTime);
+}
+
+
 const sf::Vector2f& MovementComponent::getVelocity() const
 {
     return velocity;
@@ -30,21 +46,6 @@ const sf::Vector2f& MovementComponent::getVelocity() const
 float MovementComponent::getMaxVelocity() const
 {
     return maxVelocity;
-}
-
-
-void MovementComponent::updateMovement(const float deltaTime)
-{
-    if (getMovementState() == "IDLE")
-    {
-        return;
-    }
-
-    decelerateSpriteAndCheckVelocityBounds(deltaTime);
-
-    std::cout << velocity.x << ' ' << velocity.y << '\n';
-
-    sprite.move(velocity * deltaTime);
 }
 
 
@@ -71,6 +72,24 @@ const std::string MovementComponent::getMovementState() const
         return "MOVING_DOWN";
     }
     return "ERROR";
+}
+
+
+void MovementComponent::stopVelocity()
+{
+    velocity.x = velocity.y = 0.f;
+}
+
+
+void MovementComponent::stopVelocityX()
+{
+    velocity.x = 0.f;
+}
+
+
+void MovementComponent::stopVelocityY()
+{
+    velocity.y = 0.f;
 }
 
 

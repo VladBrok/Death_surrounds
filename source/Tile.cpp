@@ -37,6 +37,12 @@ const sf::Vector2f& Tile::getPosition() const
 }
 
 
+const sf::FloatRect Tile::getGlobalBounds() const
+{
+    return tile.getGlobalBounds();
+}
+
+
 const std::string Tile::getAsString() const
 {
     std::stringstream data;
@@ -50,4 +56,10 @@ const std::string Tile::getAsString() const
 bool Tile::tileCanCollide() const
 {
     return canCollide;
+}
+
+
+bool Tile::intersects(const sf::FloatRect& bounds)
+{
+    return tile.getGlobalBounds().intersects(bounds);
 }

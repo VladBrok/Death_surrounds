@@ -22,7 +22,7 @@ public:
     virtual void        update(const float deltaTime);
     void                updateView();
     void                updatePlayerKeyboardInput(const float deltaTime);
-    void                updateTilemap();
+    void                updateTilemap(const float deltaTime);
     virtual void        render(sf::RenderTarget* pTarget = nullptr);
 
 private:

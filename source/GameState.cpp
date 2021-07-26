@@ -63,8 +63,8 @@ void GameState::update(const float deltaTime)
     {
         updateView();
         updatePlayerKeyboardInput(deltaTime);
-        updateTilemap();
-        pPlayer->update(deltaTime);
+        updateTilemap(deltaTime);
+        pPlayer->update(deltaTime); 
     }
 }
 
@@ -99,9 +99,9 @@ void GameState::updatePlayerKeyboardInput(const float deltaTime)
 }
 
 
-void GameState::updateTilemap()
+void GameState::updateTilemap(const float deltaTime)
 {
-    pTilemap->updateCollision(*pPlayer);
+    pTilemap->updateCollision(*pPlayer, deltaTime);
 }
 
 
@@ -117,7 +117,7 @@ void GameState::render(sf::RenderTarget* pTarget)
 
     renderTexture.setView(view);
 
-    pTilemap->render(renderTexture);
+    pTilemap->render(renderTexture, pPlayer);
     pPlayer->render(renderTexture);
 
     renderTexture.setView(renderTexture.getDefaultView());
@@ -132,6 +132,9 @@ void GameState::render(sf::RenderTarget* pTarget)
 
     renderSprite.setTexture(renderTexture.getTexture());
     pTarget->draw(renderSprite);
+
+
+    // Rendering directly to the pTarget (window)
 
     //pTarget->setView(view);
 

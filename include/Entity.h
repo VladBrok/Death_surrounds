@@ -19,7 +19,13 @@ public:
                           
     void                  setPosition(const float posX, const float posY);
     const sf::Vector2f&   getPosition() const;
+    const sf::Vector2i    getGridPosition() const;
     const sf::FloatRect   getGlobalBounds() const;
+    const sf::FloatRect&  getNextPositionBounds(const float deltaTime) const;
+
+    void                  stopVelocity();
+    void                  stopVelocityX();
+    void                  stopVelocityY();
                         
 protected:              
                         

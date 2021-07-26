@@ -20,8 +20,9 @@ public:
     const std::string       getAsString() const; 
 
     const sf::Vector2f&     getPosition() const;
-
+    const sf::FloatRect     getGlobalBounds() const;
     bool                    tileCanCollide() const;
+    bool                    intersects(const sf::FloatRect& bounds);
 
 private:
 

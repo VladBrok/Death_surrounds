@@ -22,8 +22,8 @@ public:
                                     const bool canCollide
                                     );
     void                    removeTile(const int gridPosX, const int gridPosY, const int gridPosZ);
-    void                    render(sf::RenderTarget& target);
-    void                    updateCollision(Entity& entity);
+    void                    render(sf::RenderTarget& target, const Entity* pEntityAroundWhichRender = nullptr);
+    void                    updateCollision(Entity& entity, const float deltaTime);
 
     const sf::Texture&      getTextureSheet() const;
 
@@ -37,6 +37,10 @@ private:
     bool positionsAreCorrect(const int gridPosX, const int gridPosY, const int gridPosZ) const;
     void clearMap();
     void createEmptyMap(const int mapSizeX, const int mapSizeY, const int mapSizeZ);
+
+    void updateCollisionWithMapBounds(Entity& entity);
+    void updateCollisionWithTiles(Entity& entity, const float deltaTime);
+    void handleCollision(const Tile& tile, Entity& entity);
 };
 
 

@@ -12,7 +12,7 @@ Tilemap::Tilemap(const int mapSizeX, const int mapSizeY, const int mapSizeZ)
     collisionBox.setSize(sf::Vector2f(GRID_SIZE, GRID_SIZE));
     collisionBox.setFillColor(sf::Color(255, 0, 0, 45));
     collisionBox.setOutlineColor(sf::Color::Red);
-    collisionBox.setOutlineThickness(1.f);
+    collisionBox.setOutlineThickness(-1.f);
 
     mapSize.x = mapSizeX * GRID_SIZE;
     mapSize.y = mapSizeY * GRID_SIZE;
@@ -151,8 +151,56 @@ void Tilemap::removeTile(const int gridPosX, const int gridPosY, const int gridP
 }
 
 
-void Tilemap::render(sf::RenderTarget& target)
+void Tilemap::render(sf::RenderTarget& target, const Entity* pEntityAroundWhichRender)
 {
+    if (pEntityAroundWhichRender)
+    {
+        int z = 0;
+
+        // Calculating the rendering bounds
+        int fromX = pEntityAroundWhichRender->getGridPosition().x - 3;
+        if (fromX < 0)
+        {
+            fromX = 0;
+        }
+        int toX = pEntityAroundWhichRender->getGridPosition().x + 4;
+        if (toX > (int)map.size())
+        {
+            toX = map.size();
+        }
+
+        int fromY = pEntityAroundWhichRender->getGridPosition().y - 3;
+        if (fromY < 0)
+        {
+            fromY = 0;
+        }
+        int toY = pEntityAroundWhichRender->getGridPosition().y + 4;
+        if (toY > (int)map[0].size())
+        {
+            toY = map[0].size();
+        }
+
+        // Rendering the tilemap around the entity
+        for (int x = fromX; x < toX; ++x)
+        {
+            for (int y = fromY; y < toY; ++y)
+            {
+                if (map[x][y][z] != nullptr) // Rendering the tile
+                {
+                    map[x][y][z]->render(target);
+
+                    if (map[x][y][z]->tileCanCollide()) // Rendering the collision box
+                    {
+                        collisionBox.setPosition(map[x][y][z]->getPosition());
+                        target.draw(collisionBox);
+                    }
+                }
+            }
+        }
+        return;
+    }
+
+    // Rendering the whole tilemap
     for (size_t x = 0; x < map.size(); ++x)
     {
         for (size_t y = 0; y < map[x].size(); ++y)
@@ -175,33 +223,11 @@ void Tilemap::render(sf::RenderTarget& target)
 }
 
 
-void Tilemap::updateCollision(Entity& entity)
+void Tilemap::updateCollision(Entity& entity, const float deltaTime)
 {
-    // Checking collision with map bounds
+    updateCollisionWithMapBounds(entity);
 
-    // Left
-    if (entity.getPosition().x < 0.f)
-    {
-        entity.setPosition(0.f, entity.getPosition().y);
-    }
-
-    // Right
-    else if (entity.getPosition().x + entity.getGlobalBounds().width > mapSize.x)
-    {
-        entity.setPosition(mapSize.x - entity.getGlobalBounds().width, entity.getPosition().y);
-    }
-
-    // Top
-    if (entity.getPosition().y < 0.f)
-    {
-        entity.setPosition(entity.getPosition().x, 0.f);
-    }
-
-    // Bottom
-    else if (entity.getPosition().y + entity.getGlobalBounds().height > mapSize.y)
-    {
-        entity.setPosition(entity.getPosition().x, mapSize.y - entity.getGlobalBounds().height);
-    }
+    updateCollisionWithTiles(entity, deltaTime);
 }
 
 
@@ -250,4 +276,140 @@ void Tilemap::createEmptyMap(const int mapSizeX, const int mapSizeY, const int m
             )
         )
     );
+}
+
+
+void Tilemap::updateCollisionWithMapBounds(Entity& entity)
+{
+    // Left
+    if (entity.getPosition().x < 0.f)
+    {
+        entity.setPosition(0.f, entity.getPosition().y);
+        entity.stopVelocityX();
+    }
+
+    // Right
+    else if (entity.getPosition().x + entity.getGlobalBounds().width > mapSize.x)
+    {
+        entity.setPosition(mapSize.x - entity.getGlobalBounds().width, entity.getPosition().y);
+        entity.stopVelocityX();
+    }
+
+    // Top
+    if (entity.getPosition().y < 0.f)
+    {
+        entity.setPosition(entity.getPosition().x, 0.f);
+        entity.stopVelocityY();
+    }
+
+    // Bottom
+    else if (entity.getPosition().y + entity.getGlobalBounds().height > mapSize.y)
+    {
+        entity.setPosition(entity.getPosition().x, mapSize.y - entity.getGlobalBounds().height);
+        entity.stopVelocityY();
+    }
+}
+
+
+void Tilemap::updateCollisionWithTiles(Entity& entity, const float deltaTime)
+{
+    // Calculating the checking bounds
+    int z = 0;
+
+    int fromX = entity.getGridPosition().x - 1;
+    if (fromX < 0)
+    {
+        fromX = 0;
+    }
+
+    int toX = entity.getGridPosition().x + 3;
+    if (toX > (int)map.size())
+    {
+        toX = map.size();
+    }
+
+    int fromY = entity.getGridPosition().y - 1;
+    if (fromY < 0)
+    {
+        fromY = 0;
+    }
+
+    int toY = entity.getGridPosition().y + 3;
+    if (toY > (int)map[0].size())
+    {
+        toY = map[0].size();
+    }
+    
+
+    // Checking for the intersection
+    for (int x = fromX; x < toX; ++x)
+    {
+        for (int y = fromY; y < toY; ++y)
+        {
+            if (map[x][y][z] != nullptr &&
+                map[x][y][z]->tileCanCollide() &&
+                map[x][y][z]->intersects(entity.getNextPositionBounds(deltaTime))
+                )
+            {
+                handleCollision(*map[x][y][z], entity);
+            }
+        }
+    }
+}
+
+
+void Tilemap::handleCollision(const Tile& tile, Entity& entity)
+{
+    sf::FloatRect entityBounds       = entity.getGlobalBounds();
+    sf::FloatRect tileBounds         = tile.getGlobalBounds();
+
+    // Checking the collision side of the entity
+
+    // Bottom collision
+    if (entityBounds.top < tileBounds.top && 
+        entityBounds.top + entityBounds.height < tileBounds.top + tileBounds.height && 
+        entityBounds.left < tileBounds.left + tileBounds.width &&
+        entityBounds.left + entityBounds.width > tileBounds.left
+       )
+    {
+        entity.stopVelocityY();
+        entity.setPosition(entityBounds.left, tileBounds.top - entityBounds.height);
+        std::cout << "BOTTOM\n";
+    }
+
+    // Top collision
+    else if (entityBounds.top > tileBounds.top && 
+             entityBounds.top + entityBounds.height > tileBounds.top + tileBounds.height && 
+             entityBounds.left < tileBounds.left + tileBounds.width && 
+             entityBounds.left + entityBounds.width > tileBounds.left
+           )
+    {
+        entity.stopVelocityY();
+        entity.setPosition(entityBounds.left, tileBounds.top + tileBounds.height);
+        std::cout << "TOP\n";
+    }
+
+    // Right collision
+    if (entityBounds.left < tileBounds.left &&
+        entityBounds.left + entityBounds.width < tileBounds.left + tileBounds.width && 
+        entityBounds.top < tileBounds.top + tileBounds.height &&
+        entityBounds.top + entityBounds.height > tileBounds.top
+       )
+    {
+        entity.stopVelocityX();
+        entity.setPosition(tileBounds.left - entityBounds.width, entityBounds.top);
+        std::cout << "RIGHT\n";
+    }
+
+    // Left collision
+    else if (entityBounds.left > tileBounds.left &&
+             entityBounds.left + entityBounds.width > tileBounds.left + tileBounds.width &&
+             entityBounds.top < tileBounds.top + tileBounds.height && 
+             entityBounds.top + entityBounds.height > tileBounds.top
+            )
+    {
+        entity.stopVelocityX();
+        entity.setPosition(tileBounds.left + tileBounds.width, entityBounds.top);
+        std::cout << "LEFT\n";
+    }
 }

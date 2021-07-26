@@ -1,5 +1,6 @@
 #include "precompiled.h"
 #include "Entity.h"
+#include "constants.h"
 
 
 Entity::Entity(const sf::Texture& texture)
@@ -70,6 +71,18 @@ const sf::Vector2f& Entity::getPosition() const
 }
 
 
+const sf::Vector2i Entity::getGridPosition() const
+{
+    if (pHitboxComponent)
+    {
+        return sf::Vector2i(
+            static_cast<sf::Vector2i>(pHitboxComponent->getPosition()) / static_cast<int>(GRID_SIZE)
+        );
+    }
+    return static_cast<sf::Vector2i>(sprite.getPosition()) / static_cast<int>(GRID_SIZE);
+}
+
+
 const sf::FloatRect Entity::getGlobalBounds() const
 {
     if (pHitboxComponent)
@@ -77,6 +90,42 @@ const sf::FloatRect Entity::getGlobalBounds() const
         return pHitboxComponent->getGlobalBounds();
     }
     return sprite.getGlobalBounds();
+}
+
+
+const sf::FloatRect& Entity::getNextPositionBounds(const float deltaTime) const
+{
+    if (pHitboxComponent && pMovementComponent)
+    {
+        return pHitboxComponent->getNextPositionBounds(pMovementComponent->getVelocity() * deltaTime);
+    }
+}
+
+
+void Entity::stopVelocity()
+{
+    if (pMovementComponent)
+    {
+        pMovementComponent->stopVelocity();
+    }
+}
+
+
+void Entity::stopVelocityX()
+{
+    if (pMovementComponent)
+    {
+        pMovementComponent->stopVelocityX();
+    }
+}
+
+
+void Entity::stopVelocityY()
+{
+    if (pMovementComponent)
+    {
+        pMovementComponent->stopVelocityY();
+    }
 }
 
 
