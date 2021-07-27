@@ -14,8 +14,9 @@ Tilemap::Tilemap(const int mapSizeX, const int mapSizeY, const int mapSizeZ)
     collisionBox.setOutlineColor(sf::Color::Red);
     collisionBox.setOutlineThickness(-1.f);
 
-    mapSize.x = mapSizeX * GRID_SIZE;
-    mapSize.y = mapSizeY * GRID_SIZE;
+    mapGridSize.x = mapSizeX * GRID_SIZE;
+    mapGridSize.y = mapSizeY * GRID_SIZE;
+    mapGridSize.z = mapSizeZ * GRID_SIZE;
 }
 
 
@@ -155,71 +156,48 @@ void Tilemap::removeTile(const int gridPosX, const int gridPosY, const int gridP
 }
 
 
-void Tilemap::render(sf::RenderTarget& target, const Entity* pEntityAroundWhichRender)
+void Tilemap::render(sf::RenderTarget& target, 
+                     const sf::Vector2i& gridPositionAroundWhichRender
+                     )
 {
-    if (pEntityAroundWhichRender)
+    int z = 0;
+
+    // Calculating the rendering bounds
+    int fromX = gridPositionAroundWhichRender.x - 3;
+    if (fromX < 0)
     {
-        int z = 0;
-
-        // Calculating the rendering bounds
-        int fromX = pEntityAroundWhichRender->getGridPosition().x - 3;
-        if (fromX < 0)
-        {
-            fromX = 0;
-        }
-        int toX = pEntityAroundWhichRender->getGridPosition().x + 4;
-        if (toX > (int)map.size())
-        {
-            toX = map.size();
-        }
-
-        int fromY = pEntityAroundWhichRender->getGridPosition().y - 3;
-        if (fromY < 0)
-        {
-            fromY = 0;
-        }
-        int toY = pEntityAroundWhichRender->getGridPosition().y + 4;
-        if (toY > (int)map[0].size())
-        {
-            toY = map[0].size();
-        }
-
-        // Rendering the tilemap around the entity
-        for (int x = fromX; x < toX; ++x)
-        {
-            for (int y = fromY; y < toY; ++y)
-            {
-                for (int k = 0; k < (int)map[x][y][z].size(); ++k)
-                {
-                    map[x][y][z][k]->render(target); // Rendering the tile
-
-                    if (map[x][y][z][k]->tileCanCollide()) // Rendering the collision box
-                    {
-                        collisionBox.setPosition(map[x][y][z][k]->getPosition());
-                        target.draw(collisionBox);
-                    }
-                }
-            }
-        }
-        return;
+        fromX = 0;
+    }
+    int toX = gridPositionAroundWhichRender.x + 4;
+    if (toX > (int)map.size())
+    {
+        toX = map.size();
     }
 
-    // Rendering the whole tilemap
-    for (size_t x = 0; x < map.size(); ++x)
+    int fromY = gridPositionAroundWhichRender.y - 3;
+    if (fromY < 0)
     {
-        for (size_t y = 0; y < map[x].size(); ++y)
-        {
-            for (size_t z = 0; z < map[x][y].size(); ++z)
-            {
-                for (size_t k = 0; k < map[x][y][z].size(); ++k)
-                {
-                    map[x][y][z][k]->render(target);
+        fromY = 0;
+    }
+    int toY = gridPositionAroundWhichRender.y + 4;
+    if (toY > (int)map[0].size())
+    {
+        toY = map[0].size();
+    }
 
-                    if (map[x][y][z][k]->tileCanCollide()) // Rendering the collision box
-                    {
-                        collisionBox.setPosition(map[x][y][z][k]->getPosition());
-                        target.draw(collisionBox);
-                    }
+    // Rendering the tilemap around the specified grid position
+    for (int x = fromX; x < toX; ++x)
+    {
+        for (int y = fromY; y < toY; ++y)
+        {
+            for (int k = 0; k < (int)map[x][y][z].size(); ++k)
+            {
+                map[x][y][z][k]->render(target); // Rendering the tile
+
+                if (map[x][y][z][k]->tileCanCollide()) // Rendering the collision box
+                {
+                    collisionBox.setPosition(map[x][y][z][k]->getPosition());
+                    target.draw(collisionBox);
                 }
             }
         }
@@ -235,17 +213,27 @@ void Tilemap::updateCollision(Entity& entity, const float deltaTime)
 }
 
 
+const sf::Texture& Tilemap::getTextureSheet() const
+{
+    return textureSheet;
+}
+
+
+int Tilemap::getNumberOfTilesAtPosition(const sf::Vector2i& gridPosition, const int layer)
+{
+    if (positionsAreCorrect(gridPosition.x, gridPosition.y, layer))
+    {
+        return map[gridPosition.x][gridPosition.y][layer].size();
+    }
+    return -1;
+}
+
+
 bool Tilemap::positionsAreCorrect(const int gridPosX, const int gridPosY, const int gridPosZ) const
 {
     return gridPosX >= 0 && gridPosX < (int)map.size() &&
            gridPosY >= 0 && gridPosY < (int)map[gridPosX].size() &&
            gridPosZ >= 0 && gridPosZ < (int)map[gridPosX][gridPosY].size();
-}
-
-
-const sf::Texture& Tilemap::getTextureSheet() const
-{
-    return textureSheet;
 }
 
 
@@ -298,9 +286,9 @@ void Tilemap::updateCollisionWithMapBounds(Entity& entity, const float deltaTime
     }
 
     // Right
-    else if (entity.getNextPositionBounds(deltaTime).left + entity.getGlobalBounds().width > mapSize.x)
+    else if (entity.getNextPositionBounds(deltaTime).left + entity.getGlobalBounds().width > mapGridSize.x)
     {
-        entity.setPosition(mapSize.x - entity.getGlobalBounds().width, entity.getPosition().y);
+        entity.setPosition(mapGridSize.x - entity.getGlobalBounds().width, entity.getPosition().y);
         entity.stopVelocityX();
     }
 
@@ -312,9 +300,9 @@ void Tilemap::updateCollisionWithMapBounds(Entity& entity, const float deltaTime
     }
 
     // Bottom
-    else if (entity.getNextPositionBounds(deltaTime).top + entity.getGlobalBounds().height > mapSize.y)
+    else if (entity.getNextPositionBounds(deltaTime).top + entity.getGlobalBounds().height > mapGridSize.y)
     {
-        entity.setPosition(entity.getPosition().x, mapSize.y - entity.getGlobalBounds().height);
+        entity.setPosition(entity.getPosition().x, mapGridSize.y - entity.getGlobalBounds().height);
         entity.stopVelocityY();
     }
 }

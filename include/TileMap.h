@@ -22,17 +22,20 @@ public:
                                     const bool canCollide
                                     );
     void                    removeTile(const int gridPosX, const int gridPosY, const int gridPosZ);
-    void                    render(sf::RenderTarget& target, const Entity* pEntityAroundWhichRender = nullptr);
+    void                    render(sf::RenderTarget& target, 
+                                   const sf::Vector2i& gridPositionAroundWhichRender
+                                   );
     void                    updateCollision(Entity& entity, const float deltaTime);
 
     const sf::Texture&      getTextureSheet() const;
+    int                     getNumberOfTilesAtPosition(const sf::Vector2i& gridPosition, const int layer);
 
 private:
 
     std::vector< std::vector< std::vector< std::vector< Tile* > > > > map;
     sf::Texture                                        textureSheet;
     sf::RectangleShape                                 collisionBox;
-    sf::Vector2f                                       mapSize;
+    sf::Vector3f                                       mapGridSize;
 
     bool positionsAreCorrect(const int gridPosX, const int gridPosY, const int gridPosZ) const;
     void clearMap();

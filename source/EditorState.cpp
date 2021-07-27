@@ -8,7 +8,7 @@ EditorState::EditorState(sf::RenderWindow& window,
                              std::stack<State*>* const pStates
                              )
     : State(window, pSupportedKeys, pStates), 
-      tileMap(TILEMAP_SIZE_X, TILEMAP_SIZE_Y, TILEMAP_SIZE_Z),
+      tilemap(TILEMAP_GRID_SIZE_X, TILEMAP_GRID_SIZE_Y, TILEMAP_GRID_SIZE_Z),
       sideBarIsActive(false),
       hideTextureSelector(false),
       tileCanCollide(false)
@@ -87,12 +87,12 @@ void EditorState::processPauseMenuEvent(const sf::Event& event)
 
     if (pPauseMenu->isButtonPressed("LOAD"))
     {
-        tileMap.loadFromFile("Resources\\Data\\tile_map.txt");
+        tilemap.loadFromFile("Resources\\Data\\tile_map.txt");
     }
 
     else if (pPauseMenu->isButtonPressed("SAVE"))
     {
-        tileMap.saveToFile("Resources\\Data\\tile_map.txt");
+        tilemap.saveToFile("Resources\\Data\\tile_map.txt");
     }
 
     else if (pPauseMenu->isButtonPressed("GO_TO_MAIN_MENU"))
@@ -130,13 +130,13 @@ void EditorState::processTilemapEvent(const sf::Event& event)
         // Adding the tile
         if (event.mouseButton.button == sf::Mouse::Left)
         {
-            tileMap.addTile(mousePosGrid.x, mousePosGrid.y, 0, textureRect, tileCanCollide);
+            tilemap.addTile(mousePosGrid.x, mousePosGrid.y, 0, textureRect, tileCanCollide);
         }
 
         // Removing the tile
         else if (event.mouseButton.button == sf::Mouse::Right)
         {
-            tileMap.removeTile(mousePosGrid.x, mousePosGrid.y, 0);
+            tilemap.removeTile(mousePosGrid.x, mousePosGrid.y, 0);
         }
     } 
 }
@@ -211,9 +211,12 @@ void EditorState::updateView(const float deltaTime)
 
 void EditorState::updateCursorText()
 {
+    int activeLayer = 0; // The active layer of the tilemap (grid position in the z-axis)
+
     std::stringstream sstream;
     sstream << "Grid position:     (" << mousePosGrid.x << ';' << mousePosGrid.y << ")\n";
     sstream << "Tile can collide:  " << (tileCanCollide ? "true": "false") << '\n';
+    sstream << "Number of tiles:   " << tilemap.getNumberOfTilesAtPosition(mousePosGrid, activeLayer) << '\n';
 
     cursorText.setString(sstream.str());
     cursorText.setPosition(mousePosView.x + 15.f, mousePosView.y);
@@ -253,7 +256,7 @@ void EditorState::render(sf::RenderTarget* pTarget)
 
     pTarget->setView(view);
 
-    tileMap.render(*pTarget);
+    tilemap.render(*pTarget, mousePosGrid);
 
     pTarget->setView(pTarget->getDefaultView());
 
@@ -352,7 +355,7 @@ void EditorState::initTileAndTextureSelectors()
     tileSelector.setOutlineThickness(1.f);
     tileSelector.setOutlineColor(sf::Color::White);
 
-    tileSelector.setTexture(&tileMap.getTextureSheet());
+    tileSelector.setTexture(&tilemap.getTextureSheet());
     tileSelector.setTextureRect(textureRect);
 
     pTextureSelector = new TextureSelector(
@@ -360,7 +363,7 @@ void EditorState::initTileAndTextureSelectors()
                                GRID_SIZE / 2.f, 
                                GRID_SIZE * 10, 
                                GRID_SIZE * 2, 
-                               tileMap.getTextureSheet()
+                               tilemap.getTextureSheet()
                            );
 }
 

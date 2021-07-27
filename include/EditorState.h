@@ -43,7 +43,7 @@ private:
     sf::View                                 view;
 
     // Tilemap and selectors
-    Tilemap                                  tileMap;
+    Tilemap                                  tilemap;
     sf::RectangleShape                       tileSelector;
     TextureSelector*                         pTextureSelector;
     bool                                     hideTextureSelector;

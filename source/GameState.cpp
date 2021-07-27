@@ -117,7 +117,7 @@ void GameState::render(sf::RenderTarget* pTarget)
 
     renderTexture.setView(view);
 
-    pTilemap->render(renderTexture, pPlayer);
+    pTilemap->render(renderTexture, pPlayer->getGridPosition());
     pPlayer->render(renderTexture);
 
     renderTexture.setView(renderTexture.getDefaultView());
@@ -170,7 +170,7 @@ void GameState::initRenderTexture()
 
 void GameState::initTilemap()
 {
-    pTilemap = new Tilemap(TILEMAP_SIZE_X, TILEMAP_SIZE_Y, TILEMAP_SIZE_Z);
+    pTilemap = new Tilemap(TILEMAP_GRID_SIZE_X, TILEMAP_GRID_SIZE_Y, TILEMAP_GRID_SIZE_Z);
     pTilemap->loadFromFile("Resources\\Data\\tile_map.txt");
 }
 
