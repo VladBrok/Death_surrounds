@@ -91,6 +91,9 @@
     <ClCompile Include="source\Tilemap.cpp">
       <Filter>Tilemap</Filter>
     </ClCompile>
+    <ClCompile Include="source\AttributeComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AnimationComponent.h">
@@ -149,6 +152,9 @@
     </ClInclude>
     <ClInclude Include="include\Tilemap.h">
       <Filter>Tilemap</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AttributeComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

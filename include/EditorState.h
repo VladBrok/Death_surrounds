@@ -56,6 +56,7 @@ private:
     // Cursor text
     sf::Text                                 cursorText;
     bool                                     tileCanCollide;
+    int                                      tileType;
 
     
     virtual void                             initTextures();

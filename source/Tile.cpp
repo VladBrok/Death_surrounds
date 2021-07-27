@@ -3,13 +3,21 @@
 #include "constants.h"
 
 
+const std::string Tile::strTypes[NUMBER_OF_TILE_TYPES] = 
+{
+    "Default",
+    "Rendering_deferred"
+};
+
+
 Tile::Tile(const float posX, 
            const float posY, 
            const sf::Texture& textureSheet, 
            const sf::IntRect& textureRect,
-           const bool canCollide
+           const bool canCollide,
+           const TileType type
            )
-    : textureRect(textureRect), canCollide(canCollide)
+    : textureRect(textureRect), canCollide(canCollide), type(type)
 {
     tile.setSize(sf::Vector2f(GRID_SIZE, GRID_SIZE));
     tile.setPosition(posX, posY);
@@ -50,6 +58,20 @@ const std::string Tile::getAsString() const
     data << textureRect.left << ' ' << textureRect.top << ' ';
 
     return data.str();
+}
+
+
+TileType Tile::getType() const
+{
+    return type;
+}
+
+
+const std::string& Tile::getTypeAsString(const TileType type)
+{
+    assert(type >= 0 && type < NUMBER_OF_TILE_TYPES);
+
+    return strTypes[type];
 }
 
 

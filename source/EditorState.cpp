@@ -11,7 +11,8 @@ EditorState::EditorState(sf::RenderWindow& window,
       tilemap(TILEMAP_GRID_SIZE_X, TILEMAP_GRID_SIZE_Y, TILEMAP_GRID_SIZE_Z),
       sideBarIsActive(false),
       hideTextureSelector(false),
-      tileCanCollide(false)
+      tileCanCollide(false),
+      tileType(0)
 {
     stateType = STATE_UPDATES_AND_PROCESSES_EVENTS;
 
@@ -76,6 +77,12 @@ void EditorState::processEvent(const sf::Event& event)
         {
             tileCanCollide = !tileCanCollide;
         }
+
+        // Changing the tile type
+        else if (event.key.code == keybinds.at("TILE_TYPE"))
+        {
+            tileType = (tileType + 1 >= NUMBER_OF_TILE_TYPES) ? 0: (tileType + 1);
+        }
     }
 }
 
@@ -112,7 +119,7 @@ void EditorState::processButtonsEvent(const sf::Event& event)
     // Open or close the texture selector
     if (buttons["TEXTURE_SELECTOR"]->isPressed(false) ||
        (event.type == sf::Event::KeyPressed &&
-        event.key.code ==  keybinds.at("TEXTURE_SELECTOR")))
+        event.key.code == keybinds.at("TEXTURE_SELECTOR")))
     {
         hideTextureSelector = !hideTextureSelector;
         if (hideTextureSelector)
@@ -130,7 +137,7 @@ void EditorState::processTilemapEvent(const sf::Event& event)
         // Adding the tile
         if (event.mouseButton.button == sf::Mouse::Left)
         {
-            tilemap.addTile(mousePosGrid.x, mousePosGrid.y, 0, textureRect, tileCanCollide);
+            tilemap.addTile(mousePosGrid.x, mousePosGrid.y, 0, textureRect, tileCanCollide, static_cast<TileType>(tileType));
         }
 
         // Removing the tile
@@ -216,6 +223,7 @@ void EditorState::updateCursorText()
     std::stringstream sstream;
     sstream << "Grid position:     (" << mousePosGrid.x << ';' << mousePosGrid.y << ")\n";
     sstream << "Tile can collide:  " << (tileCanCollide ? "true": "false") << '\n';
+    sstream << "Tile type:              " << tilemap.getTileTypeAsString(static_cast<TileType>(tileType)) << '\n';
     sstream << "Number of tiles:   " << tilemap.getNumberOfTilesAtPosition(mousePosGrid, activeLayer) << '\n';
 
     cursorText.setString(sstream.str());
@@ -257,6 +265,7 @@ void EditorState::render(sf::RenderTarget* pTarget)
     pTarget->setView(view);
 
     tilemap.render(*pTarget, mousePosGrid);
+    tilemap.renderDeferred(*pTarget);
 
     pTarget->setView(pTarget->getDefaultView());
 

@@ -119,6 +119,7 @@ void GameState::render(sf::RenderTarget* pTarget)
 
     pTilemap->render(renderTexture, pPlayer->getGridPosition());
     pPlayer->render(renderTexture);
+    pTilemap->renderDeferred(renderTexture);
 
     renderTexture.setView(renderTexture.getDefaultView());
 
@@ -132,21 +133,6 @@ void GameState::render(sf::RenderTarget* pTarget)
 
     renderSprite.setTexture(renderTexture.getTexture());
     pTarget->draw(renderSprite);
-
-
-    // Rendering directly to the pTarget (window)
-
-    //pTarget->setView(view);
-
-    //pTilemap->render(*pTarget);
-    //pPlayer->render(*pTarget);
-
-    //pTarget->setView(renderTexture.getDefaultView());
-
-    //if (stateIsPaused)
-    //{
-    //    pPauseMenu->render(*pTarget);
-    //}
 }
 
 

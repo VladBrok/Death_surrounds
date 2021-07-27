@@ -2,33 +2,46 @@
 #define TILE_H
 
 
+enum TileType
+{
+    DEFAULT,
+    RENDERING_DEFERRED,
+    NUMBER_OF_TILE_TYPES
+};
+
+
 class Tile
 {
 public:
 
-                            Tile(const float posX, 
-                                 const float posY, 
-                                 const sf::Texture& textureSheet, 
-                                 const sf::IntRect& textureRect,
-                                 const bool canCollide
-                                 );
-    virtual                 ~Tile();
-
-    void                    render(sf::RenderTarget& target);
+                                           Tile(const float posX, 
+                                                const float posY, 
+                                                const sf::Texture& textureSheet, 
+                                                const sf::IntRect& textureRect,
+                                                const bool canCollide,
+                                                const TileType type
+                                                );
+    virtual                                ~Tile();
+                                           
+    void                                   render(sf::RenderTarget& target);
 
     // Returns string with the texture rectangle position
-    const std::string       getAsString() const; 
-
-    const sf::Vector2f&     getPosition() const;
-    const sf::FloatRect     getGlobalBounds() const;
-    bool                    tileCanCollide() const;
-    bool                    intersects(const sf::FloatRect& bounds);
-
-private:
-
-    sf::RectangleShape      tile;
-    sf::IntRect             textureRect;
-    bool                    canCollide;
+    const std::string                      getAsString() const; 
+                                           
+    const sf::Vector2f&                    getPosition() const;
+    const sf::FloatRect                    getGlobalBounds() const;
+    TileType                               getType() const;
+    static const std::string&              getTypeAsString(const TileType type);
+    bool                                   tileCanCollide() const;
+    bool                                   intersects(const sf::FloatRect& bounds);
+                               
+private:                       
+                               
+    sf::RectangleShape                     tile;
+    sf::IntRect                            textureRect;
+    TileType                               type;
+    bool                                   canCollide;
+    static const std::string               strTypes[NUMBER_OF_TILE_TYPES];
 };
 
 

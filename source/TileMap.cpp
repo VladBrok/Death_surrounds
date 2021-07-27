@@ -14,9 +14,9 @@ Tilemap::Tilemap(const int mapSizeX, const int mapSizeY, const int mapSizeZ)
     collisionBox.setOutlineColor(sf::Color::Red);
     collisionBox.setOutlineThickness(-1.f);
 
-    mapGridSize.x = mapSizeX * GRID_SIZE;
-    mapGridSize.y = mapSizeY * GRID_SIZE;
-    mapGridSize.z = mapSizeZ * GRID_SIZE;
+    mapSize.x = mapSizeX * GRID_SIZE;
+    mapSize.y = mapSizeY * GRID_SIZE;
+    mapSize.z = mapSizeZ * GRID_SIZE;
 }
 
 
@@ -36,7 +36,8 @@ void Tilemap::saveToFile(const std::string& fileName)
             All tiles:
                 1) tile grid position     - gridPosX gridPosY gridPosZ;
                 2) tile collision ability - canCollide
-                3) tile texture rectangle - x y.
+                3) tile type              - type
+                4) tile texture rectangle - x y.
     */
 
     std::ofstream file;
@@ -59,8 +60,9 @@ void Tilemap::saveToFile(const std::string& fileName)
                 for (size_t k = 0; k < map[x][y][z].size(); ++k)
                 {
                     file << x << ' ' << y << ' '<< z << ' ' 
-                         << map[x][y][z][k]->tileCanCollide()
-                         << ' ' << map[x][y][z][k]->getAsString();
+                         << map[x][y][z][k]->tileCanCollide() << ' '
+                         << map[x][y][z][k]->getType() << ' '
+                         << map[x][y][z][k]->getAsString();
                 }
             }
         }
@@ -94,6 +96,7 @@ void Tilemap::loadFromFile(const std::string& fileName)
     {
          clearMap();
          createEmptyMap(mapSizeX, mapSizeY, mapSizeZ);
+         mapSize = sf::Vector3f(mapSizeX * GRID_SIZE, mapSizeY * GRID_SIZE, mapSizeZ * GRID_SIZE);
     }
 
 
@@ -101,9 +104,10 @@ void Tilemap::loadFromFile(const std::string& fileName)
     int gridPosY = 0;
     int gridPosZ = 0;
     bool canCollide = false;
+    int type = 0;
     sf::IntRect textureRect(0, 0, (int)GRID_SIZE, (int)GRID_SIZE);
     
-    while (file >> gridPosX >> gridPosY >> gridPosZ >> canCollide >> textureRect.left >> textureRect.top)
+    while (file >> gridPosX >> gridPosY >> gridPosZ >> canCollide >> type >> textureRect.left >> textureRect.top)
     {
         map[gridPosX][gridPosY][gridPosZ].push_back(
             new Tile(
@@ -111,7 +115,8 @@ void Tilemap::loadFromFile(const std::string& fileName)
                   gridPosY * GRID_SIZE, 
                   textureSheet,
                   textureRect,
-                  canCollide
+                  canCollide,
+                  static_cast<TileType>(type)
             )
         );
         if (file.fail() || mapSizeX <= 0 || mapSizeY <= 0 || mapSizeZ <= 0)
@@ -127,7 +132,8 @@ void Tilemap::addTile(const int gridPosX,
                       const int gridPosY, 
                       const int gridPosZ, 
                       const sf::IntRect& textureRect,
-                      const bool canCollide
+                      const bool canCollide,
+                      const TileType type
                       )
 {
     if (positionsAreCorrect(gridPosX, gridPosY, gridPosZ))
@@ -138,7 +144,8 @@ void Tilemap::addTile(const int gridPosX,
                   gridPosY * GRID_SIZE, 
                   textureSheet,
                   textureRect,
-                  canCollide
+                  canCollide,
+                  type
             )
         );
     }
@@ -160,6 +167,7 @@ void Tilemap::render(sf::RenderTarget& target,
                      const sf::Vector2i& gridPositionAroundWhichRender
                      )
 {
+    // FIXME
     int z = 0;
 
     // Calculating the rendering bounds
@@ -192,7 +200,14 @@ void Tilemap::render(sf::RenderTarget& target,
         {
             for (int k = 0; k < (int)map[x][y][z].size(); ++k)
             {
-                map[x][y][z][k]->render(target); // Rendering the tile
+                if (map[x][y][z][k]->getType() == RENDERING_DEFERRED) // Pushing the tile to the stack for deferred render
+                {
+                    tilesForDeferredRender.push(map[x][y][z][k]);
+                }
+                else // Rendering the tile
+                {
+                    map[x][y][z][k]->render(target); 
+                }
 
                 if (map[x][y][z][k]->tileCanCollide()) // Rendering the collision box
                 {
@@ -201,6 +216,16 @@ void Tilemap::render(sf::RenderTarget& target,
                 }
             }
         }
+    }
+}
+
+
+void Tilemap::renderDeferred(sf::RenderTarget& target)
+{
+    while (!tilesForDeferredRender.empty())
+    {
+        tilesForDeferredRender.top()->render(target);
+        tilesForDeferredRender.pop();
     }
 }
 
@@ -226,6 +251,12 @@ int Tilemap::getNumberOfTilesAtPosition(const sf::Vector2i& gridPosition, const 
         return map[gridPosition.x][gridPosition.y][layer].size();
     }
     return -1;
+}
+
+
+const std::string& Tilemap::getTileTypeAsString(const int type)
+{
+    return Tile::getTypeAsString(static_cast<TileType>(type));
 }
 
 
@@ -286,9 +317,9 @@ void Tilemap::updateCollisionWithMapBounds(Entity& entity, const float deltaTime
     }
 
     // Right
-    else if (entity.getNextPositionBounds(deltaTime).left + entity.getGlobalBounds().width > mapGridSize.x)
+    else if (entity.getNextPositionBounds(deltaTime).left + entity.getGlobalBounds().width > mapSize.x)
     {
-        entity.setPosition(mapGridSize.x - entity.getGlobalBounds().width, entity.getPosition().y);
+        entity.setPosition(mapSize.x - entity.getGlobalBounds().width, entity.getPosition().y);
         entity.stopVelocityX();
     }
 
@@ -300,9 +331,9 @@ void Tilemap::updateCollisionWithMapBounds(Entity& entity, const float deltaTime
     }
 
     // Bottom
-    else if (entity.getNextPositionBounds(deltaTime).top + entity.getGlobalBounds().height > mapGridSize.y)
+    else if (entity.getNextPositionBounds(deltaTime).top + entity.getGlobalBounds().height > mapSize.y)
     {
-        entity.setPosition(entity.getPosition().x, mapGridSize.y - entity.getGlobalBounds().height);
+        entity.setPosition(entity.getPosition().x, mapSize.y - entity.getGlobalBounds().height);
         entity.stopVelocityY();
     }
 }

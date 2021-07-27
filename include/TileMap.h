@@ -19,23 +19,27 @@ public:
                                     const int gridPosY, 
                                     const int gridPosZ, 
                                     const sf::IntRect& textureRect,
-                                    const bool canCollide
+                                    const bool canCollide,
+                                    const TileType type
                                     );
     void                    removeTile(const int gridPosX, const int gridPosY, const int gridPosZ);
     void                    render(sf::RenderTarget& target, 
                                    const sf::Vector2i& gridPositionAroundWhichRender
                                    );
+    void                    renderDeferred(sf::RenderTarget& target);
     void                    updateCollision(Entity& entity, const float deltaTime);
 
     const sf::Texture&      getTextureSheet() const;
     int                     getNumberOfTilesAtPosition(const sf::Vector2i& gridPosition, const int layer);
+    const std::string&      getTileTypeAsString(const int type);
 
 private:
 
     std::vector< std::vector< std::vector< std::vector< Tile* > > > > map;
-    sf::Texture                                        textureSheet;
-    sf::RectangleShape                                 collisionBox;
-    sf::Vector3f                                       mapGridSize;
+    sf::Texture                                                       textureSheet;
+    sf::RectangleShape                                                collisionBox;
+    sf::Vector3f                                                      mapSize;
+    std::stack<Tile*>                                                 tilesForDeferredRender;
 
     bool positionsAreCorrect(const int gridPosX, const int gridPosY, const int gridPosZ) const;
     void clearMap();
