@@ -55,10 +55,11 @@ void Tilemap::saveToFile(const std::string& fileName)
         {
             for (size_t z = 0; z < map[x][y].size(); ++z)
             {
-                if (map[x][y][z] != nullptr)
+                for (size_t k = 0; k < map[x][y][z].size(); ++k)
                 {
-                    file << x << ' ' << y << ' '<< z << ' ' << map[x][y][z]->tileCanCollide()
-                         << ' ' << map[x][y][z]->getAsString();
+                    file << x << ' ' << y << ' '<< z << ' ' 
+                         << map[x][y][z][k]->tileCanCollide()
+                         << ' ' << map[x][y][z][k]->getAsString();
                 }
             }
         }
@@ -103,13 +104,15 @@ void Tilemap::loadFromFile(const std::string& fileName)
     
     while (file >> gridPosX >> gridPosY >> gridPosZ >> canCollide >> textureRect.left >> textureRect.top)
     {
-        map[gridPosX][gridPosY][gridPosZ] = new Tile(
-                                            gridPosX * GRID_SIZE, 
-                                            gridPosY * GRID_SIZE, 
-                                            textureSheet,
-                                            textureRect,
-                                            canCollide
-                                         );
+        map[gridPosX][gridPosY][gridPosZ].push_back(
+            new Tile(
+                  gridPosX * GRID_SIZE, 
+                  gridPosY * GRID_SIZE, 
+                  textureSheet,
+                  textureRect,
+                  canCollide
+            )
+        );
         if (file.fail() || mapSizeX <= 0 || mapSizeY <= 0 || mapSizeZ <= 0)
         {
             std::cout << "ERROR in Tilemap::loadFromFile: the data in the file " << fileName << " are damaged. Tilemap is not loaded.\n";
@@ -126,16 +129,17 @@ void Tilemap::addTile(const int gridPosX,
                       const bool canCollide
                       )
 {
-    if (positionsAreCorrect(gridPosX, gridPosY, gridPosZ) &&
-        map[gridPosX][gridPosY][gridPosZ] == nullptr)
+    if (positionsAreCorrect(gridPosX, gridPosY, gridPosZ))
     {
-        map[gridPosX][gridPosY][gridPosZ] = new Tile(
-                                                 gridPosX * GRID_SIZE, 
-                                                 gridPosY * GRID_SIZE, 
-                                                 textureSheet,
-                                                 textureRect,
-                                                 canCollide
-                                                );
+        map[gridPosX][gridPosY][gridPosZ].push_back(
+            new Tile(
+                  gridPosX * GRID_SIZE, 
+                  gridPosY * GRID_SIZE, 
+                  textureSheet,
+                  textureRect,
+                  canCollide
+            )
+        );
     }
 }
 
@@ -143,10 +147,10 @@ void Tilemap::addTile(const int gridPosX,
 void Tilemap::removeTile(const int gridPosX, const int gridPosY, const int gridPosZ)
 {
     if (positionsAreCorrect(gridPosX, gridPosY, gridPosZ) &&
-        map[gridPosX][gridPosY][gridPosZ] != nullptr)
+        !map[gridPosX][gridPosY][gridPosZ].empty())
     {
-        delete map[gridPosX][gridPosY][gridPosZ];
-        map[gridPosX][gridPosY][gridPosZ] = nullptr;
+        delete map[gridPosX][gridPosY][gridPosZ].back();
+        map[gridPosX][gridPosY][gridPosZ].pop_back();
     }
 }
 
@@ -185,13 +189,13 @@ void Tilemap::render(sf::RenderTarget& target, const Entity* pEntityAroundWhichR
         {
             for (int y = fromY; y < toY; ++y)
             {
-                if (map[x][y][z] != nullptr) // Rendering the tile
+                for (int k = 0; k < (int)map[x][y][z].size(); ++k)
                 {
-                    map[x][y][z]->render(target);
+                    map[x][y][z][k]->render(target); // Rendering the tile
 
-                    if (map[x][y][z]->tileCanCollide()) // Rendering the collision box
+                    if (map[x][y][z][k]->tileCanCollide()) // Rendering the collision box
                     {
-                        collisionBox.setPosition(map[x][y][z]->getPosition());
+                        collisionBox.setPosition(map[x][y][z][k]->getPosition());
                         target.draw(collisionBox);
                     }
                 }
@@ -207,13 +211,13 @@ void Tilemap::render(sf::RenderTarget& target, const Entity* pEntityAroundWhichR
         {
             for (size_t z = 0; z < map[x][y].size(); ++z)
             {
-                if (map[x][y][z] != nullptr) // Rendering the tile
+                for (size_t k = 0; k < map[x][y][z].size(); ++k)
                 {
-                    map[x][y][z]->render(target);
+                    map[x][y][z][k]->render(target);
 
-                    if (map[x][y][z]->tileCanCollide()) // Rendering the collision box
+                    if (map[x][y][z][k]->tileCanCollide()) // Rendering the collision box
                     {
-                        collisionBox.setPosition(map[x][y][z]->getPosition());
+                        collisionBox.setPosition(map[x][y][z][k]->getPosition());
                         target.draw(collisionBox);
                     }
                 }
@@ -225,7 +229,7 @@ void Tilemap::render(sf::RenderTarget& target, const Entity* pEntityAroundWhichR
 
 void Tilemap::updateCollision(Entity& entity, const float deltaTime)
 {
-    updateCollisionWithMapBounds(entity);
+    updateCollisionWithMapBounds(entity, deltaTime);
 
     updateCollisionWithTiles(entity, deltaTime);
 }
@@ -253,8 +257,11 @@ void Tilemap::clearMap()
         {
             for (size_t z = 0; z < map[x][y].size(); ++z)
             {
-                delete map[x][y][z];
-                map[x][y][z] = nullptr;
+                for (size_t k = 0; k < map[x][y][z].size(); ++k)
+                {
+                    delete map[x][y][z][k];
+                }
+                map[x][y][z].clear();
             }
             map[x][y].clear();
         }
@@ -270,40 +277,42 @@ void Tilemap::createEmptyMap(const int mapSizeX, const int mapSizeY, const int m
 
     map.resize(
         mapSizeX, 
-        std::vector<std::vector<Tile*>>(
-            mapSizeY, std::vector<Tile*>(
-                mapSizeZ, nullptr
+        std::vector<std::vector<std::vector<Tile*>>>(
+            mapSizeY, 
+            std::vector<std::vector<Tile*>>(
+                mapSizeZ, 
+                std::vector<Tile*>(0)
             )
         )
     );
 }
 
 
-void Tilemap::updateCollisionWithMapBounds(Entity& entity)
+void Tilemap::updateCollisionWithMapBounds(Entity& entity, const float deltaTime)
 {
     // Left
-    if (entity.getPosition().x < 0.f)
+    if (entity.getNextPositionBounds(deltaTime).left < 0.f)
     {
         entity.setPosition(0.f, entity.getPosition().y);
         entity.stopVelocityX();
     }
 
     // Right
-    else if (entity.getPosition().x + entity.getGlobalBounds().width > mapSize.x)
+    else if (entity.getNextPositionBounds(deltaTime).left + entity.getGlobalBounds().width > mapSize.x)
     {
         entity.setPosition(mapSize.x - entity.getGlobalBounds().width, entity.getPosition().y);
         entity.stopVelocityX();
     }
 
     // Top
-    if (entity.getPosition().y < 0.f)
+    if (entity.getNextPositionBounds(deltaTime).top < 0.f)
     {
         entity.setPosition(entity.getPosition().x, 0.f);
         entity.stopVelocityY();
     }
 
     // Bottom
-    else if (entity.getPosition().y + entity.getGlobalBounds().height > mapSize.y)
+    else if (entity.getNextPositionBounds(deltaTime).top + entity.getGlobalBounds().height > mapSize.y)
     {
         entity.setPosition(entity.getPosition().x, mapSize.y - entity.getGlobalBounds().height);
         entity.stopVelocityY();
@@ -346,12 +355,14 @@ void Tilemap::updateCollisionWithTiles(Entity& entity, const float deltaTime)
     {
         for (int y = fromY; y < toY; ++y)
         {
-            if (map[x][y][z] != nullptr &&
-                map[x][y][z]->tileCanCollide() &&
-                map[x][y][z]->intersects(entity.getNextPositionBounds(deltaTime))
-                )
+            for (int k = 0; k < (int)map[x][y][z].size(); ++k)
             {
-                handleCollision(*map[x][y][z], entity);
+                if (map[x][y][z][k]->tileCanCollide() &&
+                    map[x][y][z][k]->intersects(entity.getNextPositionBounds(deltaTime))
+                   )
+                {
+                    handleCollision(*map[x][y][z][k], entity);
+                }
             }
         }
     }
@@ -374,7 +385,6 @@ void Tilemap::handleCollision(const Tile& tile, Entity& entity)
     {
         entity.stopVelocityY();
         entity.setPosition(entityBounds.left, tileBounds.top - entityBounds.height);
-        std::cout << "BOTTOM\n";
     }
 
     // Top collision
@@ -386,7 +396,6 @@ void Tilemap::handleCollision(const Tile& tile, Entity& entity)
     {
         entity.stopVelocityY();
         entity.setPosition(entityBounds.left, tileBounds.top + tileBounds.height);
-        std::cout << "TOP\n";
     }
 
     // Right collision
@@ -398,7 +407,6 @@ void Tilemap::handleCollision(const Tile& tile, Entity& entity)
     {
         entity.stopVelocityX();
         entity.setPosition(tileBounds.left - entityBounds.width, entityBounds.top);
-        std::cout << "RIGHT\n";
     }
 
     // Left collision
@@ -410,6 +418,5 @@ void Tilemap::handleCollision(const Tile& tile, Entity& entity)
     {
         entity.stopVelocityX();
         entity.setPosition(tileBounds.left + tileBounds.width, entityBounds.top);
-        std::cout << "LEFT\n";
     }
 }

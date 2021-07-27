@@ -61,10 +61,10 @@ void GameState::update(const float deltaTime)
 {
     if (!stateIsPaused)
     {
-        updateView();
         updatePlayerKeyboardInput(deltaTime);
         updateTilemap(deltaTime);
         pPlayer->update(deltaTime); 
+        updateView();
     }
 }
 

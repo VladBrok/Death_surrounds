@@ -29,7 +29,7 @@ public:
 
 private:
 
-    std::vector< std::vector< std::vector< Tile* > > > map;
+    std::vector< std::vector< std::vector< std::vector< Tile* > > > > map;
     sf::Texture                                        textureSheet;
     sf::RectangleShape                                 collisionBox;
     sf::Vector2f                                       mapSize;
@@ -38,7 +38,7 @@ private:
     void clearMap();
     void createEmptyMap(const int mapSizeX, const int mapSizeY, const int mapSizeZ);
 
-    void updateCollisionWithMapBounds(Entity& entity);
+    void updateCollisionWithMapBounds(Entity& entity, const float deltaTime);
     void updateCollisionWithTiles(Entity& entity, const float deltaTime);
     void handleCollision(const Tile& tile, Entity& entity);
 };

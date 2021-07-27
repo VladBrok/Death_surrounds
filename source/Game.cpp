@@ -4,6 +4,7 @@
 
 
 Game::Game()
+    : windowHasFocus(true)
 {
     initWindow();
     initSupportedKeys();
@@ -52,9 +53,22 @@ void Game::processEvents()
         {
             window.close();
         }
+        
+        // Updating the focus of the window
+        else if (event.type == sf::Event::LostFocus)
+        {
+            windowHasFocus = false;
+        }
+        else if (event.type == sf::Event::GainedFocus)
+        {
+            windowHasFocus = true;
+        }
+
+        
         else if (!states.empty() &&
                  states.top()->needToCallProcessEvent() && 
-                 event.type != sf::Event::MouseLeft)
+                 windowHasFocus
+                )
         {
             states.top()->processEvent(event);
         }
@@ -66,6 +80,12 @@ void Game::update()
 {
     if (!states.empty()) // Updating states
     {
+        if (!windowHasFocus)
+        {
+            return;
+        }
+
+
         if (states.top()->needToCallUpdate())
         {
             states.top()->update(deltaTime);

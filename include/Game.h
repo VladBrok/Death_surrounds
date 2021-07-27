@@ -20,6 +20,7 @@ private:
     float                                              deltaTime; // For framerate independence
     std::unordered_map<std::string, sf::Keyboard::Key> supportedKeys; // All keys that states can use
     std::stack<State*>                                 states;
+    bool                                               windowHasFocus;
 
 
     void                                               updateDeltaTime();
