@@ -11,6 +11,9 @@ Player::Player(const float posX, const float posY, sf::Texture& textureSheet)
 
     createHitboxComponent(85.f, 70.f, 80.f, 111.f);
 
+    createAttributeComponent(1);
+
+
     pAnimationComponent->addAnimation(
         "PLAYER_IDLE", textureSheet, sprite, 0, 0, 13, 0, 192, 192, 8.5f
     );
@@ -32,13 +35,37 @@ Player::~Player()
 
 void Player::update(const float deltaTime)
 {
-    Entity::update(deltaTime);
+    pMovementComponent->updateMovement(deltaTime);
 
     updateAttack();
 
     updateAnimation(deltaTime);
 
     pHitboxComponent->update();
+}
+
+
+int Player::getHP() const
+{
+    return pAttributeComponent->hp;
+}
+
+
+int Player::getHPMax() const
+{
+    return pAttributeComponent->hpMax;
+}
+
+
+void Player::loseHP(const unsigned points)
+{
+    pAttributeComponent->loseHP(points);
+}
+
+
+void Player::gainHP(const unsigned points)
+{
+    pAttributeComponent->gainHP(points);
 }
 
 

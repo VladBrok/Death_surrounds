@@ -5,7 +5,7 @@
 AttributeComponent::AttributeComponent(const unsigned level)
     : level(level),
       exp(0),
-      expForNextLevel(0),
+      expForNextLevel(15),
       attributePoints(3),
       vitality(1),
       strength(1),
@@ -13,7 +13,7 @@ AttributeComponent::AttributeComponent(const unsigned level)
       agility(1),
       intelligence(1)
 {
-    updateStats();
+    updateStats(true);
 }
 
 
@@ -25,7 +25,9 @@ void AttributeComponent::updateLevel()
         ++level;
         ++attributePoints;
         exp -= expForNextLevel;
-        expForNextLevel = (50 / 3) * (std::pow((double)level, 3) - 6 * std::pow((double)level, 2) + level * 17 - 12);
+        expForNextLevel = static_cast<unsigned>(
+            (50 / 3) * (std::pow((double)level, 3) - 6 * std::pow((double)level, 2) + level * 17 - 12)
+        );
     }
 }
 
@@ -47,7 +49,42 @@ void AttributeComponent::updateStats(bool resetHp)
 }
 
 
-void AttributeComponent::update()
+void AttributeComponent::gainExp(const unsigned exp)
 {
+    this->exp += exp;
+
     updateLevel();
+}
+
+
+void AttributeComponent::loseHP(const unsigned points)
+{
+    hp -= points;
+    
+    if (hp < 0)
+    {
+        hp = 0;
+    }
+}
+
+
+void AttributeComponent::gainHP(const unsigned points)
+{
+    hp += points;
+
+    if (hp > hpMax)
+    {
+        hp = hpMax;
+    }
+}
+
+
+/*=============== Debug ===============*/
+
+void AttributeComponent::debugPrint() const
+{
+    std::cout << "Level:                   " << level
+              << "\nExp:                     " << exp
+              << "\nExp for the  next level: " << expForNextLevel
+              << "\nAttribute points:        " << attributePoints; 
 }

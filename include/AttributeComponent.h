@@ -34,7 +34,12 @@ public:
                  AttributeComponent(const unsigned level);
     void         updateLevel();
     void         updateStats(bool resetHp = false);
-    void         update();
+    void         gainExp(const unsigned exp);
+    void         loseHP(const unsigned points);
+    void         gainHP(const unsigned points);
+
+    // Debug
+    void         debugPrint() const;
 };
 
 

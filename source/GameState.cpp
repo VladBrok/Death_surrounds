@@ -17,6 +17,7 @@ GameState::GameState(sf::RenderWindow& window,
     initTilemap();
     initTextures();
     initPlayer();
+    initPlayerGUI();
     initPauseMenu();
 }
 
@@ -26,6 +27,7 @@ GameState::~GameState()
     delete pTilemap;
     delete pPlayer;
     delete pPauseMenu;
+    delete pPlayerGUI;
 }
 
 
@@ -65,6 +67,7 @@ void GameState::update(const float deltaTime)
         updateTilemap(deltaTime);
         pPlayer->update(deltaTime); 
         updateView();
+        updatePlayerGUI();
     }
 }
 
@@ -105,6 +108,12 @@ void GameState::updateTilemap(const float deltaTime)
 }
 
 
+void GameState::updatePlayerGUI()
+{
+    pPlayerGUI->update();
+}
+
+
 void GameState::render(sf::RenderTarget* pTarget)
 {
     if (!pTarget)
@@ -122,6 +131,9 @@ void GameState::render(sf::RenderTarget* pTarget)
     pTilemap->renderDeferred(renderTexture);
 
     renderTexture.setView(renderTexture.getDefaultView());
+
+    pPlayerGUI->render(renderTexture);
+
 
     if (stateIsPaused)
     {
@@ -164,6 +176,12 @@ void GameState::initTilemap()
 void GameState::initPlayer()
 {
     pPlayer = new Player(0.f, 0.f, textures["PLAYER_SHEET"]);
+}
+
+
+void GameState::initPlayerGUI()
+{
+    pPlayerGUI = new PlayerGUI(*pPlayer, window);
 }
 
 

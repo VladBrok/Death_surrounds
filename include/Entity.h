@@ -4,6 +4,7 @@
 #include "MovementComponent.h"
 #include "AnimationComponent.h"
 #include "HitboxComponent.h"
+#include "AttributeComponent.h"
 
 
 class Entity
@@ -13,7 +14,7 @@ public:
                           Entity(const sf::Texture& texture);
     virtual               ~Entity();
                           
-    virtual void          update(const float deltaTime);
+    virtual void          update(const float deltaTime) = 0;
     virtual void          render(sf::RenderTarget& target);
     virtual void          move(const float dirX, const float dirY, const float deltaTime);
                           
@@ -38,6 +39,7 @@ protected:
     MovementComponent*    pMovementComponent;
     AnimationComponent*   pAnimationComponent;
     HitboxComponent*      pHitboxComponent;
+    AttributeComponent*   pAttributeComponent;
                           
     void                  createMovementComponent(const float maxVelocity, 
                                                   const float acceleration, 
@@ -49,6 +51,7 @@ protected:
                                                 const float hitboxWidth,
                                                 const float hitboxHeight
                                                 );
+    void                  createAttributeComponent(const unsigned level);
 };
 
 

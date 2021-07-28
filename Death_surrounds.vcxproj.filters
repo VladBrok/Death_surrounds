@@ -94,6 +94,9 @@
     <ClCompile Include="source\AttributeComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="source\PlayerGUI.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AnimationComponent.h">
@@ -155,6 +158,9 @@
     </ClInclude>
     <ClInclude Include="include\AttributeComponent.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PlayerGUI.h">
+      <Filter>GUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

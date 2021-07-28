@@ -25,6 +25,7 @@
     <ClCompile Include="source\MovementComponent.cpp" />
     <ClCompile Include="source\PauseMenu.cpp" />
     <ClCompile Include="source\Player.cpp" />
+    <ClCompile Include="source\PlayerGUI.cpp" />
     <ClCompile Include="source\precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">precompiled.h</PrecompiledHeaderFile>
@@ -50,6 +51,7 @@
     <ClInclude Include="include\MovementComponent.h" />
     <ClInclude Include="include\PauseMenu.h" />
     <ClInclude Include="include\Player.h" />
+    <ClInclude Include="include\PlayerGUI.h" />
     <ClInclude Include="include\precompiled.h" />
     <ClInclude Include="include\SettingsState.h" />
     <ClInclude Include="include\State.h" />

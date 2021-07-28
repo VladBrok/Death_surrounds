@@ -7,7 +7,8 @@ Entity::Entity(const sf::Texture& texture)
     : sprite(texture), 
       pMovementComponent(nullptr), 
       pAnimationComponent(nullptr),
-      pHitboxComponent(nullptr)
+      pHitboxComponent(nullptr),
+      pAttributeComponent(nullptr)
 { 
 }
 
@@ -17,15 +18,7 @@ Entity::~Entity()
     delete pMovementComponent;
     delete pAnimationComponent;
     delete pHitboxComponent;
-}
-
-
-void Entity::update(const float deltaTime)
-{
-    if (pMovementComponent)
-    {
-        pMovementComponent->updateMovement(deltaTime);
-    }
+    delete pAttributeComponent;
 }
 
 
@@ -154,4 +147,10 @@ void Entity::createHitboxComponent(const float offsetFromSpritePositionX,
                               hitboxWidth,
                               hitboxHeight
                            );
+}
+
+
+void Entity::createAttributeComponent(const unsigned level)
+{
+    pAttributeComponent = new AttributeComponent(level);
 }

@@ -12,6 +12,12 @@ public:
     virtual         ~Player();
     virtual void    update(const float deltaTime);
 
+    int             getHP() const;
+    int             getHPMax() const;
+
+    void            loseHP(const unsigned points);
+    void            gainHP(const unsigned points);
+
 private:
 
     bool            isAttacking;
