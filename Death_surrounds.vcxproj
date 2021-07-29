@@ -19,6 +19,7 @@
     <ClCompile Include="source\Entity.cpp" />
     <ClCompile Include="source\Game.cpp" />
     <ClCompile Include="source\GameState.cpp" />
+    <ClCompile Include="source\GUI_functions.cpp" />
     <ClCompile Include="source\HitboxComponent.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\MainMenuState.cpp" />
@@ -46,6 +47,7 @@
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\GameState.h" />
+    <ClInclude Include="include\GUI_functions.h" />
     <ClInclude Include="include\HitboxComponent.h" />
     <ClInclude Include="include\MainMenuState.h" />
     <ClInclude Include="include\MovementComponent.h" />

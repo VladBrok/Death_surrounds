@@ -97,6 +97,9 @@
     <ClCompile Include="source\PlayerGUI.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="source\GUI_functions.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AnimationComponent.h">
@@ -160,6 +163,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="include\PlayerGUI.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GUI_functions.h">
       <Filter>GUI</Filter>
     </ClInclude>
   </ItemGroup>

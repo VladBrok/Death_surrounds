@@ -10,8 +10,8 @@ public:
 
     // Leveling
     unsigned     level;
-    unsigned     exp;
-    unsigned     expForNextLevel;
+    int          exp;
+    int          expForNextLevel;
     unsigned     attributePoints;
 
     // Attributes
@@ -34,9 +34,10 @@ public:
                  AttributeComponent(const unsigned level);
     void         updateLevel();
     void         updateStats(bool resetHp = false);
-    void         gainExp(const unsigned exp);
     void         loseHP(const unsigned points);
     void         gainHP(const unsigned points);
+    void         loseExp(const unsigned exp);
+    void         gainExp(const unsigned exp);
 
     // Debug
     void         debugPrint() const;

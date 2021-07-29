@@ -86,10 +86,12 @@ void GameState::updatePlayerKeyboardInput(const float deltaTime)
     if (sf::Keyboard::isKeyPressed(keybinds.at("MOVE_UP")))
     {
         pPlayer->move(0.f, -1.f, deltaTime);
+        pPlayer->gainExp(40);
     }
     else if (sf::Keyboard::isKeyPressed(keybinds.at("MOVE_DOWN")))
     {
         pPlayer->move(0.f, 1.f, deltaTime);
+        pPlayer->loseExp(40);
     }
     if (sf::Keyboard::isKeyPressed(keybinds.at("MOVE_LEFT")))
     {

@@ -1,5 +1,6 @@
 #include "precompiled.h"
 #include "SettingsState.h"
+#include "GUI_functions.h"
 
 
 SettingsState::SettingsState(sf::RenderWindow& window,
@@ -46,14 +47,16 @@ void SettingsState::processEvent(const sf::Event& event)
     }
 
     // Reacting on the pressed buttons
-    if (buttons["APPLY"]->isPressed()) // FIXME: actually you need to restart game for proper window resize
+    if (buttons["APPLY"]->isPressed())
     {
         sf::Vector2u resolution(
             getResolutionFromString(
                 dropDownLists["RESOLUTION"]->getActiveElementText()
             )
         );
-        window.setSize(resolution);
+        window.create(sf::VideoMode(resolution.x, resolution.y), "Death surrounds", sf::Style::Close);
+
+        reinitialize();
     }
     else if (buttons["EXIT_STATE"]->isPressed())
     {
@@ -96,27 +99,33 @@ void SettingsState::initFont()
 
 void SettingsState::initGui()
 {
+    const sf::Vector2u windowSize(window.getSize());
+
     /*=============== Buttons ===============*/
 
     const sf::Vector2f buttonSize(
-        static_cast<float>(window.getSize().x / 7),
-        static_cast<float>(window.getSize().y / 11)
+        static_cast<float>(gui::percentToPixels(14.f, windowSize.x)),
+        static_cast<float>(gui::percentToPixels(9.f, windowSize.y))
     );
     const sf::Color textIdleColor(sf::Color(150, 150, 150));
     const sf::Color textHoverColor(sf::Color::White);
     const sf::Color textActiveColor(sf::Color(20, 20, 20, 200));
 
-    buttons["APPLY"] = new Button(window.getSize().x / 2.f, window.getSize().y / 1.15f, 
-                                       buttonSize.x, buttonSize.y, 
-                                       font, 
-                                       "Apply",
-                                       textIdleColor,
-                                       textHoverColor,
-                                       textActiveColor
-                                       );
+    buttons["APPLY"] = new Button((int)gui::percentToPixels(50.f, windowSize.x), 
+                                  (int)gui::percentToPixels(87.f, windowSize.y), 
+                                  buttonSize.x,
+                                  buttonSize.y, 
+                                  font, 
+                                  "Apply",
+                                  textIdleColor,
+                                  textHoverColor,
+                                  textActiveColor
+                                  );
 
-    buttons["EXIT_STATE"] = new Button(window.getSize().x / 1.2f, window.getSize().y / 1.15f, 
-                                       buttonSize.x, buttonSize.y, 
+    buttons["EXIT_STATE"] = new Button((int)gui::percentToPixels(83.f, windowSize.x), 
+                                       (int)gui::percentToPixels(87.f, windowSize.y), 
+                                       buttonSize.x,
+                                       buttonSize.y, 
                                        font, 
                                        "Back",
                                        textIdleColor,
@@ -138,8 +147,15 @@ void SettingsState::initGui()
             std::to_string((long long)videoModes[i].width) + "x" + 
             std::to_string((long long)videoModes[i].height)
         );
+
+        /*
+            Note: this "((window.getSize().y % 10) ? 13: 0" statement below is used,
+            because when the window height value has the non-zero last number,
+            it cuts down the actual height of the window on 13 pixels 
+            (i don't know why this happens, it's really strange).
+        */
         if (videoModes[i].width == window.getSize().x &&
-            videoModes[i].height == window.getSize().y)
+            videoModes[i].height == window.getSize().y + ((window.getSize().y % 10) ? 13: 0))
         {
             activeResolutionIndex = i;
         }
@@ -147,7 +163,13 @@ void SettingsState::initGui()
 
     dropDownLists["RESOLUTION"] = 
         new DropDownList(
-             300.f, 300.f, 200.f, 50.f, font, resolutions, activeResolutionIndex
+             (int)gui::percentToPixels(22.f, windowSize.x), 
+             (int)gui::percentToPixels(50.f, windowSize.y), 
+             gui::percentToPixels(14.6f, windowSize.x), 
+             gui::percentToPixels(6.5f, windowSize.y), 
+             font, 
+             resolutions, 
+             activeResolutionIndex
         );
 }
 
@@ -195,4 +217,23 @@ sf::Vector2i SettingsState::getResolutionFromString(const std::string& string)
         throw std::logic_error("ERROR in SettingsState::getResolutionFromString: invalid argument.\n"
                                "Proper string example: 800 x 600");
     }
+}
+
+
+void SettingsState::reinitialize()
+{
+    for (auto b = buttons.begin(); b != buttons.end(); ++b)
+    {
+        delete b->second;
+    }    
+    buttons.clear();
+
+    for (auto d = dropDownLists.begin(); d != dropDownLists.end(); ++d)
+    {
+        delete d->second;
+    } 
+    dropDownLists.clear();
+
+    initGui();
+    initBackground();
 }

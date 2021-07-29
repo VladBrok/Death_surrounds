@@ -3,6 +3,7 @@
 #include "EditorState.h"
 #include "GameState.h"
 #include "SettingsState.h"
+#include "GUI_functions.h"
 
 
 MainMenuState::MainMenuState(sf::RenderWindow& window,
@@ -46,6 +47,8 @@ void MainMenuState::processEvent(const sf::Event& event)
     else if (buttons["SETTINGS_STATE"]->isPressed()) // Activating settings state
     {
         pStates->push(new SettingsState(window, pSupportedKeys, pStates));
+
+        reinitialize();
     }
     else if (buttons["EDITOR_STATE"]->isPressed()) // Going to editor state
     {
@@ -89,16 +92,20 @@ void MainMenuState::initFont()
 
 void MainMenuState::initButtons()
 {
+    const sf::Vector2u windowSize(window.getSize());
+
     const sf::Vector2f buttonSize(
-        static_cast<float>(window.getSize().x / 7),
-        static_cast<float>(window.getSize().y / 11)
+        static_cast<float>(gui::percentToPixels(14.3f, windowSize.x)),
+        static_cast<float>(gui::percentToPixels(9.f, windowSize.y))
     );
     const sf::Color textIdleColor(sf::Color(150, 150, 150));
     const sf::Color textHoverColor(sf::Color::White);
     const sf::Color textActiveColor(sf::Color(20, 20, 20, 200));
 
-    buttons["GAME_STATE"] = new Button(window.getSize().x / 6.f, window.getSize().y / 2.3f, 
-                                       buttonSize.x, buttonSize.y,
+    buttons["GAME_STATE"] = new Button(gui::percentToPixels(16.7f, windowSize.x), 
+                                       gui::percentToPixels(43.5f, windowSize.y), 
+                                       buttonSize.x, 
+                                       buttonSize.y,
                                        font, 
                                        "New game",
                                        textIdleColor,
@@ -106,16 +113,20 @@ void MainMenuState::initButtons()
                                        textActiveColor
                                        );
 
-    buttons["SETTINGS_STATE"] = new Button(window.getSize().x / 6.f, window.getSize().y / 1.8f, 
-                                           buttonSize.x, buttonSize.y,
+    buttons["SETTINGS_STATE"] = new Button(gui::percentToPixels(16.7f, windowSize.x), 
+                                           gui::percentToPixels(55.5f, windowSize.y), 
+                                           buttonSize.x, 
+                                           buttonSize.y,
                                            font, 
                                            "Settings",
                                            textIdleColor,
                                            textHoverColor,
                                            textActiveColor
                                            );
-    buttons["EDITOR_STATE"] = new Button(window.getSize().x / 6.f, window.getSize().y / 1.5f, 
-                                         buttonSize.x, buttonSize.y,
+    buttons["EDITOR_STATE"] = new Button(gui::percentToPixels(16.7f, windowSize.x),
+                                         gui::percentToPixels(66.6f, windowSize.y), 
+                                         buttonSize.x, 
+                                         buttonSize.y,
                                          font, 
                                          "Editor",
                                          textIdleColor,
@@ -123,8 +134,10 @@ void MainMenuState::initButtons()
                                          textActiveColor
                                          );
 
-    buttons["EXIT_STATE"] = new Button(window.getSize().x / 6.f, window.getSize().y / 1.15f, 
-                                       buttonSize.x, buttonSize.y, 
+    buttons["EXIT_STATE"] = new Button(gui::percentToPixels(16.7f, windowSize.x), 
+                                       gui::percentToPixels(87.f, windowSize.y), 
+                                       buttonSize.x, 
+                                       buttonSize.y, 
                                        font, 
                                        "Quit",
                                        textIdleColor,
@@ -144,4 +157,16 @@ void MainMenuState::initBackground()
 void MainMenuState::initTextures()
 {
     textures["BACKGROUND"].loadFromFile("Resources\\Images\\Backgrounds\\main_menu_bg.png");
+}
+
+
+void MainMenuState::reinitialize()
+{
+    for (auto b = buttons.begin(); b != buttons.end(); ++b)
+    {
+        delete b->second;
+    } 
+
+    initButtons();
+    initBackground();
 }

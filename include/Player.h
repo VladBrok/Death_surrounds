@@ -14,9 +14,14 @@ public:
 
     int             getHP() const;
     int             getHPMax() const;
+    int             getExp() const;
+    int             getExpForNextLevel() const;
+    unsigned        getLevel() const;
 
     void            loseHP(const unsigned points);
     void            gainHP(const unsigned points);
+    void            loseExp(const unsigned exp);
+    void            gainExp(const unsigned exp);
 
 private:
 

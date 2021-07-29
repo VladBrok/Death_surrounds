@@ -57,6 +57,24 @@ int Player::getHPMax() const
 }
 
 
+int Player::getExp() const
+{
+    return pAttributeComponent->exp;
+}
+
+
+int Player::getExpForNextLevel() const
+{
+    return pAttributeComponent->expForNextLevel;
+}
+
+
+unsigned Player::getLevel() const
+{
+    return pAttributeComponent->level;
+}
+
+
 void Player::loseHP(const unsigned points)
 {
     pAttributeComponent->loseHP(points);
@@ -66,6 +84,18 @@ void Player::loseHP(const unsigned points)
 void Player::gainHP(const unsigned points)
 {
     pAttributeComponent->gainHP(points);
+}
+
+
+void Player::loseExp(const unsigned exp)
+{
+    pAttributeComponent->loseExp(exp);
+}
+
+
+void Player::gainExp(const unsigned exp)
+{
+    pAttributeComponent->gainExp(exp);
 }
 
 

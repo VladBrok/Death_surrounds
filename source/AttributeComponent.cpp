@@ -5,7 +5,7 @@
 AttributeComponent::AttributeComponent(const unsigned level)
     : level(level),
       exp(0),
-      expForNextLevel(15),
+      expForNextLevel(46),
       attributePoints(3),
       vitality(1),
       strength(1),
@@ -49,14 +49,6 @@ void AttributeComponent::updateStats(bool resetHp)
 }
 
 
-void AttributeComponent::gainExp(const unsigned exp)
-{
-    this->exp += exp;
-
-    updateLevel();
-}
-
-
 void AttributeComponent::loseHP(const unsigned points)
 {
     hp -= points;
@@ -77,6 +69,28 @@ void AttributeComponent::gainHP(const unsigned points)
         hp = hpMax;
     }
 }
+
+
+void AttributeComponent::loseExp(const unsigned exp)
+{
+    this->exp -= exp;
+
+    if (this->exp < 0)
+    {
+        this->exp = 0;
+    }
+
+    updateLevel();
+}
+
+
+void AttributeComponent::gainExp(const unsigned exp)
+{
+    this->exp += exp;
+
+    updateLevel();
+}
+
 
 
 /*=============== Debug ===============*/

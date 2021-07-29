@@ -34,6 +34,7 @@ void Game::run()
 }
 
 
+
 void Game::updateDeltaTime()
 {
     deltaTime = clock.restart().asSeconds();
@@ -65,7 +66,7 @@ void Game::processEvents()
         }
 
         
-        else if (!states.empty() &&
+        if (!states.empty() &&
                  states.top()->needToCallProcessEvent() && 
                  windowHasFocus
                 )
@@ -121,7 +122,7 @@ void Game::initWindow()
 {
     const std::vector<sf::VideoMode>* videoModes = &sf::VideoMode::getFullscreenModes();
 
-    window.create(/*(*videoModes)[videoModes->size() - 1],*/ (*videoModes)[0],
+    window.create((*videoModes)[0],
                   "Death surrounds",
                   sf::Style::Close
                   );

@@ -30,6 +30,9 @@ private:
     void                                     initButtons();
     void                                     initBackground();
     virtual void                             initTextures();
+
+    // Reinitialization of the buttons and background
+    void                                           reinitialize();
 };
 
 

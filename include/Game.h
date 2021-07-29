@@ -4,7 +4,7 @@
 #include "MainMenuState.h"
 
 
-class Game
+class Game: public sf::NonCopyable
 {
 public:
 

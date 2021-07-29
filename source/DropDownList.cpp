@@ -147,7 +147,9 @@ const std::string& DropDownList::getActiveElementText() const
 void DropDownList::swapListElementTexts(const int element1_index, const int element2_index)
 {
     std::string tmp = listElements[element1_index]->getText();
+
     listElements[element1_index]->setText(listElements[element2_index]->getText());
+
     listElements[element2_index]->setText(tmp);
 }
 
