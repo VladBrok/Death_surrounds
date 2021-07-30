@@ -5,7 +5,7 @@
 Player::Player(const float posX, const float posY, sf::Texture& textureSheet)
     : Entity(textureSheet), isAttacking(false)
 {
-    createMovementComponent(200.f, 1500.f, 900.f);
+    createMovementComponent(200.f, 1600.f, 1000.f);
 
     createAnimationComponent(textureSheet);
 

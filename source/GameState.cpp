@@ -76,6 +76,27 @@ void GameState::update(const float deltaTime)
 void GameState::updateView()
 {
     view.setCenter(pPlayer->getCenter());
+
+    // Don't letting the view to go outside the tilemap bounds
+
+    // FIXME: replace that "2000.f" with the actual tilemap size
+
+    if (view.getCenter().x - view.getSize().x / 2.f < 0.f)
+    {
+        view.setCenter(view.getSize().x / 2.f, view.getCenter().y);
+    }
+    else if (view.getCenter().x + view.getSize().x / 2.f > 2000.f)
+    {
+        view.setCenter(2000.f - view.getSize().x / 2.f, view.getCenter().y);
+    }
+    if (view.getCenter().y - view.getSize().y / 2.f < 0.f)
+    {
+        view.setCenter(view.getCenter().x, view.getSize().y / 2.f);
+    }
+    else if (view.getCenter().y + view.getSize().y / 2.f > 2000.f)
+    {
+        view.setCenter(view.getCenter().x, 2000.f - view.getSize().y / 2.f);
+    }
 }
 
 

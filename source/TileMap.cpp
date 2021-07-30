@@ -172,6 +172,7 @@ void Tilemap::render(sf::RenderTarget& target,
 {
     // FIXME
     int z = 0;
+    
 
     // Calculating the rendering bounds
     int fromX = gridPositionAroundWhichRender.x - 5;
