@@ -23,7 +23,10 @@ public:
                                                 );
     virtual                                ~Tile();
                                            
-    void                                   render(sf::RenderTarget& target);
+    void                                   render(sf::RenderTarget& target,
+                                                  sf::Shader* pShader = nullptr,
+                                                  const sf::Vector2f& shaderLightPosition = sf::Vector2f()
+                                                  );
 
     // Returns string with the texture rectangle position
     const std::string                      getAsString() const; 
@@ -32,12 +35,13 @@ public:
     const sf::FloatRect                    getGlobalBounds() const;
     TileType                               getType() const;
     static const std::string&              getTypeAsString(const TileType type);
+
     bool                                   tileCanCollide() const;
     bool                                   intersects(const sf::FloatRect& bounds);
                                
 private:                       
                                
-    sf::RectangleShape                     tile;
+    sf::Sprite                             tile;
     sf::IntRect                            textureRect;
     TileType                               type;
     bool                                   canCollide;

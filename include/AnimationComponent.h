@@ -89,9 +89,9 @@ private:
         
         void play(const float deltaTime, float modifier)
         {
-            if (modifier < 0.5f)
+            if (modifier < 0.9f)
             {
-                modifier = 0.5f;
+                modifier = 0.9f;
             }
             animationTimer += modifier * 100.f * deltaTime;
 

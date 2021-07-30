@@ -19,6 +19,7 @@ GameState::GameState(sf::RenderWindow& window,
     initPlayer();
     initPlayerGUI();
     initPauseMenu();
+    initShader();
 }
 
 
@@ -74,10 +75,7 @@ void GameState::update(const float deltaTime)
 
 void GameState::updateView()
 {
-    view.setCenter(
-        pPlayer->getPosition().x + pPlayer->getGlobalBounds().width / 2.f,
-        pPlayer->getPosition().y + pPlayer->getGlobalBounds().height / 2.f
-    );
+    view.setCenter(pPlayer->getCenter());
 }
 
 
@@ -128,9 +126,9 @@ void GameState::render(sf::RenderTarget* pTarget)
 
     renderTexture.setView(view);
 
-    pTilemap->render(renderTexture, pPlayer->getGridPosition());
-    pPlayer->render(renderTexture);
-    pTilemap->renderDeferred(renderTexture);
+    pTilemap->render(renderTexture, pPlayer->getGridPosition(), &coreShader, pPlayer->getCenter(), true);
+    pPlayer->render(renderTexture, &coreShader, true);
+    pTilemap->renderDeferred(renderTexture, &coreShader, pPlayer->getCenter());
 
     renderTexture.setView(renderTexture.getDefaultView());
 
@@ -177,7 +175,7 @@ void GameState::initTilemap()
 
 void GameState::initPlayer()
 {
-    pPlayer = new Player(0.f, 0.f, textures["PLAYER_SHEET"]);
+    pPlayer = new Player(GRID_SIZE * 2, GRID_SIZE * 2, textures["PLAYER_SHEET"]);
 }
 
 
@@ -195,3 +193,12 @@ void GameState::initPauseMenu()
     pPauseMenu->addButton("GO_TO_MAIN_MENU", "Go to main menu", 5);
 }
 
+
+void GameState::initShader()
+{
+    coreShader.loadFromFile(
+        "Resources\\Shaders\\vertex_shader.vert", 
+        "Resources\\Shaders\\fragment_shader.frag"
+    );
+    std::cout << window.getSettings().majorVersion << ' ' << window.getSettings().minorVersion;
+}

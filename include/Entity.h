@@ -15,11 +15,15 @@ public:
     virtual               ~Entity();
                           
     virtual void          update(const float deltaTime) = 0;
-    virtual void          render(sf::RenderTarget& target);
+    virtual void          render(sf::RenderTarget& target, 
+                                 sf::Shader* pShader   = nullptr,
+                                 const bool showHitbox = false
+                                 );
     virtual void          move(const float dirX, const float dirY, const float deltaTime);
                           
     void                  setPosition(const float posX, const float posY);
     const sf::Vector2f&   getPosition() const;
+    const sf::Vector2f    getCenter() const;
     const sf::Vector2i    getGridPosition() const;
     const sf::FloatRect   getGlobalBounds() const;
     const sf::FloatRect&  getNextPositionBounds(const float deltaTime) const;

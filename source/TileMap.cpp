@@ -164,30 +164,33 @@ void Tilemap::removeTile(const int gridPosX, const int gridPosY, const int gridP
 
 
 void Tilemap::render(sf::RenderTarget& target, 
-                     const sf::Vector2i& gridPositionAroundWhichRender
+                     const sf::Vector2i& gridPositionAroundWhichRender,
+                     sf::Shader* pShader,
+                     const sf::Vector2f& shaderLightPosition,
+                     const bool showCollisionBox
                      )
 {
     // FIXME
     int z = 0;
 
     // Calculating the rendering bounds
-    int fromX = gridPositionAroundWhichRender.x - 3;
+    int fromX = gridPositionAroundWhichRender.x - 5;
     if (fromX < 0)
     {
         fromX = 0;
     }
-    int toX = gridPositionAroundWhichRender.x + 4;
+    int toX = gridPositionAroundWhichRender.x + 7;
     if (toX > (int)map.size())
     {
         toX = map.size();
     }
 
-    int fromY = gridPositionAroundWhichRender.y - 3;
+    int fromY = gridPositionAroundWhichRender.y - 5;
     if (fromY < 0)
     {
         fromY = 0;
     }
-    int toY = gridPositionAroundWhichRender.y + 4;
+    int toY = gridPositionAroundWhichRender.y + 7;
     if (toY > (int)map[0].size())
     {
         toY = map[0].size();
@@ -206,10 +209,10 @@ void Tilemap::render(sf::RenderTarget& target,
                 }
                 else // Rendering the tile
                 {
-                    map[x][y][z][k]->render(target); 
+                    map[x][y][z][k]->render(target, pShader, shaderLightPosition); 
                 }
 
-                if (map[x][y][z][k]->tileCanCollide()) // Rendering the collision box
+                if (map[x][y][z][k]->tileCanCollide() && showCollisionBox) // Rendering the collision box
                 {
                     collisionBox.setPosition(map[x][y][z][k]->getPosition());
                     target.draw(collisionBox);
@@ -220,11 +223,14 @@ void Tilemap::render(sf::RenderTarget& target,
 }
 
 
-void Tilemap::renderDeferred(sf::RenderTarget& target)
+void Tilemap::renderDeferred(sf::RenderTarget& target,                                 
+                             sf::Shader* pShader,
+                             const sf::Vector2f& shaderLightPosition
+                             )
 {
     while (!tilesForDeferredRender.empty())
     {
-        tilesForDeferredRender.top()->render(target);
+        tilesForDeferredRender.top()->render(target, pShader, shaderLightPosition);
         tilesForDeferredRender.pop();
     }
 }

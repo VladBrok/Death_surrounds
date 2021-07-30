@@ -39,6 +39,7 @@ private:
     PlayerGUI*          pPlayerGUI;
     PauseMenu*          pPauseMenu;
     sf::Font            font;
+    sf::Shader          coreShader;
 
     void                initView();
     void                initRenderTexture();
@@ -47,6 +48,7 @@ private:
     void                initPlayer();
     void                initPlayerGUI();
     void                initPauseMenu();
+    void                initShader();
 
 };
 

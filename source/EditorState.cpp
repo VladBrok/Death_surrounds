@@ -264,7 +264,7 @@ void EditorState::render(sf::RenderTarget* pTarget)
 
     pTarget->setView(view);
 
-    tilemap.render(*pTarget, mousePosGrid);
+    tilemap.render(*pTarget, mousePosGrid, nullptr, sf::Vector2f(), true);
     tilemap.renderDeferred(*pTarget);
 
     pTarget->setView(pTarget->getDefaultView());
@@ -370,8 +370,8 @@ void EditorState::initTileAndTextureSelectors()
     pTextureSelector = new TextureSelector(
                                GRID_SIZE / 2.f, 
                                GRID_SIZE / 2.f, 
-                               GRID_SIZE * 10, 
-                               GRID_SIZE * 2, 
+                               (float)tilemap.getTextureSheet().getSize().x, 
+                               (float)tilemap.getTextureSheet().getSize().y, 
                                tilemap.getTextureSheet()
                            );
 }

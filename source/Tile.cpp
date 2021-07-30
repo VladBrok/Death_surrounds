@@ -19,10 +19,8 @@ Tile::Tile(const float posX,
            )
     : textureRect(textureRect), canCollide(canCollide), type(type)
 {
-    tile.setSize(sf::Vector2f(GRID_SIZE, GRID_SIZE));
     tile.setPosition(posX, posY);
-
-    tile.setTexture(&textureSheet, true);
+    tile.setTexture(textureSheet, true);
     tile.setTextureRect(textureRect);
 
 }
@@ -33,9 +31,22 @@ Tile::~Tile()
 }
 
 
-void Tile::render(sf::RenderTarget& target)
+void Tile::render(sf::RenderTarget& target,
+                  sf::Shader* pShader,
+                  const sf::Vector2f& shaderLightPosition
+                  )
 {
-    target.draw(tile);
+    if (pShader)
+    {
+        pShader->setParameter("hasTexture", true);
+        pShader->setParameter("light", shaderLightPosition);
+
+        target.draw(tile, pShader);
+    }
+    else
+    {
+        target.draw(tile);
+    }
 }
 
 

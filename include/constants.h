@@ -4,7 +4,7 @@
 
 const unsigned    FPS_LIMIT = 60;
 
-const float       GRID_SIZE = 100.f;
+const float       GRID_SIZE = 64.f;
 
 const int         TILEMAP_GRID_SIZE_X = 10;
 const int         TILEMAP_GRID_SIZE_Y = 10;

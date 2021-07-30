@@ -23,10 +23,17 @@ public:
                                     const TileType type
                                     );
     void                    removeTile(const int gridPosX, const int gridPosY, const int gridPosZ);
+
     void                    render(sf::RenderTarget& target, 
-                                   const sf::Vector2i& gridPositionAroundWhichRender
+                                   const sf::Vector2i& gridPositionAroundWhichRender,
+                                   sf::Shader* pShader = nullptr,
+                                   const sf::Vector2f& shaderLightPosition = sf::Vector2f(),
+                                   const bool showCollisionBox = false
                                    );
-    void                    renderDeferred(sf::RenderTarget& target);
+    void                    renderDeferred(sf::RenderTarget& target,
+                                           sf::Shader* pShader = nullptr,
+                                           const sf::Vector2f& shaderLightPosition = sf::Vector2f()                                         
+                                           );
     void                    updateCollision(Entity& entity, const float deltaTime);
 
     const sf::Texture&      getTextureSheet() const;

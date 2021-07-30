@@ -22,10 +22,24 @@ Entity::~Entity()
 }
 
 
-void Entity::render(sf::RenderTarget& target)
+void Entity::render(sf::RenderTarget& target, 
+                    sf::Shader* pShader,
+                    const bool showHitbox
+                    )
 {
-    target.draw(sprite);
-    if (pHitboxComponent)
+    if (pShader)
+    {
+        pShader->setParameter("hasTexture", true);
+        pShader->setParameter("light", getCenter());
+
+        target.draw(sprite, pShader);
+    }
+    else
+    {
+        target.draw(sprite);
+    }
+
+    if (pHitboxComponent && showHitbox)
     {
         pHitboxComponent->render(target);
     }
@@ -61,6 +75,24 @@ const sf::Vector2f& Entity::getPosition() const
         return pHitboxComponent->getPosition();
     }
     return sprite.getPosition();
+}
+
+
+const sf::Vector2f Entity::getCenter() const
+{
+    if (pHitboxComponent)
+    {
+        return pHitboxComponent->getPosition() + 
+               sf::Vector2f(
+                    pHitboxComponent->getGlobalBounds().width / 2.f,
+                    pHitboxComponent->getGlobalBounds().height / 2.f
+               );
+    }
+    return sprite.getPosition() + 
+           sf::Vector2f(
+                sprite.getGlobalBounds().width / 2.f,
+                sprite.getGlobalBounds().height / 2.f
+           );
 }
 
 

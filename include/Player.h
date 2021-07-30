@@ -25,9 +25,9 @@ public:
 
 private:
 
-    bool            isAttacking;
+    bool            isAttacking; // FIXME: Current player don't have the attack animation
 
-    void            updateAttack();
+    void            updateAttack(); // FIXME
     void            updateAnimation(const float deltaTime);
 };
 
