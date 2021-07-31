@@ -32,6 +32,9 @@
     <Filter Include="Tilemap">
       <UniqueIdentifier>{105cde6f-8687-4320-8ddc-7dd4dbe15678}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Items">
+      <UniqueIdentifier>{248d1ae8-bb6d-4e6c-ad86-b897777d25ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">

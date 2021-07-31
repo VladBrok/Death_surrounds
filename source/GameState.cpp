@@ -66,7 +66,7 @@ void GameState::update(const float deltaTime)
     {
         updatePlayerKeyboardInput(deltaTime);
         updateTilemap(deltaTime);
-        pPlayer->update(deltaTime); 
+        pPlayer->update(deltaTime, mousePosView); 
         updateView();
         updatePlayerGUI();
     }
@@ -78,24 +78,27 @@ void GameState::updateView()
     view.setCenter(pPlayer->getCenter());
 
     // Don't letting the view to go outside the tilemap bounds
-
-    // FIXME: replace that "2000.f" with the actual tilemap size
-
-    if (view.getCenter().x - view.getSize().x / 2.f < 0.f)
+    if (pTilemap->getMapSize().x >= view.getSize().x)
     {
-        view.setCenter(view.getSize().x / 2.f, view.getCenter().y);
+        if (view.getCenter().x - view.getSize().x / 2.f < 0.f)
+        {
+            view.setCenter(view.getSize().x / 2.f, view.getCenter().y);
+        }
+        else if (view.getCenter().x + view.getSize().x / 2.f > pTilemap->getMapSize().x)
+        {
+            view.setCenter(pTilemap->getMapSize().x - view.getSize().x / 2.f, view.getCenter().y);
+        }
     }
-    else if (view.getCenter().x + view.getSize().x / 2.f > 2000.f)
+    if (pTilemap->getMapSize().y >= view.getSize().y)
     {
-        view.setCenter(2000.f - view.getSize().x / 2.f, view.getCenter().y);
-    }
-    if (view.getCenter().y - view.getSize().y / 2.f < 0.f)
-    {
-        view.setCenter(view.getCenter().x, view.getSize().y / 2.f);
-    }
-    else if (view.getCenter().y + view.getSize().y / 2.f > 2000.f)
-    {
-        view.setCenter(view.getCenter().x, 2000.f - view.getSize().y / 2.f);
+        if (view.getCenter().y - view.getSize().y / 2.f < 0.f)
+        {
+            view.setCenter(view.getCenter().x, view.getSize().y / 2.f);
+        }
+        else if (view.getCenter().y + view.getSize().y / 2.f > pTilemap->getMapSize().y)
+        {
+            view.setCenter(view.getCenter().x, pTilemap->getMapSize().y - view.getSize().y / 2.f);
+        }
     }
 }
 
@@ -147,7 +150,7 @@ void GameState::render(sf::RenderTarget* pTarget)
 
     renderTexture.setView(view);
 
-    pTilemap->render(renderTexture, pPlayer->getGridPosition(), &coreShader, pPlayer->getCenter(), true);
+    pTilemap->render(renderTexture, pPlayer->getGridPositionCenter(), &coreShader, pPlayer->getCenter(), true);
     pPlayer->render(renderTexture, &coreShader, true);
     pTilemap->renderDeferred(renderTexture, &coreShader, pPlayer->getCenter());
 
@@ -189,8 +192,7 @@ void GameState::initRenderTexture()
 
 void GameState::initTilemap()
 {
-    pTilemap = new Tilemap(TILEMAP_GRID_SIZE_X, TILEMAP_GRID_SIZE_Y, TILEMAP_GRID_SIZE_Z);
-    pTilemap->loadFromFile("Resources\\Data\\tile_map.txt");
+    pTilemap = new Tilemap("Resources\\Data\\tile_map.txt");
 }
 
 
@@ -221,5 +223,4 @@ void GameState::initShader()
         "Resources\\Shaders\\vertex_shader.vert", 
         "Resources\\Shaders\\fragment_shader.frag"
     );
-    std::cout << window.getSettings().majorVersion << ' ' << window.getSettings().minorVersion;
 }

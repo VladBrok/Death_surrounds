@@ -13,7 +13,6 @@ Player::Player(const float posX, const float posY, sf::Texture& textureSheet)
 
     createAttributeComponent(1);
 
-
     pAnimationComponent->addAnimation(
         "PLAYER_IDLE", textureSheet, sprite, 0, 0, 8, 0, 64, 64, 9.5f
     );
@@ -35,6 +34,16 @@ Player::Player(const float posX, const float posY, sf::Texture& textureSheet)
     );
 
     setPosition(posX, posY);
+
+
+    // Weapon test
+    weaponTexture.loadFromFile("Resources\\Images\\Entities\\Player\\sword.png");
+    weapon.setTexture(weaponTexture);
+    weapon.setOrigin(
+        weapon.getGlobalBounds().width / 2.f,
+        weapon.getGlobalBounds().height
+    );
+    weapon.setPosition(getCenter());
 }
 
 
@@ -43,13 +52,39 @@ Player::~Player()
 }
 
 
-void Player::update(const float deltaTime)
+void Player::update(const float deltaTime, const sf::Vector2f& mousePosView)
 {
     pMovementComponent->updateMovement(deltaTime);
 
     updateAnimation(deltaTime);
 
     pHitboxComponent->update();
+
+    // Weapon test
+    weapon.setPosition(getCenter());
+
+    // Making the weapon point towards the mouse
+    sf::Vector2f direction(mousePosView - weapon.getPosition());
+
+    const float dirLength = std::sqrtf(direction.x * direction.x + direction.y * direction.y);
+
+    direction /= dirLength; // Normalizing the direction vector
+
+    const float PI = 3.14159265358979323846f;
+    const float degree = std::atan2f(direction.y, direction.x) * 180 / PI;
+    weapon.setRotation(degree + 90.f);
+}
+
+
+void Player::render(sf::RenderTarget& target, 
+                    sf::Shader* pShader,
+                    const bool showHitbox
+                    )
+{
+    Entity::render(target, pShader, showHitbox);
+
+    // Weapon test
+    target.draw(weapon);
 }
 
 
@@ -109,34 +144,6 @@ void Player::gainExp(const unsigned exp)
 
 void Player::updateAttack()
 {
-    //if (isAttacking && pAnimationComponent->isDone("PLAYER_ATTACKING"))
-    //{
-    //    isAttacking = false;
-
-    //    // Changing the origin of the sprite to normal
-    //    if (sprite.getScale().x < 0.f) // Facing right
-    //    {
-    //        sprite.setOrigin(258.f, 0.f);
-    //    }
-    //    else // Facing left
-    //    {
-    //        sprite.setOrigin(0.f, 0.f);
-    //    }
-    //}
-    //if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-    //{
-    //    isAttacking = true;
-
-    //    // Changing the origin of the sprite in order to adjust hitbox position
-    //    if (sprite.getScale().x < 0.f) // Facing right
-    //    {
-    //        sprite.setOrigin(258.f + 96.f, 0.f);
-    //    }
-    //    else // Facing left
-    //    {
-    //        sprite.setOrigin(96.f, 0.f);
-    //    }
-    //}
 }
 
 
@@ -144,28 +151,18 @@ void Player::updateAnimation(const float deltaTime)
 {
     try
     {
-        const std::string movementState(pMovementComponent->getMovementState());
+        const std::string& movementState = pMovementComponent->getMovementState();
 
-        // Playing the idle animation without any modifiers for animation speed
-        if (movementState == "IDLE")
-        {
-            pAnimationComponent->play("PLAYER_IDLE", deltaTime);
-        }
+        // Playing animations using the player's velocity as modifier for animation speed
+        float modifier = (movementState == "MOVING_RIGHT" || movementState == "MOVING_LEFT") ? pMovementComponent->getVelocity().x: pMovementComponent->getVelocity().y;
+        float modifierMax = pMovementComponent->getMaxVelocity();
 
-        // Playing the movement animations using the player's velocity as modifier for animation speed
-        else
-        {
-            float modifier = (movementState == "MOVING_RIGHT" || movementState == "MOVING_LEFT") ? pMovementComponent->getVelocity().x: pMovementComponent->getVelocity().y;
-            float modifierMax = pMovementComponent->getMaxVelocity();
-
-            pAnimationComponent->play(
-                "PLAYER_" + movementState, 
-                deltaTime, 
-                modifier,
-                modifierMax
-            ); 
-        }
- 
+        pAnimationComponent->play(
+            "PLAYER_" + movementState, 
+            deltaTime, 
+            modifier,
+            modifierMax
+        ); 
     }
     catch(std::out_of_range&)
     {

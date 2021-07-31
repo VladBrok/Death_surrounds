@@ -78,6 +78,18 @@ const sf::Vector2f& Entity::getPosition() const
 }
 
 
+const sf::Vector2i Entity::getGridPosition() const
+{
+    if (pHitboxComponent)
+    {
+        return sf::Vector2i(
+            static_cast<sf::Vector2i>(pHitboxComponent->getPosition()) / static_cast<int>(GRID_SIZE)
+        );
+    }
+    return static_cast<sf::Vector2i>(sprite.getPosition()) / static_cast<int>(GRID_SIZE);
+}
+
+
 const sf::Vector2f Entity::getCenter() const
 {
     if (pHitboxComponent)
@@ -96,15 +108,9 @@ const sf::Vector2f Entity::getCenter() const
 }
 
 
-const sf::Vector2i Entity::getGridPosition() const
+const sf::Vector2i Entity::getGridPositionCenter() const
 {
-    if (pHitboxComponent)
-    {
-        return sf::Vector2i(
-            static_cast<sf::Vector2i>(pHitboxComponent->getPosition()) / static_cast<int>(GRID_SIZE)
-        );
-    }
-    return static_cast<sf::Vector2i>(sprite.getPosition()) / static_cast<int>(GRID_SIZE);
+    return static_cast<sf::Vector2i>(getCenter()) / static_cast<int>(GRID_SIZE);
 }
 
 

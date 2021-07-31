@@ -7,16 +7,22 @@ Tilemap::Tilemap(const int mapSizeX, const int mapSizeY, const int mapSizeZ)
 {
     createEmptyMap(mapSizeX, mapSizeY, mapSizeZ);
 
-    textureSheet.loadFromFile("Resources\\Images\\Tiles\\tilesheet.png");
+    textureSheetFileName = "Resources\\Images\\Tiles\\tilesheet.png";
+    textureSheet.loadFromFile(textureSheetFileName);
 
-    collisionBox.setSize(sf::Vector2f(GRID_SIZE, GRID_SIZE));
-    collisionBox.setFillColor(sf::Color(255, 0, 0, 45));
-    collisionBox.setOutlineColor(sf::Color::Red);
-    collisionBox.setOutlineThickness(-1.f);
+    initCollisionBox();
 
     mapSize.x = mapSizeX * GRID_SIZE;
     mapSize.y = mapSizeY * GRID_SIZE;
     mapSize.z = mapSizeZ * GRID_SIZE;
+}
+
+
+Tilemap::Tilemap(const std::string& fileName)
+{
+    loadFromFile(fileName);
+
+    initCollisionBox();
 }
 
 
@@ -31,13 +37,14 @@ void Tilemap::saveToFile(const std::string& fileName)
     /*
         Saving format:
             Map:
-                1) map size               - x y z.
+                1) map size                            - x y z;
+                2) name of the file with texture sheet - textureSheetFileName
 
             All tiles:
-                1) tile grid position     - gridPosX gridPosY gridPosZ;
-                2) tile collision ability - canCollide
-                3) tile type              - type
-                4) tile texture rectangle - x y.
+                1) tile grid position                  - gridPosX gridPosY gridPosZ;
+                2) tile collision ability              - canCollide;
+                3) tile type                           - type;
+                4) tile texture rectangle              - x y.
     */
 
     std::ofstream file;
@@ -50,6 +57,7 @@ void Tilemap::saveToFile(const std::string& fileName)
     }
 
     file << map.size() << ' ' << map[0].size() << ' ' << map[0][0].size() << '\n';
+    file << textureSheetFileName << '\n';
 
     for (size_t x = 0; x < map.size(); ++x)
     {
@@ -90,13 +98,14 @@ void Tilemap::loadFromFile(const std::string& fileName)
     int mapSizeY = 0;
     int mapSizeZ = 0;
 
-    file >> mapSizeX >> mapSizeY >> mapSizeZ;
+    file >> mapSizeX >> mapSizeY >> mapSizeZ >> textureSheetFileName;
 
     if (!file.fail() && mapSizeX > 0 && mapSizeY > 0 && mapSizeZ > 0)
     {
          clearMap();
          createEmptyMap(mapSizeX, mapSizeY, mapSizeZ);
          mapSize = sf::Vector3f(mapSizeX * GRID_SIZE, mapSizeY * GRID_SIZE, mapSizeZ * GRID_SIZE);
+         textureSheet.loadFromFile(textureSheetFileName);
     }
 
 
@@ -138,6 +147,15 @@ void Tilemap::addTile(const int gridPosX,
 {
     if (positionsAreCorrect(gridPosX, gridPosY, gridPosZ))
     {
+        // Preventing the user from adding the same tile at the same position
+        if (!map[gridPosX][gridPosY][gridPosZ].empty() &&
+            map[gridPosX][gridPosY][gridPosZ].back()->getTextureRect() == textureRect
+            )
+        {
+            return;
+        }
+
+
         map[gridPosX][gridPosY][gridPosZ].push_back(
             new Tile(
                   gridPosX * GRID_SIZE, 
@@ -186,12 +204,12 @@ void Tilemap::render(sf::RenderTarget& target,
         toX = map.size();
     }
 
-    int fromY = gridPositionAroundWhichRender.y - 5;
+    int fromY = gridPositionAroundWhichRender.y - 4;
     if (fromY < 0)
     {
         fromY = 0;
     }
-    int toY = gridPositionAroundWhichRender.y + 7;
+    int toY = gridPositionAroundWhichRender.y + 5;
     if (toY > (int)map[0].size())
     {
         toY = map[0].size();
@@ -264,6 +282,12 @@ int Tilemap::getNumberOfTilesAtPosition(const sf::Vector2i& gridPosition, const 
 const std::string& Tilemap::getTileTypeAsString(const int type)
 {
     return Tile::getTypeAsString(static_cast<TileType>(type));
+}
+
+
+const sf::Vector3f& Tilemap::getMapSize() const
+{
+    return mapSize;
 }
 
 
@@ -445,4 +469,13 @@ void Tilemap::handleCollision(const Tile& tile, Entity& entity)
         entity.stopVelocityX();
         entity.setPosition(tileBounds.left + tileBounds.width, entityBounds.top);
     }
+}
+
+
+void Tilemap::initCollisionBox()
+{
+    collisionBox.setSize(sf::Vector2f(GRID_SIZE, GRID_SIZE));
+    collisionBox.setFillColor(sf::Color(255, 0, 0, 45));
+    collisionBox.setOutlineColor(sf::Color::Red);
+    collisionBox.setOutlineThickness(-1.f);
 }

@@ -12,11 +12,13 @@ public:
                                                const float deceleration
                                                );
     void                     accelerateSprite(const sf::Vector2f& movementDirection, const float deltaTime);
-    void                     updateMovement(const float deltaTime); // Decelerates and moves the sprite    
+	
+    // Decelerates and moves the sprite 
+    void                     updateMovement(const float deltaTime);    
     
     const sf::Vector2f&      getVelocity() const;
     float                    getMaxVelocity() const;
-    const std::string        getMovementState() const; // FIXME: Maybe should create enum and return it
+    const std::string        getMovementState() const;
 
     // Resets the velocity to zero
     void                     stopVelocity();

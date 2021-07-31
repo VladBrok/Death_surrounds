@@ -55,11 +55,11 @@ void EditorState::processEvent(const sf::Event& event)
         updateSideBarActivity();
         tileSelector.setPosition(mousePosGrid.x * GRID_SIZE, mousePosGrid.y * GRID_SIZE);
 
-        // Update the tile map and the texture selector
+        // Update the the texture selector
         if (!sideBarIsActive) 
         {
-            processTextureSelectorEvent(event);
-            processTilemapEvent(event);  
+            processTilemapEvent(event);
+            processTextureSelectorEvent(event); 
         }
     }
 
@@ -84,6 +84,25 @@ void EditorState::processEvent(const sf::Event& event)
             tileType = (tileType + 1 >= NUMBER_OF_TILE_TYPES) ? 0: (tileType + 1);
         }
     }
+}
+
+
+void EditorState::processTilemapEvent(const sf::Event& event)
+{
+    // Adding the tile
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !pTextureSelector->isActive())
+    {
+        tilemap.addTile(mousePosGrid.x, mousePosGrid.y, 0, textureRect, tileCanCollide, static_cast<TileType>(tileType));
+    }
+
+    // Removing the tile
+    else if (event.type == sf::Event::MouseButtonPressed &&
+             event.mouseButton.button == sf::Mouse::Right &&
+             !pTextureSelector->isActive()
+             )
+    {
+        tilemap.removeTile(mousePosGrid.x, mousePosGrid.y, 0);
+    } 
 }
 
 
@@ -129,25 +148,6 @@ void EditorState::processButtonsEvent(const sf::Event& event)
     }
 }
 
-
-void EditorState::processTilemapEvent(const sf::Event& event)
-{
-    if (event.type == sf::Event::MouseButtonPressed && !pTextureSelector->isActive())
-    {
-        // Adding the tile
-        if (event.mouseButton.button == sf::Mouse::Left)
-        {
-            tilemap.addTile(mousePosGrid.x, mousePosGrid.y, 0, textureRect, tileCanCollide, static_cast<TileType>(tileType));
-        }
-
-        // Removing the tile
-        else if (event.mouseButton.button == sf::Mouse::Right)
-        {
-            tilemap.removeTile(mousePosGrid.x, mousePosGrid.y, 0);
-        }
-    } 
-}
-   
 
 void EditorState::processTextureSelectorEvent(const sf::Event& event)
 {
@@ -308,7 +308,7 @@ void EditorState::initFont()
 
 void EditorState::initSideBar()
 {
-    sideBar.setSize(sf::Vector2f(GRID_SIZE, (float)window.getSize().y));
+    sideBar.setSize(sf::Vector2f(GRID_SIZE * 1.7f, (float)window.getSize().y));
     sideBar.setFillColor(sf::Color(90, 90, 90, 70));
     sideBar.setOutlineColor(sf::Color(140, 140, 140, 140));
     sideBar.setOutlineThickness(1.f);
@@ -321,7 +321,7 @@ void EditorState::initButtons()
                                         0.f, 
                                         0.f,
                                         sideBar.getSize().x,
-                                        GRID_SIZE / 2.f,
+                                        GRID_SIZE / 1.2f,
                                         font,
                                         "TS",
                                         sf::Color::White,
@@ -368,7 +368,7 @@ void EditorState::initTileAndTextureSelectors()
     tileSelector.setTextureRect(textureRect);
 
     pTextureSelector = new TextureSelector(
-                               GRID_SIZE / 2.f, 
+                               sideBar.getSize().x + 2.5f, 
                                GRID_SIZE / 2.f, 
                                (float)tilemap.getTextureSheet().getSize().x, 
                                (float)tilemap.getTextureSheet().getSize().y, 
@@ -380,7 +380,7 @@ void EditorState::initTileAndTextureSelectors()
 void EditorState::initView()
 {
     view.setSize(sf::Vector2f((float)window.getSize().x, (float)window.getSize().y));
-    view.setCenter(window.getSize().x / 2.f, window.getSize().y / 2.f);
+    view.setCenter(window.getSize().x / 2.f - sideBar.getSize().x, window.getSize().y / 2.f);
 }
 
 

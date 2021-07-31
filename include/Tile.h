@@ -35,6 +35,7 @@ public:
     const sf::FloatRect                    getGlobalBounds() const;
     TileType                               getType() const;
     static const std::string&              getTypeAsString(const TileType type);
+    const sf::IntRect&                     getTextureRect() const;
 
     bool                                   tileCanCollide() const;
     bool                                   intersects(const sf::FloatRect& bounds);

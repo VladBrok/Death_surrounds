@@ -10,6 +10,7 @@ class Tilemap
 public:
 
                             Tilemap(const int mapSizeX, const int mapSizeY, const int mapSizeZ);
+                            Tilemap(const std::string& fileName);
                             ~Tilemap();
 
     void                    saveToFile(const std::string& fileName);
@@ -39,22 +40,26 @@ public:
     const sf::Texture&      getTextureSheet() const;
     int                     getNumberOfTilesAtPosition(const sf::Vector2i& gridPosition, const int layer);
     const std::string&      getTileTypeAsString(const int type);
+    const sf::Vector3f&     getMapSize() const;
 
 private:
 
     std::vector< std::vector< std::vector< std::vector< Tile* > > > > map;
     sf::Texture                                                       textureSheet;
+    std::string                                                       textureSheetFileName;
     sf::RectangleShape                                                collisionBox;
     sf::Vector3f                                                      mapSize;
     std::stack<Tile*>                                                 tilesForDeferredRender;
 
-    bool positionsAreCorrect(const int gridPosX, const int gridPosY, const int gridPosZ) const;
-    void clearMap();
-    void createEmptyMap(const int mapSizeX, const int mapSizeY, const int mapSizeZ);
+    bool                    positionsAreCorrect(const int gridPosX, const int gridPosY, const int gridPosZ) const;
+    void                    clearMap();
+    void                    createEmptyMap(const int mapSizeX, const int mapSizeY, const int mapSizeZ);
+                            
+    void                    updateCollisionWithMapBounds(Entity& entity, const float deltaTime);
+    void                    updateCollisionWithTiles(Entity& entity, const float deltaTime);
+    void                    handleCollision(const Tile& tile, Entity& entity);
 
-    void updateCollisionWithMapBounds(Entity& entity, const float deltaTime);
-    void updateCollisionWithTiles(Entity& entity, const float deltaTime);
-    void handleCollision(const Tile& tile, Entity& entity);
+    void                    initCollisionBox();
 };
 
 

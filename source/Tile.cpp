@@ -86,6 +86,12 @@ const std::string& Tile::getTypeAsString(const TileType type)
 }
 
 
+const sf::IntRect& Tile::getTextureRect() const
+{
+    return textureRect;
+}
+
+
 bool Tile::tileCanCollide() const
 {
     return canCollide;

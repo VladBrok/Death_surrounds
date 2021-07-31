@@ -44,19 +44,19 @@ void MainMenuState::processEvent(const sf::Event& event)
     {
         pStates->push(new GameState(window, pSupportedKeys, pStates));
     }
-    else if (buttons["SETTINGS_STATE"]->isPressed()) // Activating settings state
+    else if (buttons["SETTINGS_STATE"]->isPressed()) // Activating the settings state
     {
         pStates->push(new SettingsState(window, pSupportedKeys, pStates));
 
         reinitialize();
     }
-    else if (buttons["EDITOR_STATE"]->isPressed()) // Going to editor state
+    else if (buttons["EDITOR_STATE"]->isPressed()) // Going to the editor state
     {
         pStates->push(new EditorState(window, pSupportedKeys, pStates));
     }
 
-    // Exiting from state
-    else if (buttons["EXIT_STATE"]->isPressed())
+    
+    else if (buttons["EXIT_STATE"]->isPressed()) // Exiting from the state
     {
         endActivity();
     }

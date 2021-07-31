@@ -14,7 +14,7 @@ public:
                           Entity(const sf::Texture& texture);
     virtual               ~Entity();
                           
-    virtual void          update(const float deltaTime) = 0;
+    virtual void          update(const float deltaTime, const sf::Vector2f& mousePosView) = 0;
     virtual void          render(sf::RenderTarget& target, 
                                  sf::Shader* pShader   = nullptr,
                                  const bool showHitbox = false
@@ -23,8 +23,9 @@ public:
                           
     void                  setPosition(const float posX, const float posY);
     const sf::Vector2f&   getPosition() const;
-    const sf::Vector2f    getCenter() const;
     const sf::Vector2i    getGridPosition() const;
+    const sf::Vector2f    getCenter() const;
+    const sf::Vector2i    getGridPositionCenter() const;
     const sf::FloatRect   getGlobalBounds() const;
     const sf::FloatRect&  getNextPositionBounds(const float deltaTime) const;
 

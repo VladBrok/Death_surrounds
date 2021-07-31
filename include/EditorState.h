@@ -19,9 +19,9 @@ public:
     virtual                                  ~EditorState();
 
     virtual void                             processEvent(const sf::Event& event);
+    void                                     processTilemapEvent(const sf::Event& event);
     void                                     processPauseMenuEvent(const sf::Event& event);
     void                                     processButtonsEvent(const sf::Event& event);
-    void                                     processTilemapEvent(const sf::Event& event);
     void                                     processTextureSelectorEvent(const sf::Event& event);
 
     virtual void                             update(const float deltaTime);
