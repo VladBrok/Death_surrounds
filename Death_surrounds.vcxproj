@@ -21,6 +21,7 @@
     <ClCompile Include="source\GameState.cpp" />
     <ClCompile Include="source\GUI_functions.cpp" />
     <ClCompile Include="source\HitboxComponent.cpp" />
+    <ClCompile Include="source\Item.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\MainMenuState.cpp" />
     <ClCompile Include="source\MovementComponent.cpp" />
@@ -31,11 +32,15 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">precompiled.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="source\ProgressBar.cpp" />
     <ClCompile Include="source\SettingsState.cpp" />
+    <ClCompile Include="source\SkillComponent.cpp" />
     <ClCompile Include="source\State.cpp" />
+    <ClCompile Include="source\Sword.cpp" />
     <ClCompile Include="source\TextureSelector.cpp" />
     <ClCompile Include="source\Tile.cpp" />
     <ClCompile Include="source\Tilemap.cpp" />
+    <ClCompile Include="source\Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AnimationComponent.h" />
@@ -49,17 +54,22 @@
     <ClInclude Include="include\GameState.h" />
     <ClInclude Include="include\GUI_functions.h" />
     <ClInclude Include="include\HitboxComponent.h" />
+    <ClInclude Include="include\Item.h" />
     <ClInclude Include="include\MainMenuState.h" />
     <ClInclude Include="include\MovementComponent.h" />
     <ClInclude Include="include\PauseMenu.h" />
     <ClInclude Include="include\Player.h" />
     <ClInclude Include="include\PlayerGUI.h" />
     <ClInclude Include="include\precompiled.h" />
+    <ClInclude Include="include\ProgressBar.h" />
     <ClInclude Include="include\SettingsState.h" />
+    <ClInclude Include="include\SkillComponent.h" />
     <ClInclude Include="include\State.h" />
+    <ClInclude Include="include\Sword.h" />
     <ClInclude Include="include\TextureSelector.h" />
     <ClInclude Include="include\Tile.h" />
     <ClInclude Include="include\Tilemap.h" />
+    <ClInclude Include="include\Weapon.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AD44A273-D811-4496-9635-D5147C651062}</ProjectGuid>

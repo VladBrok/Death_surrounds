@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include "Entity.h"
+#include "Sword.h"
 
 
 class Player: public Entity
@@ -29,8 +30,7 @@ public:
 
 private:
 
-    sf::Texture     weaponTexture;
-    sf::Sprite      weapon;
+    Sword           sword;
     bool            isAttacking; // FIXME: Current player don't have the attack animation
 
     void            updateAttack(); // FIXME

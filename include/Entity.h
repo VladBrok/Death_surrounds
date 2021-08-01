@@ -5,6 +5,7 @@
 #include "AnimationComponent.h"
 #include "HitboxComponent.h"
 #include "AttributeComponent.h"
+#include "SkillComponent.h"
 
 
 class Entity
@@ -45,6 +46,7 @@ protected:
     AnimationComponent*   pAnimationComponent;
     HitboxComponent*      pHitboxComponent;
     AttributeComponent*   pAttributeComponent;
+    SkillComponent*       pSkillComponent;
                           
     void                  createMovementComponent(const float maxVelocity, 
                                                   const float acceleration, 
@@ -57,6 +59,7 @@ protected:
                                                 const float hitboxHeight
                                                 );
     void                  createAttributeComponent(const unsigned level);
+    void                  createSkillComponent();
 };
 
 

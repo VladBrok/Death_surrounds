@@ -5,45 +5,19 @@
 Player::Player(const float posX, const float posY, sf::Texture& textureSheet)
     : Entity(textureSheet), isAttacking(false)
 {
+
     createMovementComponent(200.f, 1600.f, 1000.f);
-
     createAnimationComponent(textureSheet);
-
     createHitboxComponent(17.f, 9.f, 30.f, 50.f);
-
     createAttributeComponent(1);
 
-    pAnimationComponent->addAnimation(
-        "PLAYER_IDLE", textureSheet, sprite, 0, 0, 8, 0, 64, 64, 9.5f
-    );
-
-    pAnimationComponent->addAnimation(
-        "PLAYER_MOVING_DOWN", textureSheet, sprite, 0, 1, 3, 1, 64, 64, 9.5f 
-    );
-
-    pAnimationComponent->addAnimation(
-        "PLAYER_MOVING_LEFT", textureSheet, sprite, 4, 1, 7, 1, 64, 64, 9.5f 
-    );
-
-    pAnimationComponent->addAnimation(
-        "PLAYER_MOVING_RIGHT", textureSheet, sprite, 8, 1, 11, 1, 64, 64, 9.5f 
-    );
-
-    pAnimationComponent->addAnimation(
-        "PLAYER_MOVING_UP", textureSheet, sprite, 12, 1, 15, 1, 64, 64, 9.5f 
-    );
+    pAnimationComponent->addAnimation("IDLE", textureSheet, sprite, 0, 0, 8, 0, 64, 64, 9.5f);
+    pAnimationComponent->addAnimation("MOVING_DOWN", textureSheet, sprite, 0, 1, 3, 1, 64, 64, 9.5f);
+    pAnimationComponent->addAnimation("MOVING_LEFT", textureSheet, sprite, 4, 1, 7, 1, 64, 64, 9.5f);
+    pAnimationComponent->addAnimation("MOVING_RIGHT", textureSheet, sprite, 8, 1, 11, 1, 64, 64, 9.5f);
+    pAnimationComponent->addAnimation("MOVING_UP", textureSheet, sprite, 12, 1, 15, 1, 64, 64, 9.5f );
 
     setPosition(posX, posY);
-
-
-    // Weapon test
-    weaponTexture.loadFromFile("Resources\\Images\\Entities\\Player\\sword.png");
-    weapon.setTexture(weaponTexture);
-    weapon.setOrigin(
-        weapon.getGlobalBounds().width / 2.f,
-        weapon.getGlobalBounds().height
-    );
-    weapon.setPosition(getCenter());
 }
 
 
@@ -60,19 +34,7 @@ void Player::update(const float deltaTime, const sf::Vector2f& mousePosView)
 
     pHitboxComponent->update();
 
-    // Weapon test
-    weapon.setPosition(getCenter());
-
-    // Making the weapon point towards the mouse
-    sf::Vector2f direction(mousePosView - weapon.getPosition());
-
-    const float dirLength = std::sqrtf(direction.x * direction.x + direction.y * direction.y);
-
-    direction /= dirLength; // Normalizing the direction vector
-
-    const float PI = 3.14159265358979323846f;
-    const float degree = std::atan2f(direction.y, direction.x) * 180 / PI;
-    weapon.setRotation(degree + 90.f);
+    sword.update(getCenter(), mousePosView);
 }
 
 
@@ -82,9 +44,7 @@ void Player::render(sf::RenderTarget& target,
                     )
 {
     Entity::render(target, pShader, showHitbox);
-
-    // Weapon test
-    target.draw(weapon);
+    sword.render(target);
 }
 
 
@@ -158,7 +118,7 @@ void Player::updateAnimation(const float deltaTime)
         float modifierMax = pMovementComponent->getMaxVelocity();
 
         pAnimationComponent->play(
-            "PLAYER_" + movementState, 
+            movementState, 
             deltaTime, 
             modifier,
             modifierMax

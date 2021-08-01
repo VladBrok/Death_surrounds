@@ -10,7 +10,7 @@
 #include <fstream>
 #include <cmath>
 #include <cassert>
-#include <iostream> // Just for debug purposes
+#include <iostream>
 
 #include "SFML/Graphics.hpp"
 

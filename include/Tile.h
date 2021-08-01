@@ -14,39 +14,39 @@ class Tile
 {
 public:
 
-                                           Tile(const float posX, 
-                                                const float posY, 
-                                                const sf::Texture& textureSheet, 
-                                                const sf::IntRect& textureRect,
-                                                const bool canCollide,
-                                                const TileType type
-                                                );
-    virtual                                ~Tile();
-                                           
-    void                                   render(sf::RenderTarget& target,
-                                                  sf::Shader* pShader = nullptr,
-                                                  const sf::Vector2f& shaderLightPosition = sf::Vector2f()
-                                                  );
+                                      Tile(const float posX, 
+                                           const float posY, 
+                                           const sf::Texture& textureSheet, 
+                                           const sf::IntRect& textureRect,
+                                           const bool canCollide,
+                                           const TileType type
+                                           );
+    virtual                           ~Tile();
+                                      
+    void                              render(sf::RenderTarget& target,
+                                             sf::Shader* pShader = nullptr,
+                                             const sf::Vector2f& shaderLightPosition = sf::Vector2f()
+                                             );
 
     // Returns string with the texture rectangle position
-    const std::string                      getAsString() const; 
-                                           
-    const sf::Vector2f&                    getPosition() const;
-    const sf::FloatRect                    getGlobalBounds() const;
-    TileType                               getType() const;
-    static const std::string&              getTypeAsString(const TileType type);
-    const sf::IntRect&                     getTextureRect() const;
+    const std::string                  getAsString() const; 
+                                       
+    const sf::Vector2f&                getPosition() const;
+    const sf::FloatRect                getGlobalBounds() const;
+    TileType                           getType() const;
+    static const std::string&          getTypeAsString(const TileType type);
+    const sf::IntRect&                 getTextureRect() const;
 
-    bool                                   tileCanCollide() const;
-    bool                                   intersects(const sf::FloatRect& bounds);
+    bool                               tileCanCollide() const;
+    bool                               intersects(const sf::FloatRect& bounds);
                                
 private:                       
                                
-    sf::Sprite                             tile;
-    sf::IntRect                            textureRect;
-    TileType                               type;
-    bool                                   canCollide;
-    static const std::string               strTypes[NUMBER_OF_TILE_TYPES];
+    sf::Sprite                         tile;
+    sf::IntRect                        textureRect;
+    TileType                           type;
+    bool                               canCollide;
+    static const std::string           strTypes[NUMBER_OF_TILE_TYPES];
 };
 
 

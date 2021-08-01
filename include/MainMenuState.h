@@ -32,7 +32,7 @@ private:
     virtual void                             initTextures();
 
     // Reinitialization of the buttons and background
-    void                                           reinitialize();
+    void                                     reinitialize();
 };
 
 

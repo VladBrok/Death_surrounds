@@ -35,6 +35,9 @@
     <Filter Include="Items">
       <UniqueIdentifier>{248d1ae8-bb6d-4e6c-ad86-b897777d25ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Items\Weapon">
+      <UniqueIdentifier>{5574417b-4501-43e4-bdc1-e60f6c50157c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
@@ -103,6 +106,21 @@
     <ClCompile Include="source\GUI_functions.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="source\Item.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Weapon.cpp">
+      <Filter>Items\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Sword.cpp">
+      <Filter>Items\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SkillComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ProgressBar.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AnimationComponent.h">
@@ -169,6 +187,21 @@
       <Filter>GUI</Filter>
     </ClInclude>
     <ClInclude Include="include\GUI_functions.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Item.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Weapon.h">
+      <Filter>Items\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Sword.h">
+      <Filter>Items\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SkillComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ProgressBar.h">
       <Filter>GUI</Filter>
     </ClInclude>
   </ItemGroup>

@@ -111,8 +111,8 @@ void SettingsState::initGui()
     const sf::Color textHoverColor(sf::Color::White);
     const sf::Color textActiveColor(sf::Color(20, 20, 20, 200));
 
-    buttons["APPLY"] = new Button((int)gui::percentToPixels(50.f, windowSize.x), 
-                                  (int)gui::percentToPixels(87.f, windowSize.y), 
+    buttons["APPLY"] = new Button((float)(int)gui::percentToPixels(50.f, windowSize.x), 
+                                  (float)(int)gui::percentToPixels(87.f, windowSize.y), 
                                   buttonSize.x,
                                   buttonSize.y, 
                                   font, 
@@ -122,8 +122,8 @@ void SettingsState::initGui()
                                   textActiveColor
                                   );
 
-    buttons["EXIT_STATE"] = new Button((int)gui::percentToPixels(83.f, windowSize.x), 
-                                       (int)gui::percentToPixels(87.f, windowSize.y), 
+    buttons["EXIT_STATE"] = new Button((float)(int)gui::percentToPixels(83.f, windowSize.x), 
+                                       (float)(int)gui::percentToPixels(87.f, windowSize.y), 
                                        buttonSize.x,
                                        buttonSize.y, 
                                        font, 
@@ -163,8 +163,8 @@ void SettingsState::initGui()
 
     dropDownLists["RESOLUTION"] = 
         new DropDownList(
-             (int)gui::percentToPixels(22.f, windowSize.x), 
-             (int)gui::percentToPixels(50.f, windowSize.y), 
+             (float)(int)gui::percentToPixels(22.f, windowSize.x), 
+             (float)(int)gui::percentToPixels(50.f, windowSize.y), 
              gui::percentToPixels(14.6f, windowSize.x), 
              gui::percentToPixels(6.5f, windowSize.y), 
              font, 
