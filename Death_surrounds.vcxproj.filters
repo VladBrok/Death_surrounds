@@ -121,6 +121,9 @@
     <ClCompile Include="source\ProgressBar.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="source\Enemy.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AnimationComponent.h">
@@ -203,6 +206,9 @@
     </ClInclude>
     <ClInclude Include="include\ProgressBar.h">
       <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy.h">
+      <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

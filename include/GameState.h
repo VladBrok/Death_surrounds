@@ -6,6 +6,7 @@
 #include "PauseMenu.h"
 #include "Tilemap.h"
 #include "PlayerGUI.h"
+#include "Enemy.h"
 
 
 class GameState: public State
@@ -40,6 +41,8 @@ private:
     PauseMenu*          pPauseMenu;
     sf::Font            font;
     sf::Shader          coreShader;
+
+    Enemy*              pTestEnemy;
 
     void                initView();
     void                initRenderTexture();

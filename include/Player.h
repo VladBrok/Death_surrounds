@@ -10,7 +10,6 @@ class Player: public Entity
 public:
     
                     Player(const float posX, const float posY, sf::Texture& textureSheet);
-    virtual         ~Player();
     virtual void    update(const float deltaTime, const sf::Vector2f& mousePosView);
     virtual void    render(sf::RenderTarget& target, 
                            sf::Shader* pShader   = nullptr,
