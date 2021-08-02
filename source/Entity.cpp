@@ -26,13 +26,14 @@ Entity::~Entity()
 
 void Entity::render(sf::RenderTarget& target, 
                     sf::Shader* pShader,
+                    const sf::Vector2f& shaderLightPosition,
                     const bool showHitbox
                     )
 {
     if (pShader)
     {
         pShader->setParameter("hasTexture", true);
-        pShader->setParameter("light", getCenter());
+        pShader->setParameter("light", shaderLightPosition);
 
         target.draw(sprite, pShader);
     }

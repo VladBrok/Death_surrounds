@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "Tilemap.h"
 #include "constants.h"
+#include "EnemySpawner.h"
 
 
 Tilemap::Tilemap(const int mapSizeX, const int mapSizeY, const int mapSizeZ)
@@ -90,7 +91,9 @@ void Tilemap::render(sf::RenderTarget& target,
                     map[x][y][z][k]->render(target, pShader, shaderLightPosition); 
                 }
 
-                if (map[x][y][z][k]->tileCanCollide() && showCollisionBox) // Rendering the collision box
+                // Rendering the collision box
+                if (map[x][y][z][k]->tileCanCollide() && showCollisionBox ||
+                    map[x][y][z][k]->getType() == ENEMY_SPAWNER) // FIXME
                 {
                     collisionBox.setPosition(map[x][y][z][k]->getPosition());
                     target.draw(collisionBox);
@@ -237,17 +240,16 @@ void Tilemap::addTile(const int gridPosX,
             return;
         }
 
-
-        map[gridPosX][gridPosY][gridPosZ].push_back(
-            new Tile(
-                  gridPosX * GRID_SIZE, 
-                  gridPosY * GRID_SIZE, 
-                  textureSheet,
-                  textureRect,
-                  canCollide,
-                  type
-            )
-        );
+            map[gridPosX][gridPosY][gridPosZ].push_back(
+                new Tile(
+                      gridPosX * GRID_SIZE, 
+                      gridPosY * GRID_SIZE, 
+                      textureSheet,
+                      textureRect,
+                      canCollide,
+                      type
+                )
+            );
     }
 }
 
@@ -275,6 +277,17 @@ int Tilemap::getNumberOfTilesAtPosition(const sf::Vector2i& gridPosition, const 
     {
         return map[gridPosition.x][gridPosition.y][layer].size();
     }
+    return -1;
+}
+
+
+int Tilemap::getTileType(const int gridPosX, const int gridPosY, const int gridPosZ)
+{
+    if (positionsAreCorrect(gridPosX, gridPosY, gridPosZ) && !map[gridPosX][gridPosY][gridPosZ].empty())
+    {
+        return map[gridPosX][gridPosY][gridPosZ].back()->getType();
+    }
+
     return -1;
 }
 

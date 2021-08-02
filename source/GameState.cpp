@@ -20,6 +20,10 @@ GameState::GameState(sf::RenderWindow& window,
     initPlayerGUI();
     initPauseMenu();
     initShader();
+
+
+    enemies.push_back(new Enemy(GRID_SIZE * 3, GRID_SIZE * 2, textures["ENEMY_RAT_SHEET"]));
+    enemies.push_back(new Enemy(GRID_SIZE * 4, GRID_SIZE * 4, textures["ENEMY_RAT_SHEET"]));
 }
 
 
@@ -29,6 +33,12 @@ GameState::~GameState()
     delete pPlayer;
     delete pPauseMenu;
     delete pPlayerGUI;
+
+
+    for (size_t i = 0; i < enemies.size(); ++i)
+    {
+        delete enemies[i];
+    }
 }
 
 
@@ -66,9 +76,17 @@ void GameState::update(const float deltaTime)
     {
         updatePlayerKeyboardInput(deltaTime);
         updateTilemap(deltaTime);
+
         pPlayer->update(deltaTime, mousePosView); 
+
         updateView();
         updatePlayerGUI();
+
+
+        for (size_t i = 0; i < enemies.size(); ++i)
+        {
+            enemies[i]->update(deltaTime, mousePosView);
+        }
     }
 }
 
@@ -151,7 +169,15 @@ void GameState::render(sf::RenderTarget* pTarget)
     renderTexture.setView(view);
 
     pTilemap->render(renderTexture, pPlayer->getGridPositionCenter(), &coreShader, pPlayer->getCenter(), true);
-    pPlayer->render(renderTexture, &coreShader, true);
+    pPlayer->render(renderTexture, &coreShader, pPlayer->getCenter(), true);
+
+
+    for (size_t i = 0; i < enemies.size(); ++i)
+    {
+        enemies[i]->render(renderTexture, &coreShader, pPlayer->getCenter(), true);
+    }
+
+
     pTilemap->renderDeferred(renderTexture, &coreShader, pPlayer->getCenter());
 
     renderTexture.setView(renderTexture.getDefaultView());
@@ -175,6 +201,7 @@ void GameState::render(sf::RenderTarget* pTarget)
 void GameState::initTextures()
 {
     textures["PLAYER_SHEET"].loadFromFile("Resources\\Images\\Entities\\Player\\player_sheet.png");
+    textures["ENEMY_RAT_SHEET"].loadFromFile("Resources\\Images\\Entities\\Enemies\\rat_60x64.png");
 }
 
 

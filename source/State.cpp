@@ -113,3 +113,8 @@ void State::initKeybinds(const std::string& filePath)
     }
 }
 
+
+void State::initTextures()
+{
+}
+

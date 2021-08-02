@@ -2,19 +2,19 @@
 #include "Enemy.h"
 
 
-Enemy::Enemy(EnemySpawner& enemySpawner, const float posX, const float posY, sf::Texture& textureSheet)
-    : Entity(textureSheet), enemySpawner(enemySpawner)
+Enemy::Enemy(const float posX, const float posY, sf::Texture& textureSheet)
+    : Entity(textureSheet)
 {
 
     createMovementComponent(200.f, 1600.f, 1000.f);
     createAnimationComponent(textureSheet);
     createHitboxComponent(17.f, 9.f, 30.f, 50.f);
 
-    pAnimationComponent->addAnimation("IDLE", textureSheet, sprite, 0, 0, 8, 0, 64, 64, 9.5f);
-    pAnimationComponent->addAnimation("MOVING_DOWN", textureSheet, sprite, 0, 1, 3, 1, 64, 64, 9.5f);
-    pAnimationComponent->addAnimation("MOVING_LEFT", textureSheet, sprite, 4, 1, 7, 1, 64, 64, 9.5f);
-    pAnimationComponent->addAnimation("MOVING_RIGHT", textureSheet, sprite, 8, 1, 11, 1, 64, 64, 9.5f);
-    pAnimationComponent->addAnimation("MOVING_UP", textureSheet, sprite, 12, 1, 15, 1, 64, 64, 9.5f );
+    pAnimationComponent->addAnimation("IDLE", textureSheet, sprite, 0, 0, 3, 0, 60, 64, 15.f);
+    pAnimationComponent->addAnimation("MOVING_DOWN", textureSheet, sprite, 0, 1, 3, 1, 60, 64, 11.f);
+    pAnimationComponent->addAnimation("MOVING_LEFT", textureSheet, sprite, 0, 2, 3, 2, 60, 64, 11.f);
+    pAnimationComponent->addAnimation("MOVING_RIGHT", textureSheet, sprite, 0, 3, 3, 3, 60, 64, 11.f);
+    pAnimationComponent->addAnimation("MOVING_UP", textureSheet, sprite, 0, 4, 3, 4, 60, 64, 11.f );
 
     setPosition(posX, posY);
 }
@@ -32,10 +32,11 @@ void Enemy::update(const float deltaTime, const sf::Vector2f& mousePosView)
 
 void Enemy::render(sf::RenderTarget& target, 
                     sf::Shader* pShader,
+                    const sf::Vector2f& shaderLightPosition,
                     const bool showHitbox
                     )
 {
-    Entity::render(target, pShader, showHitbox);
+    Entity::render(target, pShader, shaderLightPosition, showHitbox);
 }
 
 

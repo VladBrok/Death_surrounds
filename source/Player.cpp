@@ -35,10 +35,11 @@ void Player::update(const float deltaTime, const sf::Vector2f& mousePosView)
 
 void Player::render(sf::RenderTarget& target, 
                     sf::Shader* pShader,
+                    const sf::Vector2f& shaderLightPosition,
                     const bool showHitbox
                     )
 {
-    Entity::render(target, pShader, showHitbox);
+    Entity::render(target, pShader, shaderLightPosition, showHitbox);
     sword.render(target);
 }
 

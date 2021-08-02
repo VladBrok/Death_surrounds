@@ -17,7 +17,8 @@ public:
                           
     virtual void          update(const float deltaTime, const sf::Vector2f& mousePosView) = 0;
     virtual void          render(sf::RenderTarget& target, 
-                                 sf::Shader* pShader   = nullptr,
+                                 sf::Shader* pShader = nullptr,
+                                 const sf::Vector2f& shaderLightPosition = sf::Vector2f(),
                                  const bool showHitbox = false
                                  );
     virtual void          move(const float dirX, const float dirY, const float deltaTime);

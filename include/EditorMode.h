@@ -2,9 +2,21 @@
 #define EDITORMODE_H
 
 
-class EditorMode
+enum EditorModes
+{
+    DEFAULT_MODE,
+    ENEMY_MODE,
+    NUMBER_OF_EDITOR_MODES
+};
+
+
+class EditorMode: public sf::NonCopyable
 {
 public:
+
+    virtual void processEvent(const sf::Event& event) = 0;
+    virtual void update(const float deltaTime) = 0;
+    virtual void render(sf::RenderTarget& target) = 0;
 
 private:
 

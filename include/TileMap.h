@@ -39,6 +39,7 @@ public:
 
     const sf::Texture&      getTextureSheet() const;
     int                     getNumberOfTilesAtPosition(const sf::Vector2i& gridPosition, const int layer);
+    int                     getTileType(const int gridPosX, const int gridPosY, const int gridPosZ);
     const std::string&      getTileTypeAsString(const int type);
     const sf::Vector3f&     getMapSize() const;
 

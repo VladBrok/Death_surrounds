@@ -32,6 +32,9 @@ public:
 
 private:
 
+    std::vector<Enemy*> enemies;
+
+
     sf::View            view;
     sf::RenderTexture   renderTexture;
     sf::Sprite          renderSprite;

@@ -6,68 +6,41 @@
 #include "PauseMenu.h"
 #include "Tilemap.h"
 #include "TextureSelector.h"
+#include "EditorMode.h"
+#include "DefaultEditorMode.h"
+#include "EnemyEditorMode.h"
 
 
 class EditorState: public State
 {
 public:
 
-                                             EditorState(sf::RenderWindow& window, 
-                                                         const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
-                                                         std::stack<State*>* const pStates
-                                                         );
-    virtual                                  ~EditorState();
+                                         EditorState(sf::RenderWindow& window, 
+                                                     const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
+                                                     std::stack<State*>* const pStates
+                                                     );
+    virtual                              ~EditorState();
 
-    virtual void                             processEvent(const sf::Event& event);
-    void                                     processTilemapEvent(const sf::Event& event);
-    void                                     processPauseMenuEvent(const sf::Event& event);
-    void                                     processButtonsEvent(const sf::Event& event);
-    void                                     processTextureSelectorEvent(const sf::Event& event);
-
-    virtual void                             update(const float deltaTime);
-    void                                     updateSideBarActivity();
-    void                                     updateView(const float deltaTime);
-    void                                     updateCursorText();
-
-    virtual void                             render(sf::RenderTarget* pTarget = nullptr);
-    void                                     renderButtons(sf::RenderTarget& target);
-    void                                     renderTileSelectorAndCursorText(sf::RenderTarget& target);
-    void                                     renderTextureSelector(sf::RenderTarget& target);
+    virtual void                         processEvent(const sf::Event& event);
+    virtual void                         update(const float deltaTime);
+    virtual void                         render(sf::RenderTarget* pTarget = nullptr);
 
 private:
 
-    // Base
-    sf::Font                                 font;
-    PauseMenu*                               pPauseMenu;
-    std::unordered_map<std::string, Button*> buttons;
-    sf::View                                 view;
+    sf::View                             view;
+    std::vector<EditorMode*>             modes;
+    sf::Font                             font;
+    PauseMenu*                           pPauseMenu;
+    Tilemap                              tilemap;
+    int                                  activeMode;
+  
+    void                                 processPauseMenuEvent(const sf::Event& event);
+    void                                 processKeyboardEvent(const sf::Event& event);
 
-    // Tilemap and selectors
-    Tilemap                                  tilemap;
-    sf::RectangleShape                       tileSelector;
-    TextureSelector*                         pTextureSelector;
-    bool                                     hideTextureSelector;
-    sf::IntRect                              textureRect;
-
-    // Side bar
-    sf::RectangleShape                       sideBar;
-    bool                                     sideBarIsActive;
-
-    // Cursor text
-    sf::Text                                 cursorText;
-    bool                                     tileCanCollide;
-    int                                      tileType;
-
-    
-    virtual void                             initTextures();
-    void                                     initFont();
-    void                                     initSideBar();
-    void                                     initButtons();
-    void                                     initPauseMenu();
-    void                                     initTextureRect();
-    void                                     initTileAndTextureSelectors();
-    void                                     initView();
-    void                                     initCursorText();
+    void                                 initView();  
+    void                                 initFont();
+    void                                 initModes();
+    void                                 initPauseMenu();
 
 };
 
