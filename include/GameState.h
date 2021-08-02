@@ -42,8 +42,6 @@ private:
     sf::Font            font;
     sf::Shader          coreShader;
 
-    Enemy*              pTestEnemy;
-
     void                initView();
     void                initRenderTexture();
     void                initTilemap();

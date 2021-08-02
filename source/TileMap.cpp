@@ -32,6 +32,88 @@ Tilemap::~Tilemap()
 }
 
 
+void Tilemap::update(Entity& entity, const float deltaTime)
+{
+    updateCollisionWithMapBounds(entity, deltaTime);
+
+    updateTiles(entity, deltaTime);
+}
+
+
+void Tilemap::render(sf::RenderTarget& target, 
+                     const sf::Vector2i& gridPositionAroundWhichRender,
+                     sf::Shader* pShader,
+                     const sf::Vector2f& shaderLightPosition,
+                     const bool showCollisionBox
+                     )
+{
+    // FIXME
+    int z = 0;
+    
+
+    // Calculating the rendering bounds
+    int fromX = gridPositionAroundWhichRender.x - 5;
+    if (fromX < 0)
+    {
+        fromX = 0;
+    }
+    int toX = gridPositionAroundWhichRender.x + 7;
+    if (toX > (int)map.size())
+    {
+        toX = map.size();
+    }
+
+    int fromY = gridPositionAroundWhichRender.y - 4;
+    if (fromY < 0)
+    {
+        fromY = 0;
+    }
+    int toY = gridPositionAroundWhichRender.y + 5;
+    if (toY > (int)map[0].size())
+    {
+        toY = map[0].size();
+    }
+
+    // Rendering the tilemap around the specified grid position
+    for (int x = fromX; x < toX; ++x)
+    {
+        for (int y = fromY; y < toY; ++y)
+        {
+            for (int k = 0; k < (int)map[x][y][z].size(); ++k)
+            {
+                if (map[x][y][z][k]->getType() == RENDERING_DEFERRED) // Pushing the tile to the stack for deferred render
+                {
+                    tilesForDeferredRender.push(map[x][y][z][k]);
+                }
+                else // Rendering the tile
+                {
+                    map[x][y][z][k]->render(target, pShader, shaderLightPosition); 
+                }
+
+                if (map[x][y][z][k]->tileCanCollide() && showCollisionBox) // Rendering the collision box
+                {
+                    collisionBox.setPosition(map[x][y][z][k]->getPosition());
+                    target.draw(collisionBox);
+                }
+            }
+        }
+    }
+}
+
+
+void Tilemap::renderDeferred(sf::RenderTarget& target,                                 
+                             sf::Shader* pShader,
+                             const sf::Vector2f& shaderLightPosition
+                             )
+{
+    while (!tilesForDeferredRender.empty())
+    {
+        tilesForDeferredRender.top()->render(target, pShader, shaderLightPosition);
+        tilesForDeferredRender.pop();
+    }
+}
+
+
 void Tilemap::saveToFile(const std::string& fileName)
 {
     /*
@@ -181,88 +263,6 @@ void Tilemap::removeTile(const int gridPosX, const int gridPosY, const int gridP
 }
 
 
-void Tilemap::render(sf::RenderTarget& target, 
-                     const sf::Vector2i& gridPositionAroundWhichRender,
-                     sf::Shader* pShader,
-                     const sf::Vector2f& shaderLightPosition,
-                     const bool showCollisionBox
-                     )
-{
-    // FIXME
-    int z = 0;
-    
-
-    // Calculating the rendering bounds
-    int fromX = gridPositionAroundWhichRender.x - 5;
-    if (fromX < 0)
-    {
-        fromX = 0;
-    }
-    int toX = gridPositionAroundWhichRender.x + 7;
-    if (toX > (int)map.size())
-    {
-        toX = map.size();
-    }
-
-    int fromY = gridPositionAroundWhichRender.y - 4;
-    if (fromY < 0)
-    {
-        fromY = 0;
-    }
-    int toY = gridPositionAroundWhichRender.y + 5;
-    if (toY > (int)map[0].size())
-    {
-        toY = map[0].size();
-    }
-
-    // Rendering the tilemap around the specified grid position
-    for (int x = fromX; x < toX; ++x)
-    {
-        for (int y = fromY; y < toY; ++y)
-        {
-            for (int k = 0; k < (int)map[x][y][z].size(); ++k)
-            {
-                if (map[x][y][z][k]->getType() == RENDERING_DEFERRED) // Pushing the tile to the stack for deferred render
-                {
-                    tilesForDeferredRender.push(map[x][y][z][k]);
-                }
-                else // Rendering the tile
-                {
-                    map[x][y][z][k]->render(target, pShader, shaderLightPosition); 
-                }
-
-                if (map[x][y][z][k]->tileCanCollide() && showCollisionBox) // Rendering the collision box
-                {
-                    collisionBox.setPosition(map[x][y][z][k]->getPosition());
-                    target.draw(collisionBox);
-                }
-            }
-        }
-    }
-}
-
-
-void Tilemap::renderDeferred(sf::RenderTarget& target,                                 
-                             sf::Shader* pShader,
-                             const sf::Vector2f& shaderLightPosition
-                             )
-{
-    while (!tilesForDeferredRender.empty())
-    {
-        tilesForDeferredRender.top()->render(target, pShader, shaderLightPosition);
-        tilesForDeferredRender.pop();
-    }
-}
-
-
-void Tilemap::updateCollision(Entity& entity, const float deltaTime)
-{
-    updateCollisionWithMapBounds(entity, deltaTime);
-
-    updateCollisionWithTiles(entity, deltaTime);
-}
-
-
 const sf::Texture& Tilemap::getTextureSheet() const
 {
     return textureSheet;
@@ -370,9 +370,9 @@ void Tilemap::updateCollisionWithMapBounds(Entity& entity, const float deltaTime
 }
 
 
-void Tilemap::updateCollisionWithTiles(Entity& entity, const float deltaTime)
+void Tilemap::updateTiles(Entity& entity, const float deltaTime)
 {
-    // Calculating the checking bounds
+    // Calculating the update bounds
     int z = 0;
 
     int fromX = entity.getGridPosition().x - 1;
@@ -400,13 +400,15 @@ void Tilemap::updateCollisionWithTiles(Entity& entity, const float deltaTime)
     }
     
 
-    // Checking for the intersection
     for (int x = fromX; x < toX; ++x)
     {
         for (int y = fromY; y < toY; ++y)
         {
             for (int k = 0; k < (int)map[x][y][z].size(); ++k)
             {
+                map[x][y][z][k]->update();
+
+                // Checking for the intersection
                 if (map[x][y][z][k]->tileCanCollide() &&
                     map[x][y][z][k]->intersects(entity.getNextPositionBounds(deltaTime))
                    )

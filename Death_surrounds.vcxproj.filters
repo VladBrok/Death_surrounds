@@ -38,6 +38,9 @@
     <Filter Include="Items\Weapon">
       <UniqueIdentifier>{5574417b-4501-43e4-bdc1-e60f6c50157c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="States\Editor modes">
+      <UniqueIdentifier>{4d1ac924-9899-402b-99e0-2bca89d7be1d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
@@ -124,6 +127,15 @@
     <ClCompile Include="source\Enemy.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="source\EnemySpawner.cpp">
+      <Filter>Tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EditorMode.cpp">
+      <Filter>States\Editor modes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DefaultEditorMode.cpp">
+      <Filter>States\Editor modes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AnimationComponent.h">
@@ -209,6 +221,15 @@
     </ClInclude>
     <ClInclude Include="include\Enemy.h">
       <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EnemySpawner.h">
+      <Filter>Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EditorMode.h">
+      <Filter>States\Editor modes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DefaultEditorMode.h">
+      <Filter>States\Editor modes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,7 +8,7 @@
 #include "SkillComponent.h"
 
 
-class Entity
+class Entity: public sf::NonCopyable
 {
 public:
 

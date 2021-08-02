@@ -20,8 +20,6 @@ GameState::GameState(sf::RenderWindow& window,
     initPlayerGUI();
     initPauseMenu();
     initShader();
-
-    pTestEnemy = new Enemy(200.f, 200.f, textures["PLAYER_SHEET"]);
 }
 
 
@@ -31,8 +29,6 @@ GameState::~GameState()
     delete pPlayer;
     delete pPauseMenu;
     delete pPlayerGUI;
-
-    delete pTestEnemy;
 }
 
 
@@ -73,8 +69,6 @@ void GameState::update(const float deltaTime)
         pPlayer->update(deltaTime, mousePosView); 
         updateView();
         updatePlayerGUI();
-
-        pTestEnemy->update(deltaTime, mousePosView);
     }
 }
 
@@ -134,8 +128,7 @@ void GameState::updatePlayerKeyboardInput(const float deltaTime)
 
 void GameState::updateTilemap(const float deltaTime)
 {
-    pTilemap->updateCollision(*pPlayer, deltaTime);
-    pTilemap->updateCollision(*pTestEnemy, deltaTime);
+    pTilemap->update(*pPlayer, deltaTime);
 }
 
 
@@ -158,9 +151,6 @@ void GameState::render(sf::RenderTarget* pTarget)
     renderTexture.setView(view);
 
     pTilemap->render(renderTexture, pPlayer->getGridPositionCenter(), &coreShader, pPlayer->getCenter(), true);
-
-    pTestEnemy->render(renderTexture);
-
     pPlayer->render(renderTexture, &coreShader, true);
     pTilemap->renderDeferred(renderTexture, &coreShader, pPlayer->getCenter());
 

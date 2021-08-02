@@ -2,8 +2,8 @@
 #include "Enemy.h"
 
 
-Enemy::Enemy(const float posX, const float posY, sf::Texture& textureSheet)
-    : Entity(textureSheet)
+Enemy::Enemy(EnemySpawner& enemySpawner, const float posX, const float posY, sf::Texture& textureSheet)
+    : Entity(textureSheet), enemySpawner(enemySpawner)
 {
 
     createMovementComponent(200.f, 1600.f, 1000.f);

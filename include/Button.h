@@ -10,7 +10,7 @@ enum ButtonState
 };
 
 
-class Button: sf::NonCopyable
+class Button: public sf::NonCopyable
 {
 public:
 

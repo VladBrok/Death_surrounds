@@ -14,9 +14,12 @@
     <ClCompile Include="source\AnimationComponent.cpp" />
     <ClCompile Include="source\AttributeComponent.cpp" />
     <ClCompile Include="source\Button.cpp" />
+    <ClCompile Include="source\DefaultEditorMode.cpp" />
     <ClCompile Include="source\DropDownList.cpp" />
+    <ClCompile Include="source\EditorMode.cpp" />
     <ClCompile Include="source\EditorState.cpp" />
     <ClCompile Include="source\Enemy.cpp" />
+    <ClCompile Include="source\EnemySpawner.cpp" />
     <ClCompile Include="source\Entity.cpp" />
     <ClCompile Include="source\Game.cpp" />
     <ClCompile Include="source\GameState.cpp" />
@@ -48,9 +51,12 @@
     <ClInclude Include="include\AttributeComponent.h" />
     <ClInclude Include="include\Button.h" />
     <ClInclude Include="include\constants.h" />
+    <ClInclude Include="include\DefaultEditorMode.h" />
     <ClInclude Include="include\DropDownList.h" />
+    <ClInclude Include="include\EditorMode.h" />
     <ClInclude Include="include\EditorState.h" />
     <ClInclude Include="include\Enemy.h" />
+    <ClInclude Include="include\EnemySpawner.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\GameState.h" />

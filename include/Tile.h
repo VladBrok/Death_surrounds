@@ -6,6 +6,7 @@ enum TileType
 {
     DEFAULT,
     RENDERING_DEFERRED,
+    ENEMY_SPAWNER,
     NUMBER_OF_TILE_TYPES
 };
 
@@ -22,8 +23,9 @@ public:
                                            const TileType type
                                            );
     virtual                           ~Tile();
-                                      
-    void                              render(sf::RenderTarget& target,
+    
+    virtual void                      update();          
+    virtual void                      render(sf::RenderTarget& target,
                                              sf::Shader* pShader = nullptr,
                                              const sf::Vector2f& shaderLightPosition = sf::Vector2f()
                                              );

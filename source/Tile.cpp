@@ -6,7 +6,8 @@
 const std::string Tile::strTypes[NUMBER_OF_TILE_TYPES] = 
 {
     "Default",
-    "Rendering_deferred"
+    "Rendering_deferred",
+    "Enemy_spawner"
 };
 
 
@@ -28,6 +29,12 @@ Tile::Tile(const float posX,
 
 Tile::~Tile()
 {
+}
+
+
+void Tile::update()
+{
+    tile.setColor(sf::Color::Red);
 }
 
 
