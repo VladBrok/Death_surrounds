@@ -18,7 +18,8 @@ public:
                                    const sf::Vector2i& gridPositionAroundWhichRender,
                                    sf::Shader* pShader = nullptr,
                                    const sf::Vector2f& shaderLightPosition = sf::Vector2f(),
-                                   const bool showCollisionBox = false
+                                   const bool showCollisionBox = false,
+                                   const bool showEnemySpawnerBox = false
                                    );
     void                    renderDeferred(sf::RenderTarget& target,
                                            sf::Shader* pShader = nullptr,
@@ -34,6 +35,16 @@ public:
                                     const bool canCollide,
                                     const TileType type
                                     );
+    void                    addEnemySpawnerTile(const int gridPosX,
+                                                const int gridPosY,
+                                                const int gridPosZ,
+                                                const sf::IntRect& textureRect,
+                                                const bool canCollide,
+                                                const int enemyType,
+                                                const int enemyAmount,
+                                                const int enemyTimeToSpawn,
+                                                const float enemyMaxDistance
+                                                );
     void                    removeTile(const int gridPosX, const int gridPosY, const int gridPosZ);
 
 
@@ -50,6 +61,7 @@ private:
     sf::Texture                                                       textureSheet;
     std::string                                                       textureSheetFileName;
     sf::RectangleShape                                                collisionBox;
+    sf::RectangleShape                                                enemySpawnerBox;
     std::stack<Tile*>                                                 tilesForDeferredRender;
 
     bool                    positionsAreCorrect(const int gridPosX, const int gridPosY, const int gridPosZ) const;
@@ -61,6 +73,7 @@ private:
     void                    handleCollision(const Tile& tile, Entity& entity);
 
     void                    initCollisionBox();
+    void                    initEnemySpawnerBox();
 };
 
 

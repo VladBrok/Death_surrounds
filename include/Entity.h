@@ -12,7 +12,7 @@ class Entity: public sf::NonCopyable
 {
 public:
 
-                          Entity(const sf::Texture& texture);
+                          Entity(sf::Texture& texture);
     virtual               ~Entity();
                           
     virtual void          update(const float deltaTime, const sf::Vector2f& mousePosView) = 0;
@@ -38,6 +38,7 @@ public:
 protected:              
                         
     sf::Sprite            sprite;
+    sf::Texture&          texture;
                          
     /*
         If the pointer to a component is nullptr, then

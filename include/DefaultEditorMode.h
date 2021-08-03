@@ -52,6 +52,11 @@ private:
     sf::Text                                            cursorText;
     bool                                                tileCanCollide;
     int                                                 tileType;
+    int                                                 enemyType;
+    int                                                 enemyAmount;
+    int                                                 enemyTimeToSpawn;
+    float                                               enemyMaxDistance;
+
                                                         
     // Private functions                                
     void                                 processTilemapEvent(const sf::Event& event);

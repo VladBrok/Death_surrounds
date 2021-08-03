@@ -41,6 +41,9 @@
     <Filter Include="States\Editor modes">
       <UniqueIdentifier>{4d1ac924-9899-402b-99e0-2bca89d7be1d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Entities\Enemies">
+      <UniqueIdentifier>{2c934c49-fd54-46d5-9291-a9b2127acd6f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
@@ -124,20 +127,20 @@
     <ClCompile Include="source\ProgressBar.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="source\Enemy.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="source\EnemySpawner.cpp">
-      <Filter>Tiles</Filter>
-    </ClCompile>
     <ClCompile Include="source\EditorMode.cpp">
       <Filter>States\Editor modes</Filter>
     </ClCompile>
     <ClCompile Include="source\DefaultEditorMode.cpp">
       <Filter>States\Editor modes</Filter>
     </ClCompile>
-    <ClCompile Include="source\EnemyEditorMode.cpp">
-      <Filter>States\Editor modes</Filter>
+    <ClCompile Include="source\Enemy.cpp">
+      <Filter>Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Rat.cpp">
+      <Filter>Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EnemySpawnerTile.cpp">
+      <Filter>Tiles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -222,20 +225,20 @@
     <ClInclude Include="include\ProgressBar.h">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="include\Enemy.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="include\EnemySpawner.h">
-      <Filter>Tiles</Filter>
-    </ClInclude>
     <ClInclude Include="include\EditorMode.h">
       <Filter>States\Editor modes</Filter>
     </ClInclude>
     <ClInclude Include="include\DefaultEditorMode.h">
       <Filter>States\Editor modes</Filter>
     </ClInclude>
-    <ClInclude Include="include\EnemyEditorMode.h">
-      <Filter>States\Editor modes</Filter>
+    <ClInclude Include="include\Enemy.h">
+      <Filter>Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rat.h">
+      <Filter>Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EnemySpawnerTile.h">
+      <Filter>Tiles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

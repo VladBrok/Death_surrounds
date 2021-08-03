@@ -19,8 +19,7 @@
     <ClCompile Include="source\EditorMode.cpp" />
     <ClCompile Include="source\EditorState.cpp" />
     <ClCompile Include="source\Enemy.cpp" />
-    <ClCompile Include="source\EnemyEditorMode.cpp" />
-    <ClCompile Include="source\EnemySpawner.cpp" />
+    <ClCompile Include="source\EnemySpawnerTile.cpp" />
     <ClCompile Include="source\Entity.cpp" />
     <ClCompile Include="source\Game.cpp" />
     <ClCompile Include="source\GameState.cpp" />
@@ -38,6 +37,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">precompiled.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="source\ProgressBar.cpp" />
+    <ClCompile Include="source\Rat.cpp" />
     <ClCompile Include="source\SettingsState.cpp" />
     <ClCompile Include="source\SkillComponent.cpp" />
     <ClCompile Include="source\State.cpp" />
@@ -57,8 +57,7 @@
     <ClInclude Include="include\EditorMode.h" />
     <ClInclude Include="include\EditorState.h" />
     <ClInclude Include="include\Enemy.h" />
-    <ClInclude Include="include\EnemyEditorMode.h" />
-    <ClInclude Include="include\EnemySpawner.h" />
+    <ClInclude Include="include\EnemySpawnerTile.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\GameState.h" />
@@ -72,6 +71,7 @@
     <ClInclude Include="include\PlayerGUI.h" />
     <ClInclude Include="include\precompiled.h" />
     <ClInclude Include="include\ProgressBar.h" />
+    <ClInclude Include="include\Rat.h" />
     <ClInclude Include="include\SettingsState.h" />
     <ClInclude Include="include\SkillComponent.h" />
     <ClInclude Include="include\State.h" />

@@ -11,12 +11,12 @@ const std::string Tile::strTypes[NUMBER_OF_TILE_TYPES] =
 };
 
 
-Tile::Tile(const float posX, 
+Tile::Tile(const TileType type,
+           const float posX, 
            const float posY, 
            const sf::Texture& textureSheet, 
            const sf::IntRect& textureRect,
-           const bool canCollide,
-           const TileType type
+           const bool canCollide
            )
     : textureRect(textureRect), canCollide(canCollide), type(type)
 {
@@ -73,7 +73,7 @@ const std::string Tile::getAsString() const
 {
     std::stringstream data;
 
-    data << textureRect.left << ' ' << textureRect.top << ' ';
+    data << textureRect.left << ' ' << textureRect.top << ' ' << canCollide;
 
     return data.str();
 }

@@ -1,7 +1,7 @@
 #include "precompiled.h"
 #include "Tilemap.h"
 #include "constants.h"
-#include "EnemySpawner.h"
+#include "EnemySpawnerTile.h"
 
 
 Tilemap::Tilemap(const int mapSizeX, const int mapSizeY, const int mapSizeZ)
@@ -12,6 +12,7 @@ Tilemap::Tilemap(const int mapSizeX, const int mapSizeY, const int mapSizeZ)
     textureSheet.loadFromFile(textureSheetFileName);
 
     initCollisionBox();
+    initEnemySpawnerBox();
 
     mapSize.x = mapSizeX * GRID_SIZE;
     mapSize.y = mapSizeY * GRID_SIZE;
@@ -24,6 +25,7 @@ Tilemap::Tilemap(const std::string& fileName)
     loadFromFile(fileName);
 
     initCollisionBox();
+    initEnemySpawnerBox();
 }
 
 
@@ -45,7 +47,8 @@ void Tilemap::render(sf::RenderTarget& target,
                      const sf::Vector2i& gridPositionAroundWhichRender,
                      sf::Shader* pShader,
                      const sf::Vector2f& shaderLightPosition,
-                     const bool showCollisionBox
+                     const bool showCollisionBox,
+                     const bool showEnemySpawnerBox 
                      )
 {
     // FIXME
@@ -91,12 +94,19 @@ void Tilemap::render(sf::RenderTarget& target,
                     map[x][y][z][k]->render(target, pShader, shaderLightPosition); 
                 }
 
+
                 // Rendering the collision box
-                if (map[x][y][z][k]->tileCanCollide() && showCollisionBox ||
-                    map[x][y][z][k]->getType() == ENEMY_SPAWNER) // FIXME
+                if (map[x][y][z][k]->tileCanCollide() && showCollisionBox)
                 {
                     collisionBox.setPosition(map[x][y][z][k]->getPosition());
                     target.draw(collisionBox);
+                }
+
+                // Rendering the enemy spawner box
+                if (map[x][y][z][k]->getType() == ENEMY_SPAWNER && showEnemySpawnerBox)
+                {
+                    enemySpawnerBox.setPosition(map[x][y][z][k]->getPosition());
+                    target.draw(enemySpawnerBox);
                 }
             }
         }
@@ -125,11 +135,10 @@ void Tilemap::saveToFile(const std::string& fileName)
                 1) map size                            - x y z;
                 2) name of the file with texture sheet - textureSheetFileName
 
-            All tiles:
-                1) tile grid position                  - gridPosX gridPosY gridPosZ;
-                2) tile collision ability              - canCollide;
-                3) tile type                           - type;
-                4) tile texture rectangle              - x y.
+            Tiles:
+                1) tile type                           - type;
+                2) tile grid position                  - gridPosX gridPosY gridPosZ;
+                3) tile specific (from method getAsString)
     */
 
     std::ofstream file;
@@ -152,10 +161,9 @@ void Tilemap::saveToFile(const std::string& fileName)
             {
                 for (size_t k = 0; k < map[x][y][z].size(); ++k)
                 {
-                    file << x << ' ' << y << ' '<< z << ' ' 
-                         << map[x][y][z][k]->tileCanCollide() << ' '
-                         << map[x][y][z][k]->getType() << ' '
-                         << map[x][y][z][k]->getAsString();
+                    file << map[x][y][z][k]->getType() << ' '
+                         << x << ' ' << y << ' '<< z << ' ' 
+                         << map[x][y][z][k]->getAsString() << ' ';
                 }
             }
         }
@@ -185,35 +193,73 @@ void Tilemap::loadFromFile(const std::string& fileName)
 
     file >> mapSizeX >> mapSizeY >> mapSizeZ >> textureSheetFileName;
 
-    if (!file.fail() && mapSizeX > 0 && mapSizeY > 0 && mapSizeZ > 0)
+    if (mapSizeX <= 0 || mapSizeY <= 0 || mapSizeZ <= 0)
+    {
+        file.setstate(std::ios::failbit);
+    }
+
+    if (!file.fail())
     {
          clearMap();
          createEmptyMap(mapSizeX, mapSizeY, mapSizeZ);
          mapSize = sf::Vector3f(mapSizeX * GRID_SIZE, mapSizeY * GRID_SIZE, mapSizeZ * GRID_SIZE);
          textureSheet.loadFromFile(textureSheetFileName);
     }
+    
 
 
     int gridPosX = 0;
     int gridPosY = 0;
     int gridPosZ = 0;
-    bool canCollide = false;
     int type = 0;
     sf::IntRect textureRect(0, 0, (int)GRID_SIZE, (int)GRID_SIZE);
-    
-    while (file >> gridPosX >> gridPosY >> gridPosZ >> canCollide >> type >> textureRect.left >> textureRect.top)
+    bool canCollide = false;
+
+    while(file >> type >> gridPosX >> gridPosY >> gridPosZ)
     {
-        map[gridPosX][gridPosY][gridPosZ].push_back(
-            new Tile(
-                  gridPosX * GRID_SIZE, 
-                  gridPosY * GRID_SIZE, 
-                  textureSheet,
-                  textureRect,
-                  canCollide,
-                  static_cast<TileType>(type)
-            )
-        );
-        if (file.fail() || mapSizeX <= 0 || mapSizeY <= 0 || mapSizeZ <= 0)
+        // Loading the enemy spawner
+        if (type == ENEMY_SPAWNER)
+        {
+            int enemyType          = 0;
+            int enemyAmount        = 0;
+            int enemyTimeToSpawn   = 0;
+            float enemyMaxDistance = 0;
+
+            file >> textureRect.left >> textureRect.top >> canCollide >> enemyType >> enemyAmount >> enemyTimeToSpawn >> enemyMaxDistance;
+
+            map[gridPosX][gridPosY][gridPosZ].push_back(
+                new EnemySpawnerTile(
+                    gridPosX * GRID_SIZE,
+                    gridPosY * GRID_SIZE,
+                    textureSheet,
+                    textureRect,
+                    canCollide,
+                    enemyType,
+                    enemyAmount,
+                    enemyTimeToSpawn,
+                    enemyMaxDistance
+                )
+            );
+        }
+
+        // Loading the regular tile
+        else
+        {
+            file >> textureRect.left >> textureRect.top >> canCollide;
+
+            map[gridPosX][gridPosY][gridPosZ].push_back(
+                new Tile(
+                      static_cast<TileType>(type),
+                      gridPosX * GRID_SIZE, 
+                      gridPosY * GRID_SIZE, 
+                      textureSheet,
+                      textureRect,
+                      canCollide
+                )
+            );
+        }
+
+        if (file.fail())
         {
             std::cout << "ERROR in Tilemap::loadFromFile: the data in the file " << fileName << " are damaged. Tilemap is not loaded.\n";
             return;
@@ -242,14 +288,51 @@ void Tilemap::addTile(const int gridPosX,
 
             map[gridPosX][gridPosY][gridPosZ].push_back(
                 new Tile(
+                      type,
                       gridPosX * GRID_SIZE, 
                       gridPosY * GRID_SIZE, 
                       textureSheet,
                       textureRect,
-                      canCollide,
-                      type
+                      canCollide
                 )
             );
+    }
+}
+
+
+void Tilemap::addEnemySpawnerTile(const int gridPosX,
+                                  const int gridPosY,
+                                  const int gridPosZ,
+                                  const sf::IntRect& textureRect,
+                                  const bool canCollide,
+                                  const int enemyType,
+                                  const int enemyAmount,
+                                  const int enemyTimeToSpawn,
+                                  const float enemyMaxDistance
+                                  )
+{
+    if (positionsAreCorrect(gridPosX, gridPosY, gridPosZ))
+    {
+        // Preventing the user from adding the enemy spawner on top of the another enemy spawner
+        if (!map[gridPosX][gridPosY][gridPosZ].empty() && 
+            map[gridPosX][gridPosY][gridPosZ].back()->getType() == ENEMY_SPAWNER)
+        {
+            return;
+        }
+
+        map[gridPosX][gridPosY][gridPosZ].push_back(
+            new EnemySpawnerTile(
+                gridPosX * GRID_SIZE, 
+                gridPosY * GRID_SIZE, 
+                textureSheet, 
+                textureRect, 
+                canCollide,
+                enemyType, 
+                enemyAmount,
+                enemyTimeToSpawn,
+                enemyMaxDistance
+            )
+        );
     }
 }
 
@@ -490,7 +573,16 @@ void Tilemap::handleCollision(const Tile& tile, Entity& entity)
 void Tilemap::initCollisionBox()
 {
     collisionBox.setSize(sf::Vector2f(GRID_SIZE, GRID_SIZE));
-    collisionBox.setFillColor(sf::Color(255, 0, 0, 45));
+    collisionBox.setFillColor(sf::Color(255, 0, 0, 50));
     collisionBox.setOutlineColor(sf::Color::Red);
     collisionBox.setOutlineThickness(-1.f);
+}
+
+
+void Tilemap::initEnemySpawnerBox()
+{
+    enemySpawnerBox.setSize(sf::Vector2f(GRID_SIZE, GRID_SIZE));
+    enemySpawnerBox.setFillColor(sf::Color::Transparent);
+    enemySpawnerBox.setOutlineColor(sf::Color::Magenta);
+    enemySpawnerBox.setOutlineThickness(-2.f);
 }

@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "GameState.h"
 #include "constants.h"
+#include "Rat.h"
 
 
 GameState::GameState(sf::RenderWindow& window,
@@ -22,8 +23,8 @@ GameState::GameState(sf::RenderWindow& window,
     initShader();
 
 
-    enemies.push_back(new Enemy(GRID_SIZE * 3, GRID_SIZE * 2, textures["ENEMY_RAT_SHEET"]));
-    enemies.push_back(new Enemy(GRID_SIZE * 4, GRID_SIZE * 4, textures["ENEMY_RAT_SHEET"]));
+    enemies.push_back(new Rat(GRID_SIZE * 3, GRID_SIZE * 2, textures["ENEMY_RAT_SHEET"]));
+    enemies.push_back(new Rat(GRID_SIZE * 4, GRID_SIZE * 4, textures["ENEMY_RAT_SHEET"]));
 }
 
 
@@ -168,7 +169,7 @@ void GameState::render(sf::RenderTarget* pTarget)
 
     renderTexture.setView(view);
 
-    pTilemap->render(renderTexture, pPlayer->getGridPositionCenter(), &coreShader, pPlayer->getCenter(), true);
+    pTilemap->render(renderTexture, pPlayer->getGridPositionCenter(), &coreShader, pPlayer->getCenter(), true, true);
     pPlayer->render(renderTexture, &coreShader, pPlayer->getCenter(), true);
 
 

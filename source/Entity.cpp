@@ -3,8 +3,9 @@
 #include "constants.h"
 
 
-Entity::Entity(const sf::Texture& texture)
-    : sprite(texture), 
+Entity::Entity(sf::Texture& texture)
+    : texture(texture),
+      sprite(texture), 
       pMovementComponent(nullptr), 
       pAnimationComponent(nullptr),
       pHitboxComponent(nullptr),

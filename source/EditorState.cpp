@@ -135,9 +135,6 @@ void EditorState::initModes()
     modes.push_back(
         new DefaultEditorMode(font, tilemap, window, mousePosWindow, mousePosView, mousePosGrid, keybinds, view)
     );
-    modes.push_back(
-        new EnemyEditorMode(font, tilemap, window, mousePosView, mousePosGrid, keybinds, view)
-    );
 }
 
 

@@ -23,7 +23,11 @@ DefaultEditorMode::DefaultEditorMode(sf::Font& font,
     sideBarIsActive(false),
     hideTextureSelector(false),
     tileCanCollide(false),
-    tileType(0)
+    tileType(0),
+    enemyType(0),
+    enemyAmount(0),
+    enemyTimeToSpawn(0),
+    enemyMaxDistance(0.f)
 {
     initSideBar();
     initButtons();
@@ -88,7 +92,14 @@ void DefaultEditorMode::processTilemapEvent(const sf::Event& event)
     // Adding the tile
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !pTextureSelector->isActive())
     {
-        tilemap.addTile(mousePosGrid.x, mousePosGrid.y, 0, textureRect, tileCanCollide, static_cast<TileType>(tileType));
+        if (tileType == ENEMY_SPAWNER)
+        {
+            tilemap.addEnemySpawnerTile(mousePosGrid.x, mousePosGrid.y, 0, textureRect, tileCanCollide, enemyType, enemyAmount, enemyTimeToSpawn, enemyMaxDistance);
+        }
+        else
+        {
+            tilemap.addTile(mousePosGrid.x, mousePosGrid.y, 0, textureRect, tileCanCollide, static_cast<TileType>(tileType));
+        }
     }
 
     // Removing the tile
@@ -200,9 +211,18 @@ void DefaultEditorMode::updateCursorText()
     int activeLayer = 0; // The active layer of the tilemap (grid position in the z-axis)
 
     std::stringstream sstream;
-    sstream << "Grid position:     (" << mousePosGrid.x << ';' << mousePosGrid.y << ")\n";
-    sstream << "Tile can collide:  " << (tileCanCollide ? "true": "false") << '\n';
-    sstream << "Tile type:              " << tilemap.getTileTypeAsString(static_cast<TileType>(tileType)) << '\n';
+    sstream << "Grid position:     (" << mousePosGrid.x << ';' << mousePosGrid.y << ")\n"
+            << "Tile can collide:  " << (tileCanCollide ? "true": "false") << '\n'
+            << "Tile type:              " << tilemap.getTileTypeAsString(static_cast<TileType>(tileType)) << '\n';
+
+    if (tileType == ENEMY_SPAWNER)
+    {
+        sstream << "    Enemy type: " << enemyType << '\n'
+                << "    Enemy amount: " << enemyAmount << '\n'
+                << "    Time to spawn enemy: " << enemyTimeToSpawn << '\n'
+                << "    Max distance: " << enemyMaxDistance << '\n';
+    }
+
     sstream << "Number of tiles:   " << tilemap.getNumberOfTilesAtPosition(mousePosGrid, activeLayer) << '\n';
 
     cursorText.setString(sstream.str());
@@ -214,7 +234,7 @@ void DefaultEditorMode::renderTilemap(sf::RenderTarget& target)
 {
     target.setView(view);
 
-    tilemap.render(target, mousePosGrid, nullptr, sf::Vector2f(), true);
+    tilemap.render(target, mousePosGrid, nullptr, sf::Vector2f(), true, true);
     tilemap.renderDeferred(target);
 
     target.setView(target.getDefaultView());

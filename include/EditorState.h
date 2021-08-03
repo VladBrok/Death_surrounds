@@ -8,7 +8,6 @@
 #include "TextureSelector.h"
 #include "EditorMode.h"
 #include "DefaultEditorMode.h"
-#include "EnemyEditorMode.h"
 
 
 class EditorState: public State
