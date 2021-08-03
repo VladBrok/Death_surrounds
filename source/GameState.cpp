@@ -8,7 +8,8 @@ GameState::GameState(sf::RenderWindow& window,
                      const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
                      std::stack<State*>* const pStates
                      )
-    : State(window, pSupportedKeys, pStates)
+    : State(window, pSupportedKeys, pStates),
+      pEnemySystem(nullptr)
 {
     stateType = STATE_UPDATES_AND_PROCESSES_EVENTS;
 
@@ -21,10 +22,7 @@ GameState::GameState(sf::RenderWindow& window,
     initPlayerGUI();
     initPauseMenu();
     initShader();
-
-
-    enemies.push_back(new Rat(GRID_SIZE * 3, GRID_SIZE * 2, textures["ENEMY_RAT_SHEET"]));
-    enemies.push_back(new Rat(GRID_SIZE * 4, GRID_SIZE * 4, textures["ENEMY_RAT_SHEET"]));
+    initEnemySystem();
 }
 
 
@@ -34,7 +32,7 @@ GameState::~GameState()
     delete pPlayer;
     delete pPauseMenu;
     delete pPlayerGUI;
-
+    delete pEnemySystem;
 
     for (size_t i = 0; i < enemies.size(); ++i)
     {
@@ -82,12 +80,7 @@ void GameState::update(const float deltaTime)
 
         updateView();
         updatePlayerGUI();
-
-
-        for (size_t i = 0; i < enemies.size(); ++i)
-        {
-            enemies[i]->update(deltaTime, mousePosView);
-        }
+        updateEnemySystem(deltaTime);
     }
 }
 
@@ -147,13 +140,19 @@ void GameState::updatePlayerKeyboardInput(const float deltaTime)
 
 void GameState::updateTilemap(const float deltaTime)
 {
-    pTilemap->update(*pPlayer, deltaTime);
+    pTilemap->update(*pPlayer, deltaTime, *pEnemySystem);
 }
 
 
 void GameState::updatePlayerGUI()
 {
     pPlayerGUI->update();
+}
+
+
+void GameState::updateEnemySystem(const float deltaTime)
+{
+    pEnemySystem->update(deltaTime, mousePosView);
 }
 
 
@@ -171,14 +170,7 @@ void GameState::render(sf::RenderTarget* pTarget)
 
     pTilemap->render(renderTexture, pPlayer->getGridPositionCenter(), &coreShader, pPlayer->getCenter(), true, true);
     pPlayer->render(renderTexture, &coreShader, pPlayer->getCenter(), true);
-
-
-    for (size_t i = 0; i < enemies.size(); ++i)
-    {
-        enemies[i]->render(renderTexture, &coreShader, pPlayer->getCenter(), true);
-    }
-
-
+    pEnemySystem->render(renderTexture, coreShader, pPlayer->getCenter(), true);
     pTilemap->renderDeferred(renderTexture, &coreShader, pPlayer->getCenter());
 
     renderTexture.setView(renderTexture.getDefaultView());
@@ -251,4 +243,10 @@ void GameState::initShader()
         "Resources\\Shaders\\vertex_shader.vert", 
         "Resources\\Shaders\\fragment_shader.frag"
     );
+}
+
+
+void GameState::initEnemySystem()
+{
+    pEnemySystem = new EnemySystem(enemies, textures);
 }

@@ -44,6 +44,9 @@
     <Filter Include="Entities\Enemies">
       <UniqueIdentifier>{2c934c49-fd54-46d5-9291-a9b2127acd6f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems">
+      <UniqueIdentifier>{9d20ad90-5390-4dd6-833d-b72f7e26f22a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
@@ -142,6 +145,9 @@
     <ClCompile Include="source\EnemySpawnerTile.cpp">
       <Filter>Tiles</Filter>
     </ClCompile>
+    <ClCompile Include="source\EnemySystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AnimationComponent.h">
@@ -239,6 +245,9 @@
     </ClInclude>
     <ClInclude Include="include\EnemySpawnerTile.h">
       <Filter>Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EnemySystem.h">
+      <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

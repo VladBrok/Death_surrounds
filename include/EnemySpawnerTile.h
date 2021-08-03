@@ -2,6 +2,7 @@
 #define ENEMYSPAWNERTILE_H
 
 #include "Tile.h"
+class EnemySystem;
 
 
 class EnemySpawnerTile: public Tile
@@ -18,7 +19,7 @@ public:
                                                  const int enemyTimeToSpawn,
                                                  const float enemyMaxDistance
                                                  );
-    virtual void                update();          
+    void                        update(EnemySystem& enemySystem);        
 
    /* 
       Returns the string with textureRect position, collision ability,
@@ -27,11 +28,14 @@ public:
    virtual const std::string    getAsString() const; 
 
 private:
-
+    
     int                         enemyType;
     int                         enemyAmount;
     int                         enemyTimeToSpawn;
     float                       enemyMaxDistance;
+
+    int                         spawnTimer;
+    int                         currentEnemyAmount;
 };
 
 

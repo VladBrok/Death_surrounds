@@ -3,7 +3,7 @@
 #include "constants.h"
 
 
-Entity::Entity(sf::Texture& texture)
+Entity::Entity(const sf::Texture& texture)
     : texture(texture),
       sprite(texture), 
       pMovementComponent(nullptr), 
@@ -170,7 +170,7 @@ void Entity::createMovementComponent(const float maxVelocity, const float accele
 }
 
 
-void Entity::createAnimationComponent(sf::Texture& textureSheet)
+void Entity::createAnimationComponent(const sf::Texture& textureSheet)
 {
     pAnimationComponent = new AnimationComponent(textureSheet, sprite);
 }

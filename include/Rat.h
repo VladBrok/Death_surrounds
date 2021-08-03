@@ -8,7 +8,7 @@ class Rat: public Enemy
 {
 public:
 
-                    Rat(const float posX, const float posY, sf::Texture& textureSheet);
+                    Rat(const float posX, const float posY, const sf::Texture& textureSheet);
     virtual void    update(const float deltaTime, const sf::Vector2f& mousePosView);
 
 private:

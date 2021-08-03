@@ -20,6 +20,7 @@
     <ClCompile Include="source\EditorState.cpp" />
     <ClCompile Include="source\Enemy.cpp" />
     <ClCompile Include="source\EnemySpawnerTile.cpp" />
+    <ClCompile Include="source\EnemySystem.cpp" />
     <ClCompile Include="source\Entity.cpp" />
     <ClCompile Include="source\Game.cpp" />
     <ClCompile Include="source\GameState.cpp" />
@@ -58,6 +59,7 @@
     <ClInclude Include="include\EditorState.h" />
     <ClInclude Include="include\Enemy.h" />
     <ClInclude Include="include\EnemySpawnerTile.h" />
+    <ClInclude Include="include\EnemySystem.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\GameState.h" />

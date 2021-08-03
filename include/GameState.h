@@ -7,6 +7,7 @@
 #include "Tilemap.h"
 #include "PlayerGUI.h"
 #include "Enemy.h"
+#include "EnemySystem.h"
 
 
 class GameState: public State
@@ -27,12 +28,14 @@ public:
     void                updatePlayerKeyboardInput(const float deltaTime);
     void                updateTilemap(const float deltaTime);
     void                updatePlayerGUI();
+    void                updateEnemySystem(const float deltaTime);
 
     virtual void        render(sf::RenderTarget* pTarget = nullptr);
 
 private:
 
     std::vector<Enemy*> enemies;
+    EnemySystem*        pEnemySystem;
 
 
     sf::View            view;
@@ -53,6 +56,7 @@ private:
     void                initPlayerGUI();
     void                initPauseMenu();
     void                initShader();
+    void                initEnemySystem();
 
 };
 

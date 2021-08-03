@@ -2,6 +2,8 @@
 #include "Tilemap.h"
 #include "constants.h"
 #include "EnemySpawnerTile.h"
+#include "EnemySystem.h"
+#include "Entity.h"
 
 
 Tilemap::Tilemap(const int mapSizeX, const int mapSizeY, const int mapSizeZ)
@@ -35,11 +37,11 @@ Tilemap::~Tilemap()
 }
 
 
-void Tilemap::update(Entity& entity, const float deltaTime)
+void Tilemap::update(Entity& entity, const float deltaTime, EnemySystem& enemySystem)
 {
     updateCollisionWithMapBounds(entity, deltaTime);
 
-    updateTiles(entity, deltaTime);
+    updateTiles(entity, deltaTime, enemySystem);
 }
 
 
@@ -466,7 +468,7 @@ void Tilemap::updateCollisionWithMapBounds(Entity& entity, const float deltaTime
 }
 
 
-void Tilemap::updateTiles(Entity& entity, const float deltaTime)
+void Tilemap::updateTiles(Entity& entity, const float deltaTime, EnemySystem& enemySystem)
 {
     // Calculating the update bounds
     int z = 0;
@@ -502,7 +504,14 @@ void Tilemap::updateTiles(Entity& entity, const float deltaTime)
         {
             for (int k = 0; k < (int)map[x][y][z].size(); ++k)
             {
-                map[x][y][z][k]->update();
+                if (map[x][y][z][k]->getType() == ENEMY_SPAWNER)
+                {
+                    EnemySpawnerTile* es = dynamic_cast<EnemySpawnerTile*>(map[x][y][z][k]);
+                    if (es)
+                    {
+                        es->update(enemySystem);
+                    }
+                }
 
                 // Checking for the intersection
                 if (map[x][y][z][k]->tileCanCollide() &&

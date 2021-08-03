@@ -2,7 +2,7 @@
 #include "AnimationComponent.h"
 
 
-AnimationComponent::AnimationComponent(sf::Texture& textureSheet, sf::Sprite& sprite)
+AnimationComponent::AnimationComponent(const sf::Texture& textureSheet, sf::Sprite& sprite)
     : textureSheet(textureSheet), sprite(sprite), pLastAnimation(nullptr), pPriorityAnimation(nullptr)
 {
 }
@@ -19,7 +19,7 @@ AnimationComponent::~AnimationComponent()
 
 void AnimationComponent::addAnimation(
     const std::string&    animationKey,
-    sf::Texture&          textureSheet, 
+    const sf::Texture&    textureSheet, 
     sf::Sprite&           sprite,
     const int             startFrameX,
     const int             startFrameY,

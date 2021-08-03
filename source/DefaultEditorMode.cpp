@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "DefaultEditorMode.h"
 #include "constants.h"
+#include "EnemySystem.h"
 
 
 DefaultEditorMode::DefaultEditorMode(sf::Font& font,
@@ -161,6 +162,55 @@ void DefaultEditorMode::processKeyboardInputEvent(const sf::Event& event)
         {
             tileType = (tileType + 1 >= NUMBER_OF_TILE_TYPES) ? 0: (tileType + 1);
         }
+
+
+        if (tileType == ENEMY_SPAWNER)
+        {
+            if (event.key.code == keybinds.at("ENEMY_TYPE_UP"))
+            {
+                if (sf::Keyboard::isKeyPressed(keybinds.at("DECREASE_VALUE")))
+                {
+                    enemyType = (enemyType - 1 < 0) ? 0: (enemyType - 1);
+                }
+                else
+                {
+                    enemyType = (enemyType + 1 >= NUMBER_OF_ENEMY_TYPES) ? (NUMBER_OF_ENEMY_TYPES - 1): (enemyType + 1);
+                }
+            }
+            else if (event.key.code == keybinds.at("ENEMY_AMOUNT_UP"))
+            {
+                if (sf::Keyboard::isKeyPressed(keybinds.at("DECREASE_VALUE")))
+                {
+                    enemyAmount = (enemyAmount - 1 < 0) ? 0: (enemyAmount - 1); 
+                }
+                else
+                {
+                    ++enemyAmount;
+                }
+            }
+            else if (event.key.code == keybinds.at("ENEMY_TIME_TO_SPAWN_UP"))
+            {
+                if (sf::Keyboard::isKeyPressed(keybinds.at("DECREASE_VALUE")))
+                {
+                    enemyTimeToSpawn = (enemyTimeToSpawn - 1 < 0) ? 0: (enemyTimeToSpawn - 1); 
+                }
+                else
+                {
+                    ++enemyTimeToSpawn;
+                } 
+            }
+            else if (event.key.code == keybinds.at("ENEMY_MAX_DISTANCE_UP"))
+            {
+                if (sf::Keyboard::isKeyPressed(keybinds.at("DECREASE_VALUE")))
+                {
+                    enemyMaxDistance = (enemyMaxDistance - 1.f < 0) ? 0: (enemyMaxDistance - 1.f); 
+                }
+                else
+                {
+                    enemyMaxDistance += 1.f;
+                }
+            }
+        }
     }
 }
 
@@ -211,17 +261,17 @@ void DefaultEditorMode::updateCursorText()
     int activeLayer = 0; // The active layer of the tilemap (grid position in the z-axis)
 
     std::stringstream sstream;
-    sstream << "Grid position:     (" << mousePosGrid.x << ';' << mousePosGrid.y << ")\n"
-            << "Tile can collide:  " << (tileCanCollide ? "true": "false") << '\n'
-            << "Tile type:              " << tilemap.getTileTypeAsString(static_cast<TileType>(tileType)) << '\n';
+    sstream << "Grid position:       (" << mousePosGrid.x << ';' << mousePosGrid.y << ")\n"
+            << "Tile can collide:    " << (tileCanCollide ? "true": "false") << '\n'
+            << "Tile type:                " << tilemap.getTileTypeAsString(static_cast<TileType>(tileType)) << '\n';
 
     if (tileType == ENEMY_SPAWNER)
     {
-        sstream << "    Enemy type: " << enemyType << '\n'
-                << "    Enemy amount: " << enemyAmount << '\n'
-                << "    Time to spawn enemy: " << enemyTimeToSpawn << '\n'
-                << "    Max distance: " << enemyMaxDistance << '\n';
-    }
+        sstream << "     Enemy type:                     " << EnemySystem::getEnemyTypeAsString(enemyType) << '\n'
+                << "     Enemy amount:              " << enemyAmount << '\n'
+                << "     Time to spawn enemy: " << enemyTimeToSpawn << '\n'
+                << "     Max distance:                   " << enemyMaxDistance << '\n';
+    } 
 
     sstream << "Number of tiles:   " << tilemap.getNumberOfTilesAtPosition(mousePosGrid, activeLayer) << '\n';
 

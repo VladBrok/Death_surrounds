@@ -2,7 +2,8 @@
 #define TILEMAP_H
 
 #include "Tile.h"
-#include "Entity.h"
+class Entity;
+class EnemySystem;
 
 
 class Tilemap
@@ -13,7 +14,10 @@ public:
                             Tilemap(const std::string& fileName);
                             ~Tilemap();
 
-    void                    update(Entity& entity, const float deltaTime);
+    void                    update(Entity& entity,
+                                   const float deltaTime, 
+                                   EnemySystem& enemySystem
+                                   );
     void                    render(sf::RenderTarget& target, 
                                    const sf::Vector2i& gridPositionAroundWhichRender,
                                    sf::Shader* pShader = nullptr,
@@ -69,7 +73,7 @@ private:
     void                    createEmptyMap(const int mapSizeX, const int mapSizeY, const int mapSizeZ);
                             
     void                    updateCollisionWithMapBounds(Entity& entity, const float deltaTime);
-    void                    updateTiles(Entity& entity, const float deltaTime);
+    void                    updateTiles(Entity& entity, const float deltaTime, EnemySystem& enemySystem);
     void                    handleCollision(const Tile& tile, Entity& entity);
 
     void                    initCollisionBox();

@@ -32,12 +32,6 @@ Tile::~Tile()
 }
 
 
-void Tile::update()
-{
-    tile.setColor(sf::Color::Red);
-}
-
-
 void Tile::render(sf::RenderTarget& target,
                   sf::Shader* pShader,
                   const sf::Vector2f& shaderLightPosition

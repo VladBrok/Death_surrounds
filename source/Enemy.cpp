@@ -2,8 +2,9 @@
 #include "Enemy.h"
 
 
-Enemy::Enemy(const float posX, const float posY, sf::Texture& textureSheet)
+Enemy::Enemy(const float posX, const float posY, const sf::Texture& textureSheet)
     : Entity(textureSheet)
 {
     setPosition(posX, posY);
 }
+

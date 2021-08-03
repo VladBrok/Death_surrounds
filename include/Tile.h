@@ -23,8 +23,7 @@ public:
                                            const bool canCollide
                                            );
     virtual                           ~Tile();
-    
-    virtual void                      update();          
+          
     virtual void                      render(sf::RenderTarget& target,
                                              sf::Shader* pShader = nullptr,
                                              const sf::Vector2f& shaderLightPosition = sf::Vector2f()

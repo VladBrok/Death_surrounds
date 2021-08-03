@@ -12,7 +12,7 @@ class Entity: public sf::NonCopyable
 {
 public:
 
-                          Entity(sf::Texture& texture);
+                          Entity(const sf::Texture& texture);
     virtual               ~Entity();
                           
     virtual void          update(const float deltaTime, const sf::Vector2f& mousePosView) = 0;
@@ -38,7 +38,7 @@ public:
 protected:              
                         
     sf::Sprite            sprite;
-    sf::Texture&          texture;
+    const sf::Texture&    texture;
                          
     /*
         If the pointer to a component is nullptr, then
@@ -54,7 +54,7 @@ protected:
                                                   const float acceleration, 
                                                   const float deceleration
                                                   );
-    void                  createAnimationComponent(sf::Texture& textureSheet);
+    void                  createAnimationComponent(const sf::Texture& textureSheet);
     void                  createHitboxComponent(const float offsetFromSpritePositionX,
                                                 const float offsetFromSpritePositionY,
                                                 const float hitboxWidth,

@@ -6,11 +6,11 @@ class AnimationComponent: sf::NonCopyable
 {
 public:
 
-                    AnimationComponent(sf::Texture& textureSheet, sf::Sprite& sprite);
+                    AnimationComponent(const sf::Texture& textureSheet, sf::Sprite& sprite);
                     ~AnimationComponent();
     
     void            addAnimation(const std::string&    animationKey,
-                                 sf::Texture&          textureSheet, 
+                                 const sf::Texture&    textureSheet, 
                                  sf::Sprite&           sprite,
                                  const int             startFrameX,
                                  const int             startFrameY,
@@ -40,7 +40,7 @@ private:
     {
     public:
 
-        sf::Texture&            textureSheet;
+        const sf::Texture&      textureSheet;
         sf::Sprite&             sprite;
         sf::IntRect             startRect;
         sf::IntRect             currentRect;
@@ -55,7 +55,7 @@ private:
             the numbers of the column and row (starting from 0) in which the starting frame is
             located on the texture sheet. Same for endFrameX and endFrameY.
         */
-        Animation(sf::Texture&          textureSheet, 
+        Animation(const sf::Texture&    textureSheet, 
                   sf::Sprite&           sprite,
                   const int             startFrameX,
                   const int             startFrameY,
@@ -133,7 +133,7 @@ private:
 
     };
 
-    sf::Texture&                                  textureSheet;
+    const sf::Texture&                            textureSheet;
     sf::Sprite&                                   sprite;
     std::unordered_map<std::string, Animation*>   animations;
     Animation*                                    pLastAnimation;

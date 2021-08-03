@@ -2,7 +2,7 @@
 #include "Rat.h"
 
 
-Rat::Rat(const float posX, const float posY, sf::Texture& textureSheet)
+Rat::Rat(const float posX, const float posY, const sf::Texture& textureSheet)
     : Enemy(posX, posY, textureSheet)
 {
     createMovementComponent(200.f, 1600.f, 1000.f);

@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "EnemySpawnerTile.h"
 #include "constants.h"
+#include "EnemySystem.h"
 
 
 EnemySpawnerTile::EnemySpawnerTile(const float posX, 
@@ -17,13 +18,23 @@ EnemySpawnerTile::EnemySpawnerTile(const float posX,
       enemyType(enemyType),
       enemyAmount(enemyAmount),
       enemyTimeToSpawn(enemyTimeToSpawn),
-      enemyMaxDistance(enemyMaxDistance)
+      enemyMaxDistance(enemyMaxDistance),
+      spawnTimer(0),
+      currentEnemyAmount(0)
 {
 }
 
 
-void EnemySpawnerTile::update()
+void EnemySpawnerTile::update(EnemySystem& enemySystem)
 {
+    ++spawnTimer;
+    if (spawnTimer >= enemyTimeToSpawn && currentEnemyAmount < enemyAmount)
+    {
+        spawnTimer = 0;
+        ++currentEnemyAmount;
+
+        enemySystem.createEnemy(getPosition().x, getPosition().y, enemyType);
+    }
 }
 
 
