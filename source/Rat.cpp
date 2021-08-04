@@ -7,7 +7,7 @@ Rat::Rat(const float posX, const float posY, const sf::Texture& textureSheet)
 {
     createMovementComponent(200.f, 1600.f, 1000.f);
     createAnimationComponent(textureSheet);
-    createHitboxComponent(17.f, 9.f, 30.f, 50.f);
+    createHitboxComponent(18.f, 44.f, 20.f, 20.f);
 
     initAnimation();
 }

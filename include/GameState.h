@@ -8,6 +8,7 @@
 #include "PlayerGUI.h"
 #include "Enemy.h"
 #include "EnemySystem.h"
+#include "Inventory.h"
 
 
 class GameState: public State
@@ -28,25 +29,31 @@ public:
     void                updatePlayerKeyboardInput(const float deltaTime);
     void                updateTilemap(const float deltaTime);
     void                updatePlayerGUI();
-    void                updateEnemySystem(const float deltaTime);
+    void                updateEnemies(const float deltaTime);
+    void                updateCombat(Enemy& enemy);
 
     virtual void        render(sf::RenderTarget* pTarget = nullptr);
+    void                renderEnemies(sf::RenderTarget& target);
 
 private:
 
     std::vector<Enemy*> enemies;
     EnemySystem*        pEnemySystem;
 
-
     sf::View            view;
     sf::RenderTexture   renderTexture;
     sf::Sprite          renderSprite;
     Tilemap*            pTilemap;
+
     Player*             pPlayer;
     PlayerGUI*          pPlayerGUI;
+    Inventory           playerInventory;
+    Weapon*             pPlayerActiveWeapon;
+
     PauseMenu*          pPauseMenu;
     sf::Font            font;
     sf::Shader          coreShader;
+
 
     void                initView();
     void                initRenderTexture();
@@ -54,6 +61,7 @@ private:
     virtual void        initTextures();
     void                initPlayer();
     void                initPlayerGUI();
+    void                initPlayerInventory();
     void                initPauseMenu();
     void                initShader();
     void                initEnemySystem();

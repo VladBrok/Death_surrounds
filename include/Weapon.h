@@ -8,16 +8,20 @@ class Weapon: public Item
 {
 public:
 
-                    Weapon();
-    virtual         ~Weapon();
-    virtual void    update(const sf::Vector2f& weaponPosition, const sf::Vector2f& mousePosView) = 0;
-    virtual void    render(sf::RenderTarget& target) = 0;
+                       Weapon(sf::Texture& texture, const int damage, const int damageMax);
+    virtual            ~Weapon();
+    virtual void       update(const sf::Vector2f& weaponPosition, const sf::Vector2f& mousePosView) = 0;
+    virtual void       render(sf::RenderTarget& target) = 0;
 
-protected:
+    float              getRange() const;
+    virtual Weapon*    getClone() = 0;
+                       
+protected:             
 
-    sf::Texture     texture;
-    sf::Sprite      sprite;
-};
+    int                damage;
+    int                damageMax;
+    float              range;
+};                     
 
 
 #endif // WEAPON_H

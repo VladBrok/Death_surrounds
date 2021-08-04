@@ -2,7 +2,8 @@
 #include "Item.h"
 
 
-Item::Item()
+Item::Item(sf::Texture& texture)
+    : texture(texture), sprite(texture)
 {
 }
 

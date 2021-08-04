@@ -1,6 +1,6 @@
 #include "precompiled.h"
 #include "ProgressBar.h"
-#include "GUI_functions.h"
+#include "Utils.h"
 
 
 ProgressBar::ProgressBar()
@@ -34,7 +34,7 @@ void ProgressBar::create(const float posX,
     if (!centerText)
     {
         barText.setPosition(
-            std::floor(posX + gui::percentToPixels(5.f, width)), 
+            std::floor(posX + utils::percentToPixels(5.f, width)), 
             std::floor(posY + height / 4.f)
         );
     }

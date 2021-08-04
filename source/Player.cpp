@@ -2,8 +2,8 @@
 #include "Player.h"
 
 
-Player::Player(const float posX, const float posY, sf::Texture& textureSheet)
-    : Entity(textureSheet), isAttacking(false)
+Player::Player(const float posX, const float posY, sf::Texture& textureSheet, Inventory& inventory)
+    : Entity(textureSheet), inventory(inventory)
 {
 
     createMovementComponent(200.f, 1600.f, 1000.f);
@@ -29,7 +29,7 @@ void Player::update(const float deltaTime, const sf::Vector2f& mousePosView)
 
     pHitboxComponent->update();
 
-    sword.update(getCenter(), mousePosView);
+    updateInventory(mousePosView);
 }
 
 
@@ -40,7 +40,7 @@ void Player::render(sf::RenderTarget& target,
                     )
 {
     Entity::render(target, pShader, shaderLightPosition, showHitbox);
-    sword.render(target);
+    renderInventory(target);
 }
 
 
@@ -98,11 +98,6 @@ void Player::gainExp(const unsigned exp)
 }
 
 
-void Player::updateAttack()
-{
-}
-
-
 void Player::updateAnimation(const float deltaTime)
 {
     try
@@ -124,4 +119,16 @@ void Player::updateAnimation(const float deltaTime)
     {
         std::cout << "ERROR in Player::updateAnimation:\nthere is no animation for this type of player movement.\n";
     }
+}
+
+
+void Player::updateInventory(const sf::Vector2f& mousePosView)
+{
+    inventory.update(getCenter(), mousePosView);
+}
+
+
+void Player::renderInventory(sf::RenderTarget& target)
+{
+    inventory.render(target);
 }

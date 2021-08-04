@@ -47,6 +47,12 @@
     <Filter Include="Systems">
       <UniqueIdentifier>{9d20ad90-5390-4dd6-833d-b72f7e26f22a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Items\Inventory">
+      <UniqueIdentifier>{fe94fc18-e1b1-48d2-b746-7e272096446e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{246ba4f3-5a7a-4bcd-baf8-adf9d9e315c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
@@ -112,9 +118,6 @@
     <ClCompile Include="source\PlayerGUI.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="source\GUI_functions.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
     <ClCompile Include="source\Item.cpp">
       <Filter>Items</Filter>
     </ClCompile>
@@ -147,6 +150,12 @@
     </ClCompile>
     <ClCompile Include="source\EnemySystem.cpp">
       <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Inventory.cpp">
+      <Filter>Items\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Utils.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -213,9 +222,6 @@
     <ClInclude Include="include\PlayerGUI.h">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="include\GUI_functions.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
     <ClInclude Include="include\Item.h">
       <Filter>Items</Filter>
     </ClInclude>
@@ -248,6 +254,12 @@
     </ClInclude>
     <ClInclude Include="include\EnemySystem.h">
       <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Inventory.h">
+      <Filter>Items\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utils.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

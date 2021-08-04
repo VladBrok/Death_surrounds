@@ -3,13 +3,14 @@
 
 #include "Entity.h"
 #include "Sword.h"
+#include "Inventory.h"
 
 
 class Player: public Entity
 {
 public:
     
-                    Player(const float posX, const float posY, sf::Texture& textureSheet);
+                    Player(const float posX, const float posY, sf::Texture& textureSheet, Inventory& inventory);
     virtual void    update(const float deltaTime, const sf::Vector2f& mousePosView);
     virtual void    render(sf::RenderTarget& target, 
                            sf::Shader* pShader = nullptr,
@@ -30,11 +31,11 @@ public:
 
 private:
 
-    Sword           sword;
-    bool            isAttacking; // FIXME: Current player don't have the attack animation
+    Inventory&      inventory;
 
-    void            updateAttack(); // FIXME
     void            updateAnimation(const float deltaTime);
+    void            updateInventory(const sf::Vector2f& mousePosView);
+    void            renderInventory(sf::RenderTarget& target);
 };
 
 

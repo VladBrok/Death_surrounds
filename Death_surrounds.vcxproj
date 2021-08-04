@@ -24,8 +24,8 @@
     <ClCompile Include="source\Entity.cpp" />
     <ClCompile Include="source\Game.cpp" />
     <ClCompile Include="source\GameState.cpp" />
-    <ClCompile Include="source\GUI_functions.cpp" />
     <ClCompile Include="source\HitboxComponent.cpp" />
+    <ClCompile Include="source\Inventory.cpp" />
     <ClCompile Include="source\Item.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\MainMenuState.cpp" />
@@ -46,6 +46,7 @@
     <ClCompile Include="source\TextureSelector.cpp" />
     <ClCompile Include="source\Tile.cpp" />
     <ClCompile Include="source\Tilemap.cpp" />
+    <ClCompile Include="source\Utils.cpp" />
     <ClCompile Include="source\Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -63,8 +64,8 @@
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\GameState.h" />
-    <ClInclude Include="include\GUI_functions.h" />
     <ClInclude Include="include\HitboxComponent.h" />
+    <ClInclude Include="include\Inventory.h" />
     <ClInclude Include="include\Item.h" />
     <ClInclude Include="include\MainMenuState.h" />
     <ClInclude Include="include\MovementComponent.h" />
@@ -81,6 +82,7 @@
     <ClInclude Include="include\TextureSelector.h" />
     <ClInclude Include="include\Tile.h" />
     <ClInclude Include="include\Tilemap.h" />
+    <ClInclude Include="include\Utils.h" />
     <ClInclude Include="include\Weapon.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

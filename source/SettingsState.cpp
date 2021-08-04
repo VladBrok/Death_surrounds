@@ -1,6 +1,6 @@
 #include "precompiled.h"
 #include "SettingsState.h"
-#include "GUI_functions.h"
+#include "Utils.h"
 
 
 SettingsState::SettingsState(sf::RenderWindow& window,
@@ -104,15 +104,15 @@ void SettingsState::initGui()
     /*=============== Buttons ===============*/
 
     const sf::Vector2f buttonSize(
-        static_cast<float>(gui::percentToPixels(14.f, windowSize.x)),
-        static_cast<float>(gui::percentToPixels(9.f, windowSize.y))
+        static_cast<float>(utils::percentToPixels(14.f, windowSize.x)),
+        static_cast<float>(utils::percentToPixels(9.f, windowSize.y))
     );
     const sf::Color textIdleColor(sf::Color(150, 150, 150));
     const sf::Color textHoverColor(sf::Color::White);
     const sf::Color textActiveColor(sf::Color(20, 20, 20, 200));
 
-    buttons["APPLY"] = new Button((float)(int)gui::percentToPixels(50.f, windowSize.x), 
-                                  (float)(int)gui::percentToPixels(87.f, windowSize.y), 
+    buttons["APPLY"] = new Button((float)(int)utils::percentToPixels(50.f, windowSize.x), 
+                                  (float)(int)utils::percentToPixels(87.f, windowSize.y), 
                                   buttonSize.x,
                                   buttonSize.y, 
                                   font, 
@@ -122,8 +122,8 @@ void SettingsState::initGui()
                                   textActiveColor
                                   );
 
-    buttons["EXIT_STATE"] = new Button((float)(int)gui::percentToPixels(83.f, windowSize.x), 
-                                       (float)(int)gui::percentToPixels(87.f, windowSize.y), 
+    buttons["EXIT_STATE"] = new Button((float)(int)utils::percentToPixels(83.f, windowSize.x), 
+                                       (float)(int)utils::percentToPixels(87.f, windowSize.y), 
                                        buttonSize.x,
                                        buttonSize.y, 
                                        font, 
@@ -163,10 +163,10 @@ void SettingsState::initGui()
 
     dropDownLists["RESOLUTION"] = 
         new DropDownList(
-             (float)(int)gui::percentToPixels(22.f, windowSize.x), 
-             (float)(int)gui::percentToPixels(50.f, windowSize.y), 
-             gui::percentToPixels(14.6f, windowSize.x), 
-             gui::percentToPixels(6.5f, windowSize.y), 
+             (float)(int)utils::percentToPixels(22.f, windowSize.x), 
+             (float)(int)utils::percentToPixels(50.f, windowSize.y), 
+             utils::percentToPixels(14.6f, windowSize.x), 
+             utils::percentToPixels(6.5f, windowSize.y), 
              font, 
              resolutions, 
              activeResolutionIndex

@@ -3,7 +3,7 @@
 #include "EditorState.h"
 #include "GameState.h"
 #include "SettingsState.h"
-#include "GUI_functions.h"
+#include "Utils.h"
 
 
 MainMenuState::MainMenuState(sf::RenderWindow& window,
@@ -95,15 +95,15 @@ void MainMenuState::initButtons()
     const sf::Vector2u windowSize(window.getSize());
 
     const sf::Vector2f buttonSize(
-        static_cast<float>(gui::percentToPixels(14.3f, windowSize.x)),
-        static_cast<float>(gui::percentToPixels(9.f, windowSize.y))
+        static_cast<float>(utils::percentToPixels(14.3f, windowSize.x)),
+        static_cast<float>(utils::percentToPixels(9.f, windowSize.y))
     );
     const sf::Color textIdleColor(sf::Color(150, 150, 150));
     const sf::Color textHoverColor(sf::Color::White);
     const sf::Color textActiveColor(sf::Color(20, 20, 20, 200));
 
-    buttons["GAME_STATE"] = new Button(gui::percentToPixels(16.7f, windowSize.x), 
-                                       gui::percentToPixels(43.5f, windowSize.y), 
+    buttons["GAME_STATE"] = new Button(utils::percentToPixels(16.7f, windowSize.x), 
+                                       utils::percentToPixels(43.5f, windowSize.y), 
                                        buttonSize.x, 
                                        buttonSize.y,
                                        font, 
@@ -113,8 +113,8 @@ void MainMenuState::initButtons()
                                        textActiveColor
                                        );
 
-    buttons["SETTINGS_STATE"] = new Button(gui::percentToPixels(16.7f, windowSize.x), 
-                                           gui::percentToPixels(55.5f, windowSize.y), 
+    buttons["SETTINGS_STATE"] = new Button(utils::percentToPixels(16.7f, windowSize.x), 
+                                           utils::percentToPixels(55.5f, windowSize.y), 
                                            buttonSize.x, 
                                            buttonSize.y,
                                            font, 
@@ -123,8 +123,8 @@ void MainMenuState::initButtons()
                                            textHoverColor,
                                            textActiveColor
                                            );
-    buttons["EDITOR_STATE"] = new Button(gui::percentToPixels(16.7f, windowSize.x),
-                                         gui::percentToPixels(66.6f, windowSize.y), 
+    buttons["EDITOR_STATE"] = new Button(utils::percentToPixels(16.7f, windowSize.x),
+                                         utils::percentToPixels(66.6f, windowSize.y), 
                                          buttonSize.x, 
                                          buttonSize.y,
                                          font, 
@@ -134,8 +134,8 @@ void MainMenuState::initButtons()
                                          textActiveColor
                                          );
 
-    buttons["EXIT_STATE"] = new Button(gui::percentToPixels(16.7f, windowSize.x), 
-                                       gui::percentToPixels(87.f, windowSize.y), 
+    buttons["EXIT_STATE"] = new Button(utils::percentToPixels(16.7f, windowSize.x), 
+                                       utils::percentToPixels(87.f, windowSize.y), 
                                        buttonSize.x, 
                                        buttonSize.y, 
                                        font, 

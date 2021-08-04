@@ -1,6 +1,6 @@
 #include "precompiled.h"
 #include "PlayerGUI.h"
-#include "GUI_functions.h"
+#include "Utils.h"
 
 
 PlayerGUI::PlayerGUI(Player& player, const sf::RenderWindow& window)
@@ -10,10 +10,10 @@ PlayerGUI::PlayerGUI(Player& player, const sf::RenderWindow& window)
 
 
     levelBox.create(
-        gui::percentToPixels(3.f, window.getSize().x),
-        gui::percentToPixels(3.f, window.getSize().x),
-        gui::percentToPixels(3.3f, window.getSize().x),
-        gui::percentToPixels(3.3f, window.getSize().x),
+        utils::percentToPixels(3.f, window.getSize().x),
+        utils::percentToPixels(3.f, window.getSize().x),
+        utils::percentToPixels(3.3f, window.getSize().x),
+        utils::percentToPixels(3.3f, window.getSize().x),
         font,
         sf::Color(50, 50, 50, 200),
         sf::Color::Transparent,
@@ -23,8 +23,8 @@ PlayerGUI::PlayerGUI(Player& player, const sf::RenderWindow& window)
 
     hpBar.create(
         levelBox.getPosition().x, 
-        levelBox.getPosition().y + levelBox.getBackSize().y + gui::percentToPixels(1.3f, window.getSize().y), 
-        gui::percentToPixels(13.f, window.getSize().x),
+        levelBox.getPosition().y + levelBox.getBackSize().y + utils::percentToPixels(1.3f, window.getSize().y), 
+        utils::percentToPixels(13.f, window.getSize().x),
         levelBox.getBackSize().y, 
         font, 
         sf::Color(250, 0, 0, 190),
@@ -33,7 +33,7 @@ PlayerGUI::PlayerGUI(Player& player, const sf::RenderWindow& window)
 
     expBar.create(
         hpBar.getPosition().x,
-        hpBar.getPosition().y + hpBar.getBackSize().y + gui::percentToPixels(1.3f, window.getSize().y),
+        hpBar.getPosition().y + hpBar.getBackSize().y + utils::percentToPixels(1.3f, window.getSize().y),
         hpBar.getBackSize().x,
         hpBar.getBackSize().y,
         font,

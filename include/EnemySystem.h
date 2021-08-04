@@ -20,14 +20,6 @@ public:
                                                    EnemySystem(std::vector<Enemy*>& activeEnemies, 
                                                                std::unordered_map<std::string, sf::Texture>& textures
                                                                );
-     void                                          update(const float deltaTime,
-                                                          const sf::Vector2f& mousePosView
-                                                          );
-     void                                          render(sf::RenderTarget& target,
-                                                          sf::Shader& shader,
-                                                          const sf::Vector2f& shaderLightPosition,
-                                                          const bool showHitbox
-                                                          );
      void                                          createEnemy(const float posX,
                                                                const float posY,
                                                                const int type

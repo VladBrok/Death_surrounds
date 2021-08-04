@@ -2,6 +2,7 @@
 #include "GameState.h"
 #include "constants.h"
 #include "Rat.h"
+#include "Utils.h"
 
 
 GameState::GameState(sf::RenderWindow& window,
@@ -9,7 +10,9 @@ GameState::GameState(sf::RenderWindow& window,
                      std::stack<State*>* const pStates
                      )
     : State(window, pSupportedKeys, pStates),
-      pEnemySystem(nullptr)
+      pEnemySystem(nullptr),
+      playerInventory(5),
+      pPlayerActiveWeapon(nullptr)
 {
     stateType = STATE_UPDATES_AND_PROCESSES_EVENTS;
 
@@ -20,6 +23,7 @@ GameState::GameState(sf::RenderWindow& window,
     initTextures();
     initPlayer();
     initPlayerGUI();
+    initPlayerInventory();
     initPauseMenu();
     initShader();
     initEnemySystem();
@@ -80,7 +84,7 @@ void GameState::update(const float deltaTime)
 
         updateView();
         updatePlayerGUI();
-        updateEnemySystem(deltaTime);
+        updateEnemies(deltaTime);
     }
 }
 
@@ -150,9 +154,28 @@ void GameState::updatePlayerGUI()
 }
 
 
-void GameState::updateEnemySystem(const float deltaTime)
+void GameState::updateEnemies(const float deltaTime)
 {
-    pEnemySystem->update(deltaTime, mousePosView);
+    for (size_t i = 0; i < enemies.size(); ++i)
+    {
+        enemies[i]->update(deltaTime, mousePosView);
+        updateCombat(*enemies[i]);
+    }
+}
+
+
+void GameState::updateCombat(Enemy& enemy)
+{
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        std::cout << utils::getDistance(enemy.getCenter(), pPlayer->getCenter()) << '\n';
+
+        if (enemy.getGlobalBounds().contains(mousePosView) &&
+            utils::getDistance(enemy.getCenter(), pPlayer->getCenter()) < pPlayerActiveWeapon->getRange())
+        {
+            std::cout << "Hit!\n";
+        }
+    }
 }
 
 
@@ -170,7 +193,7 @@ void GameState::render(sf::RenderTarget* pTarget)
 
     pTilemap->render(renderTexture, pPlayer->getGridPositionCenter(), &coreShader, pPlayer->getCenter(), true, true);
     pPlayer->render(renderTexture, &coreShader, pPlayer->getCenter(), true);
-    pEnemySystem->render(renderTexture, coreShader, pPlayer->getCenter(), true);
+    renderEnemies(renderTexture);
     pTilemap->renderDeferred(renderTexture, &coreShader, pPlayer->getCenter());
 
     renderTexture.setView(renderTexture.getDefaultView());
@@ -191,10 +214,20 @@ void GameState::render(sf::RenderTarget* pTarget)
 }
 
 
+void GameState::renderEnemies(sf::RenderTarget& target)
+{
+    for (size_t i = 0; i < enemies.size(); ++i)
+    {
+        enemies[i]->render(target, &coreShader, pPlayer->getCenter(), true);
+    }
+}
+
+
 void GameState::initTextures()
 {
     textures["PLAYER_SHEET"].loadFromFile("Resources\\Images\\Entities\\Player\\player_sheet.png");
     textures["ENEMY_RAT_SHEET"].loadFromFile("Resources\\Images\\Entities\\Enemies\\rat_60x64.png");
+    textures["WEAPON_SWORD"].loadFromFile("Resources\\Images\\Items\\Weapon\\sword.png");
 }
 
 
@@ -218,13 +251,23 @@ void GameState::initTilemap()
 
 void GameState::initPlayer()
 {
-    pPlayer = new Player(GRID_SIZE * 2, GRID_SIZE * 2, textures["PLAYER_SHEET"]);
+    pPlayer = new Player(GRID_SIZE * 2, GRID_SIZE * 2, textures["PLAYER_SHEET"], playerInventory);
 }
 
 
 void GameState::initPlayerGUI()
 {
     pPlayerGUI = new PlayerGUI(*pPlayer, window);
+}
+
+
+void GameState::initPlayerInventory()
+{
+    Sword s(textures["WEAPON_SWORD"], 10, 10);
+
+    playerInventory.addItem(&s);
+
+    pPlayerActiveWeapon = static_cast<Weapon*>(&playerInventory[0]);
 }
 
 

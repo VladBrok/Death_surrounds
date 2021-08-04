@@ -11,28 +11,6 @@ EnemySystem::EnemySystem(std::vector<Enemy*>& activeEnemies,
 }
 
 
-void EnemySystem::update(const float deltaTime, const sf::Vector2f& mousePosView)
-{
-    for (size_t i = 0; i < activeEnemies.size(); ++i)
-    {
-        activeEnemies[i]->update(deltaTime, mousePosView);
-    }
-}
-
-
-void EnemySystem::render(sf::RenderTarget& target,
-                         sf::Shader& shader,
-                         const sf::Vector2f& shaderLightPosition,
-                         const bool showHitbox
-                         )
-{
-    for (size_t i = 0; i < activeEnemies.size(); ++i)
-    {
-        activeEnemies[i]->render(target, &shader, shaderLightPosition, true);
-    }
-}
-
-
 void EnemySystem::createEnemy(const float posX,
                               const float posY,
                               const int type
