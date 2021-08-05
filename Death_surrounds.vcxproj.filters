@@ -157,6 +157,9 @@
     <ClCompile Include="source\Utils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="source\TextTagSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AnimationComponent.h">
@@ -260,6 +263,9 @@
     </ClInclude>
     <ClInclude Include="include\Utils.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TextTagSystem.h">
+      <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

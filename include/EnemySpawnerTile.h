@@ -19,7 +19,7 @@ public:
                                                  const int enemyTimeToSpawn,
                                                  const float enemyMaxDistance
                                                  );
-    void                        update(EnemySystem& enemySystem);        
+    void                        update(EnemySystem& enemySystem, const float deltaTime);        
 
    /* 
       Returns the string with textureRect position, collision ability,

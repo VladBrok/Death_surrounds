@@ -62,7 +62,7 @@ void ProgressBar::update(const int value, const int valueMax)
     );
 
     barText.setString(
-        std::to_string((long long)value) + " / " + 
+        std::to_string((long long)value) + std::string(" / ") + 
         std::to_string((long long)valueMax)
     );
 }

@@ -49,24 +49,24 @@ void AttributeComponent::updateStats(bool resetHp)
 }
 
 
-void AttributeComponent::loseHP(const unsigned points)
+void AttributeComponent::loseHp(const unsigned hp)
 {
-    hp -= points;
+    this->hp -= hp;
     
-    if (hp < 0)
+    if (this->hp < 0)
     {
-        hp = 0;
+        this->hp = 0;
     }
 }
 
 
-void AttributeComponent::gainHP(const unsigned points)
+void AttributeComponent::gainHp(const unsigned hp)
 {
-    hp += points;
+    this->hp += hp;
 
-    if (hp > hpMax)
+    if (this->hp > hpMax)
     {
-        hp = hpMax;
+        this->hp = hpMax;
     }
 }
 

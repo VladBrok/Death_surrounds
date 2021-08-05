@@ -13,6 +13,10 @@ public:
     virtual void       update(const sf::Vector2f& weaponPosition, const sf::Vector2f& mousePosView) = 0;
     virtual void       render(sf::RenderTarget& target) = 0;
 
+    bool               canAttack();
+
+    int                getDamage() const;
+    int                getDamageMax() const;
     float              getRange() const;
     virtual Weapon*    getClone() = 0;
                        
@@ -21,6 +25,11 @@ protected:
     int                damage;
     int                damageMax;
     float              range;
+    sf::Clock          attackTimer;
+    sf::Int32          attackTimerMax;
+
+    virtual void       initRange() = 0;
+    virtual void       initAttackTimerMax() = 0;
 };                     
 
 

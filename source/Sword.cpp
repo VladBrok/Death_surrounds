@@ -6,7 +6,8 @@
 Sword::Sword(sf::Texture& texture, const int damage, const int damageMax)
     : Weapon(texture, damage, damageMax)
 {
-    range = 50.f;
+    initRange();
+    initAttackTimerMax();
 
     sprite.setOrigin(
         sprite.getGlobalBounds().width / 2.f,
@@ -32,4 +33,16 @@ void Sword::render(sf::RenderTarget& target)
 Sword* Sword::getClone()
 {
     return new Sword(*this);
+}
+
+
+void Sword::initRange()
+{
+    range = 50.f;
+}
+
+
+void Sword::initAttackTimerMax()
+{
+    attackTimerMax = 400;
 }

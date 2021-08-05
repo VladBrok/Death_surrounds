@@ -24,8 +24,8 @@ public:
     int             getExpForNextLevel() const;
     unsigned        getLevel() const;
 
-    void            loseHP(const unsigned points);
-    void            gainHP(const unsigned points);
+    void            loseHp(const unsigned hp);
+    void            gainHp(const unsigned hp);
     void            loseExp(const unsigned exp);
     void            gainExp(const unsigned exp);
 

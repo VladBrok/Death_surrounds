@@ -17,18 +17,17 @@ AnimationComponent::~AnimationComponent()
 }
 
 
-void AnimationComponent::addAnimation(
-    const std::string&    animationKey,
-    const sf::Texture&    textureSheet, 
-    sf::Sprite&           sprite,
-    const int             startFrameX,
-    const int             startFrameY,
-    const int             endFrameX,
-    const int             endFrameY,
-    const int             frameWidth,
-    const int             frameHeight,
-    const float           timeToPlayAnimation
-    )
+void AnimationComponent::addAnimation(const std::string&    animationKey,
+                                      const sf::Texture&    textureSheet, 
+                                      sf::Sprite&           sprite,
+                                      const int             startFrameX,
+                                      const int             startFrameY,
+                                      const int             endFrameX,
+                                      const int             endFrameY,
+                                      const int             frameWidth,
+                                      const int             frameHeight,
+                                      const float           timeToPlayAnimation
+                                      )
 {
     animations[animationKey] = new Animation(
                                     textureSheet, 

@@ -3,7 +3,7 @@
 #include "Rat.h"
 
 
-EnemySystem::EnemySystem(std::vector<Enemy*>& activeEnemies, 
+EnemySystem::EnemySystem(std::list<Enemy*>& activeEnemies, 
             std::unordered_map<std::string, sf::Texture>& textures
             )
             : activeEnemies(activeEnemies), textures(textures)
@@ -38,4 +38,10 @@ const std::string EnemySystem::getEnemyTypeAsString(const int type)
     default:
         return "ERROR_ENEMY_TYPE";
     }
+}
+
+
+int EnemySystem::getNumberOfActiveEnemies() const
+{
+    return (int)activeEnemies.size();
 }

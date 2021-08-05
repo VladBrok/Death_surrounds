@@ -25,13 +25,14 @@ EnemySpawnerTile::EnemySpawnerTile(const float posX,
 }
 
 
-void EnemySpawnerTile::update(EnemySystem& enemySystem)
+void EnemySpawnerTile::update(EnemySystem& enemySystem, const float deltaTime)
 {
-    ++spawnTimer;
+    spawnTimer += static_cast<int>(deltaTime * (1000.f / 16.f));
+    currentEnemyAmount = enemySystem.getNumberOfActiveEnemies();
+
     if (spawnTimer >= enemyTimeToSpawn && currentEnemyAmount < enemyAmount)
     {
         spawnTimer = 0;
-        ++currentEnemyAmount;
 
         enemySystem.createEnemy(getPosition().x, getPosition().y, enemyType);
     }

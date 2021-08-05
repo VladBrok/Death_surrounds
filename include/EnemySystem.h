@@ -17,7 +17,7 @@ class EnemySystem: public sf::NonCopyable
 {
 public:
 
-                                                   EnemySystem(std::vector<Enemy*>& activeEnemies, 
+                                                   EnemySystem(std::list<Enemy*>& activeEnemies, 
                                                                std::unordered_map<std::string, sf::Texture>& textures
                                                                );
      void                                          createEnemy(const float posX,
@@ -25,10 +25,11 @@ public:
                                                                const int type
                                                                );
      static const std::string                      getEnemyTypeAsString(const int type);
+     int                                           getNumberOfActiveEnemies() const;
 
 private:
 
-    std::vector<Enemy*>&                           activeEnemies;
+    std::list<Enemy*>&                             activeEnemies;
     std::unordered_map<std::string, sf::Texture>&  textures;
 };
 

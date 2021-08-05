@@ -74,15 +74,15 @@ unsigned Player::getLevel() const
 }
 
 
-void Player::loseHP(const unsigned points)
+void Player::loseHp(const unsigned hp)
 {
-    pAttributeComponent->loseHP(points);
+    pAttributeComponent->loseHp(hp);
 }
 
 
-void Player::gainHP(const unsigned points)
+void Player::gainHp(const unsigned hp)
 {
-    pAttributeComponent->gainHP(points);
+    pAttributeComponent->gainHp(hp);
 }
 
 

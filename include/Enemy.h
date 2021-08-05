@@ -8,13 +8,20 @@ class Enemy: public Entity
 {
 public:
 
-                              Enemy(const float posX, const float posY, const sf::Texture& textureSheet);
-    virtual void              update(const float deltaTime, const sf::Vector2f& mousePosView) = 0;
+                          Enemy(const float posX, const float posY, const sf::Texture& textureSheet);
+    virtual void          update(const float deltaTime, const sf::Vector2f& mousePosView) = 0;
+    void                  loseHp(const unsigned hp);
+    bool                  isDead() const;
 
-private:
+    // Returns the amount of experience that you will get after killing this enemy
+    unsigned              getExpForKilling() const;
 
-    virtual void              initAnimation() = 0;
-    virtual void              updateAnimation(const float deltaTime) = 0;
+protected:
+
+    unsigned              expForKilling;  
+
+    virtual void          initAnimation() = 0;
+    virtual void          updateAnimation(const float deltaTime) = 0;
 };
 
 

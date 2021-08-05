@@ -509,7 +509,7 @@ void Tilemap::updateTiles(Entity& entity, const float deltaTime, EnemySystem& en
                     EnemySpawnerTile* es = dynamic_cast<EnemySpawnerTile*>(map[x][y][z][k]);
                     if (es)
                     {
-                        es->update(enemySystem);
+                        es->update(enemySystem, deltaTime);
                     }
                 }
 

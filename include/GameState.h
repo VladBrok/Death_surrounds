@@ -8,6 +8,7 @@
 #include "PlayerGUI.h"
 #include "Enemy.h"
 #include "EnemySystem.h"
+#include "TextTagSystem.h"
 #include "Inventory.h"
 
 
@@ -29,7 +30,7 @@ public:
     void                updatePlayerKeyboardInput(const float deltaTime);
     void                updateTilemap(const float deltaTime);
     void                updatePlayerGUI();
-    void                updateEnemies(const float deltaTime);
+    void                updateEnemiesAndCombat(const float deltaTime);
     void                updateCombat(Enemy& enemy);
 
     virtual void        render(sf::RenderTarget* pTarget = nullptr);
@@ -37,8 +38,9 @@ public:
 
 private:
 
-    std::vector<Enemy*> enemies;
+    std::list<Enemy*>   enemies;
     EnemySystem*        pEnemySystem;
+    TextTagSystem*      pTextTagSystem;
 
     sf::View            view;
     sf::RenderTexture   renderTexture;
@@ -64,7 +66,7 @@ private:
     void                initPlayerInventory();
     void                initPauseMenu();
     void                initShader();
-    void                initEnemySystem();
+    void                initSystems();
 
 };
 

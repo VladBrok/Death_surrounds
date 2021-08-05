@@ -43,6 +43,7 @@
     <ClCompile Include="source\SkillComponent.cpp" />
     <ClCompile Include="source\State.cpp" />
     <ClCompile Include="source\Sword.cpp" />
+    <ClCompile Include="source\TextTagSystem.cpp" />
     <ClCompile Include="source\TextureSelector.cpp" />
     <ClCompile Include="source\Tile.cpp" />
     <ClCompile Include="source\Tilemap.cpp" />
@@ -79,6 +80,7 @@
     <ClInclude Include="include\SkillComponent.h" />
     <ClInclude Include="include\State.h" />
     <ClInclude Include="include\Sword.h" />
+    <ClInclude Include="include\TextTagSystem.h" />
     <ClInclude Include="include\TextureSelector.h" />
     <ClInclude Include="include\Tile.h" />
     <ClInclude Include="include\Tilemap.h" />

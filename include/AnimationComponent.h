@@ -36,6 +36,7 @@ public:
 
 private:
 
+
     class Animation: public sf::NonCopyable
     {
     public:
@@ -132,6 +133,7 @@ private:
         }
 
     };
+
 
     const sf::Texture&                            textureSheet;
     sf::Sprite&                                   sprite;

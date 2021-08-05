@@ -50,25 +50,25 @@ const std::string MovementComponent::getMovementState() const
 {
     if (velocity.x == 0.f && velocity.y == 0.f)
     {
-        return "IDLE";
+        return std::string("IDLE");
     }
     if (velocity.x < 0.f)
     {
-        return "MOVING_LEFT";
+        return std::string("MOVING_LEFT");
     }
     if (velocity.x > 0.f)
     {
-        return "MOVING_RIGHT";
+        return std::string("MOVING_RIGHT");
     }
     if (velocity.y < 0.f)
     {
-        return "MOVING_UP";
+        return std::string("MOVING_UP");
     }
     if (velocity.y > 0.f)
     {
-        return "MOVING_DOWN";
+        return std::string("MOVING_DOWN");
     }
-    return "ERROR";
+    return std::string("ERROR");
 }
 
 

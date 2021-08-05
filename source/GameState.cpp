@@ -10,9 +10,7 @@ GameState::GameState(sf::RenderWindow& window,
                      std::stack<State*>* const pStates
                      )
     : State(window, pSupportedKeys, pStates),
-      pEnemySystem(nullptr),
-      playerInventory(5),
-      pPlayerActiveWeapon(nullptr)
+      playerInventory(5)
 {
     stateType = STATE_UPDATES_AND_PROCESSES_EVENTS;
 
@@ -26,7 +24,7 @@ GameState::GameState(sf::RenderWindow& window,
     initPlayerInventory();
     initPauseMenu();
     initShader();
-    initEnemySystem();
+    initSystems();
 }
 
 
@@ -37,10 +35,11 @@ GameState::~GameState()
     delete pPauseMenu;
     delete pPlayerGUI;
     delete pEnemySystem;
+    delete pTextTagSystem;
 
-    for (size_t i = 0; i < enemies.size(); ++i)
+    for (auto enemy = enemies.begin(); enemy != enemies.end(); ++enemy)
     {
-        delete enemies[i];
+        delete *enemy;
     }
 }
 
@@ -81,10 +80,11 @@ void GameState::update(const float deltaTime)
         updateTilemap(deltaTime);
 
         pPlayer->update(deltaTime, mousePosView); 
+        pTextTagSystem->update(deltaTime);
 
         updateView();
         updatePlayerGUI();
-        updateEnemies(deltaTime);
+        updateEnemiesAndCombat(deltaTime);
     }
 }
 
@@ -121,21 +121,19 @@ void GameState::updateView()
 
 void GameState::updatePlayerKeyboardInput(const float deltaTime)
 {
-    if (sf::Keyboard::isKeyPressed(keybinds.at("MOVE_UP")))
+    if (sf::Keyboard::isKeyPressed(keybinds.at(std::string("MOVE_UP"))))
     {
         pPlayer->move(0.f, -1.f, deltaTime);
-        pPlayer->gainExp(40);
     }
-    else if (sf::Keyboard::isKeyPressed(keybinds.at("MOVE_DOWN")))
+    else if (sf::Keyboard::isKeyPressed(keybinds.at(std::string("MOVE_DOWN"))))
     {
         pPlayer->move(0.f, 1.f, deltaTime);
-        pPlayer->loseExp(40);
     }
-    if (sf::Keyboard::isKeyPressed(keybinds.at("MOVE_LEFT")))
+    if (sf::Keyboard::isKeyPressed(keybinds.at(std::string("MOVE_LEFT"))))
     {
         pPlayer->move(-1.f, 0.f, deltaTime);
     }
-    else if (sf::Keyboard::isKeyPressed(keybinds.at("MOVE_RIGHT")))
+    else if (sf::Keyboard::isKeyPressed(keybinds.at(std::string("MOVE_RIGHT"))))
     {
         pPlayer->move(1.f, 0.f, deltaTime);
     }
@@ -144,6 +142,7 @@ void GameState::updatePlayerKeyboardInput(const float deltaTime)
 
 void GameState::updateTilemap(const float deltaTime)
 {
+    // FIXME: we are not updating the map with enemies instead of pPlayer
     pTilemap->update(*pPlayer, deltaTime, *pEnemySystem);
 }
 
@@ -154,26 +153,43 @@ void GameState::updatePlayerGUI()
 }
 
 
-void GameState::updateEnemies(const float deltaTime)
+void GameState::updateEnemiesAndCombat(const float deltaTime)
 {
-    for (size_t i = 0; i < enemies.size(); ++i)
+    auto enemy = enemies.begin();
+    while (enemy != enemies.end())
     {
-        enemies[i]->update(deltaTime, mousePosView);
-        updateCombat(*enemies[i]);
+        (*enemy)->update(deltaTime, mousePosView);
+
+        updateCombat(**enemy); 
+
+        if ((*enemy)->isDead())
+        {
+            pPlayer->gainExp((*enemy)->getExpForKilling());
+
+            // Adding new pop-up text
+            pTextTagSystem->addTextTag(EXPERIENCE_TAG, pPlayer->getPosition(), (*enemy)->getExpForKilling());
+
+            enemy = enemies.erase(enemy);
+        }
+        else
+        {
+            ++enemy;
+        }
     }
 }
 
 
 void GameState::updateCombat(Enemy& enemy)
 {
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && pPlayerActiveWeapon->canAttack())
     {
-        std::cout << utils::getDistance(enemy.getCenter(), pPlayer->getCenter()) << '\n';
-
         if (enemy.getGlobalBounds().contains(mousePosView) &&
-            utils::getDistance(enemy.getCenter(), pPlayer->getCenter()) < pPlayerActiveWeapon->getRange())
+            utils::getDistance(enemy.getCenter(), pPlayer->getCenter()) <= pPlayerActiveWeapon->getRange())
         {
-            std::cout << "Hit!\n";
+            enemy.loseHp(pPlayerActiveWeapon->getDamage());
+
+            // Adding new pop-up text
+            pTextTagSystem->addTextTag(DAMAGE_TAG, enemy.getPosition(), pPlayerActiveWeapon->getDamage());
         }
     }
 }
@@ -194,6 +210,7 @@ void GameState::render(sf::RenderTarget* pTarget)
     pTilemap->render(renderTexture, pPlayer->getGridPositionCenter(), &coreShader, pPlayer->getCenter(), true, true);
     pPlayer->render(renderTexture, &coreShader, pPlayer->getCenter(), true);
     renderEnemies(renderTexture);
+    pTextTagSystem->render(renderTexture);
     pTilemap->renderDeferred(renderTexture, &coreShader, pPlayer->getCenter());
 
     renderTexture.setView(renderTexture.getDefaultView());
@@ -216,9 +233,9 @@ void GameState::render(sf::RenderTarget* pTarget)
 
 void GameState::renderEnemies(sf::RenderTarget& target)
 {
-    for (size_t i = 0; i < enemies.size(); ++i)
+    for (auto enemy = enemies.begin(); enemy != enemies.end(); ++enemy)
     {
-        enemies[i]->render(target, &coreShader, pPlayer->getCenter(), true);
+        (*enemy)->render(target, &coreShader, pPlayer->getCenter(), true);
     }
 }
 
@@ -263,7 +280,7 @@ void GameState::initPlayerGUI()
 
 void GameState::initPlayerInventory()
 {
-    Sword s(textures["WEAPON_SWORD"], 10, 10);
+    Sword s(textures["WEAPON_SWORD"], 3, 10);
 
     playerInventory.addItem(&s);
 
@@ -289,7 +306,8 @@ void GameState::initShader()
 }
 
 
-void GameState::initEnemySystem()
+void GameState::initSystems()
 {
     pEnemySystem = new EnemySystem(enemies, textures);
+    pTextTagSystem = new TextTagSystem(font);
 }
