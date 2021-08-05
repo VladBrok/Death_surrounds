@@ -28,6 +28,8 @@ EnemySpawnerTile::EnemySpawnerTile(const float posX,
 void EnemySpawnerTile::update(EnemySystem& enemySystem, const float deltaTime)
 {
     spawnTimer += static_cast<int>(deltaTime * (1000.f / 16.f));
+
+    // FIXME: currentEnemyAmount must keep track only of active enemies in this particular tile!
     currentEnemyAmount = enemySystem.getNumberOfActiveEnemies();
 
     if (spawnTimer >= enemyTimeToSpawn && currentEnemyAmount < enemyAmount)

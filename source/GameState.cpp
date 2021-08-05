@@ -164,10 +164,11 @@ void GameState::updateEnemiesAndCombat(const float deltaTime)
 
         if ((*enemy)->isDead())
         {
-            pPlayer->gainExp((*enemy)->getExpForKilling());
+            int exp = (int)((*enemy)->getExpForKilling());
+            pPlayer->gainExp(exp);
 
             // Adding new pop-up text
-            pTextTagSystem->addTextTag(EXPERIENCE_TAG, pPlayer->getPosition(), (*enemy)->getExpForKilling());
+            pTextTagSystem->addTextTag(EXPERIENCE_TAG, pPlayer->getPosition(), exp, "+ ", " exp");
 
             enemy = enemies.erase(enemy);
         }
@@ -186,10 +187,11 @@ void GameState::updateCombat(Enemy& enemy)
         if (enemy.getGlobalBounds().contains(mousePosView) &&
             utils::getDistance(enemy.getCenter(), pPlayer->getCenter()) <= pPlayerActiveWeapon->getRange())
         {
-            enemy.loseHp(pPlayerActiveWeapon->getDamage());
+            int damage = pPlayerActiveWeapon->getDamage();
+            enemy.loseHp(damage);
 
             // Adding new pop-up text
-            pTextTagSystem->addTextTag(DAMAGE_TAG, enemy.getPosition(), pPlayerActiveWeapon->getDamage());
+            pTextTagSystem->addTextTag(DAMAGE_TAG, enemy.getPosition(), damage);
         }
     }
 }
@@ -280,7 +282,7 @@ void GameState::initPlayerGUI()
 
 void GameState::initPlayerInventory()
 {
-    Sword s(textures["WEAPON_SWORD"], 3, 10);
+    Sword s(textures["WEAPON_SWORD"], 2, 5);
 
     playerInventory.addItem(&s);
 

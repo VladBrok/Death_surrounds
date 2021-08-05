@@ -18,7 +18,8 @@ public:
 
 protected:
 
-    unsigned              expForKilling;  
+    unsigned              level;
+    unsigned              expForKillingMax;  
 
     virtual void          initAnimation() = 0;
     virtual void          updateAnimation(const float deltaTime) = 0;

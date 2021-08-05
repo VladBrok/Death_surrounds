@@ -39,20 +39,6 @@ void TextTagSystem::render(sf::RenderTarget& target)
 }
 
 
-void TextTagSystem::addTextTag(const int presetTagId, const sf::Vector2f& position, const std::string& text)
-{
-    addTag(presetTagId, position, text);
-}
-
-
-void TextTagSystem::addTextTag(const int presetTagId, const sf::Vector2f& position, const int text)
-{
-    std::stringstream sstream;
-    sstream << text;
-    addTag(presetTagId, position, sstream.str());
-}
-
-
 void TextTagSystem::initPresetTags()
 {
     presetTags[DEFAULT_TAG] = 
@@ -61,25 +47,10 @@ void TextTagSystem::initPresetTags()
         );
     presetTags[EXPERIENCE_TAG] = 
         std::make_shared<TextTag>(
-            font, "", 0.f, 0.f, 0.f, -1.f, sf::Color::Cyan, 30, 70.f, 170.f
+            font, "", 0.f, 0.f, 0.f, -1.f, sf::Color::Cyan, 25, 50.f, 160.f
         );
     presetTags[DAMAGE_TAG] =
         std::make_shared<TextTag>(
-            font, "", 0.f, 0.f, 0.f, -1.f, sf::Color::Red, 20, 45.f, 140.f
+            font, "", 0.f, 0.f, 0.f, -1.f, sf::Color::Red, 20, 35.f, 110.f
         );
-}
-
-
-void TextTagSystem::addTag(const int presetTagId, const sf::Vector2f& position, const std::string& text)
-{
-    try
-    {
-        tags.push_back(std::make_shared<TextTag>(*presetTags.at(presetTagId).get()));
-        tags.back()->setPosition(position);
-        tags.back()->setText(text);
-    }
-    catch (std::out_of_range&)
-    {
-        std::cout << "ERROR in TextTagSystem::addTextTag: there is no preset tag with id = " << presetTagId << '\n';
-    }
 }

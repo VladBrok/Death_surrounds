@@ -2,9 +2,9 @@
 #include "Weapon.h"
 
 
-Weapon::Weapon(sf::Texture& texture, const int damage, const int damageMax)
+Weapon::Weapon(sf::Texture& texture, const int damageMin, const int damageMax)
     : Item(texture),
-      damage(damage),
+      damageMin(damageMin),
       damageMax(damageMax),
       range(0)
 {
@@ -30,13 +30,7 @@ bool Weapon::canAttack()
 
 int Weapon::getDamage() const
 {
-    return damage;
-}
-
-
-int Weapon::getDamageMax() const
-{
-    return damageMax;
+    return rand() % (damageMax - damageMin + 1) + damageMin;
 }
 
 

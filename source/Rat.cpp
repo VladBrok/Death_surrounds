@@ -5,7 +5,7 @@
 Rat::Rat(const float posX, const float posY, const sf::Texture& textureSheet)
     : Enemy(posX, posY, textureSheet)
 {
-    expForKilling = 10;
+    expForKillingMax = 10;
 
     createMovementComponent(200.f, 1600.f, 1000.f);
     createAnimationComponent(textureSheet);
@@ -18,9 +18,6 @@ Rat::Rat(const float posX, const float posY, const sf::Texture& textureSheet)
 
 void Rat::update(const float deltaTime, const sf::Vector2f& mousePosView)
 {
-    std::cout << pAttributeComponent->hp << '\n';
-
-
     pMovementComponent->updateMovement(deltaTime);
 
     updateAnimation(deltaTime);

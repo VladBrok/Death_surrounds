@@ -3,7 +3,7 @@
 
 
 Enemy::Enemy(const float posX, const float posY, const sf::Texture& textureSheet)
-    : Entity(textureSheet), expForKilling(0)
+    : Entity(textureSheet), expForKillingMax(0)
 {
     setPosition(posX, posY);
 }
@@ -38,5 +38,12 @@ bool Enemy::isDead() const
 
 unsigned Enemy::getExpForKilling() const
 {
-    return expForKilling;
+    if (pAttributeComponent)
+    {
+        return rand() % (expForKillingMax - pAttributeComponent->level * 2 + 1)  + pAttributeComponent->level * 2;
+    }
+    else
+    {
+        return rand() % expForKillingMax + 1;
+    }
 }
