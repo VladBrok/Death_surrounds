@@ -5,63 +5,65 @@
 #include "AnimationComponent.h"
 #include "HitboxComponent.h"
 #include "AttributeComponent.h"
-#include "SkillComponent.h"
 
 
 class Entity: public sf::NonCopyable
 {
 public:
 
-                          Entity(const sf::Texture& texture);
-    virtual               ~Entity();
-                          
-    virtual void          update(const float deltaTime, const sf::Vector2f& mousePosView) = 0;
-    virtual void          render(sf::RenderTarget& target, 
-                                 sf::Shader* pShader = nullptr,
-                                 const sf::Vector2f& shaderLightPosition = sf::Vector2f(),
-                                 const bool showHitbox = false
-                                 );
-    virtual void          move(const float dirX, const float dirY, const float deltaTime);
-                          
-    void                  setPosition(const float posX, const float posY);
-    const sf::Vector2f&   getPosition() const;
-    const sf::Vector2i    getGridPosition() const;
-    const sf::Vector2f    getCenter() const;
-    const sf::Vector2i    getGridPositionCenter() const;
-    const sf::FloatRect   getGlobalBounds() const;
-    const sf::FloatRect&  getNextPositionBounds(const float deltaTime) const;
+                            Entity(const sf::Texture& texture);
+    virtual                 ~Entity();
+                            
+    virtual void            update(const float deltaTime, const sf::Vector2f& mousePosView) = 0;
+    virtual void            render(sf::RenderTarget& target, 
+                                   sf::Shader* pShader = nullptr,
+                                   const sf::Vector2f& shaderLightPosition = sf::Vector2f(),
+                                   const bool showHitbox = false
+                                   );
+    virtual void            move(const float dirX, const float dirY, const float deltaTime);
+                            
+    void                    setPosition(const float posX, const float posY);
 
-    void                  stopVelocity();
-    void                  stopVelocityX();
-    void                  stopVelocityY();
-                        
-protected:              
-                        
-    sf::Sprite            sprite;
-    const sf::Texture&    texture;
-                         
-    /*
+    const sf::Vector2f&     getPosition() const;
+    const sf::Vector2i      getGridPosition() const;
+    const sf::Vector2f      getCenter() const;
+    const sf::Vector2i      getGridPositionCenter() const;
+    const sf::FloatRect     getGlobalBounds() const;
+    const sf::FloatRect&    getNextPositionBounds(const float deltaTime) const;
+                            
+    void                    stopVelocity();
+    void                    stopVelocityX();
+    void                    stopVelocityY();
+                            
+protected:                  
+                            
+    sf::Sprite              sprite;
+    const sf::Texture&      texture;
+                            
+    /*                      
         If the pointer to a component is nullptr, then
         this component is missing.
-    */
-    MovementComponent*    pMovementComponent;
-    AnimationComponent*   pAnimationComponent;
-    HitboxComponent*      pHitboxComponent;
-    AttributeComponent*   pAttributeComponent;
-    SkillComponent*       pSkillComponent;
-                          
-    void                  createMovementComponent(const float maxVelocity, 
-                                                  const float acceleration, 
-                                                  const float deceleration
+    */                      
+    MovementComponent*      pMovementComponent;
+    AnimationComponent*     pAnimationComponent;
+    HitboxComponent*        pHitboxComponent;
+    AttributeComponent*     pAttributeComponent;
+                            
+    void                    createMovementComponent(const float maxVelocity, 
+                                                    const float acceleration, 
+                                                    const float deceleration
+                                                    );
+    void                    createAnimationComponent(const sf::Texture& textureSheet);
+    void                    createHitboxComponent(const float offsetFromSpritePositionX,
+                                                  const float offsetFromSpritePositionY,
+                                                  const float hitboxWidth,
+                                                  const float hitboxHeight
                                                   );
-    void                  createAnimationComponent(const sf::Texture& textureSheet);
-    void                  createHitboxComponent(const float offsetFromSpritePositionX,
-                                                const float offsetFromSpritePositionY,
-                                                const float hitboxWidth,
-                                                const float hitboxHeight
-                                                );
-    void                  createAttributeComponent(const unsigned level);
-    void                  createSkillComponent();
+    void                    createAttributeComponent(const unsigned level,
+                                                     const int hpMax, 
+                                                     const int damageMin, 
+                                                     const int damageMax
+                                                     );
 };
 
 

@@ -2,17 +2,25 @@
 #include "Rat.h"
 
 
-Rat::Rat(const float posX, const float posY, const sf::Texture& textureSheet)
+Rat::Rat(const float posX, const float posY, const sf::Texture& textureSheet, Entity& player)
     : Enemy(posX, posY, textureSheet)
 {
     expForKillingMax = 10;
 
-    createMovementComponent(200.f, 1600.f, 1000.f);
+    createMovementComponent(120.f, 1600.f, 1000.f);
     createAnimationComponent(textureSheet);
     createHitboxComponent(18.f, 44.f, 20.f, 20.f);
-    createAttributeComponent(1);
+    createAttributeComponent(1, 8, 1, 1);
 
     initAnimation();
+
+    pAiFollow = new AiFollow(*this, player);
+}
+
+
+Rat::~Rat()
+{
+    delete pAiFollow;
 }
 
 
@@ -23,6 +31,17 @@ void Rat::update(const float deltaTime, const sf::Vector2f& mousePosView)
     updateAnimation(deltaTime);
 
     pHitboxComponent->update();
+
+    pAiFollow->update(deltaTime);
+
+    if (!canBeDamaged())
+    {
+        sprite.setColor(sf::Color::Red);
+    }
+    else
+    {
+        sprite.setColor(sf::Color::White);
+    }
 }
 
 

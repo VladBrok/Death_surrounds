@@ -269,7 +269,7 @@ void DefaultEditorMode::updateCursorText()
     {
         sstream << "     Enemy type:                     " << EnemySystem::getEnemyTypeAsString(enemyType) << '\n'
                 << "     Enemy amount:              " << enemyAmount << '\n'
-                << "     Time to spawn enemy: " << enemyTimeToSpawn << '\n'
+                << "     Spawn frequency:          " << enemyTimeToSpawn << " s" << '\n'
                 << "     Max distance:                   " << enemyMaxDistance << '\n';
     } 
 

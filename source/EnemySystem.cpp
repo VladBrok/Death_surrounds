@@ -4,9 +4,12 @@
 
 
 EnemySystem::EnemySystem(std::list<Enemy*>& activeEnemies, 
-            std::unordered_map<std::string, sf::Texture>& textures
+            std::unordered_map<std::string, sf::Texture>& textures,
+            Entity& player
             )
-            : activeEnemies(activeEnemies), textures(textures)
+            : activeEnemies(activeEnemies), 
+              textures(textures),
+              player(player)
 {
 }
 
@@ -20,7 +23,7 @@ void EnemySystem::createEnemy(const float posX,
     {
     case RAT:
         {
-            activeEnemies.push_back(new Rat(posX, posY, textures["ENEMY_RAT_SHEET"]));
+            activeEnemies.push_back(new Rat(posX, posY, textures["ENEMY_RAT_SHEET"], player));
         }
         break;
     default:

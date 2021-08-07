@@ -18,9 +18,21 @@ Sword::Sword(sf::Texture& texture, const int damage, const int damageMax)
 
 void Sword::update(const sf::Vector2f& weaponPosition, const sf::Vector2f& mousePosView)
 {
-    sprite.setPosition(weaponPosition);
+    if (this->attackTimer.getElapsedTime().asMilliseconds() < attackTimerMax / 2)
+    {
+        sf::Vector2f swordPosOffset(utils::getNormalizedDirection(sprite.getPosition(), mousePosView));
 
-    utils::lookAt(sprite, mousePosView);
+        sprite.setPosition(
+            weaponPosition.x + swordPosOffset.x * 10.f, 
+            weaponPosition.y + swordPosOffset.y * 10.f
+        );
+    }
+    else
+    {
+        sprite.setPosition(weaponPosition);
+
+        utils::lookAt(sprite, mousePosView);
+    }
 }
 
 
@@ -38,11 +50,11 @@ Sword* Sword::getClone()
 
 void Sword::initRange()
 {
-    range = 50.f;
+    range = 55.f;
 }
 
 
 void Sword::initAttackTimerMax()
 {
-    attackTimerMax = 400;
+    attackTimerMax = 200;
 }

@@ -53,6 +53,12 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{246ba4f3-5a7a-4bcd-baf8-adf9d9e315c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GUI\Info tabs">
+      <UniqueIdentifier>{1420c3b9-b7a8-4cbb-a44b-23d7b764511b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{a539b370-f20a-4959-9b63-179548845fd3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
@@ -115,7 +121,7 @@
     <ClCompile Include="source\AttributeComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="source\PlayerGUI.cpp">
+    <ClCompile Include="source\PlayerGui.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="source\Item.cpp">
@@ -126,9 +132,6 @@
     </ClCompile>
     <ClCompile Include="source\Sword.cpp">
       <Filter>Items\Weapon</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SkillComponent.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="source\ProgressBar.cpp">
       <Filter>GUI</Filter>
@@ -159,6 +162,18 @@
     </ClCompile>
     <ClCompile Include="source\TextTagSystem.cpp">
       <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PlayerInfoTab.cpp">
+      <Filter>GUI\Info tabs</Filter>
+    </ClCompile>
+    <ClCompile Include="source\InfoTab.cpp">
+      <Filter>GUI\Info tabs</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AiOption.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AiFollow.cpp">
+      <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -222,7 +237,7 @@
     <ClInclude Include="include\AttributeComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="include\PlayerGUI.h">
+    <ClInclude Include="include\PlayerGui.h">
       <Filter>GUI</Filter>
     </ClInclude>
     <ClInclude Include="include\Item.h">
@@ -233,9 +248,6 @@
     </ClInclude>
     <ClInclude Include="include\Sword.h">
       <Filter>Items\Weapon</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SkillComponent.h">
-      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="include\ProgressBar.h">
       <Filter>GUI</Filter>
@@ -266,6 +278,18 @@
     </ClInclude>
     <ClInclude Include="include\TextTagSystem.h">
       <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PlayerInfoTab.h">
+      <Filter>GUI\Info tabs</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InfoTab.h">
+      <Filter>GUI\Info tabs</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AiOption.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AiFollow.h">
+      <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

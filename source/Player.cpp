@@ -2,14 +2,19 @@
 #include "Player.h"
 
 
-Player::Player(const float posX, const float posY, sf::Texture& textureSheet, Inventory& inventory)
-    : Entity(textureSheet), inventory(inventory)
+Player::Player(const float posX, 
+               const float posY, 
+               sf::Texture& textureSheet, 
+               Inventory& inventory,
+               Weapon& weapon
+               )
+    : Entity(textureSheet), inventory(inventory), pActiveWeapon(&weapon)
 {
 
     createMovementComponent(200.f, 1600.f, 1000.f);
     createAnimationComponent(textureSheet);
     createHitboxComponent(17.f, 9.f, 30.f, 50.f);
-    createAttributeComponent(1);
+    createAttributeComponent(1, 10, 1, 2);
 
     pAnimationComponent->addAnimation("IDLE", textureSheet, sprite, 0, 0, 8, 0, 64, 64, 9.5f);
     pAnimationComponent->addAnimation("MOVING_DOWN", textureSheet, sprite, 0, 1, 3, 1, 64, 64, 9.5f);
@@ -18,6 +23,8 @@ Player::Player(const float posX, const float posY, sf::Texture& textureSheet, In
     pAnimationComponent->addAnimation("MOVING_UP", textureSheet, sprite, 12, 1, 15, 1, 64, 64, 9.5f );
 
     setPosition(posX, posY);
+
+    initDamageTimerMax();
 }
 
 
@@ -30,6 +37,15 @@ void Player::update(const float deltaTime, const sf::Vector2f& mousePosView)
     pHitboxComponent->update();
 
     updateInventory(mousePosView);
+
+    if (!canBeDamaged())
+    {
+        sprite.setColor(sf::Color::Red);
+    }
+    else
+    {
+        sprite.setColor(sf::Color::White);
+    }
 }
 
 
@@ -74,6 +90,27 @@ unsigned Player::getLevel() const
 }
 
 
+int Player::getDamage() const
+{
+    if (!pActiveWeapon)
+    {
+        return pAttributeComponent->getDamage();
+    }
+
+    return pActiveWeapon->getDamage() + pAttributeComponent->getDamage();
+}
+
+
+float Player::getAttackRange() const
+{
+    if (pActiveWeapon)
+    {
+        return pActiveWeapon->getRange();
+    }
+    return 30.f;
+}
+
+
 void Player::loseHp(const unsigned hp)
 {
     pAttributeComponent->loseHp(hp);
@@ -95,6 +132,41 @@ void Player::loseExp(const unsigned exp)
 void Player::gainExp(const unsigned exp)
 {
     pAttributeComponent->gainExp(exp);
+}
+
+
+void Player::setAttackStatus(const bool attacking)
+{
+    this->attacking = attacking;
+}
+
+
+bool Player::isAttacking() const
+{
+    return attacking;
+}
+
+
+bool Player::canBeDamaged() const
+{
+    return damageTimer.getElapsedTime().asMilliseconds() >= damageTimerMax;
+}
+
+
+void Player::restartDamageTimer()
+{
+    damageTimer.restart();
+}
+
+
+bool Player::canAttack() const
+{
+    if (pActiveWeapon)
+    {
+        return pActiveWeapon->canAttack();
+    }
+
+    return true;
 }
 
 
@@ -131,4 +203,10 @@ void Player::updateInventory(const sf::Vector2f& mousePosView)
 void Player::renderInventory(sf::RenderTarget& target)
 {
     inventory.render(target);
+}
+
+
+void Player::initDamageTimerMax()
+{
+    damageTimerMax = 350;
 }

@@ -3,6 +3,7 @@
 
 
 class Enemy;
+class Entity;
 
 
 enum EnemyType
@@ -18,7 +19,8 @@ class EnemySystem: public sf::NonCopyable
 public:
 
                                                    EnemySystem(std::list<Enemy*>& activeEnemies, 
-                                                               std::unordered_map<std::string, sf::Texture>& textures
+                                                               std::unordered_map<std::string, sf::Texture>& textures,
+                                                               Entity& player
                                                                );
      void                                          createEnemy(const float posX,
                                                                const float posY,
@@ -31,6 +33,7 @@ private:
 
     std::list<Enemy*>&                             activeEnemies;
     std::unordered_map<std::string, sf::Texture>&  textures;
+    Entity&                                        player;
 };
 
 

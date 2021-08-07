@@ -13,15 +13,23 @@ public:
     void                  loseHp(const unsigned hp);
     bool                  isDead() const;
 
+    bool                  canBeDamaged() const;
+    void                  restartDamageTimer();
+
     // Returns the amount of experience that you will get after killing this enemy
     unsigned              getExpForKilling() const;
+
+    int                   getDamage() const;
 
 protected:
 
     unsigned              level;
     unsigned              expForKillingMax;  
+    sf::Clock             damageTimer;
+    sf::Int32             damageTimerMax;
 
     virtual void          initAnimation() = 0;
+    void                  initDamageTimerMax();
     virtual void          updateAnimation(const float deltaTime) = 0;
 };
 

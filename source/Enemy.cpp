@@ -6,6 +6,8 @@ Enemy::Enemy(const float posX, const float posY, const sf::Texture& textureSheet
     : Entity(textureSheet), expForKillingMax(0)
 {
     setPosition(posX, posY);
+
+    initDamageTimerMax();
 }
 
 
@@ -36,6 +38,18 @@ bool Enemy::isDead() const
 }
 
 
+bool Enemy::canBeDamaged() const
+{
+    return damageTimer.getElapsedTime().asMilliseconds() >= damageTimerMax;
+}
+
+
+void Enemy::restartDamageTimer()
+{
+    damageTimer.restart();
+}
+
+
 unsigned Enemy::getExpForKilling() const
 {
     if (pAttributeComponent)
@@ -46,4 +60,25 @@ unsigned Enemy::getExpForKilling() const
     {
         return rand() % expForKillingMax + 1;
     }
+}
+
+
+int Enemy::getDamage() const
+{
+    if (pAttributeComponent)
+    {
+        return pAttributeComponent->getDamage();
+    }
+    else
+    {
+        std::cout << "ERROR in Enemy::isDead: this enemy doesn't have an AttributeComponent\n";
+        return 0;
+    }
+}
+
+
+
+void Enemy::initDamageTimerMax()
+{
+    damageTimerMax = 200;
 }

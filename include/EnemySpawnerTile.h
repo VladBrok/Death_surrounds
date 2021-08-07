@@ -19,7 +19,7 @@ public:
                                                  const int enemyTimeToSpawn,
                                                  const float enemyMaxDistance
                                                  );
-    void                        update(EnemySystem& enemySystem, const float deltaTime);        
+    void                        update(EnemySystem& enemySystem);        
 
    /* 
       Returns the string with textureRect position, collision ability,
@@ -34,7 +34,7 @@ private:
     int                         enemyTimeToSpawn;
     float                       enemyMaxDistance;
 
-    int                         spawnTimer;
+    sf::Clock                   spawnTimer;
     int                         currentEnemyAmount;
 };
 

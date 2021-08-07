@@ -10,7 +10,12 @@ class Player: public Entity
 {
 public:
     
-                    Player(const float posX, const float posY, sf::Texture& textureSheet, Inventory& inventory);
+                    Player(const float posX, 
+                           const float posY, 
+                           sf::Texture& textureSheet, 
+                           Inventory& inventory,
+                           Weapon& weapon
+                           );
     virtual void    update(const float deltaTime, const sf::Vector2f& mousePosView);
     virtual void    render(sf::RenderTarget& target, 
                            sf::Shader* pShader = nullptr,
@@ -23,19 +28,33 @@ public:
     int             getExp() const;
     int             getExpForNextLevel() const;
     unsigned        getLevel() const;
+    int             getDamage() const;
+    float           getAttackRange() const;
 
     void            loseHp(const unsigned hp);
     void            gainHp(const unsigned hp);
     void            loseExp(const unsigned exp);
     void            gainExp(const unsigned exp);
 
+    void            setAttackStatus(const bool attacking);
+    bool            isAttacking() const;
+    bool            canBeDamaged() const;
+    void            restartDamageTimer();
+    bool            canAttack() const;
+
 private:
 
     Inventory&      inventory;
+    Weapon*         pActiveWeapon;
+    bool            attacking;
+    sf::Clock       damageTimer;
+    sf::Int32       damageTimerMax;
 
     void            updateAnimation(const float deltaTime);
     void            updateInventory(const sf::Vector2f& mousePosView);
     void            renderInventory(sf::RenderTarget& target);
+
+    void            initDamageTimerMax();
 };
 
 

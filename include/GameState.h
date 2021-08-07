@@ -16,57 +16,56 @@ class GameState: public State
 {
 public:
 
-                        GameState(sf::RenderWindow& window, 
-                                  const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
-                                  std::stack<State*>* const pStates
-                                  );
-    virtual             ~GameState();
+                         GameState(sf::RenderWindow& window, 
+                                   const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
+                                   std::stack<State*>* const pStates
+                                   );
+    virtual              ~GameState();
+                         
+    virtual void         processEvent(const sf::Event& event);
+    void                 processPauseMenuButtonsEvent(const sf::Event& event);
+                         
+    virtual void         update(const float deltaTime);
+    void                 updateView();
+    void                 updatePlayerKeyboardInput(const float deltaTime);
+    void                 updateTilemap(const float deltaTime);
+    void                 updatePlayerGui();
+    void                 updateEnemiesAndCombat(const float deltaTime);
+    void                 updateCombat(Enemy& enemy);
+                         
+    virtual void         render(sf::RenderTarget* pTarget = nullptr);
+    void                 renderEnemies(sf::RenderTarget& target);
+                         
+private:                 
+                         
+    std::list<Enemy*>    enemies;
+    EnemySystem*         pEnemySystem;
+    TextTagSystem*       pTextTagSystem;
+                         
+    sf::View             view;
+    sf::RenderTexture    renderTexture;
+    sf::Sprite           renderSprite;
+    Tilemap*             pTilemap;
+                         
+    Player*              pPlayer;
+    PlayerGui*           pPlayerGui;
+    Inventory            playerInventory;
+                         
+    PauseMenu*           pPauseMenu;
+    sf::Font             font;
+    sf::Shader           coreShader;
 
-    virtual void        processEvent(const sf::Event& event);
-    void                processPauseMenuButtonsEvent(const sf::Event& event);
-
-    virtual void        update(const float deltaTime);
-    void                updateView();
-    void                updatePlayerKeyboardInput(const float deltaTime);
-    void                updateTilemap(const float deltaTime);
-    void                updatePlayerGUI();
-    void                updateEnemiesAndCombat(const float deltaTime);
-    void                updateCombat(Enemy& enemy);
-
-    virtual void        render(sf::RenderTarget* pTarget = nullptr);
-    void                renderEnemies(sf::RenderTarget& target);
-
-private:
-
-    std::list<Enemy*>   enemies;
-    EnemySystem*        pEnemySystem;
-    TextTagSystem*      pTextTagSystem;
-
-    sf::View            view;
-    sf::RenderTexture   renderTexture;
-    sf::Sprite          renderSprite;
-    Tilemap*            pTilemap;
-
-    Player*             pPlayer;
-    PlayerGUI*          pPlayerGUI;
-    Inventory           playerInventory;
-    Weapon*             pPlayerActiveWeapon;
-
-    PauseMenu*          pPauseMenu;
-    sf::Font            font;
-    sf::Shader          coreShader;
-
-
-    void                initView();
-    void                initRenderTexture();
-    void                initTilemap();
-    virtual void        initTextures();
-    void                initPlayer();
-    void                initPlayerGUI();
-    void                initPlayerInventory();
-    void                initPauseMenu();
-    void                initShader();
-    void                initSystems();
+                         
+    void                 initView();
+    void                 initRenderTexture();
+    void                 initTilemap();
+    virtual void         initTextures();
+    void                 initPlayerInventory();
+    void                 initPlayer();
+    void                 initPlayerGui();
+    void                 initPauseMenu();
+    void                 initShader();
+    void                 initSystems();
 
 };
 

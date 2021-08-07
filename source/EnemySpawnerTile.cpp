@@ -19,22 +19,19 @@ EnemySpawnerTile::EnemySpawnerTile(const float posX,
       enemyAmount(enemyAmount),
       enemyTimeToSpawn(enemyTimeToSpawn),
       enemyMaxDistance(enemyMaxDistance),
-      spawnTimer(0),
       currentEnemyAmount(0)
 {
 }
 
 
-void EnemySpawnerTile::update(EnemySystem& enemySystem, const float deltaTime)
+void EnemySpawnerTile::update(EnemySystem& enemySystem)
 {
-    spawnTimer += static_cast<int>(deltaTime * (1000.f / 16.f));
-
     // FIXME: currentEnemyAmount must keep track only of active enemies in this particular tile!
     currentEnemyAmount = enemySystem.getNumberOfActiveEnemies();
 
-    if (spawnTimer >= enemyTimeToSpawn && currentEnemyAmount < enemyAmount)
+    if (spawnTimer.getElapsedTime().asSeconds() >= (float)enemyTimeToSpawn && currentEnemyAmount < enemyAmount)
     {
-        spawnTimer = 0;
+        spawnTimer.restart();
 
         enemySystem.createEnemy(getPosition().x, getPosition().y, enemyType);
     }

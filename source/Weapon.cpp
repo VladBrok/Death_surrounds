@@ -8,7 +8,6 @@ Weapon::Weapon(sf::Texture& texture, const int damageMin, const int damageMax)
       damageMax(damageMax),
       range(0)
 {
-    attackTimer.restart();
 }
 
 
@@ -19,12 +18,21 @@ Weapon::~Weapon()
 
 bool Weapon::canAttack()
 {
+    sf::Int32 elapsedTime(attackTimer.getElapsedTime().asMilliseconds());
     if (attackTimer.getElapsedTime().asMilliseconds() >= attackTimerMax)
     {
         attackTimer.restart();
         return true;
     }
-    return false;
+    else
+    {
+        return false;
+    }
+}
+
+void Weapon::restartAttackTimer()
+{
+    attackTimer.restart();
 }
 
 

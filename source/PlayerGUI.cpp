@@ -3,11 +3,53 @@
 #include "Utils.h"
 
 
-PlayerGUI::PlayerGUI(Player& player, const sf::RenderWindow& window)
-    : pPlayer(&player)
+PlayerGui::PlayerGui(Player& player, const sf::RenderWindow& window)
+    : player(player)
 {
     initFont();
+    initGui(window);
+}
 
+
+PlayerGui::~PlayerGui()
+{
+    delete pPlayerInfoTab;
+}
+
+
+void PlayerGui::update()
+{
+    hpBar.update(player.getHP(), player.getHPMax());
+    expBar.update(player.getExp(), player.getExpForNextLevel());
+    levelBox.setTextString(std::to_string((long long)player.getLevel()));
+    pPlayerInfoTab->update();
+}
+
+
+void PlayerGui::render(sf::RenderTarget& target)
+{
+    hpBar.render(target);
+    expBar.render(target);
+    levelBox.render(target);
+    pPlayerInfoTab->render(target);
+}
+
+
+void PlayerGui::toggleInfoTab()
+{
+    pPlayerInfoTab->toggle();
+}
+
+
+void PlayerGui::initFont()
+{
+    font.loadFromFile("Fonts\\Dosis-Light.ttf");
+}
+
+
+void PlayerGui::initGui(const sf::RenderWindow& window)
+{
+    // Progress bars
 
     levelBox.create(
         utils::percentToPixels(3.f, window.getSize().x),
@@ -39,27 +81,10 @@ PlayerGUI::PlayerGUI(Player& player, const sf::RenderWindow& window)
         font,
         sf::Color(0, 0, 250, 190),
         sf::Color(50, 50, 50, 200)
-    );   
-}
+    );  
 
 
-void PlayerGUI::update()
-{
-    hpBar.update(pPlayer->getHP(), pPlayer->getHPMax());
-    expBar.update(pPlayer->getExp(), pPlayer->getExpForNextLevel());
-    levelBox.setTextString(std::to_string((long long)pPlayer->getLevel()));
-}
+    // Player info tab
 
-
-void PlayerGUI::render(sf::RenderTarget& target)
-{
-    hpBar.render(target);
-    expBar.render(target);
-    levelBox.render(target);
-}
-
-
-void PlayerGUI::initFont()
-{
-    font.loadFromFile("Fonts\\Dosis-Light.ttf");
+    pPlayerInfoTab = new PlayerInfoTab(window, font, player);
 }

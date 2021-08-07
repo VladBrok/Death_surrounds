@@ -14,6 +14,7 @@ public:
     virtual void       render(sf::RenderTarget& target) = 0;
 
     bool               canAttack();
+    void               restartAttackTimer();
 
     int                getDamage() const;
     float              getRange() const;

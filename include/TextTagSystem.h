@@ -4,7 +4,6 @@
 
 enum PresetTextTagId
 {
-    DEFAULT_TAG,
     EXPERIENCE_TAG,
     DAMAGE_TAG,
     NUMBER_OF_PRESET_TAGS
@@ -40,6 +39,7 @@ private:
         float       movementDirY;
         float       lifetime;
         float       speed;
+        int         fadeValue;
 
 
         TextTag(const sf::Font& font, 
@@ -51,12 +51,14 @@ private:
                 const sf::Color& textColor, 
                 const unsigned charSize, 
                 const float lifetime, 
-                const float speed
+                const float speed,
+                const int fadeValue
                 )
                 : movementDirX(movementDirX),
                   movementDirY(movementDirY),
                   lifetime(lifetime),
-                  speed(speed)
+                  speed(speed),
+                  fadeValue(fadeValue)
         {
             sfmlText.setFont(font);
             sfmlText.setString(text);
@@ -72,6 +74,18 @@ private:
                 lifetime -= deltaTime * (1000.f / 16.f);
 
                 sfmlText.move(movementDirX * speed * deltaTime, movementDirY * speed * deltaTime);
+
+                if (fadeValue > 0 && sfmlText.getColor().a >= fadeValue)
+                {
+                    sfmlText.setColor(
+                        sf::Color(
+                            sfmlText.getColor().r,
+                            sfmlText.getColor().g,
+                            sfmlText.getColor().b,
+                            sfmlText.getColor().a - fadeValue
+                        )
+                    );
+                }
             }
         }
 
@@ -94,7 +108,6 @@ private:
         {
             sfmlText.setPosition(position);
         }
-
     };
 
 

@@ -3,27 +3,34 @@
 
 #include "Player.h"
 #include "ProgressBar.h"
+#include "PlayerInfoTab.h"
 
 
-class PlayerGUI: public sf::NonCopyable
+class PlayerGui: public sf::NonCopyable
 {
 public:
 
-                            PlayerGUI(Player& player, const sf::RenderWindow& window);
-    void                    update();
-    void                    render(sf::RenderTarget& target);
-                           
-private:                   
-                           
-    Player*                 pPlayer;
-    sf::Font                font;
+                      PlayerGui(Player& player, const sf::RenderWindow& window);
+                      ~PlayerGui();
+    void              update();
+    void              render(sf::RenderTarget& target);
 
-    ProgressBar             levelBox;
-    ProgressBar             hpBar;
-    ProgressBar             expBar;
-
-
-    void                    initFont();
+    // Hides the player's info tab if it's shown and vice versa
+    void              toggleInfoTab();
+                      
+private:              
+                      
+    Player&           player;
+    sf::Font          font;
+                      
+    PlayerInfoTab*    pPlayerInfoTab;
+    ProgressBar       levelBox;
+    ProgressBar       hpBar;
+    ProgressBar       expBar;
+                      
+                      
+    void              initFont();
+    void              initGui(const sf::RenderWindow& window);
 };
 
 

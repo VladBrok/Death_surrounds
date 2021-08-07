@@ -9,8 +9,7 @@ Entity::Entity(const sf::Texture& texture)
       pMovementComponent(nullptr), 
       pAnimationComponent(nullptr),
       pHitboxComponent(nullptr),
-      pAttributeComponent(nullptr),
-      pSkillComponent(nullptr)
+      pAttributeComponent(nullptr)
 { 
 }
 
@@ -21,7 +20,6 @@ Entity::~Entity()
     delete pAnimationComponent;
     delete pHitboxComponent;
     delete pAttributeComponent;
-    delete pSkillComponent;
 }
 
 
@@ -192,13 +190,11 @@ void Entity::createHitboxComponent(const float offsetFromSpritePositionX,
 }
 
 
-void Entity::createAttributeComponent(const unsigned level)
+void Entity::createAttributeComponent(const unsigned level, 
+                                      const int hpMax, 
+                                      const int damageMin, 
+                                      const int damageMax
+                                      )
 {
-    pAttributeComponent = new AttributeComponent(level);
-}
-
-
-void Entity::createSkillComponent()
-{
-    pSkillComponent = new SkillComponent();
+    pAttributeComponent = new AttributeComponent(level, hpMax, damageMin, damageMax);
 }

@@ -2,18 +2,19 @@
 #include "AttributeComponent.h"
 
 
-AttributeComponent::AttributeComponent(const unsigned level)
-    : level(level),
-      exp(0),
-      expForNextLevel(46),
-      attributePoints(3),
-      vitality(1),
-      strength(1),
-      dexterity(1),
-      agility(1),
-      intelligence(1)
+AttributeComponent::AttributeComponent(const unsigned level, 
+                                       const int hpMax, 
+                                       const int damageMin, 
+                                       const int damageMax
+                                       )
+                                       : level(level),
+                                         exp(0),
+                                         expForNextLevel(46),
+                                         hpMax(hpMax),
+                                         damageMin(damageMin),
+                                         damageMax(damageMax)
 {
-    updateStats(true);
+    hp = hpMax;
 }
 
 
@@ -23,7 +24,9 @@ void AttributeComponent::updateLevel()
     while (exp >= expForNextLevel)
     {
         ++level;
-        ++attributePoints;
+
+        updateStats();
+
         exp -= expForNextLevel;
         expForNextLevel = static_cast<unsigned>(
             (50 / 3) * (std::pow((double)level, 3) - 6 * std::pow((double)level, 2) + level * 17 - 12)
@@ -34,17 +37,15 @@ void AttributeComponent::updateLevel()
 
 void AttributeComponent::updateStats(bool resetHp)
 {
-    // Updating the stats depending on the attributes
-    hpMax       =    vitality * 6      + strength / 2   + intelligence / 5;
-    damageMin   =    strength * 2      + strength / 4   + intelligence / 5;
-    damageMax   =    strength * 2      + strength / 2   + intelligence / 5;
-    accuracy    =    dexterity * 5     + dexterity / 2  + intelligence / 5;
-    defence     =    agility * 2       + agility / 4    + intelligence / 5;
-    luck        =    intelligence * 2                   + intelligence / 5;
-
-    if (resetHp)
+    if (level % 5 == 0)
     {
-        hp = hpMax;
+        hpMax += 1;
+        damageMin += 1;
+    }
+
+    if (level % 3 == 0)
+    {
+        damageMax += 1;
     }
 }
 
@@ -92,6 +93,12 @@ void AttributeComponent::gainExp(const unsigned exp)
 }
 
 
+int AttributeComponent::getDamage() const
+{
+    return rand() % (damageMax - damageMin + 1) + damageMin;
+}
+
+
 
 /*=============== Debug ===============*/
 
@@ -99,6 +106,5 @@ void AttributeComponent::debugPrint() const
 {
     std::cout << "Level:                   " << level
               << "\nExp:                     " << exp
-              << "\nExp for the  next level: " << expForNextLevel
-              << "\nAttribute points:        " << attributePoints; 
+              << "\nExp for the  next level: " << expForNextLevel; 
 }

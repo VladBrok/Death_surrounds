@@ -19,9 +19,9 @@ GameState::GameState(sf::RenderWindow& window,
     initRenderTexture();
     initTilemap();
     initTextures();
-    initPlayer();
-    initPlayerGUI();
     initPlayerInventory();
+    initPlayer();
+    initPlayerGui();
     initPauseMenu();
     initShader();
     initSystems();
@@ -33,7 +33,7 @@ GameState::~GameState()
     delete pTilemap;
     delete pPlayer;
     delete pPauseMenu;
-    delete pPlayerGUI;
+    delete pPlayerGui;
     delete pEnemySystem;
     delete pTextTagSystem;
 
@@ -47,10 +47,32 @@ GameState::~GameState()
 void GameState::processEvent(const sf::Event& event)
 {
     updateMousePosition(&view);
+    
+    // Setting the player's attack status
+    if (event.type == sf::Event::MouseButtonPressed &&
+        event.mouseButton.button == sf::Mouse::Left &&
+        pPlayer->canAttack())
+    {
+        pPlayer->setAttackStatus(true);
+    }
+    else if (event.type == sf::Event::MouseButtonReleased &&
+        event.mouseButton.button == sf::Mouse::Left)
+    {
+        pPlayer->setAttackStatus(false);
+    }
+
 
     if (stateIsPaused)
     {
         processPauseMenuButtonsEvent(event);
+    }
+    else
+    {
+        if (event.type == sf::Event::KeyPressed && 
+            event.key.code == keybinds.at("TOGGLE_PLAYER_INFO_TAB"))
+        {
+            pPlayerGui->toggleInfoTab();
+        }
     }
 
     if (event.type == sf::Event::KeyPressed &&
@@ -83,7 +105,7 @@ void GameState::update(const float deltaTime)
         pTextTagSystem->update(deltaTime);
 
         updateView();
-        updatePlayerGUI();
+        updatePlayerGui();
         updateEnemiesAndCombat(deltaTime);
     }
 }
@@ -147,9 +169,9 @@ void GameState::updateTilemap(const float deltaTime)
 }
 
 
-void GameState::updatePlayerGUI()
+void GameState::updatePlayerGui()
 {
-    pPlayerGUI->update();
+    pPlayerGui->update();
 }
 
 
@@ -164,12 +186,18 @@ void GameState::updateEnemiesAndCombat(const float deltaTime)
 
         if ((*enemy)->isDead())
         {
+            // Gaining the player's exp
             int exp = (int)((*enemy)->getExpForKilling());
             pPlayer->gainExp(exp);
 
             // Adding new pop-up text
-            pTextTagSystem->addTextTag(EXPERIENCE_TAG, pPlayer->getPosition(), exp, "+ ", " exp");
+            pTextTagSystem->addTextTag(
+                EXPERIENCE_TAG, 
+                sf::Vector2f(pPlayer->getCenter().x - GRID_SIZE, pPlayer->getPosition().y), 
+                exp, "+ ", " exp"
+            );
 
+            delete *enemy;
             enemy = enemies.erase(enemy);
         }
         else
@@ -177,22 +205,41 @@ void GameState::updateEnemiesAndCombat(const float deltaTime)
             ++enemy;
         }
     }
+
+    // Setting the player's attack status to false
+    pPlayer->setAttackStatus(false);
 }
 
 
 void GameState::updateCombat(Enemy& enemy)
 {
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && pPlayerActiveWeapon->canAttack())
-    {
-        if (enemy.getGlobalBounds().contains(mousePosView) &&
-            utils::getDistance(enemy.getCenter(), pPlayer->getCenter()) <= pPlayerActiveWeapon->getRange())
-        {
-            int damage = pPlayerActiveWeapon->getDamage();
-            enemy.loseHp(damage);
+    // Attack of the player
+    if (pPlayer->isAttacking() && 
+        enemy.getGlobalBounds().contains(mousePosView) &&
+        utils::getDistance(enemy.getCenter(), pPlayer->getCenter()) <= pPlayer->getAttackRange() &&
+        enemy.canBeDamaged())
+    {      
+        // Damaging the enemy
+        int damage = pPlayer->getDamage();
+        enemy.loseHp(damage);
 
-            // Adding new pop-up text
-            pTextTagSystem->addTextTag(DAMAGE_TAG, enemy.getPosition(), damage);
-        }
+        enemy.restartDamageTimer();
+
+        // Adding new pop-up text
+        pTextTagSystem->addTextTag(DAMAGE_TAG, enemy.getPosition(), damage); 
+    }
+
+
+    // Attack of the enemy
+    if (pPlayer->getGlobalBounds().intersects(enemy.getGlobalBounds()) &&
+        pPlayer->canBeDamaged())
+    {
+        int damage = enemy.getDamage();
+        pPlayer->loseHp(damage);
+
+        pPlayer->restartDamageTimer();
+
+        pTextTagSystem->addTextTag(DAMAGE_TAG, pPlayer->getPosition(), damage);
     }
 }
 
@@ -217,7 +264,7 @@ void GameState::render(sf::RenderTarget* pTarget)
 
     renderTexture.setView(renderTexture.getDefaultView());
 
-    pPlayerGUI->render(renderTexture);
+    pPlayerGui->render(renderTexture);
 
 
     if (stateIsPaused)
@@ -252,7 +299,7 @@ void GameState::initTextures()
 
 void GameState::initView()
 {
-    view.setSize(sf::Vector2f((float)window.getSize().x, (float)window.getSize().y));
+    view.setSize(sf::Vector2f((float)window.getSize().x / 1.5f, (float)window.getSize().y / 1.5f));
 }
 
 
@@ -268,25 +315,29 @@ void GameState::initTilemap()
 }
 
 
-void GameState::initPlayer()
-{
-    pPlayer = new Player(GRID_SIZE * 2, GRID_SIZE * 2, textures["PLAYER_SHEET"], playerInventory);
-}
-
-
-void GameState::initPlayerGUI()
-{
-    pPlayerGUI = new PlayerGUI(*pPlayer, window);
-}
-
-
 void GameState::initPlayerInventory()
 {
     Sword s(textures["WEAPON_SWORD"], 2, 5);
 
     playerInventory.addItem(&s);
+}
 
-    pPlayerActiveWeapon = static_cast<Weapon*>(&playerInventory[0]);
+
+void GameState::initPlayer()
+{
+    pPlayer = new Player(
+        GRID_SIZE * 2, 
+        GRID_SIZE * 2, 
+        textures["PLAYER_SHEET"], 
+        playerInventory, 
+        static_cast<Weapon&>(playerInventory[0])
+    );
+}
+
+
+void GameState::initPlayerGui()
+{
+    pPlayerGui = new PlayerGui(*pPlayer, window);
 }
 
 
@@ -310,6 +361,6 @@ void GameState::initShader()
 
 void GameState::initSystems()
 {
-    pEnemySystem = new EnemySystem(enemies, textures);
+    pEnemySystem = new EnemySystem(enemies, textures, *pPlayer);
     pTextTagSystem = new TextTagSystem(font);
 }

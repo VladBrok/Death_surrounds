@@ -11,6 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\AiFollow.cpp" />
+    <ClCompile Include="source\AiOption.cpp" />
     <ClCompile Include="source\AnimationComponent.cpp" />
     <ClCompile Include="source\AttributeComponent.cpp" />
     <ClCompile Include="source\Button.cpp" />
@@ -25,6 +27,7 @@
     <ClCompile Include="source\Game.cpp" />
     <ClCompile Include="source\GameState.cpp" />
     <ClCompile Include="source\HitboxComponent.cpp" />
+    <ClCompile Include="source\InfoTab.cpp" />
     <ClCompile Include="source\Inventory.cpp" />
     <ClCompile Include="source\Item.cpp" />
     <ClCompile Include="source\main.cpp" />
@@ -32,7 +35,8 @@
     <ClCompile Include="source\MovementComponent.cpp" />
     <ClCompile Include="source\PauseMenu.cpp" />
     <ClCompile Include="source\Player.cpp" />
-    <ClCompile Include="source\PlayerGUI.cpp" />
+    <ClCompile Include="source\PlayerGui.cpp" />
+    <ClCompile Include="source\PlayerInfoTab.cpp" />
     <ClCompile Include="source\precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">precompiled.h</PrecompiledHeaderFile>
@@ -40,7 +44,6 @@
     <ClCompile Include="source\ProgressBar.cpp" />
     <ClCompile Include="source\Rat.cpp" />
     <ClCompile Include="source\SettingsState.cpp" />
-    <ClCompile Include="source\SkillComponent.cpp" />
     <ClCompile Include="source\State.cpp" />
     <ClCompile Include="source\Sword.cpp" />
     <ClCompile Include="source\TextTagSystem.cpp" />
@@ -51,6 +54,8 @@
     <ClCompile Include="source\Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\AiFollow.h" />
+    <ClInclude Include="include\AiOption.h" />
     <ClInclude Include="include\AnimationComponent.h" />
     <ClInclude Include="include\AttributeComponent.h" />
     <ClInclude Include="include\Button.h" />
@@ -66,18 +71,19 @@
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\GameState.h" />
     <ClInclude Include="include\HitboxComponent.h" />
+    <ClInclude Include="include\InfoTab.h" />
     <ClInclude Include="include\Inventory.h" />
     <ClInclude Include="include\Item.h" />
     <ClInclude Include="include\MainMenuState.h" />
     <ClInclude Include="include\MovementComponent.h" />
     <ClInclude Include="include\PauseMenu.h" />
     <ClInclude Include="include\Player.h" />
-    <ClInclude Include="include\PlayerGUI.h" />
+    <ClInclude Include="include\PlayerGui.h" />
+    <ClInclude Include="include\PlayerInfoTab.h" />
     <ClInclude Include="include\precompiled.h" />
     <ClInclude Include="include\ProgressBar.h" />
     <ClInclude Include="include\Rat.h" />
     <ClInclude Include="include\SettingsState.h" />
-    <ClInclude Include="include\SkillComponent.h" />
     <ClInclude Include="include\State.h" />
     <ClInclude Include="include\Sword.h" />
     <ClInclude Include="include\TextTagSystem.h" />
