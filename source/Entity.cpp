@@ -97,16 +97,16 @@ const sf::Vector2f Entity::getCenter() const
     if (pHitboxComponent)
     {
         return pHitboxComponent->getPosition() + 
-               sf::Vector2f(
-                    pHitboxComponent->getGlobalBounds().width / 2.f,
-                    pHitboxComponent->getGlobalBounds().height / 2.f
-               );
+                   sf::Vector2f(
+                        pHitboxComponent->getGlobalBounds().width / 2.f,
+                        pHitboxComponent->getGlobalBounds().height / 2.f
+                   );
     }
     return sprite.getPosition() + 
-           sf::Vector2f(
-                sprite.getGlobalBounds().width / 2.f,
-                sprite.getGlobalBounds().height / 2.f
-           );
+               sf::Vector2f(
+                    sprite.getGlobalBounds().width / 2.f,
+                    sprite.getGlobalBounds().height / 2.f
+               );
 }
 
 

@@ -67,9 +67,9 @@ void Game::processEvents()
 
         
         if (!states.empty() &&
-                 states.top()->needToCallProcessEvent() && 
-                 windowHasFocus
-                )
+            states.top()->needToCallProcessEvent() && 
+            windowHasFocus
+            )
         {
             states.top()->processEvent(event);
         }
@@ -124,7 +124,7 @@ void Game::initWindow()
 
     window.create((*videoModes)[0],
                   "Death surrounds",
-                  sf::Style::Close
+                  sf::Style::Fullscreen
                   );
 
     window.setFramerateLimit(FPS_LIMIT);

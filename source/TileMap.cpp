@@ -6,19 +6,19 @@
 #include "Entity.h"
 
 
-Tilemap::Tilemap(const int mapSizeX, const int mapSizeY, const int mapSizeZ)
+Tilemap::Tilemap(const int mapSizeX, const int mapSizeY, const int mapSizeZ, const sf::RenderWindow& window)
 {
     createEmptyMap(mapSizeX, mapSizeY, mapSizeZ);
 
     textureSheetFileName = "Resources\\Images\\Tiles\\tilesheet.png";
     textureSheet.loadFromFile(textureSheetFileName);
 
-    initCollisionBox();
-    initEnemySpawnerBox();
-
     mapSize.x = mapSizeX * GRID_SIZE;
     mapSize.y = mapSizeY * GRID_SIZE;
     mapSize.z = mapSizeZ * GRID_SIZE;
+
+    initCollisionBox();
+    initEnemySpawnerBox();
 }
 
 
@@ -45,77 +45,6 @@ void Tilemap::update(Entity& entity, const float deltaTime, EnemySystem& enemySy
 }
 
 
-void Tilemap::render(sf::RenderTarget& target, 
-                     const sf::Vector2i& gridPositionAroundWhichRender,
-                     sf::Shader* pShader,
-                     const sf::Vector2f& shaderLightPosition,
-                     const bool showCollisionBox,
-                     const bool showEnemySpawnerBox 
-                     )
-{
-    // FIXME
-    int z = 0;
-    
-
-    // Calculating the rendering bounds
-    int fromX = gridPositionAroundWhichRender.x - 5;
-    if (fromX < 0)
-    {
-        fromX = 0;
-    }
-    int toX = gridPositionAroundWhichRender.x + 7;
-    if (toX > (int)map.size())
-    {
-        toX = map.size();
-    }
-
-    int fromY = gridPositionAroundWhichRender.y - 4;
-    if (fromY < 0)
-    {
-        fromY = 0;
-    }
-    int toY = gridPositionAroundWhichRender.y + 5;
-    if (toY > (int)map[0].size())
-    {
-        toY = map[0].size();
-    }
-
-    // Rendering the tilemap around the specified grid position
-    for (int x = fromX; x < toX; ++x)
-    {
-        for (int y = fromY; y < toY; ++y)
-        {
-            for (int k = 0; k < (int)map[x][y][z].size(); ++k)
-            {
-                if (map[x][y][z][k]->getType() == RENDERING_DEFERRED) // Pushing the tile to the stack for deferred render
-                {
-                    tilesForDeferredRender.push(map[x][y][z][k]);
-                }
-                else // Rendering the tile
-                {
-                    map[x][y][z][k]->render(target, pShader, shaderLightPosition); 
-                }
-
-
-                // Rendering the collision box
-                if (map[x][y][z][k]->tileCanCollide() && showCollisionBox)
-                {
-                    collisionBox.setPosition(map[x][y][z][k]->getPosition());
-                    target.draw(collisionBox);
-                }
-
-                // Rendering the enemy spawner box
-                if (map[x][y][z][k]->getType() == ENEMY_SPAWNER && showEnemySpawnerBox)
-                {
-                    enemySpawnerBox.setPosition(map[x][y][z][k]->getPosition());
-                    target.draw(enemySpawnerBox);
-                }
-            }
-        }
-    }
-}
-
-
 void Tilemap::renderDeferred(sf::RenderTarget& target,                                 
                              sf::Shader* pShader,
                              const sf::Vector2f& shaderLightPosition
@@ -125,6 +54,90 @@ void Tilemap::renderDeferred(sf::RenderTarget& target,
     {
         tilesForDeferredRender.top()->render(target, pShader, shaderLightPosition);
         tilesForDeferredRender.pop();
+    }
+}
+
+
+void Tilemap::render(sf::RenderTarget& target, 
+                     const sf::View& view,
+                     const sf::Vector2i& gridPositionAroundWhichRender,
+                     sf::Shader* pShader,
+                     const sf::Vector2f& shaderLightPosition,
+                     const bool showCollisionBox,
+                     const bool showEnemySpawnerBox
+                     )
+{
+    int z = 0; // FIXME
+
+    int fromX = 0;
+    int toX = (int)map.size();
+
+    int fromY = 0;
+    int toY = (int)map[0].size();
+
+    // Calculating the render bounds
+    if (gridPositionAroundWhichRender != sf::Vector2i(-1, -1))
+    {
+        sf::Vector2i gridsOnViewAmount(
+                        static_cast<sf::Vector2i>(view.getSize()) / (int)GRID_SIZE
+                    );
+
+
+        // DEBUG
+        //std::cout << gridsOnViewAmount.x << ' ' << gridsOnViewAmount.y << '\n';
+
+
+        fromX = gridPositionAroundWhichRender.x - gridsOnViewAmount.x / 2;
+        toX   = gridPositionAroundWhichRender.x + gridsOnViewAmount.x / 2 + 1;
+
+        fromY = gridPositionAroundWhichRender.y - gridsOnViewAmount.y / 2 - 1;
+        toY   = gridPositionAroundWhichRender.y + gridsOnViewAmount.y / 2 + 2;
+
+
+        if (fromX < 0)
+        {
+            toX += -fromX;
+            fromX = 0;
+        }
+        if (fromY < 0)
+        {
+            toY += -fromY;
+            fromY = 0;
+        }
+        if (toX > (int)map.size())
+        {
+            if (fromX >= toX - (int)map.size())
+            {
+                fromX -= toX - (int)map.size();
+            }
+            toX = (int)map.size();
+        }
+        if (toY > (int)map[0].size())
+        {
+            if (fromY >= toY - (int)map[0].size())
+            {
+                fromY -= toY - (int)map[0].size();
+            }
+            toY = (int)map[0].size();
+        }
+
+        // DEBUG
+        //std::cout << "FromX: " << fromX << '\n'
+        //          << "ToX: " << toX << '\n'
+        //          << "FromY: " << fromY << '\n'
+        //          << "ToY: " << toY << '\n';
+    }
+    
+
+    for (int x = fromX; x < toX; ++x)
+    {
+        for (int y = fromY; y < toY; ++y)
+        {
+            for (int k = 0; k < (int)map[x][y][z].size(); ++k)
+            {
+                renderTile(target, *map[x][y][z][k], pShader, shaderLightPosition, showCollisionBox, showEnemySpawnerBox);
+            }
+        }
     }
 }
 
@@ -288,16 +301,16 @@ void Tilemap::addTile(const int gridPosX,
             return;
         }
 
-            map[gridPosX][gridPosY][gridPosZ].push_back(
-                new Tile(
-                      type,
-                      gridPosX * GRID_SIZE, 
-                      gridPosY * GRID_SIZE, 
-                      textureSheet,
-                      textureRect,
-                      canCollide
-                )
-            );
+        map[gridPosX][gridPosY][gridPosZ].push_back(
+            new Tile(
+                type,
+                gridPosX * GRID_SIZE, 
+                gridPosY * GRID_SIZE, 
+                textureSheet,
+                textureRect,
+                canCollide
+            )
+        );
     }
 }
 
@@ -528,8 +541,8 @@ void Tilemap::updateTiles(Entity& entity, const float deltaTime, EnemySystem& en
 
 void Tilemap::handleCollision(const Tile& tile, Entity& entity)
 {
-    sf::FloatRect entityBounds       = entity.getGlobalBounds();
-    sf::FloatRect tileBounds         = tile.getGlobalBounds();
+    sf::FloatRect entityBounds = entity.getGlobalBounds();
+    sf::FloatRect tileBounds   = tile.getGlobalBounds();
 
     // Checking the collision side of the entity
 
@@ -575,6 +588,40 @@ void Tilemap::handleCollision(const Tile& tile, Entity& entity)
     {
         entity.stopVelocityX();
         entity.setPosition(tileBounds.left + tileBounds.width, entityBounds.top);
+    }
+}
+
+
+void Tilemap::renderTile(sf::RenderTarget& target, 
+                         Tile& tile,
+                         sf::Shader* pShader,
+                         const sf::Vector2f& shaderLightPosition,
+                         const bool showCollisionBox,
+                         const bool showEnemySpawnerBox
+                         )
+{
+    if (tile.getType() == RENDERING_DEFERRED) // Pushing the tile to the stack for deferred render
+    {
+        tilesForDeferredRender.push(&tile);
+    }
+    else // Rendering the tile
+    {
+        tile.render(target, pShader, shaderLightPosition); 
+    }
+
+
+    // Rendering the collision box
+    if (tile.tileCanCollide() && showCollisionBox)
+    {
+        collisionBox.setPosition(tile.getPosition());
+        target.draw(collisionBox);
+    }
+
+    // Rendering the enemy spawner box
+    if (tile.getType() == ENEMY_SPAWNER && showEnemySpawnerBox)
+    {
+        enemySpawnerBox.setPosition(tile.getPosition());
+        target.draw(enemySpawnerBox);
     }
 }
 

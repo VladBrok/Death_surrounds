@@ -223,7 +223,7 @@ void DefaultEditorMode::updateSideBarActivity()
 
 void DefaultEditorMode::updateView(const float deltaTime)
 {
-    const float viewSpeed = 360.f * deltaTime;
+    const float viewSpeed = 450.f * deltaTime;
 
     if (sf::Keyboard::isKeyPressed(keybinds.at("MOVE_VIEW_UP")))
     {
@@ -253,6 +253,9 @@ void DefaultEditorMode::updateView(const float deltaTime)
     {
         view.move(viewSpeed, 0.f);
     }
+
+
+    view.setCenter(sf::Vector2f((int)view.getCenter().x, (int)view.getCenter().y));
 }
 
 
@@ -284,7 +287,8 @@ void DefaultEditorMode::renderTilemap(sf::RenderTarget& target)
 {
     target.setView(view);
 
-    tilemap.render(target, mousePosGrid, nullptr, sf::Vector2f(), true, true);
+    tilemap.render(target, view, mousePosGrid, nullptr, sf::Vector2f(), true, true);
+
     tilemap.renderDeferred(target);
 
     target.setView(target.getDefaultView());

@@ -10,7 +10,7 @@ class Tilemap
 {
 public:
 
-                            Tilemap(const int mapSizeX, const int mapSizeY, const int mapSizeZ);
+                            Tilemap(const int mapSizeX, const int mapSizeY, const int mapSizeZ, const sf::RenderWindow& window);
                             Tilemap(const std::string& fileName);
                             ~Tilemap();
 
@@ -18,18 +18,18 @@ public:
                                    const float deltaTime, 
                                    EnemySystem& enemySystem
                                    );
+    void                    renderDeferred(sf::RenderTarget& target,
+                                           sf::Shader* pShader = nullptr,
+                                           const sf::Vector2f& shaderLightPosition = sf::Vector2f()                                         
+                                           );
     void                    render(sf::RenderTarget& target, 
-                                   const sf::Vector2i& gridPositionAroundWhichRender,
+                                   const sf::View& view,
+                                   const sf::Vector2i& gridPositionAroundWhichRender = sf::Vector2i(-1, -1),
                                    sf::Shader* pShader = nullptr,
                                    const sf::Vector2f& shaderLightPosition = sf::Vector2f(),
                                    const bool showCollisionBox = false,
                                    const bool showEnemySpawnerBox = false
                                    );
-    void                    renderDeferred(sf::RenderTarget& target,
-                                           sf::Shader* pShader = nullptr,
-                                           const sf::Vector2f& shaderLightPosition = sf::Vector2f()                                         
-                                           );
-
     void                    saveToFile(const std::string& fileName);
     void                    loadFromFile(const std::string& fileName);
     void                    addTile(const int gridPosX, 
@@ -64,8 +64,10 @@ private:
     sf::Vector3f                                                      mapSize;
     sf::Texture                                                       textureSheet;
     std::string                                                       textureSheetFileName;
+
     sf::RectangleShape                                                collisionBox;
     sf::RectangleShape                                                enemySpawnerBox;
+
     std::stack<Tile*>                                                 tilesForDeferredRender;
 
     bool                    positionsAreCorrect(const int gridPosX, const int gridPosY, const int gridPosZ) const;
@@ -75,6 +77,14 @@ private:
     void                    updateCollisionWithMapBounds(Entity& entity, const float deltaTime);
     void                    updateTiles(Entity& entity, const float deltaTime, EnemySystem& enemySystem);
     void                    handleCollision(const Tile& tile, Entity& entity);
+
+    void                    renderTile(sf::RenderTarget& target, 
+                                       Tile& tile,
+                                       sf::Shader* pShader = nullptr,
+                                       const sf::Vector2f& shaderLightPosition = sf::Vector2f(),
+                                       const bool showCollisionBox = false,
+                                       const bool showEnemySpawnerBox = false
+                                       );
 
     void                    initCollisionBox();
     void                    initEnemySpawnerBox();

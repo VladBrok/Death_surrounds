@@ -39,6 +39,7 @@ private:
         float       movementDirY;
         float       lifetime;
         float       speed;
+        float       deceleration;
         int         fadeValue;
 
 
@@ -52,12 +53,14 @@ private:
                 const unsigned charSize, 
                 const float lifetime, 
                 const float speed,
-                const int fadeValue
+                const float deceleration = 0,
+                const int fadeValue = 0
                 )
                 : movementDirX(movementDirX),
                   movementDirY(movementDirY),
                   lifetime(lifetime),
                   speed(speed),
+                  deceleration(deceleration),
                   fadeValue(fadeValue)
         {
             sfmlText.setFont(font);
@@ -74,6 +77,11 @@ private:
                 lifetime -= deltaTime * (1000.f / 16.f);
 
                 sfmlText.move(movementDirX * speed * deltaTime, movementDirY * speed * deltaTime);
+
+                if (speed >= deceleration)
+                {
+                    speed -= deceleration;
+                }
 
                 if (fadeValue > 0 && sfmlText.getColor().a >= fadeValue)
                 {
@@ -116,10 +124,6 @@ private:
     std::unordered_map<int, std::shared_ptr<TextTag>> presetTags;
 
     void                                              initPresetTags();
-    void                                              addTag(const int presetTagId, 
-                                                             const sf::Vector2f& position, 
-                                                             const std::string& text
-                                                             );
 };
 
 

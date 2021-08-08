@@ -8,7 +8,7 @@ EditorState::EditorState(sf::RenderWindow& window,
                              std::stack<State*>* const pStates
                              )
     : State(window, pSupportedKeys, pStates), 
-      tilemap(TILEMAP_GRID_SIZE_X, TILEMAP_GRID_SIZE_Y, TILEMAP_GRID_SIZE_Z),
+      tilemap(TILEMAP_GRID_SIZE_X, TILEMAP_GRID_SIZE_Y, TILEMAP_GRID_SIZE_Z, window),
       activeMode(0)
 {
     stateType = STATE_UPDATES_AND_PROCESSES_EVENTS;

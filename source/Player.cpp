@@ -13,7 +13,7 @@ Player::Player(const float posX,
 
     createMovementComponent(200.f, 1600.f, 1000.f);
     createAnimationComponent(textureSheet);
-    createHitboxComponent(17.f, 9.f, 30.f, 50.f);
+    createHitboxComponent(18.f, 19.f, 28.f, 38.f);
     createAttributeComponent(1, 10, 1, 2);
 
     pAnimationComponent->addAnimation("IDLE", textureSheet, sprite, 0, 0, 8, 0, 64, 64, 9.5f);

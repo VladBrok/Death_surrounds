@@ -7,7 +7,7 @@ Rat::Rat(const float posX, const float posY, const sf::Texture& textureSheet, En
 {
     expForKillingMax = 10;
 
-    createMovementComponent(120.f, 1600.f, 1000.f);
+    createMovementComponent(100.f, 1400.f, 1000.f);
     createAnimationComponent(textureSheet);
     createHitboxComponent(18.f, 44.f, 20.f, 20.f);
     createAttributeComponent(1, 8, 1, 1);

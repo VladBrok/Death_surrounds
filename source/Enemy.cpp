@@ -1,5 +1,6 @@
 #include "precompiled.h"
 #include "Enemy.h"
+#include "Utils.h"
 
 
 Enemy::Enemy(const float posX, const float posY, const sf::Texture& textureSheet)
@@ -35,6 +36,12 @@ bool Enemy::isDead() const
         std::cout << "ERROR in Enemy::isDead: this enemy doesn't have an AttributeComponent\n";
         return false;
     }
+}
+
+
+bool Enemy::canBeDespawned(const sf::View& view) const
+{
+    return utils::getDistance(getCenter(), view.getCenter()) > (view.getSize().x + view.getSize().y) / 2.0f;
 }
 
 

@@ -28,9 +28,7 @@ void AttributeComponent::updateLevel()
         updateStats();
 
         exp -= expForNextLevel;
-        expForNextLevel = static_cast<unsigned>(
-            (50 / 3) * (std::pow((double)level, 3) - 6 * std::pow((double)level, 2) + level * 17 - 12)
-        );
+        expForNextLevel = (50 * std::powl(level, 3) - 150 * std::powl(level, 2) + 400 * level) / 3;
     }
 }
 

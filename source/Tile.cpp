@@ -93,6 +93,12 @@ const sf::IntRect& Tile::getTextureRect() const
 }
 
 
+void Tile::setPosition(const sf::Vector2f& position)
+{
+    tile.setPosition(position);
+}
+
+
 bool Tile::tileCanCollide() const
 {
     return canCollide;

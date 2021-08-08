@@ -138,6 +138,9 @@ void GameState::updateView()
             view.setCenter(view.getCenter().x, pTilemap->getMapSize().y - view.getSize().y / 2.f);
         }
     }
+
+
+    view.setCenter(sf::Vector2f((int)view.getCenter().x, (int)view.getCenter().y));
 }
 
 
@@ -164,7 +167,9 @@ void GameState::updatePlayerKeyboardInput(const float deltaTime)
 
 void GameState::updateTilemap(const float deltaTime)
 {
-    // FIXME: we are not updating the map with enemies instead of pPlayer
+    // DEBUG
+    //std::cout << deltaTime << '\n';
+
     pTilemap->update(*pPlayer, deltaTime, *pEnemySystem);
 }
 
@@ -196,7 +201,9 @@ void GameState::updateEnemiesAndCombat(const float deltaTime)
                 sf::Vector2f(pPlayer->getCenter().x - GRID_SIZE, pPlayer->getPosition().y), 
                 exp, "+ ", " exp"
             );
-
+        }
+        if ((*enemy)->isDead() || (*enemy)->canBeDespawned(view))
+        {
             delete *enemy;
             enemy = enemies.erase(enemy);
         }
@@ -251,12 +258,12 @@ void GameState::render(sf::RenderTarget* pTarget)
         pTarget = &window;
     }
 
-    renderTexture.clear();
+ /*   renderTexture.clear();
 
 
     renderTexture.setView(view);
 
-    pTilemap->render(renderTexture, pPlayer->getGridPositionCenter(), &coreShader, pPlayer->getCenter(), true, true);
+    pTilemap->render(renderTexture, view, pPlayer->getGridPositionCenter(), &coreShader, pPlayer->getCenter());
     pPlayer->render(renderTexture, &coreShader, pPlayer->getCenter(), true);
     renderEnemies(renderTexture);
     pTextTagSystem->render(renderTexture);
@@ -275,8 +282,27 @@ void GameState::render(sf::RenderTarget* pTarget)
 
     renderTexture.display();
 
-    renderSprite.setTexture(renderTexture.getTexture());
-    pTarget->draw(renderSprite);
+    pTarget->draw(renderSprite);*/
+
+
+    sf::RenderTarget& target = *pTarget;
+    target.setView(view);
+
+    pTilemap->render(target, view, pPlayer->getGridPositionCenter(), &coreShader, pPlayer->getCenter(), false, false);
+    pPlayer->render(target, &coreShader, pPlayer->getCenter(), true);
+    renderEnemies(target);
+    pTextTagSystem->render(target);
+    pTilemap->renderDeferred(target, &coreShader, pPlayer->getCenter());
+
+    target.setView(target.getDefaultView());
+
+    pPlayerGui->render(target);
+
+
+    if (stateIsPaused)
+    {
+        pPauseMenu->render(target);
+    }
 }
 
 
@@ -306,6 +332,8 @@ void GameState::initView()
 void GameState::initRenderTexture()
 {
     renderTexture.create(window.getSize().x, window.getSize().y);
+
+    renderSprite.setTexture(renderTexture.getTexture());
 }
 
 

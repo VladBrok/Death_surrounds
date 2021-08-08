@@ -43,10 +43,10 @@ void TextTagSystem::initPresetTags()
 {
     presetTags[EXPERIENCE_TAG] = 
         std::make_shared<TextTag>(
-            TextTag(font, "", 0.f, 0.f, 0.f, -1.f, sf::Color::Cyan, 25, 50.f, 160.f, 4)
+            TextTag(font, "", 0.f, 0.f, 0.f, -1.f, sf::Color::Cyan, 25, 50.f, 160.f, 1.5f, 4)
         );
     presetTags[DAMAGE_TAG] =
         std::make_shared<TextTag>(
-            TextTag(font, "", 0.f, 0.f, 0.f, -1.f, sf::Color::Red, 20, 35.f, 110.f, 0)
+            TextTag(font, "", 0.f, 0.f, 0.f, -1.f, sf::Color::Red, 20, 35.f, 110.f, 1.5f, 0)
         );
 }
