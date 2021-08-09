@@ -29,7 +29,7 @@ private:
     std::list<Item*>    items;
     int                 maxNumberOfItems;
 
-    void clear();
+    void                clear();
 
 };
 
