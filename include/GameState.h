@@ -5,7 +5,7 @@
 #include "Player.h"
 #include "PauseMenu.h"
 #include "Tilemap.h"
-#include "PlayerGUI.h"
+#include "PlayerGui.h"
 #include "Enemy.h"
 #include "EnemySystem.h"
 #include "TextTagSystem.h"
@@ -17,8 +17,8 @@ class GameState: public State
 public:
 
                          GameState(sf::RenderWindow& window, 
-                                   const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
-                                   std::stack<State*>* const pStates
+                                   const std::unordered_map<std::string, sf::Keyboard::Key>& supportedKeys,
+                                   std::stack<State*>& states
                                    );
     virtual              ~GameState();
                          
@@ -29,7 +29,7 @@ public:
     void                 updateView();
     void                 updatePlayerKeyboardInput(const float deltaTime);
     void                 updateTilemap(const float deltaTime);
-    void                 updatePlayerGui();
+    void                 updateGui();
     void                 updateEnemiesAndCombat(const float deltaTime);
     void                 updateCombat(Enemy& enemy);
                          
@@ -43,8 +43,6 @@ private:
     TextTagSystem*       pTextTagSystem;
                          
     sf::View             view;
-    sf::RenderTexture    renderTexture;
-    sf::Sprite           renderSprite;
     Tilemap*             pTilemap;
                          
     Player*              pPlayer;
@@ -57,13 +55,12 @@ private:
 
                          
     void                 initView();
-    void                 initRenderTexture();
     void                 initTilemap();
     virtual void         initTextures();
     void                 initPlayerInventory();
     void                 initPlayer();
-    void                 initPlayerGui();
-    void                 initPauseMenu();
+    void                 initFont();
+    void                 initGui();
     void                 initShader();
     void                 initSystems();
 

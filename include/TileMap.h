@@ -10,7 +10,7 @@ class Tilemap
 {
 public:
 
-                            Tilemap(const int mapSizeX, const int mapSizeY, const int mapSizeZ, const sf::RenderWindow& window);
+                            Tilemap(const int mapGridSizeX, const int mapGridSizeY);
                             Tilemap(const std::string& fileName);
                             ~Tilemap();
 
@@ -34,14 +34,12 @@ public:
     void                    loadFromFile(const std::string& fileName);
     void                    addTile(const int gridPosX, 
                                     const int gridPosY, 
-                                    const int gridPosZ, 
                                     const sf::IntRect& textureRect,
                                     const bool canCollide,
                                     const TileType type
                                     );
     void                    addEnemySpawnerTile(const int gridPosX,
                                                 const int gridPosY,
-                                                const int gridPosZ,
                                                 const sf::IntRect& textureRect,
                                                 const bool canCollide,
                                                 const int enemyType,
@@ -49,30 +47,30 @@ public:
                                                 const int enemyTimeToSpawn,
                                                 const float enemyMaxDistance
                                                 );
-    void                    removeTile(const int gridPosX, const int gridPosY, const int gridPosZ);
+    void                    removeTile(const int gridPosX, const int gridPosY);
 
 
     const sf::Texture&      getTextureSheet() const;
-    int                     getNumberOfTilesAtPosition(const sf::Vector2i& gridPosition, const int layer);
-    int                     getTileType(const int gridPosX, const int gridPosY, const int gridPosZ);
+    int                     getNumberOfTilesAtPosition(const sf::Vector2i& gridPosition);
+    int                     getTileType(const int gridPosX, const int gridPosY);
     const std::string&      getTileTypeAsString(const int type);
-    const sf::Vector3f&     getMapSize() const;
+    const sf::Vector2f&     getMapSize() const;
 
 private:
 
-    std::vector< std::vector< std::vector< std::vector< Tile* > > > > map;
-    sf::Vector3f                                                      mapSize;
-    sf::Texture                                                       textureSheet;
-    std::string                                                       textureSheetFileName;
+    std::vector< std::vector< std::vector< Tile* > > >    map;
+    sf::Vector2f                                          mapSize;
+    sf::Texture                                           textureSheet;
+    std::string                                           textureSheetFileName;
 
-    sf::RectangleShape                                                collisionBox;
-    sf::RectangleShape                                                enemySpawnerBox;
+    sf::RectangleShape                                    collisionBox;
+    sf::RectangleShape                                    enemySpawnerBox;
 
-    std::stack<Tile*>                                                 tilesForDeferredRender;
+    std::stack<Tile*>                                     tilesForDeferredRender;
 
-    bool                    positionsAreCorrect(const int gridPosX, const int gridPosY, const int gridPosZ) const;
+    bool                    positionsAreCorrect(const int gridPosX, const int gridPosY) const;
     void                    clearMap();
-    void                    createEmptyMap(const int mapSizeX, const int mapSizeY, const int mapSizeZ);
+    void                    createEmptyMap(const int mapSizeX, const int mapSizeY);
                             
     void                    updateCollisionWithMapBounds(Entity& entity, const float deltaTime);
     void                    updateTiles(Entity& entity, const float deltaTime, EnemySystem& enemySystem);

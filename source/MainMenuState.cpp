@@ -7,16 +7,16 @@
 
 
 MainMenuState::MainMenuState(sf::RenderWindow& window,
-                             const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
-                             std::stack<State*>* const pStates
+                             const std::unordered_map<std::string, sf::Keyboard::Key>& supportedKeys,
+                             std::stack<State*>& states
                              )
-    : State(window, pSupportedKeys, pStates)
+    : State(window, supportedKeys, states)
 {
     stateType = STATE_PROCESSES_EVENTS;
 
     initTextures();
     initFont();
-    initButtons();
+    initGui();
     initBackground();
 }
 
@@ -42,17 +42,17 @@ void MainMenuState::processEvent(const sf::Event& event)
     // Pushing new states if the corresponding button is pressed
     if (buttons["GAME_STATE"]->isPressed()) // Starting new game
     {
-        pStates->push(new GameState(window, pSupportedKeys, pStates));
+        states.push(new GameState(window, supportedKeys, states));
     }
     else if (buttons["SETTINGS_STATE"]->isPressed()) // Activating the settings state
     {
-        pStates->push(new SettingsState(window, pSupportedKeys, pStates));
+        states.push(new SettingsState(window, supportedKeys, states));
 
         reinitialize();
     }
     else if (buttons["EDITOR_STATE"]->isPressed()) // Going to the editor state
     {
-        pStates->push(new EditorState(window, pSupportedKeys, pStates));
+        states.push(new EditorState(window, supportedKeys, states));
     }
 
     
@@ -71,11 +71,11 @@ void MainMenuState::render(sf::RenderTarget* pTarget)
     }
     pTarget->draw(background);
 
-    renderButtons(*pTarget);
+    renderGui(*pTarget);
 }
 
 
-void MainMenuState::renderButtons(sf::RenderTarget& target)
+void MainMenuState::renderGui(sf::RenderTarget& target)
 {
     for (auto b = buttons.begin(); b != buttons.end(); ++b)
     {
@@ -90,9 +90,12 @@ void MainMenuState::initFont()
 }
 
 
-void MainMenuState::initButtons()
+void MainMenuState::initGui()
 {
     const sf::Vector2u windowSize(window.getSize());
+
+
+    /*=============== Buttons ===============*/
 
     const sf::Vector2f buttonSize(
         static_cast<float>(utils::percentToPixels(14.3f, windowSize.x)),
@@ -167,6 +170,6 @@ void MainMenuState::reinitialize()
         delete b->second;
     } 
 
-    initButtons();
+    initGui();
     initBackground();
 }

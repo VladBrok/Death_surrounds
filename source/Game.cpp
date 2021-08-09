@@ -122,9 +122,10 @@ void Game::initWindow()
 {
     const std::vector<sf::VideoMode>* videoModes = &sf::VideoMode::getFullscreenModes();
 
+    // Style "None" is like fullscreen but better
     window.create((*videoModes)[0],
                   "Death surrounds",
-                  sf::Style::Fullscreen
+                  sf::Style::Close
                   );
 
     window.setFramerateLimit(FPS_LIMIT);
@@ -155,5 +156,5 @@ void Game::initSupportedKeys()
 
 void Game::initStates()
 {
-    states.push(new MainMenuState(window, &supportedKeys, &states));
+    states.push(new MainMenuState(window, supportedKeys, states));
 }

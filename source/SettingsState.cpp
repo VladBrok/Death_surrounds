@@ -4,10 +4,10 @@
 
 
 SettingsState::SettingsState(sf::RenderWindow& window,
-                             const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
-                             std::stack<State*>* const pStates
+                             const std::unordered_map<std::string, sf::Keyboard::Key>& supportedKeys,
+                             std::stack<State*>& states
                              )
-    : State(window, pSupportedKeys, pStates)
+    : State(window, supportedKeys, states)
 {
     stateType = STATE_PROCESSES_EVENTS;
 
@@ -101,6 +101,7 @@ void SettingsState::initGui()
 {
     const sf::Vector2u windowSize(window.getSize());
 
+
     /*=============== Buttons ===============*/
 
     const sf::Vector2f buttonSize(
@@ -132,6 +133,7 @@ void SettingsState::initGui()
                                        textHoverColor,
                                        textActiveColor
                                        );
+
 
     /*=============== Drop down lists ===============*/
     

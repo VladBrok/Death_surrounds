@@ -1,5 +1,5 @@
-#ifndef SETTINGS_STATE_H
-#define SETTINGS_STATE_H
+#ifndef SETTINGSSTATE_H
+#define SETTINGSSTATE_H
 
 #include "State.h"
 #include "Button.h"
@@ -11,8 +11,8 @@ class SettingsState: public State
 public:
 
                                                    SettingsState(sf::RenderWindow& window, 
-                                                                 const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
-                                                                 std::stack<State*>* const pStates
+                                                                 const std::unordered_map<std::string, sf::Keyboard::Key>& supportedKeys,
+                                                                 std::stack<State*>& states
                                                                  );
     virtual                                        ~SettingsState();
     
@@ -40,4 +40,4 @@ private:
 };
 
 
-#endif // SETTINGS_STATE_H
+#endif // SETTINGSSTATE_H

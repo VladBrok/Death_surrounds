@@ -10,15 +10,15 @@ class MainMenuState: public State
 public:
 
                                              MainMenuState(sf::RenderWindow& window, 
-                                                           const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
-                                                           std::stack<State*>* const pStates
+                                                           const std::unordered_map<std::string, sf::Keyboard::Key>& supportedKeys,
+                                                           std::stack<State*>& states
                                                            );
     virtual                                  ~MainMenuState();
     
     virtual void                             processEvent(const sf::Event& event);
     virtual void                             render(sf::RenderTarget* pTarget = nullptr);
                                              
-    void                                     renderButtons(sf::RenderTarget& target);
+    void                                     renderGui(sf::RenderTarget& target);
 
 private:
 
@@ -27,7 +27,7 @@ private:
     std::unordered_map<std::string, Button*> buttons;
 
     void                                     initFont();
-    void                                     initButtons();
+    void                                     initGui();
     void                                     initBackground();
     virtual void                             initTextures();
 

@@ -31,9 +31,9 @@ DefaultEditorMode::DefaultEditorMode(sf::Font& font,
     enemyMaxDistance(0.f)
 {
     initSideBar();
-    initButtons();
     initTextureRect();
-    initTileAndTextureSelectors();
+    initGui();
+    initTileSelector();
     initCursorText();
 
     view.setCenter(window.getSize().x / 2.f - sideBar.getSize().x, window.getSize().y / 2.f);
@@ -82,8 +82,7 @@ void DefaultEditorMode::render(sf::RenderTarget& target)
     target.draw(sideBar);
 
     renderTileSelectorAndCursorText(target);
-    renderTextureSelector(target);
-    renderButtons(target);
+    renderGui(target);
 }
 
 
@@ -95,11 +94,11 @@ void DefaultEditorMode::processTilemapEvent(const sf::Event& event)
     {
         if (tileType == ENEMY_SPAWNER)
         {
-            tilemap.addEnemySpawnerTile(mousePosGrid.x, mousePosGrid.y, 0, textureRect, tileCanCollide, enemyType, enemyAmount, enemyTimeToSpawn, enemyMaxDistance);
+            tilemap.addEnemySpawnerTile(mousePosGrid.x, mousePosGrid.y, textureRect, tileCanCollide, enemyType, enemyAmount, enemyTimeToSpawn, enemyMaxDistance);
         }
         else
         {
-            tilemap.addTile(mousePosGrid.x, mousePosGrid.y, 0, textureRect, tileCanCollide, static_cast<TileType>(tileType));
+            tilemap.addTile(mousePosGrid.x, mousePosGrid.y, textureRect, tileCanCollide, static_cast<TileType>(tileType));
         }
     }
 
@@ -109,7 +108,7 @@ void DefaultEditorMode::processTilemapEvent(const sf::Event& event)
              !pTextureSelector->isActive()
              )
     {
-        tilemap.removeTile(mousePosGrid.x, mousePosGrid.y, 0);
+        tilemap.removeTile(mousePosGrid.x, mousePosGrid.y);
     } 
 }
 
@@ -261,8 +260,6 @@ void DefaultEditorMode::updateView(const float deltaTime)
 
 void DefaultEditorMode::updateCursorText()
 {
-    int activeLayer = 0; // The active layer of the tilemap (grid position in the z-axis)
-
     std::stringstream sstream;
     sstream << "Grid position:       (" << mousePosGrid.x << ';' << mousePosGrid.y << ")\n"
             << "Tile can collide:    " << (tileCanCollide ? "true": "false") << '\n'
@@ -276,7 +273,7 @@ void DefaultEditorMode::updateCursorText()
                 << "     Max distance:                   " << enemyMaxDistance << '\n';
     } 
 
-    sstream << "Number of tiles:   " << tilemap.getNumberOfTilesAtPosition(mousePosGrid, activeLayer) << '\n';
+    sstream << "Number of tiles:   " << tilemap.getNumberOfTilesAtPosition(mousePosGrid) << '\n';
 
     cursorText.setString(sstream.str());
     cursorText.setPosition(mousePosView.x + 15.f, mousePosView.y);
@@ -307,17 +304,15 @@ void DefaultEditorMode::renderTileSelectorAndCursorText(sf::RenderTarget& target
 }
 
 
-void DefaultEditorMode::renderTextureSelector(sf::RenderTarget& target)
+void DefaultEditorMode::renderGui(sf::RenderTarget& target)
 {
+    // Texture selector
     if (!hideTextureSelector)
     {
         pTextureSelector->render(target);
     }
-}
 
-
-void DefaultEditorMode::renderButtons(sf::RenderTarget& target)
-{
+    // Buttons
     for (auto b = buttons.begin(); b != buttons.end(); ++b)
     {
         b->second->render(target);
@@ -334,8 +329,10 @@ void DefaultEditorMode::initSideBar()
 }
 
 
-void DefaultEditorMode::initButtons()
+void DefaultEditorMode::initGui()
 {
+    /*=============== Buttons ===============*/
+
     buttons["TEXTURE_SELECTOR"] = new Button(
                                         0.f, 
                                         0.f,
@@ -353,6 +350,17 @@ void DefaultEditorMode::initButtons()
                                         sf::Color(220, 220, 220, 240),
                                         sf::Color(240, 240, 240, 240)
                                      );
+
+
+    /*=============== Texture selector ===============*/
+
+    pTextureSelector = new TextureSelector(
+                               sideBar.getSize().x + 2.5f, 
+                               GRID_SIZE / 2.f, 
+                               (float)tilemap.getTextureSheet().getSize().x, 
+                               (float)tilemap.getTextureSheet().getSize().y, 
+                               tilemap.getTextureSheet()
+                           );
 }
 
 
@@ -363,7 +371,7 @@ void DefaultEditorMode::initTextureRect()
 }
 
 
-void DefaultEditorMode::initTileAndTextureSelectors()
+void DefaultEditorMode::initTileSelector()
 {
     tileSelector.setSize(sf::Vector2f(GRID_SIZE, GRID_SIZE));
     tileSelector.setFillColor(sf::Color(255, 255, 255, 140));
@@ -373,14 +381,6 @@ void DefaultEditorMode::initTileAndTextureSelectors()
 
     tileSelector.setTexture(&tilemap.getTextureSheet());
     tileSelector.setTextureRect(textureRect);
-
-    pTextureSelector = new TextureSelector(
-                               sideBar.getSize().x + 2.5f, 
-                               GRID_SIZE / 2.f, 
-                               (float)tilemap.getTextureSheet().getSize().x, 
-                               (float)tilemap.getTextureSheet().getSize().y, 
-                               tilemap.getTextureSheet()
-                           );
 }
 
 

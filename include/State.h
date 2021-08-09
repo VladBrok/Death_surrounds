@@ -15,8 +15,8 @@ class State: public sf::NonCopyable
 {
 public:
                         State(sf::RenderWindow& window, 
-                              const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
-                              std::stack<State*>* const pStates
+                              const std::unordered_map<std::string, sf::Keyboard::Key>& supportedKeys,
+                              std::stack<State*>& states
                               );
     virtual             ~State();
     virtual void        processEvent(const sf::Event& event);
@@ -34,22 +34,22 @@ public:
 
 protected:
 
-    sf::RenderWindow&                                                window;
-    const std::unordered_map<std::string, sf::Keyboard::Key>* const  pSupportedKeys;
-    std::stack<State*>* const                                        pStates;
-    std::unordered_map<std::string, sf::Keyboard::Key>               keybinds;
-    bool                                                             stateIsActive;
-    bool                                                             stateIsPaused;
-    StateType                                                        stateType;
-    std::unordered_map<std::string, sf::Texture>                     textures;
-                                                                     
-    sf::Vector2i                                                     mousePosScreen;
-    sf::Vector2i                                                     mousePosWindow;
-    sf::Vector2f                                                     mousePosView;
-    sf::Vector2i                                                     mousePosGrid;
-                                                                     
-    virtual void                                                     initTextures();
-    virtual void                                                     initKeybinds(const std::string& filePath);
+    sf::RenderWindow&                                          window;
+    const std::unordered_map<std::string, sf::Keyboard::Key>&  supportedKeys;
+    std::stack<State*>&                                        states;
+    std::unordered_map<std::string, sf::Keyboard::Key>         keybinds;
+    bool                                                       stateIsActive;
+    bool                                                       stateIsPaused;
+    StateType                                                  stateType;
+    std::unordered_map<std::string, sf::Texture>               textures;
+                                                               
+    sf::Vector2i                                               mousePosScreen;
+    sf::Vector2i                                               mousePosWindow;
+    sf::Vector2f                                               mousePosView;
+    sf::Vector2i                                               mousePosGrid;
+                                                               
+    virtual void                                               initTextures();
+    virtual void                                               initKeybinds(const std::string& filePath);
 };
 
 

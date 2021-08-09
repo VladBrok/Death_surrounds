@@ -6,23 +6,22 @@
 
 
 GameState::GameState(sf::RenderWindow& window,
-                     const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
-                     std::stack<State*>* const pStates
+                     const std::unordered_map<std::string, sf::Keyboard::Key>& supportedKeys,
+                     std::stack<State*>& states
                      )
-    : State(window, pSupportedKeys, pStates),
+    : State(window, supportedKeys, states),
       playerInventory(5)
 {
     stateType = STATE_UPDATES_AND_PROCESSES_EVENTS;
 
     initKeybinds("Config//gamestate_keybinds.ini");
     initView();
-    initRenderTexture();
     initTilemap();
     initTextures();
     initPlayerInventory();
     initPlayer();
-    initPlayerGui();
-    initPauseMenu();
+    initFont();
+    initGui();
     initShader();
     initSystems();
 }
@@ -75,6 +74,7 @@ void GameState::processEvent(const sf::Event& event)
         }
     }
 
+    // Pausing / unpausing the state
     if (event.type == sf::Event::KeyPressed &&
         event.key.code == keybinds.at("PAUSE"))
     {
@@ -105,7 +105,7 @@ void GameState::update(const float deltaTime)
         pTextTagSystem->update(deltaTime);
 
         updateView();
-        updatePlayerGui();
+        updateGui();
         updateEnemiesAndCombat(deltaTime);
     }
 }
@@ -167,14 +167,11 @@ void GameState::updatePlayerKeyboardInput(const float deltaTime)
 
 void GameState::updateTilemap(const float deltaTime)
 {
-    // DEBUG
-    //std::cout << deltaTime << '\n';
-
     pTilemap->update(*pPlayer, deltaTime, *pEnemySystem);
 }
 
 
-void GameState::updatePlayerGui()
+void GameState::updateGui()
 {
     pPlayerGui->update();
 }
@@ -213,7 +210,6 @@ void GameState::updateEnemiesAndCombat(const float deltaTime)
         }
     }
 
-    // Setting the player's attack status to false
     pPlayer->setAttackStatus(false);
 }
 
@@ -226,7 +222,6 @@ void GameState::updateCombat(Enemy& enemy)
         utils::getDistance(enemy.getCenter(), pPlayer->getCenter()) <= pPlayer->getAttackRange() &&
         enemy.canBeDamaged())
     {      
-        // Damaging the enemy
         int damage = pPlayer->getDamage();
         enemy.loseHp(damage);
 
@@ -257,32 +252,6 @@ void GameState::render(sf::RenderTarget* pTarget)
     {
         pTarget = &window;
     }
-
- /*   renderTexture.clear();
-
-
-    renderTexture.setView(view);
-
-    pTilemap->render(renderTexture, view, pPlayer->getGridPositionCenter(), &coreShader, pPlayer->getCenter());
-    pPlayer->render(renderTexture, &coreShader, pPlayer->getCenter(), true);
-    renderEnemies(renderTexture);
-    pTextTagSystem->render(renderTexture);
-    pTilemap->renderDeferred(renderTexture, &coreShader, pPlayer->getCenter());
-
-    renderTexture.setView(renderTexture.getDefaultView());
-
-    pPlayerGui->render(renderTexture);
-
-
-    if (stateIsPaused)
-    {
-        pPauseMenu->render(renderTexture);
-    }
-
-
-    renderTexture.display();
-
-    pTarget->draw(renderSprite);*/
 
 
     sf::RenderTarget& target = *pTarget;
@@ -329,14 +298,6 @@ void GameState::initView()
 }
 
 
-void GameState::initRenderTexture()
-{
-    renderTexture.create(window.getSize().x, window.getSize().y);
-
-    renderSprite.setTexture(renderTexture.getTexture());
-}
-
-
 void GameState::initTilemap()
 {
     pTilemap = new Tilemap("Resources\\Data\\tile_map.txt");
@@ -363,17 +324,19 @@ void GameState::initPlayer()
 }
 
 
-void GameState::initPlayerGui()
+void GameState::initFont()
 {
-    pPlayerGui = new PlayerGui(*pPlayer, window);
+    font.loadFromFile("Fonts\\Dosis-Light.ttf");
 }
 
 
-void GameState::initPauseMenu()
+void GameState::initGui()
 {
-    font.loadFromFile("Fonts\\Dosis-Light.ttf");
-    pPauseMenu = new PauseMenu(window, font);
+    // Player GUI
+    pPlayerGui = new PlayerGui(*pPlayer, window);
 
+    // Pause menu
+    pPauseMenu = new PauseMenu(window, font);
     pPauseMenu->addButton("GO_TO_MAIN_MENU", "Go to main menu", 5);
 }
 

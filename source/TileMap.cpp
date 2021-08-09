@@ -6,16 +6,20 @@
 #include "Entity.h"
 
 
-Tilemap::Tilemap(const int mapSizeX, const int mapSizeY, const int mapSizeZ, const sf::RenderWindow& window)
+Tilemap::Tilemap(const int mapGridSizeX, const int mapGridSizeY)
 {
-    createEmptyMap(mapSizeX, mapSizeY, mapSizeZ);
+    if (mapGridSizeX > TILEMAP_GRID_SIZE_MAX_X || mapGridSizeY > TILEMAP_GRID_SIZE_MAX_Y)
+    {
+        throw std::runtime_error("ERROR in Tilemap::Tilemap: map grid size is too large\n");
+    }
+
+    createEmptyMap(mapGridSizeX, mapGridSizeY);
 
     textureSheetFileName = "Resources\\Images\\Tiles\\tilesheet.png";
     textureSheet.loadFromFile(textureSheetFileName);
 
-    mapSize.x = mapSizeX * GRID_SIZE;
-    mapSize.y = mapSizeY * GRID_SIZE;
-    mapSize.z = mapSizeZ * GRID_SIZE;
+    mapSize.x = mapGridSizeX * GRID_SIZE;
+    mapSize.y = mapGridSizeY * GRID_SIZE;
 
     initCollisionBox();
     initEnemySpawnerBox();
@@ -67,8 +71,6 @@ void Tilemap::render(sf::RenderTarget& target,
                      const bool showEnemySpawnerBox
                      )
 {
-    int z = 0; // FIXME
-
     int fromX = 0;
     int toX = (int)map.size();
 
@@ -133,9 +135,9 @@ void Tilemap::render(sf::RenderTarget& target,
     {
         for (int y = fromY; y < toY; ++y)
         {
-            for (int k = 0; k < (int)map[x][y][z].size(); ++k)
+            for (int k = 0; k < (int)map[x][y].size(); ++k)
             {
-                renderTile(target, *map[x][y][z][k], pShader, shaderLightPosition, showCollisionBox, showEnemySpawnerBox);
+                renderTile(target, *map[x][y][k], pShader, shaderLightPosition, showCollisionBox, showEnemySpawnerBox);
             }
         }
     }
@@ -147,12 +149,12 @@ void Tilemap::saveToFile(const std::string& fileName)
     /*
         Saving format:
             Map:
-                1) map size                            - x y z;
+                1) map grid size                       - x y;
                 2) name of the file with texture sheet - textureSheetFileName
 
             Tiles:
                 1) tile type                           - type;
-                2) tile grid position                  - gridPosX gridPosY gridPosZ;
+                2) tile grid position                  - gridPosX gridPosY;
                 3) tile specific (from method getAsString)
     */
 
@@ -165,21 +167,18 @@ void Tilemap::saveToFile(const std::string& fileName)
         return;
     }
 
-    file << map.size() << ' ' << map[0].size() << ' ' << map[0][0].size() << '\n';
+    file << map.size() << ' ' << map[0].size() << '\n';
     file << textureSheetFileName << '\n';
 
     for (size_t x = 0; x < map.size(); ++x)
     {
         for (size_t y = 0; y < map[x].size(); ++y)
         {
-            for (size_t z = 0; z < map[x][y].size(); ++z)
+            for (size_t k = 0; k < map[x][y].size(); ++k)
             {
-                for (size_t k = 0; k < map[x][y][z].size(); ++k)
-                {
-                    file << map[x][y][z][k]->getType() << ' '
-                         << x << ' ' << y << ' '<< z << ' ' 
-                         << map[x][y][z][k]->getAsString() << ' ';
-                }
+                file << map[x][y][k]->getType() << ' '
+                        << x << ' ' << y << ' '
+                        << map[x][y][k]->getAsString() << ' ';
             }
         }
     } 
@@ -202,13 +201,13 @@ void Tilemap::loadFromFile(const std::string& fileName)
     }
 
 
-    int mapSizeX = 0;
-    int mapSizeY = 0;
-    int mapSizeZ = 0;
+    int mapGridSizeX = 0;
+    int mapGridSizeY = 0;
 
-    file >> mapSizeX >> mapSizeY >> mapSizeZ >> textureSheetFileName;
+    file >> mapGridSizeX >> mapGridSizeY >> textureSheetFileName;
 
-    if (mapSizeX <= 0 || mapSizeY <= 0 || mapSizeZ <= 0)
+    if (mapGridSizeX <= 0 || mapGridSizeY <= 0 || 
+        mapGridSizeX > TILEMAP_GRID_SIZE_MAX_X || mapGridSizeY > TILEMAP_GRID_SIZE_MAX_Y)
     {
         file.setstate(std::ios::failbit);
     }
@@ -216,8 +215,8 @@ void Tilemap::loadFromFile(const std::string& fileName)
     if (!file.fail())
     {
          clearMap();
-         createEmptyMap(mapSizeX, mapSizeY, mapSizeZ);
-         mapSize = sf::Vector3f(mapSizeX * GRID_SIZE, mapSizeY * GRID_SIZE, mapSizeZ * GRID_SIZE);
+         createEmptyMap(mapGridSizeX, mapGridSizeY);
+         mapSize = sf::Vector2f(mapGridSizeX * GRID_SIZE, mapGridSizeY * GRID_SIZE);
          textureSheet.loadFromFile(textureSheetFileName);
     }
     
@@ -225,12 +224,11 @@ void Tilemap::loadFromFile(const std::string& fileName)
 
     int gridPosX = 0;
     int gridPosY = 0;
-    int gridPosZ = 0;
     int type = 0;
     sf::IntRect textureRect(0, 0, (int)GRID_SIZE, (int)GRID_SIZE);
     bool canCollide = false;
 
-    while(file >> type >> gridPosX >> gridPosY >> gridPosZ)
+    while(file >> type >> gridPosX >> gridPosY)
     {
         // Loading the enemy spawner
         if (type == ENEMY_SPAWNER)
@@ -242,7 +240,7 @@ void Tilemap::loadFromFile(const std::string& fileName)
 
             file >> textureRect.left >> textureRect.top >> canCollide >> enemyType >> enemyAmount >> enemyTimeToSpawn >> enemyMaxDistance;
 
-            map[gridPosX][gridPosY][gridPosZ].push_back(
+            map[gridPosX][gridPosY].push_back(
                 new EnemySpawnerTile(
                     gridPosX * GRID_SIZE,
                     gridPosY * GRID_SIZE,
@@ -262,7 +260,7 @@ void Tilemap::loadFromFile(const std::string& fileName)
         {
             file >> textureRect.left >> textureRect.top >> canCollide;
 
-            map[gridPosX][gridPosY][gridPosZ].push_back(
+            map[gridPosX][gridPosY].push_back(
                 new Tile(
                       static_cast<TileType>(type),
                       gridPosX * GRID_SIZE, 
@@ -276,32 +274,35 @@ void Tilemap::loadFromFile(const std::string& fileName)
 
         if (file.fail())
         {
-            std::cout << "ERROR in Tilemap::loadFromFile: the data in the file " << fileName << " are damaged. Tilemap is not loaded.\n";
-            return;
+            throw std::runtime_error("ERROR in Tilemap::loadFromFile: the data in the file " + fileName + " are damaged. Tilemap is not loaded.\n");
         } 
     }
+    
+    if (file.fail() && !file.eof())
+    {
+        throw std::runtime_error("ERROR in Tilemap::loadFromFile: the data in the file " + fileName + " are damaged. Tilemap is not loaded.\n");
+    } 
 }
 
 
 void Tilemap::addTile(const int gridPosX, 
                       const int gridPosY, 
-                      const int gridPosZ, 
                       const sf::IntRect& textureRect,
                       const bool canCollide,
                       const TileType type
                       )
 {
-    if (positionsAreCorrect(gridPosX, gridPosY, gridPosZ))
+    if (positionsAreCorrect(gridPosX, gridPosY))
     {
         // Preventing the user from adding the same tile at the same position
-        if (!map[gridPosX][gridPosY][gridPosZ].empty() &&
-            map[gridPosX][gridPosY][gridPosZ].back()->getTextureRect() == textureRect
+        if (!map[gridPosX][gridPosY].empty() &&
+            map[gridPosX][gridPosY].back()->getTextureRect() == textureRect
             )
         {
             return;
         }
 
-        map[gridPosX][gridPosY][gridPosZ].push_back(
+        map[gridPosX][gridPosY].push_back(
             new Tile(
                 type,
                 gridPosX * GRID_SIZE, 
@@ -317,7 +318,6 @@ void Tilemap::addTile(const int gridPosX,
 
 void Tilemap::addEnemySpawnerTile(const int gridPosX,
                                   const int gridPosY,
-                                  const int gridPosZ,
                                   const sf::IntRect& textureRect,
                                   const bool canCollide,
                                   const int enemyType,
@@ -326,16 +326,16 @@ void Tilemap::addEnemySpawnerTile(const int gridPosX,
                                   const float enemyMaxDistance
                                   )
 {
-    if (positionsAreCorrect(gridPosX, gridPosY, gridPosZ))
+    if (positionsAreCorrect(gridPosX, gridPosY))
     {
         // Preventing the user from adding the enemy spawner on top of the another enemy spawner
-        if (!map[gridPosX][gridPosY][gridPosZ].empty() && 
-            map[gridPosX][gridPosY][gridPosZ].back()->getType() == ENEMY_SPAWNER)
+        if (!map[gridPosX][gridPosY].empty() && 
+            map[gridPosX][gridPosY].back()->getType() == ENEMY_SPAWNER)
         {
             return;
         }
 
-        map[gridPosX][gridPosY][gridPosZ].push_back(
+        map[gridPosX][gridPosY].push_back(
             new EnemySpawnerTile(
                 gridPosX * GRID_SIZE, 
                 gridPosY * GRID_SIZE, 
@@ -352,13 +352,13 @@ void Tilemap::addEnemySpawnerTile(const int gridPosX,
 }
 
 
-void Tilemap::removeTile(const int gridPosX, const int gridPosY, const int gridPosZ)
+void Tilemap::removeTile(const int gridPosX, const int gridPosY)
 {
-    if (positionsAreCorrect(gridPosX, gridPosY, gridPosZ) &&
-        !map[gridPosX][gridPosY][gridPosZ].empty())
+    if (positionsAreCorrect(gridPosX, gridPosY) &&
+        !map[gridPosX][gridPosY].empty())
     {
-        delete map[gridPosX][gridPosY][gridPosZ].back();
-        map[gridPosX][gridPosY][gridPosZ].pop_back();
+        delete map[gridPosX][gridPosY].back();
+        map[gridPosX][gridPosY].pop_back();
     }
 }
 
@@ -369,21 +369,21 @@ const sf::Texture& Tilemap::getTextureSheet() const
 }
 
 
-int Tilemap::getNumberOfTilesAtPosition(const sf::Vector2i& gridPosition, const int layer)
+int Tilemap::getNumberOfTilesAtPosition(const sf::Vector2i& gridPosition)
 {
-    if (positionsAreCorrect(gridPosition.x, gridPosition.y, layer))
+    if (positionsAreCorrect(gridPosition.x, gridPosition.y))
     {
-        return map[gridPosition.x][gridPosition.y][layer].size();
+        return map[gridPosition.x][gridPosition.y].size();
     }
     return -1;
 }
 
 
-int Tilemap::getTileType(const int gridPosX, const int gridPosY, const int gridPosZ)
+int Tilemap::getTileType(const int gridPosX, const int gridPosY)
 {
-    if (positionsAreCorrect(gridPosX, gridPosY, gridPosZ) && !map[gridPosX][gridPosY][gridPosZ].empty())
+    if (positionsAreCorrect(gridPosX, gridPosY) && !map[gridPosX][gridPosY].empty())
     {
-        return map[gridPosX][gridPosY][gridPosZ].back()->getType();
+        return map[gridPosX][gridPosY].back()->getType();
     }
 
     return -1;
@@ -396,17 +396,16 @@ const std::string& Tilemap::getTileTypeAsString(const int type)
 }
 
 
-const sf::Vector3f& Tilemap::getMapSize() const
+const sf::Vector2f& Tilemap::getMapSize() const
 {
     return mapSize;
 }
 
 
-bool Tilemap::positionsAreCorrect(const int gridPosX, const int gridPosY, const int gridPosZ) const
+bool Tilemap::positionsAreCorrect(const int gridPosX, const int gridPosY) const
 {
     return gridPosX >= 0 && gridPosX < (int)map.size() &&
-           gridPosY >= 0 && gridPosY < (int)map[gridPosX].size() &&
-           gridPosZ >= 0 && gridPosZ < (int)map[gridPosX][gridPosY].size();
+           gridPosY >= 0 && gridPosY < (int)map[gridPosX].size();
 }
 
 
@@ -416,13 +415,9 @@ void Tilemap::clearMap()
     {
         for (size_t y = 0; y < map[x].size(); ++y)
         {
-            for (size_t z = 0; z < map[x][y].size(); ++z)
+            for (size_t k = 0; k < map[x][y].size(); ++k)
             {
-                for (size_t k = 0; k < map[x][y][z].size(); ++k)
-                {
-                    delete map[x][y][z][k];
-                }
-                map[x][y][z].clear();
+                delete map[x][y][k];
             }
             map[x][y].clear();
         }
@@ -432,18 +427,15 @@ void Tilemap::clearMap()
 }
 
 
-void Tilemap::createEmptyMap(const int mapSizeX, const int mapSizeY, const int mapSizeZ)
+void Tilemap::createEmptyMap(const int mapSizeX, const int mapSizeY)
 {
-    assert(mapSizeX > 0 && mapSizeY > 0 && mapSizeZ > 0);
+    assert(mapSizeX > 0 && mapSizeY > 0);
 
     map.resize(
         mapSizeX, 
-        std::vector<std::vector<std::vector<Tile*>>>(
+        std::vector<std::vector<Tile*>>(
             mapSizeY, 
-            std::vector<std::vector<Tile*>>(
-                mapSizeZ, 
-                std::vector<Tile*>(0)
-            )
+            std::vector<Tile*>(0)
         )
     );
 }
@@ -484,27 +476,26 @@ void Tilemap::updateCollisionWithMapBounds(Entity& entity, const float deltaTime
 void Tilemap::updateTiles(Entity& entity, const float deltaTime, EnemySystem& enemySystem)
 {
     // Calculating the update bounds
-    int z = 0;
 
-    int fromX = entity.getGridPosition().x - 1;
+    int fromX = entity.getGridPosition().x - 2;
     if (fromX < 0)
     {
         fromX = 0;
     }
 
-    int toX = entity.getGridPosition().x + 3;
+    int toX = entity.getGridPosition().x + 4;
     if (toX > (int)map.size())
     {
         toX = map.size();
     }
 
-    int fromY = entity.getGridPosition().y - 1;
+    int fromY = entity.getGridPosition().y - 2;
     if (fromY < 0)
     {
         fromY = 0;
     }
 
-    int toY = entity.getGridPosition().y + 3;
+    int toY = entity.getGridPosition().y + 4;
     if (toY > (int)map[0].size())
     {
         toY = map[0].size();
@@ -515,11 +506,11 @@ void Tilemap::updateTiles(Entity& entity, const float deltaTime, EnemySystem& en
     {
         for (int y = fromY; y < toY; ++y)
         {
-            for (int k = 0; k < (int)map[x][y][z].size(); ++k)
+            for (int k = 0; k < (int)map[x][y].size(); ++k)
             {
-                if (map[x][y][z][k]->getType() == ENEMY_SPAWNER)
+                if (map[x][y][k]->getType() == ENEMY_SPAWNER)
                 {
-                    EnemySpawnerTile* es = dynamic_cast<EnemySpawnerTile*>(map[x][y][z][k]);
+                    EnemySpawnerTile* es = dynamic_cast<EnemySpawnerTile*>(map[x][y][k]);
                     if (es)
                     {
                         es->update(enemySystem);
@@ -527,11 +518,11 @@ void Tilemap::updateTiles(Entity& entity, const float deltaTime, EnemySystem& en
                 }
 
                 // Checking for the intersection
-                if (map[x][y][z][k]->tileCanCollide() &&
-                    map[x][y][z][k]->intersects(entity.getNextPositionBounds(deltaTime))
+                if (map[x][y][k]->tileCanCollide() &&
+                    map[x][y][k]->intersects(entity.getNextPositionBounds(deltaTime))
                    )
                 {
-                    handleCollision(*map[x][y][z][k], entity);
+                    handleCollision(*map[x][y][k], entity);
                 }
             }
         }

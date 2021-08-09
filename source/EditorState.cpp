@@ -4,11 +4,11 @@
 
 
 EditorState::EditorState(sf::RenderWindow& window,
-                             const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
-                             std::stack<State*>* const pStates
+                             const std::unordered_map<std::string, sf::Keyboard::Key>& supportedKeys,
+                             std::stack<State*>& states
                              )
-    : State(window, pSupportedKeys, pStates), 
-      tilemap(TILEMAP_GRID_SIZE_X, TILEMAP_GRID_SIZE_Y, TILEMAP_GRID_SIZE_Z, window),
+    : State(window, supportedKeys, states), 
+      tilemap(TILEMAP_GRID_SIZE_MAX_X, TILEMAP_GRID_SIZE_MAX_Y),
       activeMode(0)
 {
     stateType = STATE_UPDATES_AND_PROCESSES_EVENTS;
@@ -17,7 +17,7 @@ EditorState::EditorState(sf::RenderWindow& window,
     initView();
     initFont();
     initModes();
-    initPauseMenu();
+    initGui();
 }
 
 
@@ -44,7 +44,7 @@ void EditorState::processEvent(const sf::Event& event)
         modes[activeMode]->processEvent(event);
     }
 
-    // Pausing or unpausing the state
+    // Pausing / unpausing the state
     if (event.type == sf::Event::KeyPressed &&
         event.key.code == keybinds.at("PAUSE"))
     {
@@ -138,7 +138,7 @@ void EditorState::initModes()
 }
 
 
-void EditorState::initPauseMenu()
+void EditorState::initGui()
 {
     pPauseMenu = new PauseMenu(window, font);
 

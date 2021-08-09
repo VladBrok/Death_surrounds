@@ -18,7 +18,6 @@
     <ClCompile Include="source\Button.cpp" />
     <ClCompile Include="source\DefaultEditorMode.cpp" />
     <ClCompile Include="source\DropDownList.cpp" />
-    <ClCompile Include="source\EditorMode.cpp" />
     <ClCompile Include="source\EditorState.cpp" />
     <ClCompile Include="source\Enemy.cpp" />
     <ClCompile Include="source\EnemySpawnerTile.cpp" />

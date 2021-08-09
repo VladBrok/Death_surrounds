@@ -136,9 +136,6 @@
     <ClCompile Include="source\ProgressBar.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="source\EditorMode.cpp">
-      <Filter>States\Editor modes</Filter>
-    </ClCompile>
     <ClCompile Include="source\DefaultEditorMode.cpp">
       <Filter>States\Editor modes</Filter>
     </ClCompile>

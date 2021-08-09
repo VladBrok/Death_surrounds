@@ -4,12 +4,12 @@
 
 
 State::State(sf::RenderWindow& window, 
-             const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
-             std::stack<State*>* const pStates
+             const std::unordered_map<std::string, sf::Keyboard::Key>& supportedKeys,
+             std::stack<State*>& states
             )
     : window(window), 
-      pSupportedKeys(pSupportedKeys), 
-      pStates(pStates), 
+      supportedKeys(supportedKeys), 
+      states(states), 
       stateIsActive(true),
       stateIsPaused(false),
       stateType(STATE_DEFAULT)
@@ -65,6 +65,7 @@ void State::updateMousePosition(sf::View* pView)
     {
         window.setView(*pView);
     }
+
     mousePosView   = window.mapPixelToCoords(mousePosWindow);
     window.setView(window.getDefaultView());
 
@@ -98,18 +99,20 @@ void State::initKeybinds(const std::string& filePath)
         {
             while (file >> action >> key)
             {
-                keybinds[action] = pSupportedKeys->at(key);
+                keybinds[action] = supportedKeys.at(key);
             }
         }
         catch (std::out_of_range&)
         {
-            std::cout << "ERROR in State::initKeybinds: "
-                          "the required keys could not be found among the supported ones\n";
+            throw std::runtime_error(
+                      "ERROR in State::initKeybinds: "
+                      "the required keys could not be found among the supported ones\n"
+                       );
         }
     }
     else
     {
-        std::cout << "ERROR in State::initKeybinds: unable to open the file " + filePath << '\n';
+        throw std::runtime_error("ERROR in State::initKeybinds: unable to open the file " + filePath + "\n");
     }
 }
 

@@ -15,8 +15,8 @@ class EditorState: public State
 public:
 
                                          EditorState(sf::RenderWindow& window, 
-                                                     const std::unordered_map<std::string, sf::Keyboard::Key>* const pSupportedKeys,
-                                                     std::stack<State*>* const pStates
+                                                     const std::unordered_map<std::string, sf::Keyboard::Key>& supportedKeys,
+                                                     std::stack<State*>& states
                                                      );
     virtual                              ~EditorState();
 
@@ -39,7 +39,7 @@ private:
     void                                 initView();  
     void                                 initFont();
     void                                 initModes();
-    void                                 initPauseMenu();
+    void                                 initGui();
 
 };
 

@@ -70,13 +70,12 @@ private:
       
     void                                 renderTilemap(sf::RenderTarget& target);
     void                                 renderTileSelectorAndCursorText(sf::RenderTarget& target);
-    void                                 renderTextureSelector(sf::RenderTarget& target);
-    void                                 renderButtons(sf::RenderTarget& target);
+    void                                 renderGui(sf::RenderTarget& target);
                                          
     void                                 initSideBar();
-    void                                 initButtons();
+    void                                 initGui();
     void                                 initTextureRect();
-    void                                 initTileAndTextureSelectors();
+    void                                 initTileSelector();
     void                                 initCursorText();
 
 };
