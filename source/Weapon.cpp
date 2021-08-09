@@ -11,11 +11,6 @@ Weapon::Weapon(sf::Texture& texture, const int damageMin, const int damageMax)
 }
 
 
-Weapon::~Weapon()
-{
-}
-
-
 bool Weapon::canAttack()
 {
     if (attackTimer.getElapsedTime().asMilliseconds() >= attackTimerMax)

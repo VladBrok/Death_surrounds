@@ -18,9 +18,9 @@ public:
                               const std::unordered_map<std::string, sf::Keyboard::Key>& supportedKeys,
                               std::stack<State*>& states
                               );
-    virtual             ~State();
-    virtual void        processEvent(const sf::Event& event);
-    virtual void        update(const float deltaTime);
+    virtual             ~State() {};
+    virtual void        processEvent(const sf::Event& event) {};
+    virtual void        update(const float deltaTime) {};
     virtual void        render(sf::RenderTarget* pTarget = nullptr) = 0; // If pTarget is nullptr, then we render the entity to the window
  
     bool                isActive() const;
@@ -48,7 +48,7 @@ protected:
     sf::Vector2f                                               mousePosView;
     sf::Vector2i                                               mousePosGrid;
                                                                
-    virtual void                                               initTextures();
+    virtual void                                               initTextures() {};
     virtual void                                               initKeybinds(const std::string& filePath);
 };
 

@@ -17,21 +17,6 @@ State::State(sf::RenderWindow& window,
 }
 
 
-State::~State()
-{
-}
-
-
-void State::processEvent(const sf::Event& event)
-{
-}
-
-
-void State::update(const float deltaTime)
-{
-}
-
-
 bool State::isActive() const 
 {
     return stateIsActive;
@@ -115,9 +100,3 @@ void State::initKeybinds(const std::string& filePath)
         throw std::runtime_error("ERROR in State::initKeybinds: unable to open the file " + filePath + "\n");
     }
 }
-
-
-void State::initTextures()
-{
-}
-

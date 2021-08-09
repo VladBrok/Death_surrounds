@@ -7,7 +7,7 @@ class Item
 public:
 
                     Item(sf::Texture& texture);
-    virtual         ~Item();
+    virtual         ~Item() {};
     virtual void    update(const sf::Vector2f& itemPosition, const sf::Vector2f& mousePosView) = 0;
     virtual void    render(sf::RenderTarget& target) = 0;
 
