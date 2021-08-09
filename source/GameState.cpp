@@ -295,6 +295,8 @@ void GameState::initTextures()
     textures["PLAYER_SHEET"].loadFromFile(resources::getPlayerTextureFile());
     textures["ENEMY_RAT_SHEET"].loadFromFile(resources::getRatTextureFile());
     textures["WEAPON_SWORD"].loadFromFile(resources::getSwordTextureFile());
+    textures["HP_BAR"].loadFromFile(resources::getPlayerHpBarTextureFile());
+    textures["EXP_BAR"].loadFromFile(resources::getPlayerExpBarTextureFile());
 }
 
 
@@ -339,7 +341,7 @@ void GameState::initFont()
 void GameState::initGui()
 {
     // Player GUI
-    pPlayerGui = new PlayerGui(*pPlayer, window);
+    pPlayerGui = new PlayerGui(*pPlayer, font, window, textures["HP_BAR"], textures["EXP_BAR"]);
 
     // Pause menu
     pPauseMenu = new PauseMenu(window, font);

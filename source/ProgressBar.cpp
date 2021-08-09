@@ -3,48 +3,20 @@
 #include "Utils.h"
 
 
-ProgressBar::ProgressBar()
-{
-}
-
-
 void ProgressBar::create(const float posX, 
                          const float posY, 
                          const float width, 
                          const float height,
-                         sf::Font& font,
-                         const sf::Color& innerColor,
-                         const sf::Color& backColor,
-                         const bool centerText,
-                         const std::string& barTextStr
+                         const sf::Texture& barInnerTexture,
+                         const sf::Color& backColor
                          )
 {
     barBack.setSize(sf::Vector2f(width, height));
     barBack.setPosition(posX, posY);
     barBack.setFillColor(backColor);
 
-    barInner.setSize(sf::Vector2f(width, height));
-    barInner.setPosition(posX, posY);
-    barInner.setFillColor(innerColor);
-
-    barText.setFont(font);
-    barText.setString(barTextStr);
-    barText.setCharacterSize((unsigned)(height / 2.5f));
-
-    if (!centerText)
-    {
-        barText.setPosition(
-            std::floor(posX + utils::percentToPixels(5.f, (int)width)), 
-            std::floor(posY + height / 4.f)
-        );
-    }
-    else
-    {
-        barText.setPosition(
-            std::floor(posX + width / 2.0f - barText.getGlobalBounds().width / 3.f),
-            std::floor(posY + height / 2.f - barText.getGlobalBounds().height / 1.5f)
-        );
-    }
+    barInnerSprite.setTexture(barInnerTexture);
+    barInnerSprite.setPosition(posX, posY);
 }
 
 
@@ -54,16 +26,13 @@ void ProgressBar::update(const int value, const int valueMax)
     float ratio = static_cast<float>(value) / static_cast<float>(valueMax);
 
     // Updating the width of the inner bar using the ratio
-    barInner.setSize(
-        sf::Vector2f(
-            barBack.getSize().x * ratio, 
-            barInner.getSize().y
+    barInnerSprite.setTextureRect(
+        sf::IntRect(
+            0.f,
+            0.f,
+            barBack.getSize().x * ratio,
+            barInnerSprite.getGlobalBounds().height
         )
-    );
-
-    barText.setString(
-        std::to_string((long long)value) + std::string(" / ") + 
-        std::to_string((long long)valueMax)
     );
 }
 
@@ -71,8 +40,7 @@ void ProgressBar::update(const int value, const int valueMax)
 void ProgressBar::render(sf::RenderTarget& target)
 {
     target.draw(barBack);
-    target.draw(barInner);
-    target.draw(barText);
+    target.draw(barInnerSprite);
 }
 
 
@@ -86,9 +54,3 @@ void ProgressBar::render(sf::RenderTarget& target)
  {
      return barBack.getSize();
  }
-
-
-void ProgressBar::setTextString(const std::string& string)
-{
-    barText.setString(string);
-}

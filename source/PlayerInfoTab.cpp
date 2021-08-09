@@ -3,7 +3,7 @@
 #include "Utils.h"
 
 
-PlayerInfoTab::PlayerInfoTab(const sf::RenderWindow& window, const sf::Font& font, Player& player)
+PlayerInfoTab::PlayerInfoTab(const sf::RenderWindow& window, const sf::Font& font, const Player& player)
     : InfoTab(), player(player)
 {
     initInfoTab(window, font);

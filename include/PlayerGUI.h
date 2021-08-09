@@ -10,27 +10,33 @@ class PlayerGui: public sf::NonCopyable
 {
 public:
 
-                      PlayerGui(Player& player, const sf::RenderWindow& window);
-                      ~PlayerGui();
-    void              update();
-    void              render(sf::RenderTarget& target);
+                       PlayerGui(const Player& player, 
+                                 const sf::Font& font,
+                                 const sf::RenderWindow& window,
+                                 const sf::Texture& hpBarTexture,
+                                 const sf::Texture& expBarTexture
+                                 );
+                       ~PlayerGui();
+    void               update();
+    void               render(sf::RenderTarget& target);
 
     // Hides the player's info tab if it's shown and vice versa
-    void              toggleInfoTab();
+    void               toggleInfoTab();
                       
 private:              
                       
-    Player&           player;
-    sf::Font          font;
+    const Player&      player;
                       
-    PlayerInfoTab*    pPlayerInfoTab;
-    ProgressBar       levelBox;
-    ProgressBar       hpBar;
-    ProgressBar       expBar;
-                      
-                      
-    void              initFont();
-    void              initGui(const sf::RenderWindow& window);
+    PlayerInfoTab*     pPlayerInfoTab;
+    ProgressBar        hpBar;
+    ProgressBar        expBar;
+                       
+                       
+    void               initGui(const sf::RenderWindow& window,
+                               const sf::Font& font,
+                               const sf::Texture& hpBarTexture,
+                               const sf::Texture& expBarTexture
+                               );
 };
 
 

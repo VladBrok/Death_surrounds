@@ -65,6 +65,18 @@ namespace resources
     }
 
 
+    std::string getPlayerHpBarTextureFile()
+    {
+        return playerDirectory + "hpbar.png";
+    }
+
+
+    std::string getPlayerExpBarTextureFile()
+    {
+        return playerDirectory + "expbar.png";
+    }
+
+
     std::string getSwordTextureFile()
     {
         return weaponsDirectory + "sword.png";
