@@ -95,14 +95,3 @@ int AttributeComponent::getDamage() const
 {
     return rand() % (damageMax - damageMin + 1) + damageMin;
 }
-
-
-
-/*=============== Debug ===============*/
-
-void AttributeComponent::debugPrint() const
-{
-    std::cout << "Level:                   " << level
-              << "\nExp:                     " << exp
-              << "\nExp for the  next level: " << expForNextLevel; 
-}

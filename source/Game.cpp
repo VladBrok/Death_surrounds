@@ -31,6 +31,9 @@ void Game::run()
         processEvents();
         update();
         render();
+
+        // DEBUG
+        /*std::cout << deltaTime << '\n';*/
     }
 }
 
@@ -150,7 +153,7 @@ void Game::initSupportedKeys()
     }
     else
     {
-        std::cout << "ERROR in Game::initSupportedKeys: unable to open the file " + path << '\n';
+        throw std::runtime_error("ERROR in Game::initSupportedKeys: unable to open the file " + path + "\n");
     }
 }
 

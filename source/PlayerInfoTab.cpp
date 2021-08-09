@@ -12,14 +12,14 @@ PlayerInfoTab::PlayerInfoTab(const sf::RenderWindow& window, const sf::Font& fon
 
 void PlayerInfoTab::update()
 {
-   
+   tabText.setString(player.getStatsAsString());
 }
 
 
 void PlayerInfoTab::initInfoTab(const sf::RenderWindow& window, const sf::Font& font)
 {
-    tabBackground.setFillColor(sf::Color(50, 50, 50, 180));
-    tabBackground.setOutlineColor(sf::Color(30, 30, 30, 210));
+    tabBackground.setFillColor(sf::Color(50, 50, 50, 200));
+    tabBackground.setOutlineColor(sf::Color(30, 30, 30, 220));
     tabBackground.setOutlineThickness(3.f);
     tabBackground.setSize(
         sf::Vector2f(
@@ -29,10 +29,9 @@ void PlayerInfoTab::initInfoTab(const sf::RenderWindow& window, const sf::Font& 
     );
 
     tabText.setFont(font);
-    tabText.setCharacterSize((unsigned)utils::percentToPixels(1.2f, window.getSize().x + window.getSize().y));
+    tabText.setCharacterSize((unsigned)utils::percentToPixels(2.8f, tabBackground.getSize().x + tabBackground.getSize().y));
     tabText.setPosition(
-        tabBackground.getPosition().x + utils::percentToPixels(3.f, window.getSize().x),
-        tabBackground.getPosition().y
+        (float)(int)(tabBackground.getPosition().x + utils::percentToPixels(20.f, tabBackground.getSize().x)),
+        (float)(int)(tabBackground.getPosition().y + utils::percentToPixels(18.f, tabBackground.getSize().y))
     );
-    tabText.setString("TEST");
 }

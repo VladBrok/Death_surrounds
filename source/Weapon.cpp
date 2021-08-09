@@ -36,6 +36,18 @@ int Weapon::getDamage() const
 }
 
 
+int Weapon::getDamageMin() const
+{
+    return damageMin;
+}
+
+
+int Weapon::getDamageMax() const
+{
+    return damageMax;
+}
+
+
 float Weapon::getRange() const
 {
     return range;

@@ -10,15 +10,15 @@ public:
 
                                              PauseMenu(const sf::RenderWindow& window, sf::Font& font);
                                              ~PauseMenu();
+    void                                     processEvent(const sf::Event& event, 
+                                                          const sf::Vector2i& mousePosWindow
+                                                          );
+    void                                     render(sf::RenderTarget& target);
     void                                     addButton(const std::string& buttonKey, 
                                                        const std::string& buttonText,
                                                        const int verticalPositionFrom1To5
                                                        );
     bool                                     isButtonPressed(const std::string& buttonKey) const;
-    void                                     processEvent(const sf::Event& event, 
-                                                          const sf::Vector2i& mousePosWindow
-                                                          );
-    void                                     render(sf::RenderTarget& target);
 
 private:
 

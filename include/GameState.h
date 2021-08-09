@@ -23,7 +23,7 @@ public:
     virtual              ~GameState();
                          
     virtual void         processEvent(const sf::Event& event);
-    void                 processPauseMenuButtonsEvent(const sf::Event& event);
+    void                 processPauseMenuEvent(const sf::Event& event);
                          
     virtual void         update(const float deltaTime);
     void                 updateView();

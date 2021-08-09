@@ -64,7 +64,7 @@ void GameState::processEvent(const sf::Event& event)
 
     if (stateIsPaused)
     {
-        processPauseMenuButtonsEvent(event);
+        processPauseMenuEvent(event);
     }
     else
     {
@@ -84,11 +84,15 @@ void GameState::processEvent(const sf::Event& event)
 }
 
 
-void GameState::processPauseMenuButtonsEvent(const sf::Event& event)
+void GameState::processPauseMenuEvent(const sf::Event& event)
 {
     pPauseMenu->processEvent(event, mousePosWindow);
 
-    if (pPauseMenu->isButtonPressed("GO_TO_MAIN_MENU"))
+    if (pPauseMenu->isButtonPressed("CONTINUE"))
+    {
+        unpauseState();
+    }
+    else if (pPauseMenu->isButtonPressed("GO_TO_MAIN_MENU"))
     {
         endActivity();
     }
@@ -340,11 +344,15 @@ void GameState::initFont()
 
 void GameState::initGui()
 {
-    // Player GUI
+    /*=============== Player GUI ===============*/
+
     pPlayerGui = new PlayerGui(*pPlayer, font, window, textures["HP_BAR"], textures["EXP_BAR"]);
 
-    // Pause menu
+
+    /*=============== Pause menu ===============*/
+
     pPauseMenu = new PauseMenu(window, font);
+    pPauseMenu->addButton("CONTINUE", "Continue", 2);
     pPauseMenu->addButton("GO_TO_MAIN_MENU", "Go to main menu", 5);
 }
 

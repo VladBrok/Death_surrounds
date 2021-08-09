@@ -32,9 +32,6 @@ public:
 
     int         getDamage() const;
 
-    // Debug
-    void        debugPrint() const;
-
 private:
 
 

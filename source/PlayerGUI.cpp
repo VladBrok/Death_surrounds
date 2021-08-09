@@ -26,7 +26,11 @@ void PlayerGui::update()
 {
     hpBar.update(player.getHP(), player.getHPMax());
     expBar.update(player.getExp(), player.getExpForNextLevel());
-    pPlayerInfoTab->update();
+
+    if (!pPlayerInfoTab->isHidden())
+    {
+        pPlayerInfoTab->update();
+    }
 }
 
 

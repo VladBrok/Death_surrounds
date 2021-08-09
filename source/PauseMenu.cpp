@@ -12,8 +12,8 @@ PauseMenu::PauseMenu(const sf::RenderWindow& window, sf::Font& font)
         window.getSize().y / 2.f - menuContainer.getSize().y / 2.f
     );
 
-    menuContainer.setFillColor(sf::Color(20, 20, 20, 200));
-    background.setFillColor(sf::Color(20, 20, 20, 100));
+    menuContainer.setFillColor(sf::Color(20, 20, 20, 210));
+    background.setFillColor(sf::Color(20, 20, 20, 110));
 
     initText(window);
 }
@@ -24,6 +24,28 @@ PauseMenu::~PauseMenu()
     for (auto b = buttons.begin(); b != buttons.end(); ++b)
     {
         delete b->second;
+    }
+}
+
+
+void PauseMenu::processEvent(const sf::Event& event, const sf::Vector2i& mousePosWindow)
+{
+    for (auto b = buttons.begin(); b != buttons.end(); ++b)
+    {
+        b->second->processEvent(event, mousePosWindow);
+    }
+}
+
+
+void PauseMenu::render(sf::RenderTarget& target)
+{
+    target.draw(background);
+    target.draw(menuContainer);
+    target.draw(text);
+
+    for (auto b = buttons.begin(); b != buttons.end(); ++b)
+    {
+        b->second->render(target);
     }
 }
 
@@ -43,8 +65,8 @@ void PauseMenu::addButton(const std::string& buttonKey,
     const sf::Color textHoverColor(sf::Color::White);
     const sf::Color textActiveColor(sf::Color(20, 20, 20, 200));
 
-    buttons[buttonKey] = new Button(menuContainer.getPosition().x + menuContainer.getSize().x / 2.f - buttonSize.x / 2.f,
-                                    verticalPositionFrom1To5 * (menuContainer.getSize().y / 7.f) + text.getGlobalBounds().height * 2.f, 
+    buttons[buttonKey] = new Button((float)(int)(menuContainer.getPosition().x + menuContainer.getSize().x / 2.f - buttonSize.x / 2.f),
+                                    (float)(int)(verticalPositionFrom1To5 * (menuContainer.getSize().y / 7.f) + text.getGlobalBounds().height * 2.3f), 
                                     buttonSize.x, 
                                     buttonSize.y,
                                     font, 
@@ -71,26 +93,5 @@ void PauseMenu::initText(const sf::RenderWindow& window)
         menuContainer.getPosition().x + menuContainer.getSize().x / 2.f - text.getGlobalBounds().width / 2.f,
         menuContainer.getPosition().y + menuContainer.getSize().y / 12.f
     );
-}
-
-
-void PauseMenu::processEvent(const sf::Event& event, const sf::Vector2i& mousePosWindow)
-{
-    for (auto b = buttons.begin(); b != buttons.end(); ++b)
-    {
-        b->second->processEvent(event, mousePosWindow);
-    }
-}
-
-
-void PauseMenu::render(sf::RenderTarget& target)
-{
-    target.draw(background);
-    target.draw(menuContainer);
-    target.draw(text);
-
-    for (auto b = buttons.begin(); b != buttons.end(); ++b)
-    {
-        b->second->render(target);
-    }
+    text.setStyle(sf::Text::Bold);
 }

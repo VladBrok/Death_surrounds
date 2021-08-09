@@ -84,7 +84,11 @@ void EditorState::processPauseMenuEvent(const sf::Event& event)
     pPauseMenu->processEvent(event, mousePosWindow);
 
 
-    if (pPauseMenu->isButtonPressed("LOAD"))
+    if (pPauseMenu->isButtonPressed("CONTINUE"))
+    {
+        unpauseState();
+    }
+    else if (pPauseMenu->isButtonPressed("LOAD"))
     {
         tilemap.loadFromFile(resources::getTilemapFile());
     }
@@ -143,9 +147,8 @@ void EditorState::initGui()
 {
     pPauseMenu = new PauseMenu(window, font);
 
+    pPauseMenu->addButton("CONTINUE", "Continue", 1);
     pPauseMenu->addButton("LOAD", "Load", 2);
-
     pPauseMenu->addButton("SAVE", "Save", 3);
-
     pPauseMenu->addButton("GO_TO_MAIN_MENU", "Go to main menu", 5);
 }

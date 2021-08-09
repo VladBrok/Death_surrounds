@@ -111,6 +111,23 @@ float Player::getAttackRange() const
 }
 
 
+const std::string Player::getStatsAsString() const
+{
+    std::stringstream stream;
+
+    stream << "Level: " << pAttributeComponent->level << '\n'
+           << "Health: " << pAttributeComponent->hp << '\n'
+           << "Max Health: " << pAttributeComponent->hpMax << '\n'
+           << "Exp: " << pAttributeComponent->exp << '\n'
+           << "Exp for the next level: " << pAttributeComponent->expForNextLevel << "\n\n"
+           << "Attack range: " << getAttackRange() << '\n'
+           << "Min damage: " << (pActiveWeapon ? (pActiveWeapon->getDamageMin() + pAttributeComponent->damageMin): pAttributeComponent->damageMin) << '\n'
+           << "Max damage: " << (pActiveWeapon ? (pActiveWeapon->getDamageMax() + pAttributeComponent->damageMax): pAttributeComponent->damageMax) << '\n';
+
+    return stream.str();
+}
+
+
 void Player::loseHp(const unsigned hp)
 {
     pAttributeComponent->loseHp(hp);
