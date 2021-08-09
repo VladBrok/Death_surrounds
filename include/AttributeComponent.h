@@ -23,7 +23,7 @@ public:
                                    const int damageMax
                                    );
     void        updateLevel();
-    void        updateStats(bool resetHp = false);
+    void        updateStats();
 
     void        loseHp(const unsigned hp);
     void        gainHp(const unsigned hp);

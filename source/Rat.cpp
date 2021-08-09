@@ -74,6 +74,6 @@ void Rat::updateAnimation(const float deltaTime)
     }
     catch(std::out_of_range&)
     {
-        std::cout << "ERROR in Enemy::updateAnimation:\nthere is no animation for this type of enemy movement.\n";
+        std::cout << "ERROR in Rat::updateAnimation:\nthere is no animation for this type of enemy movement.\n";
     }
 }

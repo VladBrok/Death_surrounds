@@ -4,6 +4,7 @@
 #include "EnemySpawnerTile.h"
 #include "EnemySystem.h"
 #include "Entity.h"
+#include "Resources.h"
 
 
 Tilemap::Tilemap(const int mapGridSizeX, const int mapGridSizeY)
@@ -15,7 +16,7 @@ Tilemap::Tilemap(const int mapGridSizeX, const int mapGridSizeY)
 
     createEmptyMap(mapGridSizeX, mapGridSizeY);
 
-    textureSheetFileName = "Resources\\Images\\Tiles\\tilesheet.png";
+    textureSheetFileName = resources::getTilesheetFile();
     textureSheet.loadFromFile(textureSheetFileName);
 
     mapSize.x = mapGridSizeX * GRID_SIZE;
@@ -28,6 +29,8 @@ Tilemap::Tilemap(const int mapGridSizeX, const int mapGridSizeY)
 
 Tilemap::Tilemap(const std::string& fileName)
 {
+    textureSheetFileName = resources::getTilesheetFile();
+
     loadFromFile(fileName);
 
     initCollisionBox();
@@ -149,13 +152,12 @@ void Tilemap::saveToFile(const std::string& fileName)
     /*
         Saving format:
             Map:
-                1) map grid size                       - x y;
-                2) name of the file with texture sheet - textureSheetFileName
+                1) map grid size                       - x y.
 
             Tiles:
                 1) tile type                           - type;
                 2) tile grid position                  - gridPosX gridPosY;
-                3) tile specific (from method getAsString)
+                3) tile specific (from method getAsString).
     */
 
     std::ofstream file;
@@ -168,7 +170,6 @@ void Tilemap::saveToFile(const std::string& fileName)
     }
 
     file << map.size() << ' ' << map[0].size() << '\n';
-    file << textureSheetFileName << '\n';
 
     for (size_t x = 0; x < map.size(); ++x)
     {
@@ -196,15 +197,14 @@ void Tilemap::loadFromFile(const std::string& fileName)
 
     if (!file.is_open())
     {
-        std::cout << "ERROR in Tilemap::loadFromFile: unable to load the tile map from the file " << fileName << '\n';
-        return;
+        throw std::runtime_error("ERROR in Tilemap::loadFromFile: unable to load the tile map from the file " + fileName + "\n");
     }
 
 
     int mapGridSizeX = 0;
     int mapGridSizeY = 0;
 
-    file >> mapGridSizeX >> mapGridSizeY >> textureSheetFileName;
+    file >> mapGridSizeX >> mapGridSizeY;
 
     if (mapGridSizeX <= 0 || mapGridSizeY <= 0 || 
         mapGridSizeX > TILEMAP_GRID_SIZE_MAX_X || mapGridSizeY > TILEMAP_GRID_SIZE_MAX_Y)

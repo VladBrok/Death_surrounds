@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "EditorState.h"
 #include "constants.h"
+#include "Resources.h"
 
 
 EditorState::EditorState(sf::RenderWindow& window,
@@ -13,7 +14,7 @@ EditorState::EditorState(sf::RenderWindow& window,
 {
     stateType = STATE_UPDATES_AND_PROCESSES_EVENTS;
 
-    initKeybinds("Config//editorstate_keybinds.ini");
+    initKeybinds(resources::getEditorStateKeybindsFile());
     initView();
     initFont();
     initModes();
@@ -85,12 +86,12 @@ void EditorState::processPauseMenuEvent(const sf::Event& event)
 
     if (pPauseMenu->isButtonPressed("LOAD"))
     {
-        tilemap.loadFromFile("Resources\\Data\\tile_map.txt");
+        tilemap.loadFromFile(resources::getTilemapFile());
     }
 
     else if (pPauseMenu->isButtonPressed("SAVE"))
     {
-        tilemap.saveToFile("Resources\\Data\\tile_map.txt");
+        tilemap.saveToFile(resources::getTilemapFile());
     }
 
     else if (pPauseMenu->isButtonPressed("GO_TO_MAIN_MENU"))
@@ -126,7 +127,7 @@ void EditorState::initView()
 
 void EditorState::initFont()
 {
-    font.loadFromFile("Fonts\\Dosis-Light.ttf");
+    font.loadFromFile(resources::getFontFile());
 }
 
 

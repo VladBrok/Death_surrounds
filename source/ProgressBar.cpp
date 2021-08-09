@@ -34,7 +34,7 @@ void ProgressBar::create(const float posX,
     if (!centerText)
     {
         barText.setPosition(
-            std::floor(posX + utils::percentToPixels(5.f, width)), 
+            std::floor(posX + utils::percentToPixels(5.f, (int)width)), 
             std::floor(posY + height / 4.f)
         );
     }

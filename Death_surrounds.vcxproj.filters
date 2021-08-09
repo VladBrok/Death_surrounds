@@ -59,6 +59,9 @@
     <Filter Include="AI">
       <UniqueIdentifier>{a539b370-f20a-4959-9b63-179548845fd3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{98d32713-be72-47f7-9c9a-4fe4dbcd86f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
@@ -171,6 +174,9 @@
     </ClCompile>
     <ClCompile Include="source\AiFollow.cpp">
       <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Resources.cpp">
+      <Filter>Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -287,6 +293,9 @@
     </ClInclude>
     <ClInclude Include="include\AiFollow.h">
       <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Resources.h">
+      <Filter>Resources</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "SettingsState.h"
 #include "Utils.h"
+#include "Resources.h"
 
 
 SettingsState::SettingsState(sf::RenderWindow& window,
@@ -93,7 +94,7 @@ void SettingsState::renderGui(sf::RenderTarget& target)
 
 void SettingsState::initFont()
 {
-    font.loadFromFile("Fonts\\Dosis-Light.ttf");
+    font.loadFromFile(resources::getFontFile());
 }
 
 
@@ -185,7 +186,7 @@ void SettingsState::initBackground()
 
 void SettingsState::initTextures()
 {
-    textures["BACKGROUND"].loadFromFile("Resources\\Images\\Backgrounds\\main_menu_bg.png");
+    textures["BACKGROUND"].loadFromFile(resources::getMainMenuBackgroundFile());
 }
 
 
@@ -217,7 +218,8 @@ sf::Vector2i SettingsState::getResolutionFromString(const std::string& string)
     catch (std::logic_error&)
     {
         throw std::logic_error("ERROR in SettingsState::getResolutionFromString: invalid argument.\n"
-                               "Proper string example: 800 x 600");
+                               "Proper string example: 800 x 600"
+                               );
     }
 }
 

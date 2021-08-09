@@ -28,12 +28,12 @@ void AttributeComponent::updateLevel()
         updateStats();
 
         exp -= expForNextLevel;
-        expForNextLevel = (50 * std::powl(level, 3) - 150 * std::powl(level, 2) + 400 * level) / 3;
+        expForNextLevel = (int)((50 * std::powl(level, 3) - 150 * std::powl(level, 2) + 400 * level) / 3);
     }
 }
 
 
-void AttributeComponent::updateStats(bool resetHp)
+void AttributeComponent::updateStats()
 {
     if (level % 5 == 0)
     {

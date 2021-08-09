@@ -254,7 +254,12 @@ void DefaultEditorMode::updateView(const float deltaTime)
     }
 
 
-    view.setCenter(sf::Vector2f((int)view.getCenter().x, (int)view.getCenter().y));
+    view.setCenter(
+        sf::Vector2f(
+            (float)((int)view.getCenter().x), 
+            (float)((int)view.getCenter().y)
+        )
+    );
 }
 
 

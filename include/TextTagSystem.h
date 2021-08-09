@@ -90,7 +90,7 @@ private:
                             sfmlText.getColor().r,
                             sfmlText.getColor().g,
                             sfmlText.getColor().b,
-                            sfmlText.getColor().a - fadeValue
+                            sfmlText.getColor().a - (sf::Uint8)fadeValue
                         )
                     );
                 }

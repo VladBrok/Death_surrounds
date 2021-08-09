@@ -4,6 +4,7 @@
 #include "GameState.h"
 #include "SettingsState.h"
 #include "Utils.h"
+#include "Resources.h"
 
 
 MainMenuState::MainMenuState(sf::RenderWindow& window,
@@ -86,7 +87,7 @@ void MainMenuState::renderGui(sf::RenderTarget& target)
 
 void MainMenuState::initFont()
 {
-    font.loadFromFile("Fonts\\Dosis-Light.ttf");
+    font.loadFromFile(resources::getFontFile());
 }
 
 
@@ -159,7 +160,7 @@ void MainMenuState::initBackground()
 
 void MainMenuState::initTextures()
 {
-    textures["BACKGROUND"].loadFromFile("Resources\\Images\\Backgrounds\\main_menu_bg.png");
+    textures["BACKGROUND"].loadFromFile(resources::getMainMenuBackgroundFile());
 }
 
 

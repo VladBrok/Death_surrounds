@@ -2,7 +2,7 @@
 #define INFOTAB_H
 
 
-class InfoTab
+class InfoTab: public sf::NonCopyable
 {
 public:
 

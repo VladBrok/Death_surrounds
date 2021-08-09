@@ -18,7 +18,6 @@ Weapon::~Weapon()
 
 bool Weapon::canAttack()
 {
-    sf::Int32 elapsedTime(attackTimer.getElapsedTime().asMilliseconds());
     if (attackTimer.getElapsedTime().asMilliseconds() >= attackTimerMax)
     {
         attackTimer.restart();

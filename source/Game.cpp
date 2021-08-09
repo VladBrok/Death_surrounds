@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "Game.h"
 #include "constants.h"
+#include "Resources.h"
 
 
 Game::Game()
@@ -134,7 +135,7 @@ void Game::initWindow()
 
 void Game::initSupportedKeys()
 {
-    std::string path = "Config\\supported_keys.ini";
+    std::string path = resources::getSupportedKeysFile();
     std::ifstream file(path);
 
     if (file.is_open()) // Reading the keys and their codes from file

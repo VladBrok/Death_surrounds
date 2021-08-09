@@ -3,6 +3,7 @@
 #include "constants.h"
 #include "Rat.h"
 #include "Utils.h"
+#include "Resources.h"
 
 
 GameState::GameState(sf::RenderWindow& window,
@@ -14,7 +15,7 @@ GameState::GameState(sf::RenderWindow& window,
 {
     stateType = STATE_UPDATES_AND_PROCESSES_EVENTS;
 
-    initKeybinds("Config//gamestate_keybinds.ini");
+    initKeybinds(resources::getGameStateKeybindsFile());
     initView();
     initTilemap();
     initTextures();
@@ -140,7 +141,12 @@ void GameState::updateView()
     }
 
 
-    view.setCenter(sf::Vector2f((int)view.getCenter().x, (int)view.getCenter().y));
+    view.setCenter(
+        sf::Vector2f(
+            (float)((int)view.getCenter().x), 
+            (float)((int)view.getCenter().y)
+        )
+    );
 }
 
 
@@ -286,9 +292,9 @@ void GameState::renderEnemies(sf::RenderTarget& target)
 
 void GameState::initTextures()
 {
-    textures["PLAYER_SHEET"].loadFromFile("Resources\\Images\\Entities\\Player\\player_sheet.png");
-    textures["ENEMY_RAT_SHEET"].loadFromFile("Resources\\Images\\Entities\\Enemies\\rat_60x64.png");
-    textures["WEAPON_SWORD"].loadFromFile("Resources\\Images\\Items\\Weapon\\sword.png");
+    textures["PLAYER_SHEET"].loadFromFile(resources::getPlayerTextureFile());
+    textures["ENEMY_RAT_SHEET"].loadFromFile(resources::getRatTextureFile());
+    textures["WEAPON_SWORD"].loadFromFile(resources::getSwordTextureFile());
 }
 
 
@@ -300,7 +306,7 @@ void GameState::initView()
 
 void GameState::initTilemap()
 {
-    pTilemap = new Tilemap("Resources\\Data\\tile_map.txt");
+    pTilemap = new Tilemap(resources::getTilemapFile());
 }
 
 
@@ -326,7 +332,7 @@ void GameState::initPlayer()
 
 void GameState::initFont()
 {
-    font.loadFromFile("Fonts\\Dosis-Light.ttf");
+    font.loadFromFile(resources::getFontFile());
 }
 
 
@@ -344,8 +350,8 @@ void GameState::initGui()
 void GameState::initShader()
 {
     coreShader.loadFromFile(
-        "Resources\\Shaders\\vertex_shader.vert", 
-        "Resources\\Shaders\\fragment_shader.frag"
+        resources::getVertexShaderFile(), 
+        resources::getFragmentShaderFile()
     );
 }
 

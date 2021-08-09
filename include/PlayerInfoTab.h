@@ -14,6 +14,7 @@ public:
 
 private:
 
+    Player&         player;
     virtual void    initInfoTab(const sf::RenderWindow& window, const sf::Font& font);
 
 };

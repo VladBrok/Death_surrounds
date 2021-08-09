@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "PlayerGUI.h"
 #include "Utils.h"
+#include "Resources.h"
 
 
 PlayerGui::PlayerGui(Player& player, const sf::RenderWindow& window)
@@ -43,7 +44,7 @@ void PlayerGui::toggleInfoTab()
 
 void PlayerGui::initFont()
 {
-    font.loadFromFile("Fonts\\Dosis-Light.ttf");
+    font.loadFromFile(resources::getFontFile());
 }
 
 

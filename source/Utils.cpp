@@ -36,7 +36,7 @@ void lookAt(sf::Sprite& object, const sf::Vector2f& pointToLookAt, const float o
 
     const float PI = 3.14159265358979323846f;
     const float degree = std::atan2f(direction.y, direction.x) * 180 / PI;
-    object.setRotation(static_cast<int>(degree + offset));
+    object.setRotation((float)static_cast<int>(degree + offset));
 }
 
 
