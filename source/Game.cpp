@@ -102,7 +102,7 @@ void Game::update()
             states.pop();
         }
     }
-    else // Closing the window if there are no states left - close the window
+    else // Closing the window if there are no states left
     {
         window.close();
     }
