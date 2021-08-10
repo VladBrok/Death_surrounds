@@ -3,8 +3,12 @@
 #include "Utils.h"
 
 
-Enemy::Enemy(const float posX, const float posY, const sf::Texture& textureSheet)
-    : Entity(textureSheet), expForKillingMax(0)
+Enemy::Enemy(const float posX, 
+             const float posY, 
+             const sf::Texture& textureSheet,
+             const sf::Texture& lootTextureSheet
+             )
+    : Entity(textureSheet), lootTextureSheet(lootTextureSheet), expForKillingMax(0)
 {
     setPosition(posX, posY);
 
@@ -83,6 +87,11 @@ int Enemy::getDamage() const
     }
 }
 
+
+Item* Enemy::getDroppingItem() const
+{
+    return droppingItem.get();
+}
 
 
 void Enemy::initDamageTimerMax()

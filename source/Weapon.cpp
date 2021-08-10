@@ -2,8 +2,12 @@
 #include "Weapon.h"
 
 
-Weapon::Weapon(sf::Texture& texture, const int damageMin, const int damageMax)
-    : Item(texture),
+Weapon::Weapon(const sf::Texture& texture, 
+               const int damageMin,
+               const int damageMax,
+               const sf::IntRect& textureRect
+               )
+    : Item(texture, textureRect),
       damageMin(damageMin),
       damageMax(damageMax),
       range(0)

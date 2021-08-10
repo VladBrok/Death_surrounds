@@ -1,9 +1,15 @@
 #include "precompiled.h"
 #include "Rat.h"
+#include "Food.h"
 
 
-Rat::Rat(const float posX, const float posY, const sf::Texture& textureSheet, Entity& player)
-    : Enemy(posX, posY, textureSheet)
+Rat::Rat(const float posX, 
+         const float posY, 
+         const sf::Texture& textureSheet,
+         const sf::Texture& lootTextureSheet,
+         Entity& player
+         )
+    : Enemy(posX, posY, textureSheet, lootTextureSheet)
 {
     expForKillingMax = 10;
 
@@ -13,6 +19,7 @@ Rat::Rat(const float posX, const float posY, const sf::Texture& textureSheet, En
     createAttributeComponent(1, 8, 1, 1);
 
     initAnimation();
+    initDroppingItem();
 
     pAiFollow = new AiFollow(*this, player);
 }
@@ -45,16 +52,6 @@ void Rat::update(const float deltaTime, const sf::Vector2f& mousePosView)
 }
 
 
-void Rat::initAnimation()
-{
-    pAnimationComponent->addAnimation("IDLE", texture, sprite, 0, 0, 3, 0, 60, 64, 15.f);
-    pAnimationComponent->addAnimation("MOVING_DOWN", texture, sprite, 0, 1, 3, 1, 60, 64, 11.f);
-    pAnimationComponent->addAnimation("MOVING_LEFT", texture, sprite, 0, 2, 3, 2, 60, 64, 11.f);
-    pAnimationComponent->addAnimation("MOVING_RIGHT", texture, sprite, 0, 3, 3, 3, 60, 64, 11.f);
-    pAnimationComponent->addAnimation("MOVING_UP", texture, sprite, 0, 4, 3, 4, 60, 64, 11.f );
-}
-
-
 void Rat::updateAnimation(const float deltaTime)
 {
     try
@@ -76,4 +73,20 @@ void Rat::updateAnimation(const float deltaTime)
     {
         std::cout << "ERROR in Rat::updateAnimation:\nthere is no animation for this type of enemy movement.\n";
     }
+}
+
+
+void Rat::initAnimation()
+{
+    pAnimationComponent->addAnimation("IDLE", texture, sprite, 0, 0, 3, 0, 60, 64, 15.f);
+    pAnimationComponent->addAnimation("MOVING_DOWN", texture, sprite, 0, 1, 3, 1, 60, 64, 11.f);
+    pAnimationComponent->addAnimation("MOVING_LEFT", texture, sprite, 0, 2, 3, 2, 60, 64, 11.f);
+    pAnimationComponent->addAnimation("MOVING_RIGHT", texture, sprite, 0, 3, 3, 3, 60, 64, 11.f);
+    pAnimationComponent->addAnimation("MOVING_UP", texture, sprite, 0, 4, 3, 4, 60, 64, 11.f );
+}
+
+
+void Rat::initDroppingItem()
+{
+    droppingItem = std::make_shared<Food>(Food(lootTextureSheet, sf::IntRect(0, 0, 16, 16)));
 }

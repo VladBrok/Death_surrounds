@@ -9,7 +9,12 @@ class Rat: public Enemy
 {
 public:
 
-                    Rat(const float posX, const float posY, const sf::Texture& textureSheet, Entity& player);
+                    Rat(const float posX, 
+                        const float posY, 
+                        const sf::Texture& textureSheet, 
+                        const sf::Texture& lootTextureSheet, 
+                        Entity& player
+                        );
                     ~Rat();
     virtual void    update(const float deltaTime, const sf::Vector2f& mousePosView);
 
@@ -17,8 +22,9 @@ private:
 
     AiFollow*       pAiFollow;
 
-    virtual void    initAnimation();
     virtual void    updateAnimation(const float deltaTime);
+    virtual void    initAnimation();
+    virtual void    initDroppingItem();
 };
 
 

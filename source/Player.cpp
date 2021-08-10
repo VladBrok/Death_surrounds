@@ -1,14 +1,13 @@
 #include "precompiled.h"
 #include "Player.h"
+#include "constants.h"
 
 
 Player::Player(const float posX, 
                const float posY, 
-               sf::Texture& textureSheet, 
-               Inventory& inventory,
-               Weapon& weapon
+               sf::Texture& textureSheet
                )
-    : Entity(textureSheet), inventory(inventory), pActiveWeapon(&weapon)
+    : Entity(textureSheet), inventory(INVENTORY_SIZE_MAX), pActiveWeapon(nullptr)
 {
 
     createMovementComponent(200.f, 1600.f, 1000.f);
@@ -46,6 +45,10 @@ void Player::update(const float deltaTime, const sf::Vector2f& mousePosView)
     {
         sprite.setColor(sf::Color::White);
     }
+
+
+    // DEBUG
+    //std::cout << inventory.getSize() << '\n';
 }
 
 
@@ -57,6 +60,32 @@ void Player::render(sf::RenderTarget& target,
 {
     Entity::render(target, pShader, shaderLightPosition, showHitbox);
     renderInventory(target);
+}
+
+
+bool Player::addItemToInventory(Item* pItem, const bool isWeapon, const bool setAsActive)
+{
+    assert(pItem != nullptr);
+    bool isAdded = inventory.addItem(pItem);
+
+    if (isAdded)
+    {
+        if (isWeapon)
+        {
+            Weapon* pWeapon = dynamic_cast<Weapon*>(&inventory.back());
+            if (pWeapon)
+            {
+                pActiveWeapon = pWeapon;
+            }
+        }
+
+        if (setAsActive || isWeapon)
+        {
+            inventory.setActiveItem(inventory.getSize() - 1);
+        }
+    }
+
+    return isAdded;
 }
 
 
@@ -92,12 +121,11 @@ unsigned Player::getLevel() const
 
 int Player::getDamage() const
 {
-    if (!pActiveWeapon)
+    if (pActiveWeapon)
     {
-        return pAttributeComponent->getDamage();
+        return pActiveWeapon->getDamage() + pAttributeComponent->getDamage();  
     }
-
-    return pActiveWeapon->getDamage() + pAttributeComponent->getDamage();
+    return pAttributeComponent->getDamage();
 }
 
 
@@ -107,7 +135,7 @@ float Player::getAttackRange() const
     {
         return pActiveWeapon->getRange();
     }
-    return 30.f;
+    return 40.f;
 }
 
 
@@ -125,6 +153,12 @@ const std::string Player::getStatsAsString() const
            << "Max damage: " << (pActiveWeapon ? (pActiveWeapon->getDamageMax() + pAttributeComponent->damageMax): pAttributeComponent->damageMax) << '\n';
 
     return stream.str();
+}
+
+
+int Player::getNumberOfItems() const
+{
+    return inventory.getSize();
 }
 
 

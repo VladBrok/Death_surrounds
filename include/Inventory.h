@@ -13,21 +13,22 @@ public:
                         ~Inventory();
     void                update(const sf::Vector2f& itemPosition, const sf::Vector2f& mousePosView);
     void                render(sf::RenderTarget& target);
-    void                saveToFile(const std::string& fileName);
-    void                loadFromFile(const std::string& fileName);
 
     bool                addItem(Item*);
     void                removeItem(const int index);
+    void                setActiveItem(const int index);
 
     bool                isEmpty() const;
     int                 getSize() const;
 
     Item&               operator[](const int index);
+    Item&               back();
 
 private:
 
     std::list<Item*>    items;
     int                 maxNumberOfItems;
+    Item*               pActiveItem;
 
     void                clear();
 

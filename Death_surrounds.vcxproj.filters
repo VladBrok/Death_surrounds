@@ -62,6 +62,9 @@
     <Filter Include="Resources">
       <UniqueIdentifier>{98d32713-be72-47f7-9c9a-4fe4dbcd86f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Items\Food">
+      <UniqueIdentifier>{0fe763a8-68c5-47c4-ae35-9688d8959dda}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
@@ -177,6 +180,12 @@
     </ClCompile>
     <ClCompile Include="source\Resources.cpp">
       <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LootSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Food.cpp">
+      <Filter>Items\Food</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -296,6 +305,12 @@
     </ClInclude>
     <ClInclude Include="include\Resources.h">
       <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LootSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Food.h">
+      <Filter>Items\Food</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

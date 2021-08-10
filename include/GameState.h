@@ -9,7 +9,7 @@
 #include "Enemy.h"
 #include "EnemySystem.h"
 #include "TextTagSystem.h"
-#include "Inventory.h"
+#include "LootSystem.h"
 
 
 class GameState: public State
@@ -43,13 +43,13 @@ private:
     std::list<Enemy*>    enemies;
     EnemySystem*         pEnemySystem;
     TextTagSystem*       pTextTagSystem;
+    LootSystem*          pLootSystem;
                          
     sf::View             view;
     Tilemap*             pTilemap;
                          
     Player*              pPlayer;
     PlayerGui*           pPlayerGui;
-    Inventory            playerInventory;
                          
     PauseMenu*           pPauseMenu;
     sf::Font             font;
@@ -64,7 +64,6 @@ private:
     void                 initView();
     void                 initTilemap();
     virtual void         initTextures();
-    void                 initPlayerInventory();
     void                 initPlayer();
     void                 initFont();
     void                 initGui();

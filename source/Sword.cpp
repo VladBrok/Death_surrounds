@@ -3,8 +3,12 @@
 #include "Utils.h"
 
 
-Sword::Sword(sf::Texture& texture, const int damage, const int damageMax)
-    : Weapon(texture, damage, damageMax)
+Sword::Sword(const sf::Texture& texture, 
+             const int damage, 
+             const int damageMax,
+             const sf::IntRect& textureRect
+             )
+    : Weapon(texture, damage, damageMax, textureRect)
 {
     initRange();
     initAttackTimerMax();
@@ -33,12 +37,6 @@ void Sword::update(const sf::Vector2f& weaponPosition, const sf::Vector2f& mouse
 
         utils::lookAt(sprite, mousePosView);
     }
-}
-
-
-void Sword::render(sf::RenderTarget& target)
-{
-    target.draw(sprite);
 }
 
 

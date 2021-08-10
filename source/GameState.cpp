@@ -11,7 +11,6 @@ GameState::GameState(sf::RenderWindow& window,
                      std::stack<State*>& states
                      )
     : State(window, supportedKeys, states),
-      playerInventory(5),
       gameOver(false)
 {
     stateType = STATE_UPDATES_AND_PROCESSES_EVENTS;
@@ -20,7 +19,6 @@ GameState::GameState(sf::RenderWindow& window,
     initView();
     initTilemap();
     initTextures();
-    initPlayerInventory();
     initPlayer();
     initFont();
     initGui();
@@ -38,6 +36,7 @@ GameState::~GameState()
     delete pPlayerGui;
     delete pEnemySystem;
     delete pTextTagSystem;
+    delete pLootSystem;
 
     deleteEnemies();
 }
@@ -130,6 +129,7 @@ void GameState::update(const float deltaTime)
 
         pPlayer->update(deltaTime, mousePosView); 
         pTextTagSystem->update(deltaTime);
+        pLootSystem->update(*pPlayer);
 
         updateView();
         updateEnemiesAndCombat(deltaTime);
@@ -232,12 +232,15 @@ void GameState::updateEnemiesAndCombat(const float deltaTime)
             }
             pPlayer->gainExp(exp);
 
-            // Adding new pop-up exp text
+            // Adding the new pop-up exp text
             pTextTagSystem->addTextTag(
                 EXPERIENCE_TAG, 
-                sf::Vector2f(pPlayer->getCenter().x - GRID_SIZE / 1.2f, pPlayer->getPosition().y), 
+                sf::Vector2f(pPlayer->getCenter().x - GRID_SIZE / 1.5f, pPlayer->getPosition().y), 
                 exp, "+ ", " exp"
             );
+
+            // Adding the loot
+            pLootSystem->addLoot((*enemy)->getPosition().x, (*enemy)->getPosition().y, (*enemy)->getDroppingItem());
         }
         if ((*enemy)->isDead() || (*enemy)->canBeDespawned(view))
         {
@@ -305,7 +308,8 @@ void GameState::render(sf::RenderTarget* pTarget)
     target.setView(view);
 
     pTilemap->render(target, view, pPlayer->getGridPositionCenter(), &coreShader, pPlayer->getCenter(), false, false);
-    
+    pLootSystem->render(target);
+
     if (!gameOver)
     {
         pPlayer->render(target, &coreShader, pPlayer->getCenter(), true);
@@ -355,6 +359,7 @@ void GameState::initTextures()
     textures["WEAPON_SWORD"].loadFromFile(resources::getSwordTextureFile());
     textures["HP_BAR"].loadFromFile(resources::getPlayerHpBarTextureFile());
     textures["EXP_BAR"].loadFromFile(resources::getPlayerExpBarTextureFile());
+    textures["FOOD"].loadFromFile(resources::getFoodTextureFile());
 }
 
 
@@ -370,23 +375,17 @@ void GameState::initTilemap()
 }
 
 
-void GameState::initPlayerInventory()
-{
-    Sword s(textures["WEAPON_SWORD"], 2, 5);
-
-    playerInventory.addItem(&s);
-}
-
-
 void GameState::initPlayer()
 {
     pPlayer = new Player(
         GRID_SIZE * 2, 
         GRID_SIZE * 2, 
-        textures["PLAYER_SHEET"], 
-        playerInventory, 
-        static_cast<Weapon&>(playerInventory[0])
+        textures["PLAYER_SHEET"]
     );
+
+    // FIXME
+    Sword s(textures["WEAPON_SWORD"], 2, 5);
+    pPlayer->addItemToInventory(&s, true);
 }
 
 
@@ -424,6 +423,7 @@ void GameState::initSystems()
 {
     pEnemySystem = new EnemySystem(enemies, textures, *pPlayer);
     pTextTagSystem = new TextTagSystem(font);
+    pLootSystem = new LootSystem(textures["FOOD"]);
 }
 
 

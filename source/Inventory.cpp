@@ -4,7 +4,7 @@
 
 
 Inventory::Inventory(const int maxNumberOfItems)
-    : maxNumberOfItems(maxNumberOfItems)
+    : maxNumberOfItems(maxNumberOfItems), pActiveItem(nullptr)
 {
     assert(maxNumberOfItems > 0);
 }
@@ -18,37 +18,33 @@ Inventory::~Inventory()
 
 void Inventory::update(const sf::Vector2f& itemPosition, const sf::Vector2f& mousePosView)
 {
-    for (auto i = items.begin(); i != items.end(); ++i)
-    {
-        (*i)->update(itemPosition, mousePosView);
-    }
+    pActiveItem->update(itemPosition, mousePosView);
+
+    //for (auto i = items.begin(); i != items.end(); ++i)
+    //{
+    //    (*i)->update(itemPosition, mousePosView);
+    //}
 }
 
 
 void Inventory::render(sf::RenderTarget& target)
 {
-    for (auto i = items.begin(); i != items.end(); ++i)
-    {
-        (*i)->render(target);
-    }
+    pActiveItem->render(target);
+
+    //for (auto i = items.begin(); i != items.end(); ++i)
+    //{
+    //    (*i)->render(target);
+    //}
 }
 
 
-void Inventory::saveToFile(const std::string& fileName)
+bool Inventory::addItem(Item* pItem)
 {
-}
+    assert(pItem != nullptr);
 
-
-void Inventory::loadFromFile(const std::string& fileName)
-{
-}
-
-
-bool Inventory::addItem(Item* item)
-{
     if ((int)items.size() < maxNumberOfItems)
     {
-        items.push_back(item->getClone());
+        items.push_back(pItem->getClone());
         return true;
     }
     return false;
@@ -63,6 +59,14 @@ void Inventory::removeItem(const int index)
     std::advance(toRemove, index);
     delete *toRemove;
     items.erase(toRemove);
+}
+
+
+void Inventory::setActiveItem(const int index)
+{
+    assert(index >= 0 && index < (int)items.size());
+
+    pActiveItem = &this->operator[](index);
 }
 
 
@@ -86,6 +90,16 @@ Item& Inventory::operator[](const int index)
     std::advance(it, index);
 
     return **it;
+}
+
+
+Item& Inventory::back()
+{
+    if (items.empty())
+    {
+        throw std::runtime_error("ERROR in Inventory::back: vector of items is empty\n");
+    }
+    return *items.back();
 }
 
 

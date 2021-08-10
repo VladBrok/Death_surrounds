@@ -23,7 +23,7 @@ void EnemySystem::createEnemy(const float posX,
     {
     case RAT:
         {
-            activeEnemies.push_back(new Rat(posX, posY, textures["ENEMY_RAT_SHEET"], player));
+            activeEnemies.push_back(new Rat(posX, posY, textures["ENEMY_RAT_SHEET"], textures["FOOD"], player));
         }
         break;
     default:

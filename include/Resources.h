@@ -15,6 +15,7 @@ namespace resources
     std::string    getPlayerHpBarTextureFile();
     std::string    getPlayerExpBarTextureFile();
     std::string    getSwordTextureFile();
+    std::string    getFoodTextureFile();
     std::string    getTilesheetFile();
     std::string    getGameStateKeybindsFile();
     std::string    getEditorStateKeybindsFile();

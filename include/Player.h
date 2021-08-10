@@ -12,9 +12,7 @@ public:
     
                          Player(const float posX, 
                                 const float posY, 
-                                sf::Texture& textureSheet, 
-                                Inventory& inventory,
-                                Weapon& weapon
+                                sf::Texture& textureSheet
                                 );
     virtual void         update(const float deltaTime, const sf::Vector2f& mousePosView);
     virtual void         render(sf::RenderTarget& target, 
@@ -22,6 +20,8 @@ public:
                                 const sf::Vector2f& shaderLightPosition = sf::Vector2f(),
                                 const bool showHitbox = false
                                 );
+
+    bool                 addItemToInventory(Item*, const bool isWeapon = false, const bool setAsActive = false);
                          
     int                  getHP() const;
     int                  getHPMax() const;
@@ -31,6 +31,7 @@ public:
     int                  getDamage() const;
     float                getAttackRange() const;
     const std::string    getStatsAsString() const;
+    int                  getNumberOfItems() const;
 
     void                 loseHp(const unsigned hp);
     void                 gainHp(const unsigned hp);
@@ -46,7 +47,7 @@ public:
                          
 private:                 
                          
-    Inventory&           inventory;
+    Inventory            inventory;
     Weapon*              pActiveWeapon;
     bool                 attacking;
     sf::Clock            damageTimer;

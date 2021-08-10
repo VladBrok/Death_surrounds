@@ -8,10 +8,13 @@ class Weapon: public Item
 {
 public:
 
-                       Weapon(sf::Texture& texture, const int damageMin, const int damageMax);
+                       Weapon(const sf::Texture& texture, 
+                              const int damageMin, 
+                              const int damageMax, 
+                              const sf::IntRect& textureRect = sf::IntRect()
+                              );
     virtual            ~Weapon() {};
     virtual void       update(const sf::Vector2f& weaponPosition, const sf::Vector2f& mousePosView) = 0;
-    virtual void       render(sf::RenderTarget& target) = 0;
 
     bool               canAttack();
     void               restartAttackTimer();

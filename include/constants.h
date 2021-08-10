@@ -10,6 +10,7 @@ const int         TILEMAP_GRID_SIZE_MAX_X = 30;
 const int         TILEMAP_GRID_SIZE_MAX_Y = 30;
 
 const int         NUMBER_OF_ACTIVE_ENEMIES_MAX = 5;
+const int         INVENTORY_SIZE_MAX = 5;
 
 
 #endif // CONSTANTS_H
