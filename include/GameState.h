@@ -24,6 +24,7 @@ public:
                          
     virtual void         processEvent(const sf::Event& event);
     void                 processPauseMenuEvent(const sf::Event& event);
+    void                 processGameOverEvent(const sf::Event& event);
                          
     virtual void         update(const float deltaTime);
     void                 updateView();
@@ -35,6 +36,7 @@ public:
                          
     virtual void         render(sf::RenderTarget* pTarget = nullptr);
     void                 renderEnemies(sf::RenderTarget& target);
+    void                 renderGameOverScreen(sf::RenderTarget& target);
                          
 private:                 
                          
@@ -52,6 +54,11 @@ private:
     PauseMenu*           pPauseMenu;
     sf::Font             font;
     sf::Shader           coreShader;
+    
+    sf::RectangleShape   gameOverScreen;
+    sf::Text             gameOverText;
+    sf::Text             gameOverInfoText;
+    bool                 gameOver;                
 
                          
     void                 initView();
@@ -63,6 +70,9 @@ private:
     void                 initGui();
     void                 initShader();
     void                 initSystems();
+    void                 initGameOverScreen();
+
+    void                 deleteEnemies();
 
 };
 

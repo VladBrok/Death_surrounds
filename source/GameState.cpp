@@ -11,7 +11,8 @@ GameState::GameState(sf::RenderWindow& window,
                      std::stack<State*>& states
                      )
     : State(window, supportedKeys, states),
-      playerInventory(5)
+      playerInventory(5),
+      gameOver(false)
 {
     stateType = STATE_UPDATES_AND_PROCESSES_EVENTS;
 
@@ -25,6 +26,7 @@ GameState::GameState(sf::RenderWindow& window,
     initGui();
     initShader();
     initSystems();
+    initGameOverScreen();
 }
 
 
@@ -37,10 +39,7 @@ GameState::~GameState()
     delete pEnemySystem;
     delete pTextTagSystem;
 
-    for (auto enemy = enemies.begin(); enemy != enemies.end(); ++enemy)
-    {
-        delete *enemy;
-    }
+    deleteEnemies();
 }
 
 
@@ -66,7 +65,11 @@ void GameState::processEvent(const sf::Event& event)
     {
         processPauseMenuEvent(event);
     }
-    else
+    if (gameOver)
+    {
+        processGameOverEvent(event);
+    }
+    else if (!gameOver && !stateIsPaused)
     {
         if (event.type == sf::Event::KeyPressed && 
             event.key.code == keybinds.at("TOGGLE_PLAYER_INFO_TAB"))
@@ -99,9 +102,28 @@ void GameState::processPauseMenuEvent(const sf::Event& event)
 }
 
 
+void GameState::processGameOverEvent(const sf::Event& event)
+{
+    if (event.type == sf::Event::KeyPressed &&
+        event.key.code == keybinds.at("RESTART_GAME"))
+    {
+        gameOver = false;
+        delete pPlayer;
+        delete pPlayerGui;
+        delete pTextTagSystem;
+        delete pEnemySystem;
+        deleteEnemies();
+
+        initPlayer();
+        initGui();
+        initSystems();
+    }
+}
+
+
 void GameState::update(const float deltaTime)
 {
-    if (!stateIsPaused)
+    if (!stateIsPaused && !gameOver)
     {
         updatePlayerKeyboardInput(deltaTime);
         updateTilemap(deltaTime);
@@ -110,8 +132,8 @@ void GameState::update(const float deltaTime)
         pTextTagSystem->update(deltaTime);
 
         updateView();
-        updateGui();
         updateEnemiesAndCombat(deltaTime);
+        updateGui();
     }
 }
 
@@ -218,6 +240,13 @@ void GameState::updateEnemiesAndCombat(const float deltaTime)
         {
             ++enemy;
         }
+
+        // Checking if player is dead
+        if (pPlayer->isDead())
+        {
+            gameOver = true;
+            return;
+        }
     }
 
     pPlayer->setAttackStatus(false);
@@ -268,7 +297,12 @@ void GameState::render(sf::RenderTarget* pTarget)
     target.setView(view);
 
     pTilemap->render(target, view, pPlayer->getGridPositionCenter(), &coreShader, pPlayer->getCenter(), false, false);
-    pPlayer->render(target, &coreShader, pPlayer->getCenter(), true);
+    
+    if (!gameOver)
+    {
+        pPlayer->render(target, &coreShader, pPlayer->getCenter(), true);
+    }
+    
     renderEnemies(target);
     pTextTagSystem->render(target);
     pTilemap->renderDeferred(target, &coreShader, pPlayer->getCenter());
@@ -278,6 +312,10 @@ void GameState::render(sf::RenderTarget* pTarget)
     pPlayerGui->render(target);
 
 
+    if (gameOver)
+    {
+        renderGameOverScreen(target);
+    }
     if (stateIsPaused)
     {
         pPauseMenu->render(target);
@@ -291,6 +329,14 @@ void GameState::renderEnemies(sf::RenderTarget& target)
     {
         (*enemy)->render(target, &coreShader, pPlayer->getCenter(), true);
     }
+}
+
+
+void GameState::renderGameOverScreen(sf::RenderTarget& target)
+{
+    target.draw(gameOverScreen);
+    target.draw(gameOverText);
+    target.draw(gameOverInfoText);
 }
 
 
@@ -370,4 +416,38 @@ void GameState::initSystems()
 {
     pEnemySystem = new EnemySystem(enemies, textures, *pPlayer);
     pTextTagSystem = new TextTagSystem(font);
+}
+
+
+void GameState::initGameOverScreen()
+{
+    gameOverScreen.setSize(static_cast<sf::Vector2f>(window.getSize()));
+    gameOverScreen.setFillColor(sf::Color(160, 0, 0, 120));
+
+    gameOverText.setFont(font);
+    gameOverText.setCharacterSize(utils::percentToPixels(4.f, (int)(window.getSize().x + window.getSize().y)));
+    gameOverText.setString("YOU DIED");
+    gameOverText.setStyle(sf::Text::Bold);
+    gameOverText.setPosition(
+        gameOverScreen.getSize().x / 2.f - gameOverText.getGlobalBounds().width / 2.f,
+        gameOverScreen.getSize().y / 2.f - gameOverText.getGlobalBounds().height * 1.5f
+    );
+
+    gameOverInfoText.setFont(font);
+    gameOverInfoText.setCharacterSize(utils::percentToPixels(2.5f, (int)(window.getSize().x + window.getSize().y)));
+    gameOverInfoText.setString("Press \"Space\" key to respawn");
+    gameOverInfoText.setPosition(
+        gameOverScreen.getSize().x / 2.f - gameOverInfoText.getGlobalBounds().width / 2.f,
+        gameOverText.getPosition().y + gameOverText.getGlobalBounds().height + utils::percentToPixels(5.f, (int)window.getSize().y)
+    );
+}
+
+
+void GameState::deleteEnemies()
+{
+    for (auto enemy = enemies.begin(); enemy != enemies.end(); ++enemy)
+    {
+        delete *enemy;
+    }
+    enemies.clear();
 }

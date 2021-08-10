@@ -187,6 +187,12 @@ bool Player::canAttack() const
 }
 
 
+bool Player::isDead() const
+{
+    return pAttributeComponent->hp <= 0;
+}
+
+
 void Player::updateAnimation(const float deltaTime)
 {
     try

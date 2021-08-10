@@ -42,6 +42,7 @@ public:
     bool                 canBeDamaged() const;
     void                 restartDamageTimer();
     bool                 canAttack() const;
+    bool                 isDead() const;
                          
 private:                 
                          
