@@ -43,9 +43,7 @@ public:
                                                 const sf::IntRect& textureRect,
                                                 const bool canCollide,
                                                 const int enemyType,
-                                                const int enemyAmount,
-                                                const int enemyTimeToSpawn,
-                                                const float enemyMaxDistance
+                                                const int enemyTimeToSpawn
                                                 );
     void                    removeTile(const int gridPosX, const int gridPosY);
 

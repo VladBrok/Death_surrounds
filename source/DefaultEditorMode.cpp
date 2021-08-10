@@ -26,9 +26,7 @@ DefaultEditorMode::DefaultEditorMode(sf::Font& font,
     tileCanCollide(false),
     tileType(0),
     enemyType(0),
-    enemyAmount(0),
-    enemyTimeToSpawn(0),
-    enemyMaxDistance(0.f)
+    enemyTimeToSpawn(0)
 {
     initSideBar();
     initTextureRect();
@@ -94,7 +92,7 @@ void DefaultEditorMode::processTilemapEvent(const sf::Event& event)
     {
         if (tileType == ENEMY_SPAWNER)
         {
-            tilemap.addEnemySpawnerTile(mousePosGrid.x, mousePosGrid.y, textureRect, tileCanCollide, enemyType, enemyAmount, enemyTimeToSpawn, enemyMaxDistance);
+            tilemap.addEnemySpawnerTile(mousePosGrid.x, mousePosGrid.y, textureRect, tileCanCollide, enemyType, enemyTimeToSpawn);
         }
         else
         {
@@ -176,17 +174,6 @@ void DefaultEditorMode::processKeyboardInputEvent(const sf::Event& event)
                     enemyType = (enemyType + 1 >= NUMBER_OF_ENEMY_TYPES) ? (NUMBER_OF_ENEMY_TYPES - 1): (enemyType + 1);
                 }
             }
-            else if (event.key.code == keybinds.at("ENEMY_AMOUNT_UP"))
-            {
-                if (sf::Keyboard::isKeyPressed(keybinds.at("DECREASE_VALUE")))
-                {
-                    enemyAmount = (enemyAmount - 1 < 0) ? 0: (enemyAmount - 1); 
-                }
-                else
-                {
-                    ++enemyAmount;
-                }
-            }
             else if (event.key.code == keybinds.at("ENEMY_TIME_TO_SPAWN_UP"))
             {
                 if (sf::Keyboard::isKeyPressed(keybinds.at("DECREASE_VALUE")))
@@ -197,17 +184,6 @@ void DefaultEditorMode::processKeyboardInputEvent(const sf::Event& event)
                 {
                     ++enemyTimeToSpawn;
                 } 
-            }
-            else if (event.key.code == keybinds.at("ENEMY_MAX_DISTANCE_UP"))
-            {
-                if (sf::Keyboard::isKeyPressed(keybinds.at("DECREASE_VALUE")))
-                {
-                    enemyMaxDistance = (enemyMaxDistance - 1.f < 0) ? 0: (enemyMaxDistance - 1.f); 
-                }
-                else
-                {
-                    enemyMaxDistance += 1.f;
-                }
             }
         }
     }
@@ -222,7 +198,7 @@ void DefaultEditorMode::updateSideBarActivity()
 
 void DefaultEditorMode::updateView(const float deltaTime)
 {
-    const float viewSpeed = 450.f * deltaTime;
+    const float viewSpeed = 500.f * deltaTime;
 
     if (sf::Keyboard::isKeyPressed(keybinds.at("MOVE_VIEW_UP")))
     {
@@ -273,9 +249,7 @@ void DefaultEditorMode::updateCursorText()
     if (tileType == ENEMY_SPAWNER)
     {
         sstream << "     Enemy type:                     " << EnemySystem::getEnemyTypeAsString(enemyType) << '\n'
-                << "     Enemy amount:              " << enemyAmount << '\n'
-                << "     Spawn frequency:          " << enemyTimeToSpawn << " s" << '\n'
-                << "     Max distance:                   " << enemyMaxDistance << '\n';
+                << "     Spawn frequency:          " << enemyTimeToSpawn << " s" << '\n';
     } 
 
     sstream << "Number of tiles:   " << tilemap.getNumberOfTilesAtPosition(mousePosGrid) << '\n';

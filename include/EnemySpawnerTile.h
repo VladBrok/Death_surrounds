@@ -15,27 +15,21 @@ public:
                                                  const sf::IntRect& textureRect,
                                                  const bool canCollide,
                                                  const int enemyType,
-                                                 const int enemyAmount,
-                                                 const int enemyTimeToSpawn,
-                                                 const float enemyMaxDistance
+                                                 const int enemyTimeToSpawn
                                                  );
     void                        update(EnemySystem& enemySystem);        
 
    /* 
       Returns the string with textureRect position, collision ability,
-      enemyType, enemyAmount, enemyTimeToSpawn and enemyMaxDistance varibales
+      enemyType and enemyTimeToSpawn varibales
    */
    virtual const std::string    getAsString() const; 
 
 private:
     
     int                         enemyType;
-    int                         enemyAmount;
     int                         enemyTimeToSpawn;
-    float                       enemyMaxDistance;
-
     sf::Clock                   spawnTimer;
-    int                         currentEnemyAmount;
 };
 
 

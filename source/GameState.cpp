@@ -220,14 +220,22 @@ void GameState::updateEnemiesAndCombat(const float deltaTime)
 
         if ((*enemy)->isDead())
         {
-            // Gaining the player's exp
+            // Checking for the level up and gaining the player's exp
             int exp = (int)((*enemy)->getExpForKilling());
+            if (pPlayer->getExp() + exp >= pPlayer->getExpForNextLevel())
+            {
+                pTextTagSystem->addTextTag(
+                    LEVEL_UP_TAG,
+                    sf::Vector2f(pPlayer->getCenter().x - GRID_SIZE, pPlayer->getPosition().y),
+                    "Level up!"
+                );
+            }
             pPlayer->gainExp(exp);
 
-            // Adding new pop-up text
+            // Adding new pop-up exp text
             pTextTagSystem->addTextTag(
                 EXPERIENCE_TAG, 
-                sf::Vector2f(pPlayer->getCenter().x - GRID_SIZE, pPlayer->getPosition().y), 
+                sf::Vector2f(pPlayer->getCenter().x - GRID_SIZE / 1.2f, pPlayer->getPosition().y), 
                 exp, "+ ", " exp"
             );
         }

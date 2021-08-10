@@ -234,11 +234,9 @@ void Tilemap::loadFromFile(const std::string& fileName)
         if (type == ENEMY_SPAWNER)
         {
             int enemyType          = 0;
-            int enemyAmount        = 0;
             int enemyTimeToSpawn   = 0;
-            float enemyMaxDistance = 0;
 
-            file >> textureRect.left >> textureRect.top >> canCollide >> enemyType >> enemyAmount >> enemyTimeToSpawn >> enemyMaxDistance;
+            file >> textureRect.left >> textureRect.top >> canCollide >> enemyType >> enemyTimeToSpawn;
 
             map[gridPosX][gridPosY].push_back(
                 new EnemySpawnerTile(
@@ -248,9 +246,7 @@ void Tilemap::loadFromFile(const std::string& fileName)
                     textureRect,
                     canCollide,
                     enemyType,
-                    enemyAmount,
-                    enemyTimeToSpawn,
-                    enemyMaxDistance
+                    enemyTimeToSpawn
                 )
             );
         }
@@ -321,9 +317,7 @@ void Tilemap::addEnemySpawnerTile(const int gridPosX,
                                   const sf::IntRect& textureRect,
                                   const bool canCollide,
                                   const int enemyType,
-                                  const int enemyAmount,
-                                  const int enemyTimeToSpawn,
-                                  const float enemyMaxDistance
+                                  const int enemyTimeToSpawn
                                   )
 {
     if (positionsAreCorrect(gridPosX, gridPosY))
@@ -343,9 +337,7 @@ void Tilemap::addEnemySpawnerTile(const int gridPosX,
                 textureRect, 
                 canCollide,
                 enemyType, 
-                enemyAmount,
-                enemyTimeToSpawn,
-                enemyMaxDistance
+                enemyTimeToSpawn
             )
         );
     }

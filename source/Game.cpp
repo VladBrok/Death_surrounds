@@ -33,7 +33,7 @@ void Game::run()
         render();
 
         // DEBUG
-        /*std::cout << deltaTime << '\n';*/
+        //std::cout << deltaTime << '\n';
     }
 }
 

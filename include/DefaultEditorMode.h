@@ -53,9 +53,7 @@ private:
     bool                                                tileCanCollide;
     int                                                 tileType;
     int                                                 enemyType;
-    int                                                 enemyAmount;
     int                                                 enemyTimeToSpawn;
-    float                                               enemyMaxDistance;
 
                                                         
     // Private functions                                
