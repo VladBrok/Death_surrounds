@@ -28,9 +28,16 @@ bool Weapon::canAttack()
     }
 }
 
+
 void Weapon::restartAttackTimer()
 {
     attackTimer.restart();
+}
+
+
+bool Weapon::isWeapon() const
+{
+    return true;
 }
 
 

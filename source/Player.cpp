@@ -5,9 +5,11 @@
 
 Player::Player(const float posX, 
                const float posY, 
-               sf::Texture& textureSheet
+               const sf::Texture& textureSheet,
+               const sf::Texture& inventoryPanelTexture,
+               const sf::RenderWindow& window
                )
-    : Entity(textureSheet), inventory(INVENTORY_SIZE_MAX), pActiveWeapon(nullptr)
+    : Entity(textureSheet), inventory(INVENTORY_SIZE_MAX, window, inventoryPanelTexture), pActiveWeapon(nullptr)
 {
 
     createMovementComponent(200.f, 1600.f, 1000.f);
@@ -27,7 +29,10 @@ Player::Player(const float posX,
 }
 
 
-void Player::update(const float deltaTime, const sf::Vector2f& mousePosView)
+void Player::update(const float deltaTime, 
+                    const sf::Vector2f& mousePosView, 
+                    const sf::Vector2i& mousePosWindow
+                    )
 {
     pMovementComponent->updateMovement(deltaTime);
 
@@ -35,7 +40,16 @@ void Player::update(const float deltaTime, const sf::Vector2f& mousePosView)
 
     pHitboxComponent->update();
 
-    updateInventory(mousePosView);
+    inventory.update(getCenter(), mousePosView, mousePosWindow);
+    if (inventory.getActiveItem() && inventory.getActiveItem()->isWeapon())
+    {
+        pActiveWeapon = static_cast<Weapon*>(inventory.getActiveItem());
+    }
+    else
+    {
+        pActiveWeapon = nullptr;
+    }
+
 
     if (!canBeDamaged())
     {
@@ -59,32 +73,36 @@ void Player::render(sf::RenderTarget& target,
                     )
 {
     Entity::render(target, pShader, shaderLightPosition, showHitbox);
-    renderInventory(target);
+    
+
+    const sf::View view = target.getView();
+
+    inventory.renderToView(target);
+    target.setView(target.getDefaultView());
+    inventory.renderToWindow(target);
+
+    target.setView(view);
 }
 
 
-bool Player::addItemToInventory(Item* pItem, const bool isWeapon, const bool setAsActive)
+bool Player::addItemToInventory(Item* pItem, const bool setAsActive)
 {
     assert(pItem != nullptr);
     bool isAdded = inventory.addItem(pItem);
 
     if (isAdded)
     {
-        if (isWeapon)
+        if (pItem->isWeapon() && setAsActive)
         {
-            Weapon* pWeapon = dynamic_cast<Weapon*>(&inventory.back());
+            inventory.setActiveItem(inventory.getSize() - 1);
+
+            Weapon* pWeapon = dynamic_cast<Weapon*>(inventory.getActiveItem());
             if (pWeapon)
             {
                 pActiveWeapon = pWeapon;
             }
         }
-
-        if (setAsActive || isWeapon)
-        {
-            inventory.setActiveItem(inventory.getSize() - 1);
-        }
     }
-
     return isAdded;
 }
 
@@ -248,18 +266,6 @@ void Player::updateAnimation(const float deltaTime)
     {
         std::cout << "ERROR in Player::updateAnimation:\nthere is no animation for this type of player movement.\n";
     }
-}
-
-
-void Player::updateInventory(const sf::Vector2f& mousePosView)
-{
-    inventory.update(getCenter(), mousePosView);
-}
-
-
-void Player::renderInventory(sf::RenderTarget& target)
-{
-    inventory.render(target);
 }
 
 

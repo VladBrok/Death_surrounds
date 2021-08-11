@@ -20,6 +20,7 @@ private:
                       
     virtual void      initRange();
     virtual void      initAttackTimerMax();
+    virtual void      initDefaultOriginAndScale();
 };
 
 

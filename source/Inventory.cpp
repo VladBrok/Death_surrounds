@@ -1,12 +1,22 @@
 #include "precompiled.h"
 #include "Inventory.h"
 #include "Item.h"
+#include "constants.h"
+#include "Utils.h"
 
 
-Inventory::Inventory(const int maxNumberOfItems)
-    : maxNumberOfItems(maxNumberOfItems), pActiveItem(nullptr)
+Inventory::Inventory(const int maxNumberOfItems, 
+                     const sf::RenderWindow& window, 
+                     const sf::Texture& inventoryPanelBorderTexture
+                     )
+    : maxNumberOfItems(maxNumberOfItems), 
+      pActiveItem(nullptr), 
+      previousActiveItemIndex(-1),
+      previousInventorySize(0)
 {
-    assert(maxNumberOfItems > 0);
+    assert(maxNumberOfItems > 0 && maxNumberOfItems <= INVENTORY_SIZE_MAX);
+    
+    initInventoryPanel(window, inventoryPanelBorderTexture);
 }
 
 
@@ -16,25 +26,49 @@ Inventory::~Inventory()
 }
 
 
-void Inventory::update(const sf::Vector2f& itemPosition, const sf::Vector2f& mousePosView)
+void Inventory::update(const sf::Vector2f& itemPosition, 
+                       const sf::Vector2f& mousePosView,
+                       const sf::Vector2i& mousePosWindow
+                       )
 {
-    pActiveItem->update(itemPosition, mousePosView);
+    // Selecting the new active item
+    if (panelBorder.getGlobalBounds().contains(mousePosWindow.x, mousePosWindow.y) &&
+        sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        int itemIndex = (int)(mousePosWindow.x - panelBorder.getPosition().x) / INVENTORY_SLOT_SIZE;
+        if (previousActiveItemIndex != itemIndex || previousInventorySize < (int)items.size())
+        {
+            setActiveItem(itemIndex);
+            previousActiveItemIndex = itemIndex;
+            previousInventorySize = (int)items.size();
+        }
+    }
 
-    //for (auto i = items.begin(); i != items.end(); ++i)
-    //{
-    //    (*i)->update(itemPosition, mousePosView);
-    //}
+    if (pActiveItem)
+    {
+        pActiveItem->update(itemPosition, mousePosView);
+    }
 }
 
 
-void Inventory::render(sf::RenderTarget& target)
+void Inventory::renderToView(sf::RenderTarget& target)
 {
-    pActiveItem->render(target);
+    if (pActiveItem)
+    {
+        pActiveItem->render(target);
+    }
+}
 
-    //for (auto i = items.begin(); i != items.end(); ++i)
-    //{
-    //    (*i)->render(target);
-    //}
+
+void Inventory::renderToWindow(sf::RenderTarget& target)
+{
+    target.draw(panelBackground);
+    target.draw(panelBorder);
+
+    for (auto i = items.begin(); i != items.end(); ++i)
+    {
+        (*i)->render(target);
+    }
 }
 
 
@@ -45,6 +79,20 @@ bool Inventory::addItem(Item* pItem)
     if ((int)items.size() < maxNumberOfItems)
     {
         items.push_back(pItem->getClone());
+
+
+        // Setting the item's origin, position and scale to properly place it to the inventory panel
+        items.back()->setOrigin(0.f, 0.f);
+
+        items.back()->setPosition(
+            panelBorder.getPosition().x + INVENTORY_SLOT_SIZE * ((int)items.size() - 1),
+            panelBorder.getPosition().y
+        );
+
+        items.back()->setScale(
+            INVENTORY_SLOT_SIZE / items.back()->getGlobalBounds().width,
+            INVENTORY_SLOT_SIZE / items.back()->getGlobalBounds().height
+        );
         return true;
     }
     return false;
@@ -64,9 +112,28 @@ void Inventory::removeItem(const int index)
 
 void Inventory::setActiveItem(const int index)
 {
-    assert(index >= 0 && index < (int)items.size());
+    assert(index >= 0 && index < INVENTORY_SIZE_MAX);
 
-    pActiveItem = &this->operator[](index);
+    delete pActiveItem;
+
+    if (index < (int)items.size())
+    {
+        pActiveItem = (this->operator[](index)).getClone();
+
+        // Setting the origin and scale of the item to default values
+        pActiveItem->setOrigin(pActiveItem->getDefaultOrigin().x, pActiveItem->getDefaultOrigin().y);
+        pActiveItem->setScale(pActiveItem->getDefaultScale().x, pActiveItem->getDefaultScale().y);
+    }
+    else
+    {
+        pActiveItem = nullptr;
+    }
+}
+
+
+Item* Inventory::getActiveItem() const
+{
+    return pActiveItem;
 }
 
 
@@ -110,5 +177,27 @@ void Inventory::clear()
         delete *i;
     }
     items.clear();
+
+    delete pActiveItem;
+    pActiveItem = nullptr;
+}
+
+
+void Inventory::initInventoryPanel(const sf::RenderWindow& window, const sf::Texture& panelBorderTexture)
+{
+    panelBorder.setTexture(panelBorderTexture);
+    panelBorder.setPosition(
+        window.getSize().x / 2 - panelBorder.getGlobalBounds().width / 2.f,
+        window.getSize().y - (panelBorder.getGlobalBounds().height + utils::percentToPixels(15.f, window.getSize().y))
+    );
+
+    panelBackground.setPosition(panelBorder.getPosition());
+    panelBackground.setSize(
+        sf::Vector2f(
+            panelBorder.getGlobalBounds().width, 
+            panelBorder.getGlobalBounds().height
+        )
+    );
+    panelBackground.setFillColor(sf::Color(78, 91, 91, 150));
 }
 

@@ -127,7 +127,7 @@ void GameState::update(const float deltaTime)
         updatePlayerKeyboardInput(deltaTime);
         updateTilemap(deltaTime);
 
-        pPlayer->update(deltaTime, mousePosView); 
+        pPlayer->update(deltaTime, mousePosView, mousePosWindow); 
         pTextTagSystem->update(deltaTime);
         pLootSystem->update(*pPlayer);
 
@@ -278,7 +278,7 @@ void GameState::updateCombat(Enemy& enemy)
         enemy.restartDamageTimer();
 
         // Adding new pop-up text
-        pTextTagSystem->addTextTag(DAMAGE_TAG, enemy.getPosition(), damage); 
+        pTextTagSystem->addTextTag(DAMAGE_TAG, enemy.getPosition(), damage);       
     }
 
 
@@ -360,6 +360,7 @@ void GameState::initTextures()
     textures["HP_BAR"].loadFromFile(resources::getPlayerHpBarTextureFile());
     textures["EXP_BAR"].loadFromFile(resources::getPlayerExpBarTextureFile());
     textures["FOOD"].loadFromFile(resources::getFoodTextureFile());
+    textures["INVENTORY_PANEL"].loadFromFile(resources::getInventoryPanelTextureFile());
 }
 
 
@@ -380,10 +381,12 @@ void GameState::initPlayer()
     pPlayer = new Player(
         GRID_SIZE * 2, 
         GRID_SIZE * 2, 
-        textures["PLAYER_SHEET"]
+        textures["PLAYER_SHEET"],
+        textures["INVENTORY_PANEL"],
+        window
     );
 
-    // FIXME
+    // FIXME: Maybe don't need to give the weapon for the player from start
     Sword s(textures["WEAPON_SWORD"], 2, 5);
     pPlayer->addItemToInventory(&s, true);
 }

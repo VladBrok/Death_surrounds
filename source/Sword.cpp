@@ -12,17 +12,15 @@ Sword::Sword(const sf::Texture& texture,
 {
     initRange();
     initAttackTimerMax();
+    initDefaultOriginAndScale();
 
-    sprite.setOrigin(
-        sprite.getGlobalBounds().width / 2.f,
-        sprite.getGlobalBounds().height
-    );
+    sprite.setOrigin(defaultOrigin);
 }
 
 
 void Sword::update(const sf::Vector2f& weaponPosition, const sf::Vector2f& mousePosView)
 {
-    if (this->attackTimer.getElapsedTime().asMilliseconds() < attackTimerMax / 2)
+    if (attackTimer.getElapsedTime().asMilliseconds() < attackTimerMax / 2)
     {
         sf::Vector2f swordPosOffset(utils::getNormalizedDirection(sprite.getPosition(), mousePosView));
 
@@ -55,4 +53,13 @@ void Sword::initRange()
 void Sword::initAttackTimerMax()
 {
     attackTimerMax = 200;
+}
+
+
+void Sword::initDefaultOriginAndScale()
+{
+    defaultOrigin.x = sprite.getGlobalBounds().width / 2.f;
+    defaultOrigin.y = sprite.getGlobalBounds().height;
+    
+    defaultScale.x = defaultScale.y = 1.f;
 }

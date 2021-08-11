@@ -12,7 +12,7 @@ namespace resources
     const std::string backgroundsDirectory = "Resources\\Images\\Backgrounds\\";
     const std::string enemiesDirectory     = "Resources\\Images\\Entities\\Enemies\\";
     const std::string playerDirectory      = "Resources\\Images\\Entities\\Player\\";
-    const std::string itemsDirectory     = "Resources\\Images\\Items\\";
+    const std::string itemsDirectory       = "Resources\\Images\\Items\\";
     const std::string tilesDirectory       = "Resources\\Images\\Tiles\\";
     const std::string configDirectory      = "Config\\";
 
@@ -86,6 +86,12 @@ namespace resources
     std::string getFoodTextureFile()
     {
         return itemsDirectory + "food.png";
+    }
+
+
+    std::string getInventoryPanelTextureFile()
+    {
+        return itemsDirectory + "inventory_border.png";
     }
 
 

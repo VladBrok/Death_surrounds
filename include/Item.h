@@ -6,21 +6,37 @@ class Item
 {
 public:
 
-                           Item(const sf::Texture& texture, const sf::IntRect& textureRect = sf::IntRect());
-    virtual                ~Item() {};
-    virtual void           update(const sf::Vector2f& itemPosition, const sf::Vector2f& mousePosView) = 0;
-    void                   render(sf::RenderTarget& target);
-                           
+                                  Item(const sf::Texture& texture, const sf::IntRect& textureRect = sf::IntRect());
+    virtual                       ~Item() {};
+    virtual void                  update(const sf::Vector2f& itemPosition, const sf::Vector2f& mousePosView) = 0;
+    void                          render(sf::RenderTarget& target);
+                                  
     // Returns the pointer to a new Item copied from the current one (memory must be freed by a caller using operator "delete")
-    virtual Item*          getClone() = 0;
-                           
-    const sf::FloatRect    getGlobalBounds() const;
-    void                   setPosition(const float x, const float y);
-                           
-protected:                 
-                           
-    const sf::Texture&     texture;
-    sf::Sprite             sprite;
+    virtual Item*                 getClone() = 0;
+                                  
+    const sf::FloatRect           getGlobalBounds() const;
+    const sf::Vector2f&           getPosition() const;
+
+    // Returns the default origin that was set after creation of the item
+    const sf::Vector2f&           getDefaultOrigin() const;
+
+    // Returns the default scale that was set after creation of the item
+    const sf::Vector2f&           getDefaultScale() const;
+
+    void                          setPosition(const float x, const float y);
+    void                          setOrigin(const float x, const float y);
+    void                          setScale(const float factorX, const float factorY);
+    virtual bool                  isWeapon() const;
+                                  
+protected:                        
+                                  
+    const sf::Texture&            texture;
+    sf::Sprite                    sprite;
+
+    sf::Vector2f                  defaultOrigin;
+    sf::Vector2f                  defaultScale;
+
+    virtual void                  initDefaultOriginAndScale() = 0;
 };
 
 

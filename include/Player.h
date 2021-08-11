@@ -12,16 +12,21 @@ public:
     
                          Player(const float posX, 
                                 const float posY, 
-                                sf::Texture& textureSheet
+                                const sf::Texture& textureSheet,
+                                const sf::Texture& inventoryPanelTexture,
+                                const sf::RenderWindow& window
                                 );
-    virtual void         update(const float deltaTime, const sf::Vector2f& mousePosView);
+    virtual void         update(const float deltaTime, 
+                                const sf::Vector2f& mousePosView,
+                                const sf::Vector2i& mousePosWindow
+                                );
     virtual void         render(sf::RenderTarget& target, 
                                 sf::Shader* pShader = nullptr,
                                 const sf::Vector2f& shaderLightPosition = sf::Vector2f(),
                                 const bool showHitbox = false
                                 );
 
-    bool                 addItemToInventory(Item*, const bool isWeapon = false, const bool setAsActive = false);
+    bool                 addItemToInventory(Item*, const bool setAsActive = false);
                          
     int                  getHP() const;
     int                  getHPMax() const;
@@ -54,8 +59,6 @@ private:
     sf::Int32            damageTimerMax;
                          
     void                 updateAnimation(const float deltaTime);
-    void                 updateInventory(const sf::Vector2f& mousePosView);
-    void                 renderInventory(sf::RenderTarget& target);
                          
     void                 initDamageTimerMax();
 };

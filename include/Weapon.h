@@ -18,12 +18,12 @@ public:
 
     bool               canAttack();
     void               restartAttackTimer();
+    virtual bool       isWeapon() const;
 
     int                getDamage() const;
     int                getDamageMin() const;
     int                getDamageMax() const;
     float              getRange() const;
-    virtual Weapon*    getClone() = 0;
                        
 protected:             
 

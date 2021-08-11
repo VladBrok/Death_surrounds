@@ -3,7 +3,7 @@
 
 
 Item::Item(const sf::Texture& texture, const sf::IntRect& textureRect)
-    : texture(texture), sprite(texture)
+    : texture(texture), sprite(texture), defaultScale(1.f, 1.f) 
 {
     if (textureRect != sf::IntRect())
     {
@@ -21,6 +21,42 @@ void Item::render(sf::RenderTarget& target)
 void Item::setPosition(const float x, const float y)
 {
     sprite.setPosition(x, y);
+}
+
+
+void Item::setOrigin(const float x, const float y)
+{
+    sprite.setOrigin(x, y);
+}
+
+
+void Item::setScale(const float factorX, const float factorY)
+{
+    sprite.setScale(factorX, factorY);
+}
+
+
+bool Item::isWeapon() const
+{
+    return false;
+}
+
+
+const sf::Vector2f& Item::getPosition() const
+{
+    return sprite.getPosition();
+}
+
+
+const sf::Vector2f& Item::getDefaultOrigin() const
+{
+    return defaultOrigin;
+}
+
+
+const sf::Vector2f& Item::getDefaultScale() const
+{
+    return defaultScale;
 }
 
 

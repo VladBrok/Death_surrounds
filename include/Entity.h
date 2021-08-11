@@ -14,7 +14,7 @@ public:
                             Entity(const sf::Texture& texture);
     virtual                 ~Entity();
                             
-    virtual void            update(const float deltaTime, const sf::Vector2f& mousePosView) = 0;
+    virtual void            update(const float deltaTime, const sf::Vector2f& mousePosView) {};
     virtual void            render(sf::RenderTarget& target, 
                                    sf::Shader* pShader = nullptr,
                                    const sf::Vector2f& shaderLightPosition = sf::Vector2f(),
