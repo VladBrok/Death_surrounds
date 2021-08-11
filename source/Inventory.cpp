@@ -86,12 +86,12 @@ bool Inventory::addItem(Item* pItem)
 
         items.back()->setPosition(
             panelBorder.getPosition().x + INVENTORY_SLOT_SIZE * ((int)items.size() - 1),
-            panelBorder.getPosition().y
+            panelBorder.getPosition().y + INVENTORY_SLOT_OUTLINE_SIZE
         );
 
         items.back()->setScale(
             INVENTORY_SLOT_SIZE / items.back()->getGlobalBounds().width,
-            INVENTORY_SLOT_SIZE / items.back()->getGlobalBounds().height
+            (INVENTORY_SLOT_SIZE - INVENTORY_SLOT_OUTLINE_SIZE * 2) / items.back()->getGlobalBounds().height
         );
         return true;
     }
