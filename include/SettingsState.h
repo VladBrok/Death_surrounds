@@ -19,18 +19,20 @@ public:
     virtual void                                   processEvent(const sf::Event& event);
     virtual void                                   render(sf::RenderTarget* pTarget = nullptr);
     void                                           renderGui(sf::RenderTarget& target);
+    void                                           renderOptionsText(sf::RenderTarget& target);
 
 private:
 
     sf::RectangleShape                             background;
     sf::Font                                       font;
+    sf::Text                                       optionsText;
     std::unordered_map<std::string, Button*>       buttons;
     std::unordered_map<std::string, DropDownList*> dropDownLists;
 
     void                                           initFont();
     void                                           initGui();
     void                                           initBackground();
-    virtual void                                   initTextures();
+    void                                           initOptionsText();
 
     // String example: 800 x 600
     sf::Vector2i                                   getResolutionFromString(const std::string& string);

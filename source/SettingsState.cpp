@@ -12,10 +12,10 @@ SettingsState::SettingsState(sf::RenderWindow& window,
 {
     stateType = STATE_PROCESSES_EVENTS;
 
-    initTextures();
     initFont();
     initGui();
     initBackground();
+    initOptionsText();
 }
 
 
@@ -75,6 +75,7 @@ void SettingsState::render(sf::RenderTarget* pTarget)
     pTarget->draw(background);
     
     renderGui(*pTarget);
+    renderOptionsText(*pTarget);
 }
 
 
@@ -89,6 +90,12 @@ void SettingsState::renderGui(sf::RenderTarget& target)
     {
         d->second->render(target);
     }
+}
+
+
+void SettingsState::renderOptionsText(sf::RenderTarget& target)
+{
+    target.draw(optionsText);
 }
 
 
@@ -154,8 +161,7 @@ void SettingsState::initGui()
         /*
             Note: this "((window.getSize().y % 10) ? 13: 0" statement below is used,
             because when the window height value has the non-zero last number,
-            it cuts down the actual height of the window on 13 pixels 
-            (i don't know why this happens, it's really strange).
+            it cuts down the actual height of the window on 13 pixels (idk why)
         */
         if (videoModes[i].width == window.getSize().x &&
             videoModes[i].height == window.getSize().y + ((window.getSize().y % 10) ? 13: 0))
@@ -166,8 +172,8 @@ void SettingsState::initGui()
 
     dropDownLists["RESOLUTION"] = 
         new DropDownList(
-             (float)(int)utils::percentToPixels(22.f, windowSize.x), 
-             (float)(int)utils::percentToPixels(50.f, windowSize.y), 
+             (float)(int)utils::percentToPixels(20.f, windowSize.x), 
+             (float)(int)utils::percentToPixels(6.f, windowSize.y), 
              utils::percentToPixels(14.6f, windowSize.x), 
              utils::percentToPixels(6.5f, windowSize.y), 
              font, 
@@ -180,13 +186,19 @@ void SettingsState::initGui()
 void SettingsState::initBackground()
 {
     background.setSize(sf::Vector2f((float)window.getSize().x, (float)window.getSize().y));
-    background.setTexture(&textures.at("BACKGROUND"));
+    background.setFillColor(sf::Color(14, 14, 14, 255));
 }
 
 
-void SettingsState::initTextures()
+void SettingsState::initOptionsText()
 {
-    textures["BACKGROUND"].loadFromFile(resources::getMainMenuBackgroundFile());
+    optionsText.setFont(font);
+    optionsText.setCharacterSize(utils::percentToPixels(2.f, window.getSize().x + window.getSize().y));
+    optionsText.setPosition(
+        (float)(int)utils::percentToPixels(5.f, window.getSize().x),
+        (float)(int)utils::percentToPixels(5.f, window.getSize().y)
+    );
+    optionsText.setString("Resolution: ");
 }
 
 
@@ -240,4 +252,5 @@ void SettingsState::reinitialize()
 
     initGui();
     initBackground();
+    initOptionsText();
 }

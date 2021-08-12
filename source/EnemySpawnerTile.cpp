@@ -14,19 +14,23 @@ EnemySpawnerTile::EnemySpawnerTile(const float posX,
                                    )
     : Tile(ENEMY_SPAWNER, posX, posY, textureSheet, textureRect, canCollide),
       enemyType(enemyType),
-      enemyTimeToSpawn(enemyTimeToSpawn)
+      enemyTimeToSpawn(enemyTimeToSpawn),
+      firstSpawn(true)
 {
 }
 
 
 void EnemySpawnerTile::update(EnemySystem& enemySystem)
 {
-    if (spawnTimer.getElapsedTime().asSeconds() >= (float)enemyTimeToSpawn && 
-        enemySystem.getNumberOfActiveEnemies() < NUMBER_OF_ACTIVE_ENEMIES_MAX)
+    if ((spawnTimer.getElapsedTime().asSeconds() >= (float)enemyTimeToSpawn && 
+        enemySystem.getNumberOfActiveEnemies() < NUMBER_OF_ACTIVE_ENEMIES_MAX) ||
+        firstSpawn)
     {
         spawnTimer.restart();
 
         enemySystem.createEnemy(getPosition().x, getPosition().y, enemyType);
+
+        firstSpawn = false;
     }
 }
 

@@ -17,7 +17,7 @@ Rat::Rat(const float posX,
     createMovementComponent(100.f, 1400.f, 900.f);
     createAnimationComponent(textureSheet);
     createHitboxComponent(18.f, 44.f, 20.f, 20.f);
-    createAttributeComponent(1, 8, 1, 1);
+    initAttributeComponent();
 
     initAnimation();
     initDroppingItem();
@@ -32,7 +32,7 @@ Rat::~Rat()
 }
 
 
-void Rat::update(const float deltaTime, const sf::Vector2f& mousePosView)
+void Rat::update(const float deltaTime)
 {
     pMovementComponent->updateMovement(deltaTime);
 
@@ -43,14 +43,7 @@ void Rat::update(const float deltaTime, const sf::Vector2f& mousePosView)
     pAiFollow->update(deltaTime);
 
 
-    if (!canBeDamaged())
-    {
-        sprite.setColor(sf::Color::Red);
-    }
-    else
-    {
-        sprite.setColor(sf::Color::White);
-    }
+    Character::updateDamageColor();
 }
 
 
@@ -75,6 +68,12 @@ void Rat::updateAnimation(const float deltaTime)
     {
         std::cout << "ERROR in Rat::updateAnimation:\nthere is no animation for this type of enemy movement.\n";
     }
+}
+
+
+void Rat::initAttributeComponent()
+{
+    createAttributeComponent(1, 8, 1, 1);
 }
 
 

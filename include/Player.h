@@ -1,12 +1,12 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "Entity.h"
+#include "Character.h"
 #include "Sword.h"
 #include "Inventory.h"
 
 
-class Player: public Entity
+class Player: public Character
 {
 public:
     
@@ -31,39 +31,33 @@ public:
     void                 removeActiveItem();
     Item*                getActiveItem() const;
                          
-    int                  getHP() const;
-    int                  getHPMax() const;
+    int                  getHp() const;
+    int                  getHpMax() const;
     int                  getExp() const;
     int                  getExpForNextLevel() const;
     unsigned             getLevel() const;
-    int                  getDamage() const;
+    virtual int          getDamage() const;
     float                getAttackRange() const;
     const std::string    getStatsAsString() const;
     int                  getNumberOfItems() const;
 
-    void                 loseHp(const unsigned hp);
-    void                 gainHp(const unsigned hp);
     void                 loseExp(const unsigned exp);
     void                 gainExp(const unsigned exp);
                          
     void                 setAttackStatus(const bool attacking);
     bool                 isAttacking() const;
-    bool                 canBeDamaged() const;
-    void                 restartDamageTimer();
-    bool                 canAttack() const;
-    bool                 isDead() const;
+    virtual bool         canAttack() const;
                          
 private:                 
                          
     Inventory            inventory;
     Weapon*              pActiveWeapon;
     bool                 attacking;
-    sf::Clock            damageTimer;
-    sf::Int32            damageTimerMax;
                          
     void                 updateAnimation(const float deltaTime);
-                         
-    void                 initDamageTimerMax();
+           
+    virtual void         initAttributeComponent();
+    virtual void         initTimers();
 };
 
 

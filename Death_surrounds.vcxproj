@@ -16,6 +16,7 @@
     <ClCompile Include="source\AnimationComponent.cpp" />
     <ClCompile Include="source\AttributeComponent.cpp" />
     <ClCompile Include="source\Button.cpp" />
+    <ClCompile Include="source\Character.cpp" />
     <ClCompile Include="source\DefaultEditorMode.cpp" />
     <ClCompile Include="source\DropDownList.cpp" />
     <ClCompile Include="source\EditorState.cpp" />
@@ -61,6 +62,7 @@
     <ClInclude Include="include\AnimationComponent.h" />
     <ClInclude Include="include\AttributeComponent.h" />
     <ClInclude Include="include\Button.h" />
+    <ClInclude Include="include\Character.h" />
     <ClInclude Include="include\constants.h" />
     <ClInclude Include="include\DefaultEditorMode.h" />
     <ClInclude Include="include\DropDownList.h" />

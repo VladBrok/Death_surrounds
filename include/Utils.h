@@ -6,7 +6,7 @@ namespace utils
 {
 
 
-// Coverts the percent value of the size to pixels 
+// Converts the percent value of the size to pixels 
 float percentToPixels(const float percent, const int size);
 
 // Returns the distance between two points

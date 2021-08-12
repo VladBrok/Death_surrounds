@@ -6,6 +6,7 @@ enum PresetTextTagId
 {
     EXPERIENCE_TAG,
     DAMAGE_TAG,
+    HEALING_TAG,
     LEVEL_UP_TAG,
     ITEM_NAME_TAG,
     NUMBER_OF_PRESET_TAGS

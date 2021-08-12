@@ -13,7 +13,6 @@ enum EnemyType
 };
 
 
-
 class EnemySystem: public sf::NonCopyable
 {
 public:

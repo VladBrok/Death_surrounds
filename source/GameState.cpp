@@ -52,6 +52,7 @@ void GameState::processEvent(const sf::Event& event)
         pPlayer->canAttack())
     {
         pPlayer->setAttackStatus(true);
+        pPlayer->restartAttackTimer();
     }
     else if (event.type == sf::Event::MouseButtonReleased &&
         event.mouseButton.button == sf::Mouse::Left)
@@ -68,19 +69,16 @@ void GameState::processEvent(const sf::Event& event)
     {
         processGameOverEvent(event);
     }
-    else if (!gameOver && !stateIsPaused)
+    else if (!gameOver && !stateIsPaused && event.type == sf::Event::KeyPressed)
     {
-        if (event.type == sf::Event::KeyPressed)
+        if (event.key.code == keybinds.at("TOGGLE_PLAYER_INFO_TAB"))
         {
-            if (event.key.code == keybinds.at("TOGGLE_PLAYER_INFO_TAB"))
-            {
-                pPlayerGui->toggleInfoTab();
-            }
-            else if (event.key.code == keybinds.at("DROP_ITEM") && pPlayer->getActiveItem())
-            {
-                pLootSystem->addLoot(pPlayer->getCenter().x + GRID_SIZE, pPlayer->getCenter().y, pPlayer->getActiveItem());
-                pPlayer->removeActiveItem();
-            }
+            pPlayerGui->toggleInfoTab();
+        }
+        else if (event.key.code == keybinds.at("DROP_ITEM") && pPlayer->getActiveItem())
+        {
+            pLootSystem->addLoot(pPlayer->getCenter().x + GRID_SIZE, pPlayer->getCenter().y, pPlayer->getActiveItem());
+            pPlayer->removeActiveItem();
         }
     }
 
@@ -176,8 +174,8 @@ void GameState::updateView()
 
     view.setCenter(
         sf::Vector2f(
-            (float)((int)view.getCenter().x), 
-            (float)((int)view.getCenter().y)
+            (float)(int)view.getCenter().x, 
+            (float)(int)view.getCenter().y
         )
     );
 }
@@ -221,7 +219,7 @@ void GameState::updateEnemiesAndCombat(const float deltaTime)
     auto enemy = enemies.begin();
     while (enemy != enemies.end())
     {
-        (*enemy)->update(deltaTime, mousePosView);
+        (*enemy)->update(deltaTime);
 
         updateCombat(**enemy); 
 
@@ -295,12 +293,14 @@ void GameState::updateCombat(Enemy& enemy)
 
     // Attack of the enemy
     if (pPlayer->getGlobalBounds().intersects(enemy.getGlobalBounds()) &&
-        pPlayer->canBeDamaged())
+        pPlayer->canBeDamaged() &&
+        enemy.canAttack())
     {
         int damage = enemy.getDamage();
         pPlayer->loseHp(damage);
 
         pPlayer->restartDamageTimer();
+        enemy.restartAttackTimer();
 
         pTextTagSystem->addTextTag(DAMAGE_TAG, pPlayer->getPosition(), damage);
     }
@@ -457,7 +457,7 @@ void GameState::initGameOverScreen()
 
     gameOverInfoText.setFont(font);
     gameOverInfoText.setCharacterSize(utils::percentToPixels(2.5f, (int)(window.getSize().x + window.getSize().y)));
-    gameOverInfoText.setString("Press \"Space\" key to respawn");
+    gameOverInfoText.setString("Press Space key to respawn");
     gameOverInfoText.setPosition(
         gameOverScreen.getSize().x / 2.f - gameOverInfoText.getGlobalBounds().width / 2.f,
         gameOverText.getPosition().y + gameOverText.getGlobalBounds().height + utils::percentToPixels(5.f, (int)window.getSize().y)

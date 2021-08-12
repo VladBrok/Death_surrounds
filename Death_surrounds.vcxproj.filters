@@ -187,6 +187,9 @@
     <ClCompile Include="source\Food.cpp">
       <Filter>Items\Food</Filter>
     </ClCompile>
+    <ClCompile Include="source\Character.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AnimationComponent.h">
@@ -311,6 +314,9 @@
     </ClInclude>
     <ClInclude Include="include\Food.h">
       <Filter>Items\Food</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Character.h">
+      <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

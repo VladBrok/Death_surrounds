@@ -16,13 +16,14 @@ public:
                         Entity& player
                         );
                     ~Rat();
-    virtual void    update(const float deltaTime, const sf::Vector2f& mousePosView);
+    virtual void    update(const float deltaTime);
 
 private:
 
     AiFollow*       pAiFollow;
 
     virtual void    updateAnimation(const float deltaTime);
+    virtual void    initAttributeComponent();
     virtual void    initAnimation();
     virtual void    initDroppingItem();
 };

@@ -8,56 +8,17 @@ Enemy::Enemy(const float posX,
              const sf::Texture& textureSheet,
              const sf::Texture& lootTextureSheet
              )
-    : Entity(textureSheet), lootTextureSheet(lootTextureSheet), expForKillingMax(0)
+    : Character(textureSheet), lootTextureSheet(lootTextureSheet), expForKillingMax(0)
 {
     setPosition(posX, posY);
 
-    initDamageTimerMax();
-}
-
-
-void Enemy::loseHp(const unsigned hp)
-{
-    if (pAttributeComponent)
-    {
-        pAttributeComponent->loseHp(hp);
-    }
-    else
-    {
-        std::cout << "ERROR in Enemy::loseHp: this enemy doesn't have an AttributeComponent\n";
-    }
-}
-
-
-bool Enemy::isDead() const
-{
-    if (pAttributeComponent)
-    {
-        return pAttributeComponent->hp <= 0;
-    }
-    else
-    {
-        std::cout << "ERROR in Enemy::isDead: this enemy doesn't have an AttributeComponent\n";
-        return false;
-    }
+    initTimers();
 }
 
 
 bool Enemy::canBeDespawned(const sf::View& view) const
 {
     return utils::getDistance(getCenter(), view.getCenter()) > (view.getSize().x + view.getSize().y) / 2.0f;
-}
-
-
-bool Enemy::canBeDamaged() const
-{
-    return damageTimer.getElapsedTime().asMilliseconds() >= damageTimerMax;
-}
-
-
-void Enemy::restartDamageTimer()
-{
-    damageTimer.restart();
 }
 
 
@@ -74,27 +35,14 @@ unsigned Enemy::getExpForKilling() const
 }
 
 
-int Enemy::getDamage() const
-{
-    if (pAttributeComponent)
-    {
-        return pAttributeComponent->getDamage();
-    }
-    else
-    {
-        std::cout << "ERROR in Enemy::isDead: this enemy doesn't have an AttributeComponent\n";
-        return 0;
-    }
-}
-
-
 Item* Enemy::getDroppingItem() const
 {
     return droppingItem.get();
 }
 
 
-void Enemy::initDamageTimerMax()
+void Enemy::initTimers()
 {
     damageTimerMax = 200;
+    attackTimerMax = 200;
 }

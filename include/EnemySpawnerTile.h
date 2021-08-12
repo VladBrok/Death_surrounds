@@ -30,6 +30,7 @@ private:
     int                         enemyType;
     int                         enemyTimeToSpawn;
     sf::Clock                   spawnTimer;
+    bool                        firstSpawn;
 };
 
 

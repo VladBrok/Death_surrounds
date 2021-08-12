@@ -9,13 +9,13 @@ Player::Player(const float posX,
                const sf::Texture& inventoryPanelTexture,
                const sf::RenderWindow& window
                )
-    : Entity(textureSheet), inventory(window, inventoryPanelTexture), pActiveWeapon(nullptr)
+    : Character(textureSheet), inventory(window, inventoryPanelTexture), pActiveWeapon(nullptr)
 {
 
     createMovementComponent(200.f, 1600.f, 1000.f);
     createAnimationComponent(textureSheet);
     createHitboxComponent(18.f, 19.f, 28.f, 38.f);
-    createAttributeComponent(1, 10, 1, 2);
+    initAttributeComponent();
 
     pAnimationComponent->addAnimation("IDLE", textureSheet, sprite, 0, 0, 8, 0, 64, 64, 9.5f);
     pAnimationComponent->addAnimation("MOVING_DOWN", textureSheet, sprite, 0, 1, 3, 1, 64, 64, 9.5f);
@@ -25,7 +25,7 @@ Player::Player(const float posX,
 
     setPosition(posX, posY);
 
-    initDamageTimerMax();
+    initTimers();
 }
 
 
@@ -62,7 +62,16 @@ void Player::update(const float deltaTime,
             sf::Mouse::isButtonPressed(sf::Mouse::Right))
         {
             Food* food = static_cast<Food*>(inventory.getActiveItem());
-            pAttributeComponent->gainHp((int)food->getRestoringHpAmount());
+            int hpToRestore = (int)food->getRestoringHpAmount();
+
+            // Adding the new pop-up text
+            textTagSystem.addTextTag(
+                HEALING_TAG, 
+                getPosition(), 
+                (hpToRestore + getHp()) > getHpMax() ? (hpToRestore - (getHp() + hpToRestore - getHpMax())): hpToRestore
+            );
+            pAttributeComponent->gainHp(hpToRestore);
+
             inventory.removeItem(inventory.getActiveItemIndex());
         } 
     }
@@ -71,16 +80,7 @@ void Player::update(const float deltaTime,
         pActiveWeapon = nullptr;
     }
 
-
-
-    if (!canBeDamaged())
-    {
-        sprite.setColor(sf::Color::Red);
-    }
-    else
-    {
-        sprite.setColor(sf::Color::White);
-    }
+    Character::updateDamageColor();
 }
 
 
@@ -133,13 +133,13 @@ Item* Player::getActiveItem() const
 }
 
 
-int Player::getHP() const
+int Player::getHp() const
 {
     return pAttributeComponent->hp;
 }
 
 
-int Player::getHPMax() const
+int Player::getHpMax() const
 {
     return pAttributeComponent->hpMax;
 }
@@ -169,7 +169,7 @@ int Player::getDamage() const
     {
         return pActiveWeapon->getDamage() + pAttributeComponent->getDamage();  
     }
-    return pAttributeComponent->getDamage();
+    return Character::getDamage();
 }
 
 
@@ -206,18 +206,6 @@ int Player::getNumberOfItems() const
 }
 
 
-void Player::loseHp(const unsigned hp)
-{
-    pAttributeComponent->loseHp(hp);
-}
-
-
-void Player::gainHp(const unsigned hp)
-{
-    pAttributeComponent->gainHp(hp);
-}
-
-
 void Player::loseExp(const unsigned exp)
 {
     pAttributeComponent->loseExp(exp);
@@ -242,18 +230,6 @@ bool Player::isAttacking() const
 }
 
 
-bool Player::canBeDamaged() const
-{
-    return damageTimer.getElapsedTime().asMilliseconds() >= damageTimerMax;
-}
-
-
-void Player::restartDamageTimer()
-{
-    damageTimer.restart();
-}
-
-
 bool Player::canAttack() const
 {
     if (pActiveWeapon)
@@ -261,13 +237,7 @@ bool Player::canAttack() const
         return pActiveWeapon->canAttack();
     }
 
-    return true;
-}
-
-
-bool Player::isDead() const
-{
-    return pAttributeComponent->hp <= 0;
+    return Character::canAttack();
 }
 
 
@@ -295,7 +265,14 @@ void Player::updateAnimation(const float deltaTime)
 }
 
 
-void Player::initDamageTimerMax()
+void Player::initAttributeComponent()
+{
+    createAttributeComponent(1, 10, 1, 2);
+}
+
+
+void Player::initTimers()
 {
     damageTimerMax = 350;
+    attackTimerMax = 200;
 }
