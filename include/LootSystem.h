@@ -9,18 +9,33 @@ class LootSystem
 {
 public:
 
-                        LootSystem(const sf::Texture& lootTextureSheet);
-                        ~LootSystem();
-    void                update(Player& player);
-    void                render(sf::RenderTarget& target);
+                          LootSystem(const sf::Texture& lootTextureSheet);
+                          ~LootSystem();
+    void                  update(Player& player);
+    void                  render(sf::RenderTarget& target);
 
     // This function will place a copy of the item to the LootSystem
-    void                addLoot(const float posX, const float posY, Item* pLoot);
+    void                  addLoot(const float posX, const float posY, Item* pLoot);
 
 private:
 
-    sf::Sprite          lootSprite;
-    std::list<Item*>    loot;
+
+    struct Bounty
+    {
+        Bounty(Item* pItem, sf::Clock eliminationTimer)
+            : pItem(pItem), eliminationTimer(eliminationTimer)
+        {
+        }
+
+        Item* pItem;
+        sf::Clock eliminationTimer;
+    };
+
+
+    sf::Sprite            lootSprite;
+    std::list<Bounty>     loot;
+    float                 eliminationTimerMax;
+
 };
 
 

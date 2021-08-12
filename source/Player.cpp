@@ -1,6 +1,6 @@
 #include "precompiled.h"
 #include "Player.h"
-#include "constants.h"
+#include "Food.h"
 
 
 Player::Player(const float posX, 
@@ -9,7 +9,7 @@ Player::Player(const float posX,
                const sf::Texture& inventoryPanelTexture,
                const sf::RenderWindow& window
                )
-    : Entity(textureSheet), inventory(INVENTORY_SIZE_MAX, window, inventoryPanelTexture), pActiveWeapon(nullptr)
+    : Entity(textureSheet), inventory(window, inventoryPanelTexture), pActiveWeapon(nullptr)
 {
 
     createMovementComponent(200.f, 1600.f, 1000.f);
@@ -41,14 +41,35 @@ void Player::update(const float deltaTime,
     pHitboxComponent->update();
 
     inventory.update(getCenter(), mousePosView, mousePosWindow);
-    if (inventory.getActiveItem() && inventory.getActiveItem()->isWeapon())
+
+    
+    if (inventory.getActiveItem())
     {
-        pActiveWeapon = static_cast<Weapon*>(inventory.getActiveItem());
+        // Setting the player's weapon
+        if (inventory.getActiveItem()->isWeapon())
+        {
+            pActiveWeapon = static_cast<Weapon*>(inventory.getActiveItem());
+        }
+        else
+        {
+            pActiveWeapon = nullptr;
+        }
+
+        // Eating the food
+        if (inventory.getActiveItem()->isFood() && 
+            pAttributeComponent->hp != pAttributeComponent->hpMax &&
+            sf::Mouse::isButtonPressed(sf::Mouse::Right))
+        {
+            Food* food = static_cast<Food*>(inventory.getActiveItem());
+            pAttributeComponent->gainHp((int)food->getRestoringHpAmount());
+            inventory.removeItem(inventory.getActiveItemIndex());
+        } 
     }
     else
     {
         pActiveWeapon = nullptr;
     }
+
 
 
     if (!canBeDamaged())
@@ -59,10 +80,6 @@ void Player::update(const float deltaTime,
     {
         sprite.setColor(sf::Color::White);
     }
-
-
-    // DEBUG
-    //std::cout << inventory.getSize() << '\n';
 }
 
 
@@ -90,20 +107,28 @@ bool Player::addItemToInventory(Item* pItem, const bool setAsActive)
     assert(pItem != nullptr);
     bool isAdded = inventory.addItem(pItem);
 
-    if (isAdded)
+    if (isAdded && setAsActive)
     {
-        if (pItem->isWeapon() && setAsActive)
-        {
-            inventory.setActiveItem(inventory.getSize() - 1);
-
-            Weapon* pWeapon = dynamic_cast<Weapon*>(inventory.getActiveItem());
-            if (pWeapon)
-            {
-                pActiveWeapon = pWeapon;
-            }
-        }
+        inventory.setActiveItem(inventory.getSize() - 1);
     }
     return isAdded;
+}
+
+
+void Player::removeActiveItem()
+{
+    inventory.removeItem(inventory.getActiveItemIndex());
+
+    if (pActiveWeapon)
+    {
+        pActiveWeapon = nullptr;
+    }
+}
+
+
+Item* Player::getActiveItem() const
+{
+    return inventory.getActiveItem();
 }
 
 

@@ -15,6 +15,8 @@ public:
     virtual Food*                 getClone();
     int                           getRestoringHpAmount() const;
 
+    virtual bool                  isFood() const;
+
 private:
 
     int                           restoringHpAmount;

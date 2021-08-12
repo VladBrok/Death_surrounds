@@ -23,7 +23,7 @@ public:
     void            play(const std::string& animationKey, const float deltaTime, const bool priority = false);
 
     /* 
-        This play function allows you to modify an animation speed 
+        This function allows you to modify an animation speed 
         depending on certain circumstances
     */
     void            play(const std::string& animationKey,
@@ -32,7 +32,9 @@ public:
                          const float modifierMax,
                          const bool priority = false
                          );
-    bool            isDone(const std::string& animationKey) const; // Returns true if animation is finished
+
+    // Returns true if the animation is finished
+    bool            isDone(const std::string& animationKey) const; 
 
 private:
 
@@ -53,8 +55,8 @@ private:
 
         /*
             In this constructor, variables startFrameX and startFrameY are 
-            the numbers of the column and row (starting from 0) in which the starting frame is
-            located on the texture sheet. Same for endFrameX and endFrameY.
+            numbers of the column and the row (starting from 0) in which the starting frame is
+            located on the texture sheet.
         */
         Animation(const sf::Texture&    textureSheet, 
                   sf::Sprite&           sprite,

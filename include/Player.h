@@ -27,6 +27,8 @@ public:
                                 );
 
     bool                 addItemToInventory(Item*, const bool setAsActive = false);
+    void                 removeActiveItem();
+    Item*                getActiveItem() const;
                          
     int                  getHP() const;
     int                  getHPMax() const;

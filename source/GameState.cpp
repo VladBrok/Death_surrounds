@@ -129,7 +129,7 @@ void GameState::update(const float deltaTime)
 
         pPlayer->update(deltaTime, mousePosView, mousePosWindow); 
         pTextTagSystem->update(deltaTime);
-        pLootSystem->update(*pPlayer);
+        updateLootSystem();
 
         updateView();
         updateEnemiesAndCombat(deltaTime);
@@ -292,6 +292,18 @@ void GameState::updateCombat(Enemy& enemy)
         pPlayer->restartDamageTimer();
 
         pTextTagSystem->addTextTag(DAMAGE_TAG, pPlayer->getPosition(), damage);
+    }
+}
+
+
+void GameState::updateLootSystem()
+{
+    pLootSystem->update(*pPlayer);
+
+    if (sf::Keyboard::isKeyPressed(keybinds.at("DROP_ITEM")) && pPlayer->getActiveItem() != nullptr)
+    {
+        pLootSystem->addLoot(pPlayer->getCenter().x + GRID_SIZE, pPlayer->getCenter().y, pPlayer->getActiveItem());
+        pPlayer->removeActiveItem();
     }
 }
 

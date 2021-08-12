@@ -31,6 +31,12 @@ int Food::getRestoringHpAmount() const
 }
 
 
+bool Food::isFood() const
+{
+    return true;
+}
+
+
 void Food::initDefaultOriginAndScale()
 {
     defaultOrigin.x = sprite.getTextureRect().left + sprite.getTextureRect().width / 2.f;

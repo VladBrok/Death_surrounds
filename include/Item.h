@@ -16,6 +16,7 @@ public:
                                   
     const sf::FloatRect           getGlobalBounds() const;
     const sf::Vector2f&           getPosition() const;
+    const sf::IntRect&            getTextureRect() const;
 
     // Returns the default origin that was set after creation of the item
     const sf::Vector2f&           getDefaultOrigin() const;
@@ -26,7 +27,10 @@ public:
     void                          setPosition(const float x, const float y);
     void                          setOrigin(const float x, const float y);
     void                          setScale(const float factorX, const float factorY);
+    void                          setRotation(const float angle);
+
     virtual bool                  isWeapon() const;
+    virtual bool                  isFood() const;
                                   
 protected:                        
                                   

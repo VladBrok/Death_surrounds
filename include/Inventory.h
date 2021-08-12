@@ -9,8 +9,7 @@ class Inventory
 {
 public:
 
-                          Inventory(const int maxNumberOfItems,
-                                    const sf::RenderWindow& window, 
+                          Inventory(const sf::RenderWindow& window, 
                                     const sf::Texture& inventoryPanelBorderTexture
                                     );
                           
@@ -30,23 +29,24 @@ public:
     void                  removeItem(const int index);
     void                  setActiveItem(const int index);
     Item*                 getActiveItem() const;
+    int                   getActiveItemIndex() const;
                           
     bool                  isEmpty() const;
     int                   getSize() const;
                           
     Item&                 operator[](const int index);
-    Item&                 back();
                           
 private:                  
                           
-    std::list<Item*>      items;
-    int                   maxNumberOfItems;
-    Item*                 pActiveItem;
-    int                   previousActiveItemIndex;
+    std::vector<Item*>    items;
+    Item*                 pActiveItem; // This pointer holds a copy of the item
+    int                   activeItemIndex;
     int                   previousInventorySize;
+    int                   actualSize;
                           
     sf::Sprite            panelBorder;
     sf::RectangleShape    panelBackground;
+    sf::RectangleShape    selectedSlotBackground;
                           
     void                  clear();
                           

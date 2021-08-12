@@ -5,17 +5,16 @@
 #include "Utils.h"
 
 
-Inventory::Inventory(const int maxNumberOfItems, 
-                     const sf::RenderWindow& window, 
+Inventory::Inventory(const sf::RenderWindow& window, 
                      const sf::Texture& inventoryPanelBorderTexture
                      )
-    : maxNumberOfItems(maxNumberOfItems), 
-      pActiveItem(nullptr), 
-      previousActiveItemIndex(-1),
-      previousInventorySize(0)
-{
-    assert(maxNumberOfItems > 0 && maxNumberOfItems <= INVENTORY_SIZE_MAX);
-    
+    : pActiveItem(nullptr), 
+      activeItemIndex(0),
+      previousInventorySize(0),
+      actualSize(0)
+{   
+    items.assign(INVENTORY_SIZE_MAX, nullptr);
+
     initInventoryPanel(window, inventoryPanelBorderTexture);
 }
 
@@ -36,11 +35,14 @@ void Inventory::update(const sf::Vector2f& itemPosition,
         sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
         int itemIndex = (int)(mousePosWindow.x - panelBorder.getPosition().x) / INVENTORY_SLOT_SIZE;
-        if (previousActiveItemIndex != itemIndex || previousInventorySize < (int)items.size())
+        if (activeItemIndex != itemIndex || previousInventorySize < (int)items.size())
         {
             setActiveItem(itemIndex);
-            previousActiveItemIndex = itemIndex;
-            previousInventorySize = (int)items.size();
+            previousInventorySize = actualSize;
+            selectedSlotBackground.setPosition(
+                panelBorder.getPosition().x + itemIndex * INVENTORY_SLOT_SIZE, 
+                panelBorder.getPosition().y
+            );
         }
     }
 
@@ -63,11 +65,15 @@ void Inventory::renderToView(sf::RenderTarget& target)
 void Inventory::renderToWindow(sf::RenderTarget& target)
 {
     target.draw(panelBackground);
+    target.draw(selectedSlotBackground);
     target.draw(panelBorder);
 
     for (auto i = items.begin(); i != items.end(); ++i)
     {
-        (*i)->render(target);
+        if (*i)
+        {
+            (*i)->render(target);
+        }
     }
 }
 
@@ -76,23 +82,43 @@ bool Inventory::addItem(Item* pItem)
 {
     assert(pItem != nullptr);
 
-    if ((int)items.size() < maxNumberOfItems)
+    int index = 0;
+    while (items[index])
     {
-        items.push_back(pItem->getClone());
+        ++index;
+    }
+
+    if (index < (int)items.size())
+    {
+        items[index] = pItem->getClone();
 
 
-        // Setting the item's origin, position and scale to properly place it to the inventory panel
-        items.back()->setOrigin(0.f, 0.f);
+        // Setting the item's transformation to properly place it to the inventory panel
 
-        items.back()->setPosition(
-            panelBorder.getPosition().x + INVENTORY_SLOT_SIZE * ((int)items.size() - 1),
+        items[index]->setRotation(0.f);
+
+        items[index]->setOrigin(0.f, 0.f);
+
+        items[index]->setPosition(
+            panelBorder.getPosition().x + INVENTORY_SLOT_SIZE * index,
             panelBorder.getPosition().y + INVENTORY_SLOT_OUTLINE_SIZE
         );
 
-        items.back()->setScale(
-            INVENTORY_SLOT_SIZE / items.back()->getGlobalBounds().width,
-            (INVENTORY_SLOT_SIZE - INVENTORY_SLOT_OUTLINE_SIZE * 2) / items.back()->getGlobalBounds().height
+        items[index]->setScale(1.f, 1.f);
+
+        items[index]->setScale(
+            (INVENTORY_SLOT_SIZE) / items[index]->getGlobalBounds().width,
+            (INVENTORY_SLOT_SIZE - INVENTORY_SLOT_OUTLINE_SIZE * 2) / items[index]->getGlobalBounds().height
         );
+
+
+        if (index == activeItemIndex)
+        {
+            setActiveItem(index);
+        }
+
+        ++actualSize;
+
         return true;
     }
     return false;
@@ -103,22 +129,28 @@ void Inventory::removeItem(const int index)
 {
     assert(index >= 0 && index < (int)items.size());
 
-    auto toRemove = items.begin();
-    std::advance(toRemove, index);
-    delete *toRemove;
-    items.erase(toRemove);
+    if (index == activeItemIndex)
+    {
+        delete pActiveItem;
+        pActiveItem = nullptr;
+    }
+
+    delete items[index];
+    items[index] = nullptr;
+
+    --actualSize;
 }
 
 
 void Inventory::setActiveItem(const int index)
 {
-    assert(index >= 0 && index < INVENTORY_SIZE_MAX);
+    assert(index >= 0 && index < (int)items.size());
 
     delete pActiveItem;
 
-    if (index < (int)items.size())
+    if (items[index])
     {
-        pActiveItem = (this->operator[](index)).getClone();
+        pActiveItem = items[index]->getClone();
 
         // Setting the origin and scale of the item to default values
         pActiveItem->setOrigin(pActiveItem->getDefaultOrigin().x, pActiveItem->getDefaultOrigin().y);
@@ -128,6 +160,7 @@ void Inventory::setActiveItem(const int index)
     {
         pActiveItem = nullptr;
     }
+    activeItemIndex = index;
 }
 
 
@@ -137,15 +170,21 @@ Item* Inventory::getActiveItem() const
 }
 
 
+int Inventory::getActiveItemIndex() const
+{
+    return activeItemIndex;
+}
+
+
 bool Inventory::isEmpty() const
 {
-    return items.empty();
+    return !actualSize;
 }
 
 
 int Inventory::getSize() const
 {
-    return (int)items.size();
+    return actualSize;
 }
 
 
@@ -153,20 +192,12 @@ Item& Inventory::operator[](const int index)
 {
     assert(index >= 0 && index < (int)items.size());
 
-    auto it = items.begin();
-    std::advance(it, index);
-
-    return **it;
-}
-
-
-Item& Inventory::back()
-{
-    if (items.empty())
+    if (!items[index])
     {
-        throw std::runtime_error("ERROR in Inventory::back: vector of items is empty\n");
+        throw std::runtime_error("ERROR in Inventory::operator[]: there is no item at that index");
     }
-    return *items.back();
+
+    return *items[index];
 }
 
 
@@ -175,11 +206,13 @@ void Inventory::clear()
     for (auto i = items.begin(); i != items.end(); ++i)
     {
         delete *i;
+        (*i) = nullptr;
     }
-    items.clear();
 
     delete pActiveItem;
     pActiveItem = nullptr;
+
+    actualSize = 0;
 }
 
 
@@ -198,6 +231,10 @@ void Inventory::initInventoryPanel(const sf::RenderWindow& window, const sf::Tex
             panelBorder.getGlobalBounds().height
         )
     );
-    panelBackground.setFillColor(sf::Color(78, 91, 91, 150));
+    panelBackground.setFillColor(sf::Color(70, 83, 83, 150));
+
+    selectedSlotBackground.setSize(sf::Vector2f((float)INVENTORY_SLOT_SIZE, (float)INVENTORY_SLOT_SIZE));
+    selectedSlotBackground.setFillColor(sf::Color(80, 80, 80, 155));
+    selectedSlotBackground.setPosition(panelBorder.getPosition().x, panelBorder.getPosition().y);
 }
 

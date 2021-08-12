@@ -4,39 +4,41 @@
 
 
 LootSystem::LootSystem(const sf::Texture& lootTextureSheet)
-    : lootSprite(lootTextureSheet)
+    : lootSprite(lootTextureSheet), eliminationTimerMax(120.f)
 {
 }
 
 
 LootSystem::~LootSystem()
 {
-    for (auto l = loot.begin(); l != loot.end(); ++l)
+    for (auto bounty = loot.begin(); bounty != loot.end(); ++bounty)
     {
-        delete *l;
+        delete bounty->pItem;
     }
 }
 
 
 void LootSystem::update(Player& player)
 {
-    if (player.getNumberOfItems() >= INVENTORY_SIZE_MAX)
+    auto bounty = loot.begin();
+    while (bounty != loot.end())
     {
-        return;
-    }
+        bool intersectsWithPlayer = 
+                player.getGlobalBounds().intersects((bounty->pItem)->getGlobalBounds()) &&
+                player.getNumberOfItems() < INVENTORY_SIZE_MAX;
 
-    auto l = loot.begin();
-    while (l != loot.end())
-    {
-        if (player.getGlobalBounds().intersects((*l)->getGlobalBounds()))
+        if (intersectsWithPlayer)
         {
-            player.addItemToInventory(*l);
-            delete *l;
-            l = loot.erase(l);
+            player.addItemToInventory(bounty->pItem);
+        }
+        if (intersectsWithPlayer || bounty->eliminationTimer.getElapsedTime().asSeconds() >= eliminationTimerMax)
+        {
+            delete bounty->pItem;
+            bounty = loot.erase(bounty);
         }
         else
         {
-            ++l;
+            ++bounty;
         }
     }
 }
@@ -44,9 +46,9 @@ void LootSystem::update(Player& player)
 
 void LootSystem::render(sf::RenderTarget& target)
 {
-    for (auto l = loot.begin(); l != loot.end(); ++l)
+    for (auto bounty = loot.begin(); bounty != loot.end(); ++bounty)
     {
-        (*l)->render(target);
+        (bounty->pItem)->render(target);
     }
 }
 
@@ -55,7 +57,7 @@ void LootSystem::addLoot(const float posX, const float posY, Item* pLoot)
 {
     assert(pLoot != nullptr);
 
-    pLoot->setPosition(posX, posY);
+    loot.push_back(Bounty(pLoot->getClone(), sf::Clock()));
 
-    loot.push_back(pLoot->getClone());
+    loot.back().pItem->setPosition(posX, posY);
 }

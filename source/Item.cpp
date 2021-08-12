@@ -36,7 +36,19 @@ void Item::setScale(const float factorX, const float factorY)
 }
 
 
+void Item::setRotation(const float angle)
+{
+    sprite.setRotation(angle);
+}
+
+
 bool Item::isWeapon() const
+{
+    return false;
+}
+
+
+bool Item::isFood() const
 {
     return false;
 }
@@ -45,6 +57,12 @@ bool Item::isWeapon() const
 const sf::Vector2f& Item::getPosition() const
 {
     return sprite.getPosition();
+}
+
+
+const sf::IntRect& Item::getTextureRect() const
+{
+    return sprite.getTextureRect();
 }
 
 
