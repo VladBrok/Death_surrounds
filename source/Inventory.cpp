@@ -26,7 +26,8 @@ Inventory::~Inventory()
 
 void Inventory::update(const sf::Vector2f& itemPosition, 
                        const sf::Vector2f& mousePosView,
-                       const sf::Vector2i& mousePosWindow
+                       const sf::Vector2i& mousePosWindow,
+                       TextTagSystem& textTagSystem
                        )
 {
     // Selecting the new active item
@@ -41,6 +42,19 @@ void Inventory::update(const sf::Vector2f& itemPosition,
                 panelBorder.getPosition().x + itemIndex * INVENTORY_SLOT_SIZE, 
                 panelBorder.getPosition().y
             );
+
+            if (pActiveItem)
+            {
+                textTagSystem.addTextTag(
+                    ITEM_NAME_TAG, 
+                    sf::Vector2f(),
+                    pActiveItem->getName()
+                );
+                textTagSystem.setBackElementPosition(
+                    selectedSlotBackground.getPosition().x + selectedSlotBackground.getSize().x / 2.f - textTagSystem.getBackElementSize().x / 2.f,
+                    selectedSlotBackground.getPosition().y - selectedSlotBackground.getSize().y / 1.3f
+                );
+            }
         }
     }
 

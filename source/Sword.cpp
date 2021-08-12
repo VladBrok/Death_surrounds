@@ -44,6 +44,12 @@ Sword* Sword::getClone()
 }
 
 
+const std::string Sword::getName() const
+{
+    return "Soul slicer";
+}
+
+
 void Sword::initRange()
 {
     range = 55.f;

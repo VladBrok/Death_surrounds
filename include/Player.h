@@ -18,7 +18,8 @@ public:
                                 );
     virtual void         update(const float deltaTime, 
                                 const sf::Vector2f& mousePosView,
-                                const sf::Vector2i& mousePosWindow
+                                const sf::Vector2i& mousePosWindow,
+                                TextTagSystem& textTagSystem
                                 );
     virtual void         render(sf::RenderTarget& target, 
                                 sf::Shader* pShader = nullptr,

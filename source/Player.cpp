@@ -31,7 +31,8 @@ Player::Player(const float posX,
 
 void Player::update(const float deltaTime, 
                     const sf::Vector2f& mousePosView, 
-                    const sf::Vector2i& mousePosWindow
+                    const sf::Vector2i& mousePosWindow,
+                    TextTagSystem& textTagSystem
                     )
 {
     pMovementComponent->updateMovement(deltaTime);
@@ -40,7 +41,7 @@ void Player::update(const float deltaTime,
 
     pHitboxComponent->update();
 
-    inventory.update(getCenter(), mousePosView, mousePosWindow);
+    inventory.update(getCenter(), mousePosView, mousePosWindow, textTagSystem);
 
     
     if (inventory.getActiveItem())

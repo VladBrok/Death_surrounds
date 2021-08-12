@@ -7,6 +7,7 @@ enum PresetTextTagId
     EXPERIENCE_TAG,
     DAMAGE_TAG,
     LEVEL_UP_TAG,
+    ITEM_NAME_TAG,
     NUMBER_OF_PRESET_TAGS
 };
 
@@ -15,10 +16,12 @@ class TextTagSystem: public sf::NonCopyable
 {
 public:
 
-                TextTagSystem(const sf::Font& font);
-
-    void        update(const float deltaTime);
-    void        render(sf::RenderTarget& target);
+                          TextTagSystem(const sf::Font& font);
+                          
+    void                  update(const float deltaTime);
+    void                  render(sf::RenderTarget& target);
+    const sf::Vector2f&   getBackElementSize() const;
+    void                  setBackElementPosition(const float x, const float y);
 
     template <class T>
     void        addTextTag(const int presetTagId, 
@@ -42,6 +45,7 @@ private:
         float       speed;
         float       deceleration;
         int         fadeValue;
+        bool        renderToWindow;
 
 
         TextTag(const sf::Font& font, 
@@ -55,14 +59,16 @@ private:
                 const float lifetime, 
                 const float speed,
                 const float deceleration = 0,
-                const int fadeValue = 0
+                const int fadeValue = 0,
+                const bool renderToWindow = false
                 )
                 : movementDirX(movementDirX),
                   movementDirY(movementDirY),
                   lifetime(lifetime),
                   speed(speed),
                   deceleration(deceleration),
-                  fadeValue(fadeValue)
+                  fadeValue(fadeValue),
+                  renderToWindow(renderToWindow)
         {
             sfmlText.setFont(font);
             sfmlText.setString(text);
@@ -77,7 +83,11 @@ private:
             {
                 lifetime -= deltaTime * (1000.f / 16.f);
 
-                sfmlText.move(movementDirX * speed * deltaTime, movementDirY * speed * deltaTime);
+                // Moving the text
+                sfmlText.setPosition(
+                    (int)(sfmlText.getPosition().x + movementDirX * speed * deltaTime),
+                    (int)(sfmlText.getPosition().y + movementDirY * speed * deltaTime)
+                 );
 
                 if (speed >= deceleration)
                 {
@@ -100,12 +110,27 @@ private:
 
         void render(sf::RenderTarget& target)
         {
-            target.draw(sfmlText);
+            if (renderToWindow)
+            {
+                const sf::View view = target.getView();
+                target.setView(target.getDefaultView());
+                target.draw(sfmlText);
+                target.setView(view);
+            }
+            else
+            {
+                target.draw(sfmlText);
+            }
         }
 
-        inline bool isExpired() const
+        bool isExpired() const
         {
             return lifetime <= 0.f;
+        }
+
+        const sf::Vector2f getSize() const
+        {
+            return sf::Vector2f(sfmlText.getGlobalBounds().width, sfmlText.getGlobalBounds().height);
         }
 
         void setText(const std::string& text)

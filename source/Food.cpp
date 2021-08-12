@@ -3,6 +3,21 @@
 #include "constants.h"
 
 
+const std::string Food::foodNames[] =
+{
+    "Apple",
+    "Rasberry",
+    "Banana",
+    "Cake",
+    "Grape",
+    "Cheese",
+    "Meat",
+    "Fish",
+    "Bread",
+    "Beer"
+};
+
+
 Food::Food(const sf::Texture& texture, const sf::IntRect& textureRect)
     : Item(texture, textureRect)
 {
@@ -23,6 +38,12 @@ void Food::update(const sf::Vector2f& foodPosition, const sf::Vector2f& mousePos
 Food* Food::getClone()
 {
     return new Food(*this);
+}
+
+
+const std::string Food::getName() const
+{
+    return foodNames[restoringHpAmount - 1];
 }
 
 

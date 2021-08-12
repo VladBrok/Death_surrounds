@@ -17,12 +17,14 @@ public:
     const sf::FloatRect           getGlobalBounds() const;
     const sf::Vector2f&           getPosition() const;
     const sf::IntRect&            getTextureRect() const;
+    virtual const std::string     getName() const = 0;
 
     // Returns the default origin that was set after creation of the item
     const sf::Vector2f&           getDefaultOrigin() const;
 
     // Returns the default scale that was set after creation of the item
     const sf::Vector2f&           getDefaultScale() const;
+
 
     void                          setPosition(const float x, const float y);
     void                          setOrigin(const float x, const float y);

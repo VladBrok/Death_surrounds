@@ -3,6 +3,7 @@
 
 
 class Item;
+#include "TextTagSystem.h"
 
 
 class Inventory
@@ -16,7 +17,8 @@ public:
                           ~Inventory();
     void                  update(const sf::Vector2f& itemPosition, 
                                  const sf::Vector2f& mousePosView,
-                                 const sf::Vector2i& mousePosWindow
+                                 const sf::Vector2i& mousePosWindow,
+                                 TextTagSystem& textTagSystem
                                  );
                           
     // Required view of   the target must be set before calling this function

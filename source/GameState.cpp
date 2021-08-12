@@ -76,7 +76,7 @@ void GameState::processEvent(const sf::Event& event)
             {
                 pPlayerGui->toggleInfoTab();
             }
-            else if (event.key.code == keybinds.at("DROP_ITEM"))
+            else if (event.key.code == keybinds.at("DROP_ITEM") && pPlayer->getActiveItem())
             {
                 pLootSystem->addLoot(pPlayer->getCenter().x + GRID_SIZE, pPlayer->getCenter().y, pPlayer->getActiveItem());
                 pPlayer->removeActiveItem();
@@ -134,7 +134,7 @@ void GameState::update(const float deltaTime)
         updatePlayerKeyboardInput(deltaTime);
         updateTilemap(deltaTime);
 
-        pPlayer->update(deltaTime, mousePosView, mousePosWindow); 
+        pPlayer->update(deltaTime, mousePosView, mousePosWindow, *pTextTagSystem); 
         pTextTagSystem->update(deltaTime);
         pLootSystem->update(*pPlayer);
 
@@ -242,8 +242,12 @@ void GameState::updateEnemiesAndCombat(const float deltaTime)
             // Adding the new pop-up exp text
             pTextTagSystem->addTextTag(
                 EXPERIENCE_TAG, 
-                sf::Vector2f(pPlayer->getCenter().x - GRID_SIZE / 1.5f, pPlayer->getPosition().y), 
+                sf::Vector2f(), 
                 exp, "+ ", " exp"
+            );
+            pTextTagSystem->setBackElementPosition(
+                pPlayer->getCenter().x - pTextTagSystem->getBackElementSize().x / 2.f, 
+                pPlayer->getPosition().y
             );
 
             // Adding the loot
