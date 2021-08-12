@@ -8,20 +8,20 @@ class Food: public Item
 {
 public:
 
-                                  Food(const sf::Texture& texture, const sf::IntRect& textureRect = sf::IntRect());
-    virtual                       ~Food() {};
-    virtual void                  update(const sf::Vector2f& foodPosition, const sf::Vector2f& mousePosView);
-                                  
-    virtual Food*                 getClone();
-    int                           getRestoringHpAmount() const;
-
-    virtual bool                  isFood() const;
-
-private:
-
-    int                           restoringHpAmount;
-
-    virtual void                  initDefaultOriginAndScale();
+                     Food(const sf::Texture& texture, const sf::IntRect& textureRect = sf::IntRect());
+    virtual          ~Food() {};
+    virtual void     update(const sf::Vector2f& foodPosition, const sf::Vector2f& mousePosView);
+                     
+    virtual Food*    getClone();
+    int              getRestoringHpAmount() const;
+                     
+    virtual bool     isFood() const;
+                     
+private:             
+                     
+    int              restoringHpAmount;
+                     
+    virtual void     initDefaultOriginAndScale();
 };
 
 

@@ -30,28 +30,25 @@ public:
     void                  setActiveItem(const int index);
     Item*                 getActiveItem() const;
     int                   getActiveItemIndex() const;
-                          
-    bool                  isEmpty() const;
-    int                   getSize() const;
+
+    // Returns the current number of items in the inventory (actual size)
+    int                   getSize() const; 
                           
     Item&                 operator[](const int index);
                           
 private:                  
                           
-    std::vector<Item*>    items;
+    std::vector<Item*>    items; // The vector with a fixed size (empty positions are marked with nullptr)
+    int                   actualSize;
     Item*                 pActiveItem; // This pointer holds a copy of the item
     int                   activeItemIndex;
-    int                   previousInventorySize;
-    int                   actualSize;
                           
     sf::Sprite            panelBorder;
     sf::RectangleShape    panelBackground;
     sf::RectangleShape    selectedSlotBackground;
                           
-    void                  clear();
-                          
+    void                  clear();                     
     void                  initInventoryPanel(const sf::RenderWindow& window, const sf::Texture& panelBorderTexture);
-
 };
 
 

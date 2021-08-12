@@ -33,7 +33,6 @@ public:
     void                 updateGui();
     void                 updateEnemiesAndCombat(const float deltaTime);
     void                 updateCombat(Enemy& enemy);
-    void                 updateLootSystem();
                          
     virtual void         render(sf::RenderTarget* pTarget = nullptr);
     void                 renderEnemies(sf::RenderTarget& target);

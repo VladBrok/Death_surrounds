@@ -10,7 +10,6 @@ Inventory::Inventory(const sf::RenderWindow& window,
                      )
     : pActiveItem(nullptr), 
       activeItemIndex(0),
-      previousInventorySize(0),
       actualSize(0)
 {   
     items.assign(INVENTORY_SIZE_MAX, nullptr);
@@ -35,10 +34,9 @@ void Inventory::update(const sf::Vector2f& itemPosition,
         sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
         int itemIndex = (int)(mousePosWindow.x - panelBorder.getPosition().x) / INVENTORY_SLOT_SIZE;
-        if (activeItemIndex != itemIndex || previousInventorySize < (int)items.size())
+        if (activeItemIndex != itemIndex)
         {
             setActiveItem(itemIndex);
-            previousInventorySize = actualSize;
             selectedSlotBackground.setPosition(
                 panelBorder.getPosition().x + itemIndex * INVENTORY_SLOT_SIZE, 
                 panelBorder.getPosition().y
@@ -105,7 +103,6 @@ bool Inventory::addItem(Item* pItem)
         );
 
         items[index]->setScale(1.f, 1.f);
-
         items[index]->setScale(
             (INVENTORY_SLOT_SIZE) / items[index]->getGlobalBounds().width,
             (INVENTORY_SLOT_SIZE - INVENTORY_SLOT_OUTLINE_SIZE * 2) / items[index]->getGlobalBounds().height
@@ -155,6 +152,8 @@ void Inventory::setActiveItem(const int index)
         // Setting the origin and scale of the item to default values
         pActiveItem->setOrigin(pActiveItem->getDefaultOrigin().x, pActiveItem->getDefaultOrigin().y);
         pActiveItem->setScale(pActiveItem->getDefaultScale().x, pActiveItem->getDefaultScale().y);
+
+        pActiveItem->setPosition(0.f, 0.f);
     }
     else
     {
@@ -173,12 +172,6 @@ Item* Inventory::getActiveItem() const
 int Inventory::getActiveItemIndex() const
 {
     return activeItemIndex;
-}
-
-
-bool Inventory::isEmpty() const
-{
-    return !actualSize;
 }
 
 

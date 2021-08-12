@@ -70,10 +70,17 @@ void GameState::processEvent(const sf::Event& event)
     }
     else if (!gameOver && !stateIsPaused)
     {
-        if (event.type == sf::Event::KeyPressed && 
-            event.key.code == keybinds.at("TOGGLE_PLAYER_INFO_TAB"))
+        if (event.type == sf::Event::KeyPressed)
         {
-            pPlayerGui->toggleInfoTab();
+            if (event.key.code == keybinds.at("TOGGLE_PLAYER_INFO_TAB"))
+            {
+                pPlayerGui->toggleInfoTab();
+            }
+            else if (event.key.code == keybinds.at("DROP_ITEM"))
+            {
+                pLootSystem->addLoot(pPlayer->getCenter().x + GRID_SIZE, pPlayer->getCenter().y, pPlayer->getActiveItem());
+                pPlayer->removeActiveItem();
+            }
         }
     }
 
@@ -129,7 +136,7 @@ void GameState::update(const float deltaTime)
 
         pPlayer->update(deltaTime, mousePosView, mousePosWindow); 
         pTextTagSystem->update(deltaTime);
-        updateLootSystem();
+        pLootSystem->update(*pPlayer);
 
         updateView();
         updateEnemiesAndCombat(deltaTime);
@@ -292,18 +299,6 @@ void GameState::updateCombat(Enemy& enemy)
         pPlayer->restartDamageTimer();
 
         pTextTagSystem->addTextTag(DAMAGE_TAG, pPlayer->getPosition(), damage);
-    }
-}
-
-
-void GameState::updateLootSystem()
-{
-    pLootSystem->update(*pPlayer);
-
-    if (sf::Keyboard::isKeyPressed(keybinds.at("DROP_ITEM")) && pPlayer->getActiveItem() != nullptr)
-    {
-        pLootSystem->addLoot(pPlayer->getCenter().x + GRID_SIZE, pPlayer->getCenter().y, pPlayer->getActiveItem());
-        pPlayer->removeActiveItem();
     }
 }
 

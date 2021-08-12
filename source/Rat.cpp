@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "Rat.h"
 #include "Food.h"
+#include "constants.h"
 
 
 Rat::Rat(const float posX, 
@@ -40,6 +41,7 @@ void Rat::update(const float deltaTime, const sf::Vector2f& mousePosView)
     pHitboxComponent->update();
 
     pAiFollow->update(deltaTime);
+
 
     if (!canBeDamaged())
     {
@@ -88,5 +90,14 @@ void Rat::initAnimation()
 
 void Rat::initDroppingItem()
 {
-    droppingItem = std::make_shared<Food>(Food(lootTextureSheet, sf::IntRect(0, 0, 16, 16)));
+    // FIXME: Remove tmp variable
+    static int tmp = 0;
+
+    droppingItem = std::make_shared<Food>(Food(lootTextureSheet, sf::IntRect(tmp * ONE_FOOD_TEXTURE_SIZE, 0, ONE_FOOD_TEXTURE_SIZE, ONE_FOOD_TEXTURE_SIZE)));
+
+    ++tmp;
+    if (tmp * ONE_FOOD_TEXTURE_SIZE >= lootTextureSheet.getSize().x)
+    {
+        tmp = 0;
+    }
 }

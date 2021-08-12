@@ -1,11 +1,12 @@
 #include "precompiled.h"
 #include "Food.h"
+#include "constants.h"
 
 
 Food::Food(const sf::Texture& texture, const sf::IntRect& textureRect)
     : Item(texture, textureRect)
 {
-    restoringHpAmount = textureRect.left + 1;
+    restoringHpAmount = ((int)textureRect.left / ONE_FOOD_TEXTURE_SIZE) + 1;
 
     initDefaultOriginAndScale();
 
@@ -39,8 +40,7 @@ bool Food::isFood() const
 
 void Food::initDefaultOriginAndScale()
 {
-    defaultOrigin.x = sprite.getTextureRect().left + sprite.getTextureRect().width / 2.f;
-    defaultOrigin.y = sprite.getTextureRect().top + sprite.getTextureRect().height / 2.f;
+    defaultOrigin.x = defaultOrigin.y = (float)(ONE_FOOD_TEXTURE_SIZE / 2);
 
     defaultScale.x = defaultScale.y = 1.f;
 }

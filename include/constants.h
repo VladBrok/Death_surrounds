@@ -15,5 +15,7 @@ const int         INVENTORY_SIZE_MAX = 8;
 const int         INVENTORY_SLOT_SIZE = 36;
 const int         INVENTORY_SLOT_OUTLINE_SIZE = 2;
 
+const int         ONE_FOOD_TEXTURE_SIZE = 16;
+
 
 #endif // CONSTANTS_H
