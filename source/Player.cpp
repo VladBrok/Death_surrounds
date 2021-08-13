@@ -14,8 +14,8 @@ Player::Player(const float posX,
 
     createMovementComponent(200.f, 1600.f, 1000.f);
     createAnimationComponent(textureSheet);
-    createHitboxComponent(18.f, 19.f, 28.f, 38.f);
-    initAttributeComponent();
+    createHitboxComponent(18.f, 25.f, 28.f, 30.f);
+    createAttributeComponent(1, 10, 1, 2);
 
     pAnimationComponent->addAnimation("IDLE", textureSheet, sprite, 0, 0, 8, 0, 64, 64, 9.5f);
     pAnimationComponent->addAnimation("MOVING_DOWN", textureSheet, sprite, 0, 1, 3, 1, 64, 64, 9.5f);
@@ -64,7 +64,6 @@ void Player::update(const float deltaTime,
             Food* food = static_cast<Food*>(inventory.getActiveItem());
             int hpToRestore = (int)food->getRestoringHpAmount();
 
-            // Adding the new pop-up text
             textTagSystem.addTextTag(
                 HEALING_TAG, 
                 getPosition(), 
@@ -79,6 +78,7 @@ void Player::update(const float deltaTime,
     {
         pActiveWeapon = nullptr;
     }
+
 
     Character::updateDamageColor();
 }
@@ -179,7 +179,7 @@ float Player::getAttackRange() const
     {
         return pActiveWeapon->getRange();
     }
-    return 40.f;
+    return 42.f;
 }
 
 
@@ -238,36 +238,6 @@ bool Player::canAttack() const
     }
 
     return Character::canAttack();
-}
-
-
-void Player::updateAnimation(const float deltaTime)
-{
-    try
-    {
-        const std::string& movementState = pMovementComponent->getMovementState();
-
-        // Playing animations using the player's velocity as modifier for animation speed
-        float modifier = (movementState == "MOVING_RIGHT" || movementState == "MOVING_LEFT") ? pMovementComponent->getVelocity().x: pMovementComponent->getVelocity().y;
-        float modifierMax = pMovementComponent->getMaxVelocity();
-
-        pAnimationComponent->play(
-            movementState, 
-            deltaTime, 
-            modifier,
-            modifierMax
-        ); 
-    }
-    catch(std::out_of_range&)
-    {
-        std::cout << "ERROR in Player::updateAnimation:\nthere is no animation for this type of player movement.\n";
-    }
-}
-
-
-void Player::initAttributeComponent()
-{
-    createAttributeComponent(1, 10, 1, 2);
 }
 
 

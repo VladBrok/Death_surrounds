@@ -7,34 +7,34 @@
 class Weapon: public Item
 {
 public:
-
-                       Weapon(const sf::Texture& texture, 
-                              const int damageMin, 
-                              const int damageMax, 
-                              const sf::IntRect& textureRect = sf::IntRect()
-                              );
-    virtual            ~Weapon() {};
-    virtual void       update(const sf::Vector2f& weaponPosition, const sf::Vector2f& mousePosView) = 0;
-
-    bool               canAttack();
-    void               restartAttackTimer();
-    virtual bool       isWeapon() const;
-
-    int                getDamage() const;
-    int                getDamageMin() const;
-    int                getDamageMax() const;
-    float              getRange() const;
-                       
-protected:             
-
-    int                damageMin;
-    int                damageMax;
-    float              range;
-    sf::Clock          attackTimer;
-    sf::Int32          attackTimerMax;
-
-    virtual void       initRange() = 0;
-    virtual void       initAttackTimerMax() = 0;
+                    
+                    Weapon(const sf::Texture& texture, 
+                           const int damageMin, 
+                           const int damageMax, 
+                           const sf::IntRect& textureRect = sf::IntRect()
+                           );
+    virtual         ~Weapon() {};
+    virtual void    update(const sf::Vector2f& weaponPosition, const sf::Vector2f& mousePosView) = 0;
+                    
+    bool            canAttack();
+    void            restartAttackTimer();
+    virtual bool    isWeapon() const;
+                    
+    int             getDamage() const;
+    int             getDamageMin() const;
+    int             getDamageMax() const;
+    float           getRange() const;
+                    
+protected:          
+                    
+    int             damageMin;
+    int             damageMax;
+    float           range;
+    sf::Clock       attackTimer;
+    sf::Int32       attackTimerMax;
+                    
+    virtual void    initRange() = 0;
+    virtual void    initAttackTimerMax() = 0;
 };                     
 
 

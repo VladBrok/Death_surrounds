@@ -193,7 +193,7 @@ void SettingsState::initBackground()
 void SettingsState::initOptionsText()
 {
     optionsText.setFont(font);
-    optionsText.setCharacterSize(utils::percentToPixels(2.f, window.getSize().x + window.getSize().y));
+    optionsText.setCharacterSize((unsigned)utils::percentToPixels(2.f, window.getSize().x + window.getSize().y));
     optionsText.setPosition(
         (float)(int)utils::percentToPixels(5.f, window.getSize().x),
         (float)(int)utils::percentToPixels(5.f, window.getSize().y)

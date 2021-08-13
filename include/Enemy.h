@@ -29,7 +29,7 @@ protected:
     int                      expForKillingMax;
     std::shared_ptr<Item>    droppingItem;
 
-    virtual void             updateAnimation(const float deltaTime) = 0;
+    virtual void             updateAnimation(const float deltaTime);
     virtual void             initAnimation() = 0;
     virtual void             initTimers();
     virtual void             initDroppingItem() = 0;

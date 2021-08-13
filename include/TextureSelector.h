@@ -6,28 +6,28 @@ class TextureSelector: public sf::NonCopyable
 {
 public:
 
-                            TextureSelector(const float posX, 
-                                            const float posY, 
-                                            const float width, 
-                                            const float height,
-                                            const sf::Texture& textureSheet
-                                            );
+                          TextureSelector(const float posX, 
+                                          const float posY, 
+                                          const float width, 
+                                          const float height,
+                                          const sf::Texture& textureSheet
+                                          );
 
-    void                    processEvent(const sf::Event& event, const sf::Vector2i& mousePosWindow);
-    void                    render(sf::RenderTarget& target);
+    void                  processEvent(const sf::Event& event, const sf::Vector2i& mousePosWindow);
+    void                  render(sf::RenderTarget& target);
 
-    bool                    isActive() const;
-    void                    endActivity();
-    const sf::IntRect&      getTextureRect() const;
+    bool                  isActive() const;
+    void                  endActivity();
+    const sf::IntRect&    getTextureRect() const;
 
 private:
 
-    const sf::Texture&      textureSheet;
-    sf::IntRect             textureRect;
-    sf::RectangleShape      selector;
-    sf::Sprite              sheet;
-    sf::RectangleShape      bounds;
-    bool                    active; // Acitve is true when the texture selector contains a mouse position
+    const sf::Texture&    textureSheet;
+    sf::IntRect           textureRect;
+    sf::RectangleShape    selector;
+    sf::Sprite            sheet;
+    sf::RectangleShape    bounds;
+    bool                  active; // Active is true when the texture selector contains a mouse position
 
 };
 

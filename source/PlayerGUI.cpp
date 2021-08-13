@@ -10,9 +10,8 @@ PlayerGui::PlayerGui(const Player& player,
                      const sf::Texture& hpBarTexture,
                      const sf::Texture& expBarTexture
                      )
-    : player(player)
 {
-    initGui(window, font, hpBarTexture, expBarTexture);
+    initGui(window, font, hpBarTexture, expBarTexture, player);
 }
 
 
@@ -22,7 +21,7 @@ PlayerGui::~PlayerGui()
 }
 
 
-void PlayerGui::update()
+void PlayerGui::update(const Player& player)
 {
     hpBar.update(player.getHp(), player.getHpMax());
     expBar.update(player.getExp(), player.getExpForNextLevel());
@@ -51,7 +50,8 @@ void PlayerGui::toggleInfoTab()
 void PlayerGui::initGui(const sf::RenderWindow& window,
                         const sf::Font& font,
                         const sf::Texture& hpBarTexture,
-                        const sf::Texture& expBarTexture
+                        const sf::Texture& expBarTexture,
+                        const Player& player
                         )
 {
 
@@ -60,8 +60,8 @@ void PlayerGui::initGui(const sf::RenderWindow& window,
     hpBar.create(
         utils::percentToPixels(3.f, window.getSize().x),
         utils::percentToPixels(3.f, window.getSize().x),
-        hpBarTexture.getSize().x,
-        hpBarTexture.getSize().y,
+        (float)hpBarTexture.getSize().x,
+        (float)hpBarTexture.getSize().y,
         hpBarTexture,
         sf::Color(50, 50, 50, 150)
     );
@@ -69,8 +69,8 @@ void PlayerGui::initGui(const sf::RenderWindow& window,
     expBar.create(
         hpBar.getPosition().x + hpBar.getBackSize().x / 2.f - expBarTexture.getSize().x / 2.f,
         hpBar.getPosition().y + hpBar.getBackSize().y + utils::percentToPixels(1.3f, window.getSize().y),
-        expBarTexture.getSize().x,
-        expBarTexture.getSize().y,
+        (float)expBarTexture.getSize().x,
+        (float)expBarTexture.getSize().y,
         expBarTexture,
         sf::Color(50, 50, 50, 150)
     );  

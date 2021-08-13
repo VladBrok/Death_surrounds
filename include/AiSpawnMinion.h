@@ -4,7 +4,7 @@
 #include "EnemySystem.h"
 
 
-class AiSpawnMinion
+class AiSpawnMinion: public sf::NonCopyable
 {
 public:
 
@@ -13,11 +13,11 @@ public:
                                const float spawnFrequencyInSeconds,
                                const int minionsToSpawnAtOnceFrom1To2
                                );
-
+                 
     void         update(EnemySystem& enemySystem);
-
-private:
-
+                 
+private:         
+                 
     Entity&      self;
     EnemyType    minionType;
     sf::Clock    spawnTimer;

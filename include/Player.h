@@ -53,10 +53,7 @@ private:
     Inventory            inventory;
     Weapon*              pActiveWeapon;
     bool                 attacking;
-                         
-    void                 updateAnimation(const float deltaTime);
            
-    virtual void         initAttributeComponent();
     virtual void         initTimers();
 };
 

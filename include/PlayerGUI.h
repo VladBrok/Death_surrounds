@@ -10,33 +10,32 @@ class PlayerGui: public sf::NonCopyable
 {
 public:
 
-                       PlayerGui(const Player& player, 
-                                 const sf::Font& font,
-                                 const sf::RenderWindow& window,
-                                 const sf::Texture& hpBarTexture,
-                                 const sf::Texture& expBarTexture
-                                 );
-                       ~PlayerGui();
-    void               update();
-    void               render(sf::RenderTarget& target);
+                      PlayerGui(const Player& player, 
+                                const sf::Font& font,
+                                const sf::RenderWindow& window,
+                                const sf::Texture& hpBarTexture,
+                                const sf::Texture& expBarTexture
+                                );
+                      ~PlayerGui();
+    void              update(const Player& player);
+    void              render(sf::RenderTarget& target);
 
     // Hides the player's info tab if it's shown and vice versa
-    void               toggleInfoTab();
+    void              toggleInfoTab();
                       
 private:              
+                  
+    PlayerInfoTab*    pPlayerInfoTab;
+    ProgressBar       hpBar;
+    ProgressBar       expBar;
                       
-    const Player&      player;
                       
-    PlayerInfoTab*     pPlayerInfoTab;
-    ProgressBar        hpBar;
-    ProgressBar        expBar;
-                       
-                       
-    void               initGui(const sf::RenderWindow& window,
-                               const sf::Font& font,
-                               const sf::Texture& hpBarTexture,
-                               const sf::Texture& expBarTexture
-                               );
+    void              initGui(const sf::RenderWindow& window,
+                              const sf::Font& font,
+                              const sf::Texture& hpBarTexture,
+                              const sf::Texture& expBarTexture,
+                              const Player& player
+                              );
 };
 
 

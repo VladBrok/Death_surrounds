@@ -6,35 +6,34 @@ class AnimationComponent: sf::NonCopyable
 {
 public:
 
-                    AnimationComponent(const sf::Texture& textureSheet, sf::Sprite& sprite);
-                    ~AnimationComponent();
-    
-    void            addAnimation(const std::string&    animationKey,
-                                 const sf::Texture&    textureSheet, 
-                                 sf::Sprite&           sprite,
-                                 const int             startFrameX,
-                                 const int             startFrameY,
-                                 const int             endFrameX,
-                                 const int             endFrameY,
-                                 const int             frameWidth,
-                                 const int             frameHeight,
-                                 const float           timeToPlayAnimation
+                            AnimationComponent(const sf::Texture& textureSheet, sf::Sprite& sprite);
+                            ~AnimationComponent();
+    /*
+        Variables startFrameX and startFrameY are 
+        numbers of the column and the row (starting from 0) in which the starting frame is
+        located on the texture sheet
+    */  
+    void                    addAnimation(const std::string&    animationKey,
+                                         const sf::Texture&    textureSheet, 
+                                         sf::Sprite&           sprite,
+                                         const int             startFrameX,
+                                         const int             startFrameY,
+                                         const int             endFrameX,
+                                         const int             endFrameY,
+                                         const int             frameWidth,
+                                         const int             frameHeight,
+                                         const float           timeToPlayAnimation
+                                         );
+                     
+    void                    play(const std::string& animationKey,
+                                 const float deltaTime, 
+                                 const float animationSpeedModifier = 1.f, 
+                                 const float animationSpeedModifierMax = 1.f,
+                                 const bool priority = false
                                  );
-    void            play(const std::string& animationKey, const float deltaTime, const bool priority = false);
 
-    /* 
-        This function allows you to modify an animation speed 
-        depending on certain circumstances
-    */
-    void            play(const std::string& animationKey,
-                         const float deltaTime, 
-                         const float modifier, 
-                         const float modifierMax,
-                         const bool priority = false
-                         );
-
-    // Returns true if the animation is finished
-    bool            isDone(const std::string& animationKey) const; 
+    // Returns true if animation is finished
+    bool                    isDone(const std::string& animationKey) const; 
 
 private:
 
@@ -53,11 +52,6 @@ private:
         bool                    done; // Done is true if animation is finished
 
 
-        /*
-            In this constructor, variables startFrameX and startFrameY are 
-            numbers of the column and the row (starting from 0) in which the starting frame is
-            located on the texture sheet.
-        */
         Animation(const sf::Texture&    textureSheet, 
                   sf::Sprite&           sprite,
                   const int             startFrameX,
@@ -81,29 +75,16 @@ private:
             this->sprite.setTextureRect(startRect);
         }
 
-        
-        void play(const float deltaTime)
+  
+        void play(const float deltaTime, float speedModifier)
         {
-            animationTimer += 100.f * deltaTime;
-
-            animateIfTimerAllows();
-        }
-
-        
-        void play(const float deltaTime, float modifier)
-        {
-            if (modifier < 0.9f)
+            if (speedModifier < 0.9f)
             {
-                modifier = 0.9f;
+                speedModifier = 0.9f;
             }
-            animationTimer += modifier * 100.f * deltaTime;
-
-            animateIfTimerAllows();
-        }
+            animationTimer += speedModifier * 100.f * deltaTime;
 
 
-        void animateIfTimerAllows()
-        {
             if (animationTimer >= timeToPlayAnimation)
             {
                 animationTimer = 0.f;
@@ -133,17 +114,18 @@ private:
         {
             return done;
         }
-
     };
 
+    typedef std::unordered_map<std::string, Animation*>  StringToAnimationMap;
 
-    const sf::Texture&                            textureSheet;
-    sf::Sprite&                                   sprite;
-    std::unordered_map<std::string, Animation*>   animations;
-    Animation*                                    pLastAnimation;
-    Animation*                                    pPriorityAnimation; // This animation will be playing until it's done
 
-    void                                          updateLastAnimation(const std::string& animationKey);
+    const sf::Texture&      textureSheet;
+    sf::Sprite&             sprite;
+    StringToAnimationMap    animations;
+    Animation*              pLastAnimation;
+    Animation*              pPriorityAnimation; // This animation will be playing until it's done
+                            
+    void                    updateLastAnimation(const std::string& animationKey);
 
 };
 

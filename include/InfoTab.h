@@ -9,7 +9,6 @@ public:
                           InfoTab();
     virtual void          update() = 0;
     virtual void          render(sf::RenderTarget& target);
-
     void                  hide();
     void                  show();
     bool                  isHidden() const;
@@ -27,7 +26,6 @@ protected:
 private:
 
     bool                  hidden;
-
 };
 
 

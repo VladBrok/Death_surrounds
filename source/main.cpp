@@ -8,8 +8,7 @@
 
     TODO:
         - i don't like that many classes have a reference to the player!!!
-        - remove idle animations
-        - MOVE updateAnimation method to character base class !!!!!!!!!!!!!!!!!!!!!!!!!!!
+        - fix attacking (should use sword and enemy intersection instead of attack range)
 */
 
 //---------------------------

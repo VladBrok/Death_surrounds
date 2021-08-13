@@ -61,6 +61,9 @@ void TextTagSystem::setBackElementPosition(const float x, const float y)
 
 void TextTagSystem::initPresetTags()
 {
+    presetTags.resize(NUMBER_OF_PRESET_TAGS);
+
+
     presetTags[EXPERIENCE_TAG] = 
         std::make_shared<TextTag>(
             TextTag(font, "", 0.f, 0.f, 0.f, -1.f, sf::Color::Cyan, 25, 65.f, 105.f, 2.4f, 3)

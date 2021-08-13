@@ -22,8 +22,6 @@ private:
 
     AiFollow*       pAiFollow;
 
-    virtual void    updateAnimation(const float deltaTime);
-    virtual void    initAttributeComponent();
     virtual void    initAnimation();
     virtual void    initDroppingItem();
 };

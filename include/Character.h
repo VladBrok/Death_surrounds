@@ -34,7 +34,7 @@ protected:
     // Sets the color of the sprite to red if character is taking damage
     void            updateDamageColor();
                     
-    virtual void    initAttributeComponent() = 0;
+    virtual void    updateAnimation(const float deltaTime);
     virtual void    initTimers() = 0;
 
 private:

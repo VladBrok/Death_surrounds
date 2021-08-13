@@ -23,8 +23,8 @@ void AiSpawnMinion::update(EnemySystem& enemySystem)
     if (spawnTimer.getElapsedTime().asSeconds() >= spawnTimerMax)
     {
         spawnTimer.restart();
+ 
         float spawnOffset = self.getGlobalBounds().height * 1.5f;
-
         int toSpawnCount = minionsToSpawnAtOnce;
         while (toSpawnCount)
         {
@@ -34,4 +34,3 @@ void AiSpawnMinion::update(EnemySystem& enemySystem)
         }
     }
 }
-

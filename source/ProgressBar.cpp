@@ -27,12 +27,7 @@ void ProgressBar::update(const int value, const int valueMax)
 
     // Updating the width of the inner bar using the ratio
     barInnerSprite.setTextureRect(
-        sf::IntRect(
-            0.f,
-            0.f,
-            barBack.getSize().x * ratio,
-            barInnerSprite.getGlobalBounds().height
-        )
+        sf::IntRect(0, 0, (int)(barBack.getSize().x * ratio), (int)barInnerSprite.getGlobalBounds().height)
     );
 }
 

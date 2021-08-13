@@ -77,6 +77,12 @@ namespace resources
     }
 
 
+    std::string getVortexTextureFile()
+    {
+        return enemiesDirectory + "vortex.png";
+    }
+
+
     std::string getPlayerTextureFile()
     {
         return playerDirectory + "player_sheet.png";

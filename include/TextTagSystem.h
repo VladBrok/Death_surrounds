@@ -17,23 +17,23 @@ class TextTagSystem: public sf::NonCopyable
 {
 public:
 
-                          TextTagSystem(const sf::Font& font);
-                          
-    void                  update(const float deltaTime);
-    void                  render(sf::RenderTarget& target);
-    const sf::Vector2f&   getBackElementSize() const;
-    void                  setBackElementPosition(const float x, const float y);
+                           TextTagSystem(const sf::Font& font);
+                           
+    void                   update(const float deltaTime);
+    void                   render(sf::RenderTarget& target);
+    const sf::Vector2f&    getBackElementSize() const;
+    void                   setBackElementPosition(const float x, const float y);
 
     template <class T>
-    void        addTextTag(const int presetTagId, 
-                           const sf::Vector2f& position, 
-                           const T& text, 
-                           const std::string& prefix = "", 
-                           const std::string& postfix = ""
-                           );
+    void                   addTextTag(const int presetTagId, 
+                                      const sf::Vector2f& position, 
+                                      const T& text, 
+                                      const std::string& prefix = "", 
+                                      const std::string& postfix = ""
+                                      );
 
 private:
-
+    
 
     class TextTag
     {
@@ -86,8 +86,8 @@ private:
 
                 // Moving the text
                 sfmlText.setPosition(
-                    (int)(sfmlText.getPosition().x + movementDirX * speed * deltaTime),
-                    (int)(sfmlText.getPosition().y + movementDirY * speed * deltaTime)
+                    (float)(int)(sfmlText.getPosition().x + movementDirX * speed * deltaTime),
+                    (float)(int)(sfmlText.getPosition().y + movementDirY * speed * deltaTime)
                  );
 
                 if (speed >= deceleration)
@@ -145,12 +145,15 @@ private:
         }
     };
 
+    typedef std::list<std::shared_ptr<TextTag>> TagsContainer;
+    typedef std::vector<std::shared_ptr<TextTag>> PresetTagsContainer;
 
-    const sf::Font&                                   font;
-    std::list< std::shared_ptr<TextTag> >             tags;
-    std::unordered_map<int, std::shared_ptr<TextTag>> presetTags;
 
-    void                                              initPresetTags();
+    const sf::Font&        font;
+    TagsContainer          tags;
+    PresetTagsContainer    presetTags;
+
+    void                   initPresetTags();
 };
 
 

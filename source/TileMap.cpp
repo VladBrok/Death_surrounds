@@ -52,19 +52,6 @@ void Tilemap::update(Entity& entity, const float deltaTime, EnemySystem& enemySy
 }
 
 
-void Tilemap::renderDeferred(sf::RenderTarget& target,                                 
-                             sf::Shader* pShader,
-                             const sf::Vector2f& shaderLightPosition
-                             )
-{
-    while (!tilesForDeferredRender.empty())
-    {
-        tilesForDeferredRender.top()->render(target, pShader, shaderLightPosition);
-        tilesForDeferredRender.pop();
-    }
-}
-
-
 void Tilemap::render(sf::RenderTarget& target, 
                      const sf::View& view,
                      const sf::Vector2i& gridPositionAroundWhichRender,
@@ -143,6 +130,19 @@ void Tilemap::render(sf::RenderTarget& target,
                 renderTile(target, *map[x][y][k], pShader, shaderLightPosition, showCollisionBox, showEnemySpawnerBox);
             }
         }
+    }
+}
+
+
+void Tilemap::renderDeferred(sf::RenderTarget& target,                                 
+                             sf::Shader* pShader,
+                             const sf::Vector2f& shaderLightPosition
+                             )
+{
+    while (!tilesForDeferredRender.empty())
+    {
+        tilesForDeferredRender.top()->render(target, pShader, shaderLightPosition);
+        tilesForDeferredRender.pop();
     }
 }
 

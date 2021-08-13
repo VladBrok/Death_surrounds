@@ -14,14 +14,12 @@ public:
                             Entity(const sf::Texture& texture);
     virtual                 ~Entity();
                             
-    virtual void            update(const float deltaTime, const sf::Vector2f& mousePosView) {};
     virtual void            render(sf::RenderTarget& target, 
                                    sf::Shader* pShader = nullptr,
                                    const sf::Vector2f& shaderLightPosition = sf::Vector2f(),
                                    const bool showHitbox = false
                                    );
-    virtual void            move(const float dirX, const float dirY, const float deltaTime);
-                            
+    virtual void            move(const float dirX, const float dirY, const float deltaTime);                       
     void                    setPosition(const float posX, const float posY);
 
     const sf::Vector2f&     getPosition() const;

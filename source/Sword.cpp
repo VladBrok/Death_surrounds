@@ -52,7 +52,7 @@ const std::string Sword::getName() const
 
 void Sword::initRange()
 {
-    range = 55.f;
+    range = 58.f;
 }
 
 

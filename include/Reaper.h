@@ -2,6 +2,7 @@
 #define REAPER_H
 
 #include "Enemy.h"
+#include "AiFollow.h"
 #include "AiSpawnMinion.h"
 
 
@@ -21,10 +22,9 @@ public:
 private:
 
     AiSpawnMinion*    pAiSpawnMinion;
+    AiFollow*         pAiFollow;
     EnemySystem&      enemySystem;
 
-    virtual void      updateAnimation(const float deltaTime);
-    virtual void      initAttributeComponent();
     virtual void      initAnimation();
     virtual void      initDroppingItem();
 };

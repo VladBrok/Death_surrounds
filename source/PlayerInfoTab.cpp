@@ -29,9 +29,9 @@ void PlayerInfoTab::initInfoTab(const sf::RenderWindow& window, const sf::Font& 
     );
 
     tabText.setFont(font);
-    tabText.setCharacterSize((unsigned)utils::percentToPixels(2.8f, tabBackground.getSize().x + tabBackground.getSize().y));
+    tabText.setCharacterSize((unsigned)utils::percentToPixels(2.8f, (int)(tabBackground.getSize().x + tabBackground.getSize().y)));
     tabText.setPosition(
-        (float)(int)(tabBackground.getPosition().x + utils::percentToPixels(20.f, tabBackground.getSize().x)),
-        (float)(int)(tabBackground.getPosition().y + utils::percentToPixels(18.f, tabBackground.getSize().y))
+        (float)(int)(tabBackground.getPosition().x + utils::percentToPixels(20.f, (int)tabBackground.getSize().x)),
+        (float)(int)(tabBackground.getPosition().y + utils::percentToPixels(18.f, (int)tabBackground.getSize().y))
     );
 }

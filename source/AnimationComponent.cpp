@@ -30,46 +30,23 @@ void AnimationComponent::addAnimation(const std::string&    animationKey,
                                       )
 {
     animations[animationKey] = new Animation(
-                                    textureSheet, 
-                                    sprite, 
-                                    startFrameX, 
-                                    startFrameY,
-                                    endFrameX,
-                                    endFrameY,
-                                    frameWidth,
-                                    frameHeight,
-                                    timeToPlayAnimation
-                               );
-}
-
-
-void AnimationComponent::play(const std::string& animationKey, const float deltaTime, const bool priority)
-{
-    updateLastAnimation(animationKey);
-
-    if (!pPriorityAnimation)
-    {
-        animations[animationKey]->play(deltaTime);
-        if (priority)
-        {
-            pPriorityAnimation = animations[animationKey];
-        }
-    }
-    else
-    {
-        pPriorityAnimation->play(deltaTime);
-        if (pPriorityAnimation->isDone())
-        {
-            pPriorityAnimation = nullptr;
-        }
-    }
+                                      textureSheet, 
+                                      sprite, 
+                                      startFrameX, 
+                                      startFrameY,
+                                      endFrameX,
+                                      endFrameY,
+                                      frameWidth,
+                                      frameHeight,
+                                      timeToPlayAnimation
+                                   );
 }
 
 
  void AnimationComponent::play(const std::string& animationKey, 
                                const float deltaTime, 
-                               const float modifier, 
-                               const float modifierMax,
+                               const float animationSpeedModifier, 
+                               const float animationSpeedModifierMax,
                                const bool  priority
                                )
 {
@@ -77,7 +54,7 @@ void AnimationComponent::play(const std::string& animationKey, const float delta
 
     if (!pPriorityAnimation)
     {
-        animations[animationKey]->play(deltaTime, std::abs(modifier / modifierMax));
+        animations[animationKey]->play(deltaTime, std::abs(animationSpeedModifier / animationSpeedModifierMax));
         if (priority)
         {
             pPriorityAnimation = animations[animationKey];
@@ -85,7 +62,7 @@ void AnimationComponent::play(const std::string& animationKey, const float delta
     }
     else
     {
-        pPriorityAnimation->play(deltaTime, std::abs(modifier / modifierMax));
+        pPriorityAnimation->play(deltaTime, std::abs(animationSpeedModifier / animationSpeedModifierMax));
         if (pPriorityAnimation->isDone())
         {
             pPriorityAnimation = nullptr;

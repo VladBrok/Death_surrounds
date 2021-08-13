@@ -41,6 +41,16 @@ Item* Enemy::getDroppingItem() const
 }
 
 
+void Enemy::updateAnimation(const float deltaTime)
+{
+    if (pMovementComponent->getMovementState() == "IDLE")
+    {
+        return;
+    }
+    Character::updateAnimation(deltaTime);
+}
+
+
 void Enemy::initTimers()
 {
     damageTimerMax = 200;

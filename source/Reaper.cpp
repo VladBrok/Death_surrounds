@@ -2,6 +2,7 @@
 #include "Reaper.h"
 #include "Food.h"
 #include "constants.h"
+#include "Utils.h"
 
 
 Reaper::Reaper(const float posX, 
@@ -18,13 +19,14 @@ Reaper::Reaper(const float posX,
 
     createMovementComponent(65.f, 800.f, 500.f);
     createAnimationComponent(textureSheet);
-    createHitboxComponent(0.f, 0.f, 39.f, 48.f);
-    initAttributeComponent();
+    createHitboxComponent(0.f, 4.f, 39.f, 39.f);
+    createAttributeComponent(5, 20, 2, 4);
 
     initAnimation();
     initDroppingItem();
 
-    pAiSpawnMinion = new AiSpawnMinion(*this, SKELETON, 5, 2);
+    pAiSpawnMinion = new AiSpawnMinion(*this, SKELETON, 7, 2);
+    pAiFollow = new AiFollow(*this, player);
 }
 
 
@@ -42,40 +44,18 @@ void Reaper::update(const float deltaTime)
 
     pHitboxComponent->update();
 
-    pAiSpawnMinion->update(enemySystem);
+    if (utils::getDistance(getCenter(), pAiFollow->getTargetEntity().getCenter()) > GRID_SIZE * 2)
+    {
+        pAiFollow->update(deltaTime);
+    }
+    else
+    {
+        pAiSpawnMinion->update(enemySystem);
+    }
+    
 
 
     Character::updateDamageColor();
-}
-
-
-void Reaper::updateAnimation(const float deltaTime)
-{
-    try
-    {
-        const std::string& movementState = pMovementComponent->getMovementState();
-
-        // Playing animations using the enemy's velocity as modifier for animation speed
-        float modifier = (movementState == "MOVING_RIGHT" || movementState == "MOVING_LEFT") ? pMovementComponent->getVelocity().x: pMovementComponent->getVelocity().y;
-        float modifierMax = pMovementComponent->getMaxVelocity();
-
-        pAnimationComponent->play(
-            movementState, 
-            deltaTime, 
-            modifier,
-            modifierMax
-        ); 
-    }
-    catch(std::out_of_range&)
-    {
-        //std::cout << "ERROR in Reaper::updateAnimation:\nthere is no animation for this type of enemy movement.\n";
-    }
-}
-
-
-void Reaper::initAttributeComponent()
-{
-    createAttributeComponent(1, 20, 2, 4);
 }
 
 

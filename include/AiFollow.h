@@ -4,12 +4,13 @@
 #include "Entity.h"
 
 
-class AiFollow
+class AiFollow: public sf::NonCopyable
 {
 public:
 
                AiFollow(Entity& self, Entity& targetEntity);
     void       update(const float deltaTime);
+    Entity&    getTargetEntity() const;
 
 private:
 

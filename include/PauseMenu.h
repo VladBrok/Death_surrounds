@@ -29,7 +29,6 @@ private:
     sf::Font&                                font;
 
     void                                     initText(const sf::RenderWindow& window);
-
 };
 
 

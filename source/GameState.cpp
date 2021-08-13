@@ -210,7 +210,7 @@ void GameState::updateTilemap(const float deltaTime)
 
 void GameState::updateGui()
 {
-    pPlayerGui->update();
+    pPlayerGui->update(*pPlayer);
 }
 
 
@@ -370,6 +370,7 @@ void GameState::initTextures()
     textures["ENEMY_SPIDER_SHEET"].loadFromFile(resources::getSpiderTextureFile());
     textures["ENEMY_SKELETON_SHEET"].loadFromFile(resources::getSkeletonTextureFile());
     textures["ENEMY_REAPER_SHEET"].loadFromFile(resources::getReaperTextureFile());
+    textures["VORTEX"].loadFromFile(resources::getVortexTextureFile());
     textures["WEAPON_SWORD"].loadFromFile(resources::getSwordTextureFile());
     textures["HP_BAR"].loadFromFile(resources::getPlayerHpBarTextureFile());
     textures["EXP_BAR"].loadFromFile(resources::getPlayerExpBarTextureFile());
@@ -450,7 +451,7 @@ void GameState::initGameOverScreen()
     gameOverScreen.setFillColor(sf::Color(160, 0, 0, 120));
 
     gameOverText.setFont(font);
-    gameOverText.setCharacterSize(utils::percentToPixels(4.f, (int)(window.getSize().x + window.getSize().y)));
+    gameOverText.setCharacterSize((unsigned)utils::percentToPixels(4.f, (int)(window.getSize().x + window.getSize().y)));
     gameOverText.setString("YOU DIED");
     gameOverText.setStyle(sf::Text::Bold);
     gameOverText.setPosition(
@@ -459,7 +460,7 @@ void GameState::initGameOverScreen()
     );
 
     gameOverInfoText.setFont(font);
-    gameOverInfoText.setCharacterSize(utils::percentToPixels(2.5f, (int)(window.getSize().x + window.getSize().y)));
+    gameOverInfoText.setCharacterSize((unsigned)utils::percentToPixels(2.5f, (int)(window.getSize().x + window.getSize().y)));
     gameOverInfoText.setString("Press Space key to respawn");
     gameOverInfoText.setPosition(
         gameOverScreen.getSize().x / 2.f - gameOverInfoText.getGlobalBounds().width / 2.f,

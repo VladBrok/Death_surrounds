@@ -14,6 +14,7 @@ namespace resources
     std::string    getSpiderTextureFile();
     std::string    getSkeletonTextureFile();
     std::string    getReaperTextureFile();
+    std::string    getVortexTextureFile();
     std::string    getPlayerTextureFile();
     std::string    getPlayerHpBarTextureFile();
     std::string    getPlayerExpBarTextureFile();

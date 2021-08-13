@@ -16,8 +16,8 @@ Skeleton::Skeleton(const float posX,
 
     createMovementComponent(80.f, 1200.f, 700.f);
     createAnimationComponent(textureSheet);
-    createHitboxComponent(17.f, 8.f, 30.f, 48.f);
-    initAttributeComponent();
+    createHitboxComponent(17.f, 13.f, 30.f, 33.f);
+    createAttributeComponent(1, 7, 1, 3);
 
     initAnimation();
     initDroppingItem();
@@ -44,36 +44,6 @@ void Skeleton::update(const float deltaTime)
 
 
     Character::updateDamageColor();
-}
-
-
-void Skeleton::updateAnimation(const float deltaTime)
-{
-    try
-    {
-        const std::string& movementState = pMovementComponent->getMovementState();
-
-        // Playing animations using the enemy's velocity as modifier for animation speed
-        float modifier = (movementState == "MOVING_RIGHT" || movementState == "MOVING_LEFT") ? pMovementComponent->getVelocity().x: pMovementComponent->getVelocity().y;
-        float modifierMax = pMovementComponent->getMaxVelocity();
-
-        pAnimationComponent->play(
-            movementState, 
-            deltaTime, 
-            modifier,
-            modifierMax
-        ); 
-    }
-    catch(std::out_of_range&)
-    {
-        std::cout << "ERROR in Skeleton::updateAnimation:\nthere is no animation for this type of enemy movement.\n";
-    }
-}
-
-
-void Skeleton::initAttributeComponent()
-{
-    createAttributeComponent(1, 7, 1, 3);
 }
 
 

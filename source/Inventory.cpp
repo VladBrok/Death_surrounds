@@ -31,7 +31,7 @@ void Inventory::update(const sf::Vector2f& itemPosition,
                        )
 {
     // Selecting the new active item
-    if (panelBorder.getGlobalBounds().contains(mousePosWindow.x, mousePosWindow.y) &&
+    if (panelBorder.getGlobalBounds().contains((float)mousePosWindow.x, (float)mousePosWindow.y) &&
         sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
         int itemIndex = (int)(mousePosWindow.x - panelBorder.getPosition().x) / INVENTORY_SLOT_SIZE;

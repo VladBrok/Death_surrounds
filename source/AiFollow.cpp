@@ -27,3 +27,9 @@ void AiFollow::update(const float deltaTime)
         self.stopVelocity();
     }
 }
+
+
+Entity& AiFollow::getTargetEntity() const
+{
+    return targetEntity;
+}
