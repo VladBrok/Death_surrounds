@@ -12,7 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\AiFollow.cpp" />
-    <ClCompile Include="source\AiOption.cpp" />
+    <ClCompile Include="source\AiSpawnMinion.cpp" />
     <ClCompile Include="source\AnimationComponent.cpp" />
     <ClCompile Include="source\AttributeComponent.cpp" />
     <ClCompile Include="source\Button.cpp" />
@@ -45,8 +45,11 @@
     </ClCompile>
     <ClCompile Include="source\ProgressBar.cpp" />
     <ClCompile Include="source\Rat.cpp" />
+    <ClCompile Include="source\Reaper.cpp" />
     <ClCompile Include="source\Resources.cpp" />
     <ClCompile Include="source\SettingsState.cpp" />
+    <ClCompile Include="source\Skeleton.cpp" />
+    <ClCompile Include="source\Spider.cpp" />
     <ClCompile Include="source\State.cpp" />
     <ClCompile Include="source\Sword.cpp" />
     <ClCompile Include="source\TextTagSystem.cpp" />
@@ -58,7 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AiFollow.h" />
-    <ClInclude Include="include\AiOption.h" />
+    <ClInclude Include="include\AiSpawnMinion.h" />
     <ClInclude Include="include\AnimationComponent.h" />
     <ClInclude Include="include\AttributeComponent.h" />
     <ClInclude Include="include\Button.h" />
@@ -89,8 +92,11 @@
     <ClInclude Include="include\precompiled.h" />
     <ClInclude Include="include\ProgressBar.h" />
     <ClInclude Include="include\Rat.h" />
+    <ClInclude Include="include\Reaper.h" />
     <ClInclude Include="include\Resources.h" />
     <ClInclude Include="include\SettingsState.h" />
+    <ClInclude Include="include\Skeleton.h" />
+    <ClInclude Include="include\Spider.h" />
     <ClInclude Include="include\State.h" />
     <ClInclude Include="include\Sword.h" />
     <ClInclude Include="include\TextTagSystem.h" />

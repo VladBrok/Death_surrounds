@@ -18,7 +18,7 @@ public:
     bool                     canBeDespawned(const sf::View& view) const;
 
     // Returns the amount of experience that you will get after killing this enemy
-    unsigned                 getExpForKilling() const;
+    int                      getExpForKilling() const;
                              
     Item*                    getDroppingItem() const;
                              
@@ -26,7 +26,7 @@ protected:
               
     const sf::Texture&       lootTextureSheet;
     unsigned                 level;
-    unsigned                 expForKillingMax;  
+    int                      expForKillingMax;
     std::shared_ptr<Item>    droppingItem;
 
     virtual void             updateAnimation(const float deltaTime) = 0;

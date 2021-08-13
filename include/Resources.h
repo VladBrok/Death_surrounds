@@ -11,6 +11,9 @@ namespace resources
     std::string    getVertexShaderFile();
     std::string    getMainMenuBackgroundFile();
     std::string    getRatTextureFile();
+    std::string    getSpiderTextureFile();
+    std::string    getSkeletonTextureFile();
+    std::string    getReaperTextureFile();
     std::string    getPlayerTextureFile();
     std::string    getPlayerHpBarTextureFile();
     std::string    getPlayerExpBarTextureFile();

@@ -367,6 +367,9 @@ void GameState::initTextures()
 {
     textures["PLAYER_SHEET"].loadFromFile(resources::getPlayerTextureFile());
     textures["ENEMY_RAT_SHEET"].loadFromFile(resources::getRatTextureFile());
+    textures["ENEMY_SPIDER_SHEET"].loadFromFile(resources::getSpiderTextureFile());
+    textures["ENEMY_SKELETON_SHEET"].loadFromFile(resources::getSkeletonTextureFile());
+    textures["ENEMY_REAPER_SHEET"].loadFromFile(resources::getReaperTextureFile());
     textures["WEAPON_SWORD"].loadFromFile(resources::getSwordTextureFile());
     textures["HP_BAR"].loadFromFile(resources::getPlayerHpBarTextureFile());
     textures["EXP_BAR"].loadFromFile(resources::getPlayerExpBarTextureFile());

@@ -1,6 +1,5 @@
 #include "precompiled.h"
 #include "EnemySpawnerTile.h"
-#include "constants.h"
 #include "EnemySystem.h"
 
 
@@ -22,8 +21,7 @@ EnemySpawnerTile::EnemySpawnerTile(const float posX,
 
 void EnemySpawnerTile::update(EnemySystem& enemySystem)
 {
-    if ((spawnTimer.getElapsedTime().asSeconds() >= (float)enemyTimeToSpawn && 
-        enemySystem.getNumberOfActiveEnemies() < NUMBER_OF_ACTIVE_ENEMIES_MAX) ||
+    if (spawnTimer.getElapsedTime().asSeconds() >= (float)enemyTimeToSpawn ||
         firstSpawn)
     {
         spawnTimer.restart();

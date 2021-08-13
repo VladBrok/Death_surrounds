@@ -4,7 +4,7 @@
 
 
 AiFollow::AiFollow(Entity& self, Entity& targetEntity)
-    : AiOption(self, targetEntity)
+    : self(self), targetEntity(targetEntity)
 {
 }
 

@@ -172,9 +172,6 @@
     <ClCompile Include="source\InfoTab.cpp">
       <Filter>GUI\Info tabs</Filter>
     </ClCompile>
-    <ClCompile Include="source\AiOption.cpp">
-      <Filter>AI</Filter>
-    </ClCompile>
     <ClCompile Include="source\AiFollow.cpp">
       <Filter>AI</Filter>
     </ClCompile>
@@ -189,6 +186,18 @@
     </ClCompile>
     <ClCompile Include="source\Character.cpp">
       <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Spider.cpp">
+      <Filter>Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Reaper.cpp">
+      <Filter>Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Skeleton.cpp">
+      <Filter>Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AiSpawnMinion.cpp">
+      <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -300,9 +309,6 @@
     <ClInclude Include="include\InfoTab.h">
       <Filter>GUI\Info tabs</Filter>
     </ClInclude>
-    <ClInclude Include="include\AiOption.h">
-      <Filter>AI</Filter>
-    </ClInclude>
     <ClInclude Include="include\AiFollow.h">
       <Filter>AI</Filter>
     </ClInclude>
@@ -317,6 +323,18 @@
     </ClInclude>
     <ClInclude Include="include\Character.h">
       <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Spider.h">
+      <Filter>Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Reaper.h">
+      <Filter>Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Skeleton.h">
+      <Filter>Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AiSpawnMinion.h">
+      <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

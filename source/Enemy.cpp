@@ -22,7 +22,7 @@ bool Enemy::canBeDespawned(const sf::View& view) const
 }
 
 
-unsigned Enemy::getExpForKilling() const
+int Enemy::getExpForKilling() const
 {
     if (pAttributeComponent)
     {

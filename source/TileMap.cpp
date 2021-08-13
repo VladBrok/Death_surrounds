@@ -165,8 +165,7 @@ void Tilemap::saveToFile(const std::string& fileName)
 
     if (!file.is_open())
     {
-        std::cout << "ERROR in Tilemap::saveToFile: unable to save the tile map to the file " << fileName << '\n';
-        return;
+        throw std::runtime_error("ERROR in Tilemap::saveToFile: unable to save the tile map to the file " + fileName + "\n");
     }
 
     file << map.size() << ' ' << map[0].size() << '\n';
@@ -178,11 +177,26 @@ void Tilemap::saveToFile(const std::string& fileName)
             for (size_t k = 0; k < map[x][y].size(); ++k)
             {
                 file << map[x][y][k]->getType() << ' '
-                        << x << ' ' << y << ' '
-                        << map[x][y][k]->getAsString() << ' ';
+                     << x << ' ' << y << ' '
+                     << map[x][y][k]->getAsString() << ' ';
             }
         }
     } 
+    file.close();
+
+    
+    // Creating a backup file
+    std::ifstream inputFile;
+    inputFile.open(fileName);
+    std::ofstream backupFile;
+    backupFile.open(fileName + std::to_string(time(nullptr)) + "_backup");
+
+    if (!inputFile.is_open() || !backupFile.is_open())
+    {
+        throw std::runtime_error("ERROR in Tilemap::saveToFile: unable to create a backup file\n");
+    }
+
+    backupFile << inputFile.rdbuf();
 }
 
 

@@ -1,16 +1,20 @@
 #ifndef AIFOLLOW_H
 #define AIFOLLOW_H
 
+#include "Entity.h"
 
-#include "AiOption.h"
 
-
-class AiFollow: public AiOption
+class AiFollow
 {
 public:
 
-                    AiFollow(Entity& self, Entity& targetEntity);
-    virtual void    update(const float deltaTime);
+               AiFollow(Entity& self, Entity& targetEntity);
+    void       update(const float deltaTime);
+
+private:
+
+    Entity&    self;
+    Entity&    targetEntity;
 };
 
 

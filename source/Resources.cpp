@@ -31,7 +31,7 @@ namespace resources
 
     std::string getTilemapFile()
     {
-        return tilemapsDirectory + "tilemap.txt";
+        return tilemapsDirectory + "tilemap";
     }
 
 
@@ -56,6 +56,24 @@ namespace resources
     std::string getRatTextureFile()
     {
         return enemiesDirectory + "rat_60x64.png";
+    }
+
+
+    std::string getSpiderTextureFile()
+    {
+        return enemiesDirectory + "spider_60x64.png";
+    }
+
+
+    std::string getSkeletonTextureFile()
+    {
+        return enemiesDirectory + "skeleton_64x64.png";
+    }
+
+
+    std::string getReaperTextureFile()
+    {
+        return enemiesDirectory + "reaper_39x48.png";
     }
 
 

@@ -9,6 +9,9 @@ class Entity;
 enum EnemyType
 {
     RAT,
+    SPIDER,
+    SKELETON,
+    REAPER,
     NUMBER_OF_ENEMY_TYPES
 };
 
