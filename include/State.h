@@ -21,7 +21,9 @@ public:
     virtual             ~State() {};
     virtual void        processEvent(const sf::Event& event) {};
     virtual void        update(const float deltaTime) {};
-    virtual void        render(sf::RenderTarget* pTarget = nullptr) = 0; // If pTarget is nullptr, then we render the entity to the window
+
+    // If pTarget is nullptr, then everything renders to the window
+    virtual void        render(sf::RenderTarget* pTarget = nullptr) = 0; 
  
     bool                isActive() const;
     void                endActivity();
