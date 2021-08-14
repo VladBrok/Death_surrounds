@@ -212,6 +212,16 @@ void Player::loseExp(const unsigned exp)
 }
 
 
+WeaponType Player::getActiveWeaponType() const
+{
+    if (pActiveWeapon)
+    {
+        return pActiveWeapon->getWeaponType();
+    }
+    return MELEE_WEAPON;
+}
+
+
 void Player::gainExp(const unsigned exp)
 {
     pAttributeComponent->gainExp(exp);

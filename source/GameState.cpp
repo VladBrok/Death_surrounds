@@ -4,6 +4,8 @@
 #include "Rat.h"
 #include "Utils.h"
 #include "Resources.h"
+#include "Staff.h"
+#include "Sword.h"
 
 
 GameState::GameState(sf::RenderWindow& window,
@@ -39,6 +41,11 @@ GameState::~GameState()
     delete pLootSystem;
 
     deleteEnemies();
+
+    for (auto p = projectiles.begin(); p != projectiles.end(); ++p)
+    {
+        delete *p;
+    }
 }
 
 
@@ -53,9 +60,24 @@ void GameState::processEvent(const sf::Event& event)
     {
         pPlayer->setAttackStatus(true);
         pPlayer->restartAttackTimer();
+
+        // Adding a new projectile
+        if (pPlayer->getActiveWeaponType() == RANGED_WEAPON)
+        {
+            RangedWeapon* pRangedWeapon = dynamic_cast<RangedWeapon*>(pPlayer->getActiveItem());
+            if (pRangedWeapon)
+            {
+                projectiles.push_back(
+                    pRangedWeapon->allocateNewProjectile(
+                        utils::getNormalizedDirection(pPlayer->getCenter(), mousePosView), 
+                        pPlayer->getCenter()
+                    )
+                );
+            }
+        }
     }
     else if (event.type == sf::Event::MouseButtonReleased &&
-        event.mouseButton.button == sf::Mouse::Left)
+             event.mouseButton.button == sf::Mouse::Left)
     {
         pPlayer->setAttackStatus(false);
     }
@@ -216,12 +238,15 @@ void GameState::updateGui()
 
 void GameState::updateEnemiesAndCombat(const float deltaTime)
 {
+    updateProjectiles(deltaTime);
+
+
     auto enemy = enemies.begin();
     while (enemy != enemies.end())
     {
         (*enemy)->update(deltaTime);
 
-        updateCombat(**enemy); 
+        updateCombat(**enemy, deltaTime); 
 
         if ((*enemy)->isDead())
         {
@@ -273,10 +298,11 @@ void GameState::updateEnemiesAndCombat(const float deltaTime)
 }
 
 
-void GameState::updateCombat(Enemy& enemy)
+void GameState::updateCombat(Enemy& enemy, const float deltaTime)
 {
-    // Attack of the player
+    // Melee attack of the player
     if (pPlayer->isAttacking() && 
+        pPlayer->getActiveWeaponType() == MELEE_WEAPON && 
         enemy.getGlobalBounds().contains(mousePosView) &&
         utils::getDistance(enemy.getCenter(), pPlayer->getCenter()) <= pPlayer->getAttackRange() &&
         enemy.canBeDamaged())
@@ -304,6 +330,54 @@ void GameState::updateCombat(Enemy& enemy)
 
         pTextTagSystem->addTextTag(DAMAGE_TAG, pPlayer->getPosition(), damage);
     }
+
+
+    updateIntersectionWithProjectiles(enemy);
+}
+
+
+void GameState::updateProjectiles(const float deltaTime)
+{
+    auto projectile = projectiles.begin();
+    while (projectile != projectiles.end())
+    {
+        (*projectile)->update(deltaTime);
+        if ((*projectile)->canBeRemoved())
+        {
+            delete *projectile;
+            projectile = projectiles.erase(projectile);
+        }
+        else
+        {
+            ++projectile;
+        }
+    }
+
+    // DEBUG
+    /*std::cout << projectiles.size(  ) << '\n';*/
+}
+
+
+void GameState::updateIntersectionWithProjectiles(Enemy& enemy)
+{
+    auto projectile = projectiles.begin();
+    while (projectile != projectiles.end())
+    {
+        if ((*projectile)->checkIntersection(enemy) && enemy.canBeDamaged())
+        {
+            int damage = pPlayer->getDamage();
+            enemy.restartDamageTimer();
+            enemy.loseHp(damage);
+            pTextTagSystem->addTextTag(DAMAGE_TAG, enemy.getPosition(), damage);
+
+            delete *projectile;
+            projectile = projectiles.erase(projectile);
+        }
+        else
+        {
+            ++projectile;
+        }
+    }
 }
 
 
@@ -328,6 +402,7 @@ void GameState::render(sf::RenderTarget* pTarget)
     
     renderEnemies(target);
     pTextTagSystem->render(target);
+    renderProjectiles(target);
     pTilemap->renderDeferred(target, &coreShader, pPlayer->getCenter());
 
     target.setView(target.getDefaultView());
@@ -355,6 +430,15 @@ void GameState::renderEnemies(sf::RenderTarget& target)
 }
 
 
+void GameState::renderProjectiles(sf::RenderTarget& target)
+{
+    for (auto projectile = projectiles.begin(); projectile != projectiles.end(); ++ projectile)
+    {
+        (*projectile)->render(target);
+    }
+}
+
+
 void GameState::renderGameOverScreen(sf::RenderTarget& target)
 {
     target.draw(gameOverScreen);
@@ -372,6 +456,8 @@ void GameState::initTextures()
     textures["ENEMY_REAPER_SHEET"].loadFromFile(resources::getReaperTextureFile());
     textures["VORTEX"].loadFromFile(resources::getVortexTextureFile());
     textures["WEAPON_SWORD"].loadFromFile(resources::getSwordTextureFile());
+    textures["WEAPON_STAFF"].loadFromFile(resources::getStaffTextureFile());
+    textures["STAFF_ORB"].loadFromFile(resources::getStaffOrbTextureFile());
     textures["HP_BAR"].loadFromFile(resources::getPlayerHpBarTextureFile());
     textures["EXP_BAR"].loadFromFile(resources::getPlayerExpBarTextureFile());
     textures["FOOD"].loadFromFile(resources::getFoodTextureFile());
@@ -401,9 +487,12 @@ void GameState::initPlayer()
         window
     );
 
-    // FIXME: Maybe don't need to give the weapon for the player from start
-    Sword s(textures["WEAPON_SWORD"], 2, 5);
-    pPlayer->addItemToInventory(&s, true);
+    // FIXME: Maybe don't need to give the weapon to the player from start
+    Sword sword(textures["WEAPON_SWORD"], 2, 5);
+    pPlayer->addItemToInventory(&sword, true);
+
+    Staff staff(textures["WEAPON_STAFF"], textures["STAFF_ORB"], 1, 3);
+    pPlayer->addItemToInventory(&staff);
 }
 
 

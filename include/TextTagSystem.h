@@ -149,6 +149,7 @@ private:
     typedef std::vector<std::shared_ptr<TextTag>> PresetTagsContainer;
 
 
+
     const sf::Font&        font;
     TagsContainer          tags;
     PresetTagsContainer    presetTags;

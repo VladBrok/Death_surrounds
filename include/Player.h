@@ -2,8 +2,8 @@
 #define PLAYER_H
 
 #include "Character.h"
-#include "Sword.h"
 #include "Inventory.h"
+#include "Weapon.h"
 
 
 class Player: public Character
@@ -40,6 +40,7 @@ public:
     float                getAttackRange() const;
     const std::string    getStatsAsString() const;
     int                  getNumberOfItems() const;
+    WeaponType           getActiveWeaponType() const;
 
     void                 loseExp(const unsigned exp);
     void                 gainExp(const unsigned exp);

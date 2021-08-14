@@ -44,16 +44,12 @@ void Reaper::update(const float deltaTime)
 
     pHitboxComponent->update();
 
+    pAiSpawnMinion->update(enemySystem);
     if (utils::getDistance(getCenter(), pAiFollow->getTargetEntity().getCenter()) > GRID_SIZE * 2)
     {
         pAiFollow->update(deltaTime);
     }
-    else
-    {
-        pAiSpawnMinion->update(enemySystem);
-    }
     
-
 
     Character::updateDamageColor();
 }

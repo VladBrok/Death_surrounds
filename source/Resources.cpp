@@ -107,6 +107,18 @@ namespace resources
     }
 
 
+    std::string getStaffTextureFile()
+    {
+        return itemsDirectory + "staff.png";
+    }
+
+
+    std::string getStaffOrbTextureFile()
+    {
+        return playerDirectory + "staff_orb.png";
+    }
+
+
     std::string getFoodTextureFile()
     {
         return itemsDirectory + "food.png";

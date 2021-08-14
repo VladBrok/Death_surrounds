@@ -4,11 +4,11 @@
 
 
 Sword::Sword(const sf::Texture& texture, 
-             const int damage, 
+             const int damageMin, 
              const int damageMax,
              const sf::IntRect& textureRect
              )
-    : Weapon(texture, damage, damageMax, textureRect)
+    : Weapon(texture, damageMin, damageMax, textureRect)
 {
     initRange();
     initAttackTimerMax();
@@ -47,6 +47,12 @@ Sword* Sword::getClone()
 const std::string Sword::getName() const
 {
     return "Soul slicer";
+}
+
+
+WeaponType Sword::getWeaponType() const
+{
+    return MELEE_WEAPON;
 }
 
 

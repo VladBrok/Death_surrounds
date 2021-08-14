@@ -205,6 +205,15 @@
     <ClCompile Include="source\typedefs.cpp">
       <Filter>Typedefs</Filter>
     </ClCompile>
+    <ClCompile Include="source\Staff.cpp">
+      <Filter>Items\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Projectile.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="source\RangedWeapon.cpp">
+      <Filter>Items\Weapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AnimationComponent.h">
@@ -344,6 +353,15 @@
     </ClInclude>
     <ClInclude Include="include\typedefs.h">
       <Filter>Typedefs</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Staff.h">
+      <Filter>Items\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Projectile.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RangedWeapon.h">
+      <Filter>Items\Weapon</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
