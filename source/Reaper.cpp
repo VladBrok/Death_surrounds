@@ -15,12 +15,12 @@ Reaper::Reaper(const float posX,
     : Enemy(posX, posY, textureSheet, lootTextureSheet),
       enemySystem(enemySystem)
 {
-    expForKillingMax = 50;
+    expForKillingMax = 70;
 
     createMovementComponent(65.f, 800.f, 500.f);
     createAnimationComponent(textureSheet);
     createHitboxComponent(0.f, 4.f, 39.f, 39.f);
-    createAttributeComponent(5, 20, 2, 4);
+    createAttributeComponent(20, 40, 2, 4);
 
     initAnimation();
     initDroppingItem();

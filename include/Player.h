@@ -48,6 +48,9 @@ public:
     void                 setAttackStatus(const bool attacking);
     bool                 isAttacking() const;
     virtual bool         canAttack() const;
+
+    // Shows the inventory panel if it's hidden and vise versa
+    void                 toggleInventoryPanel();
                          
 private:                 
                          

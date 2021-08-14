@@ -12,12 +12,12 @@ Spider::Spider(const float posX,
                )
     : Enemy(posX, posY, textureSheet, lootTextureSheet)
 {
-    expForKillingMax = 15;
+    expForKillingMax = 25;
 
-    createMovementComponent(120.f, 1700.f, 1100.f);
+    createMovementComponent(240.f, 1700.f, 1100.f);
     createAnimationComponent(textureSheet);
     createHitboxComponent(18.f, 46.f, 26.f, 20.f);
-    createAttributeComponent(1, 10, 2, 3);
+    createAttributeComponent(5, 10, 2, 3);
 
     initAnimation();
     initDroppingItem();

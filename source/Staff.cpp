@@ -4,43 +4,40 @@
 #include "Projectile.h"
 
 
-Staff::Staff(const sf::Texture& texture, 
+Staff::Staff(const sf::Texture& weaponTexture,
+             const sf::Texture& unloadedWeaponTexture,
              const sf::Texture& projectileTexture,
              const int projectileDamageMin, 
              const int projectileDamageMax,
              const sf::IntRect& textureRect
              )
-    : RangedWeapon(texture, projectileTexture, projectileDamageMin, projectileDamageMax, textureRect),
-      projectileTexture(projectileTexture)
+    : RangedWeapon(weaponTexture, projectileTexture, projectileDamageMin, projectileDamageMax, textureRect),
+      projectileTexture(projectileTexture),
+      unloadedWeaponTexture(unloadedWeaponTexture)
 {
     initRange();
     initAttackTimerMax();
     initDefaultOriginAndScale();
-
     sprite.setOrigin(defaultOrigin);
 
 
-    projectileLifetimeInSeconds = 5.f;
+    projectileLifetimeInSeconds = 1.5f;
     projectileSpeed             = 300.f;
 }
 
 
 void Staff::update(const sf::Vector2f& weaponPosition, const sf::Vector2f& mousePosView)
 {
-    if (attackTimer.getElapsedTime().asMilliseconds() < attackTimerMax / 2)
-    {
-        sf::Vector2f StaffPosOffset(utils::getNormalizedDirection(sprite.getPosition(), mousePosView));
+    sprite.setPosition(weaponPosition);
+    utils::lookAt(sprite, mousePosView);
 
-        sprite.setPosition(
-            weaponPosition.x + StaffPosOffset.x * 10.f, 
-            weaponPosition.y + StaffPosOffset.y * 10.f
-        );
+    if (attackTimer.getElapsedTime().asMilliseconds() < attackTimerMax)
+    {
+        sprite.setTexture(unloadedWeaponTexture);
     }
     else
     {
-        sprite.setPosition(weaponPosition);
-
-        utils::lookAt(sprite, mousePosView);
+        sprite.setTexture(texture);
     }
 }
 
@@ -59,7 +56,7 @@ const std::string Staff::getName() const
 
 void Staff::initRange()
 {
-    range = 200.f;
+    range = 350.f;
 }
 
 

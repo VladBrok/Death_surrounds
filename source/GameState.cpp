@@ -102,8 +102,13 @@ void GameState::processEvent(const sf::Event& event)
             pLootSystem->addLoot(pPlayer->getCenter().x + GRID_SIZE, pPlayer->getCenter().y, pPlayer->getActiveItem());
             pPlayer->removeActiveItem();
         }
+        else if (event.key.code == keybinds.at("TOGGLE_INVENTORY_PANEL")) 
+        {
+            pPlayer->toggleInventoryPanel();
+        }
     }
 
+    
     // Pausing / unpausing the state
     if (event.type == sf::Event::KeyPressed &&
         event.key.code == keybinds.at("PAUSE"))
@@ -457,6 +462,7 @@ void GameState::initTextures()
     textures["VORTEX"].loadFromFile(resources::getVortexTextureFile());
     textures["WEAPON_SWORD"].loadFromFile(resources::getSwordTextureFile());
     textures["WEAPON_STAFF"].loadFromFile(resources::getStaffTextureFile());
+    textures["WEAPON_UNLOADED_STAFF"].loadFromFile(resources::getUnloadedStaffTextureFile());
     textures["STAFF_ORB"].loadFromFile(resources::getStaffOrbTextureFile());
     textures["HP_BAR"].loadFromFile(resources::getPlayerHpBarTextureFile());
     textures["EXP_BAR"].loadFromFile(resources::getPlayerExpBarTextureFile());
@@ -491,7 +497,7 @@ void GameState::initPlayer()
     Sword sword(textures["WEAPON_SWORD"], 2, 5);
     pPlayer->addItemToInventory(&sword, true);
 
-    Staff staff(textures["WEAPON_STAFF"], textures["STAFF_ORB"], 1, 3);
+    Staff staff(textures["WEAPON_STAFF"], textures["WEAPON_UNLOADED_STAFF"], textures["STAFF_ORB"], 1, 1);
     pPlayer->addItemToInventory(&staff);
 }
 

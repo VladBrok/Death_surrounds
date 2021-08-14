@@ -37,6 +37,8 @@ public:
     int                   getSize() const; 
                           
     Item&                 operator[](const int index);
+    bool                  panelIsActive() const;
+    void                  togglePanelHiddenStatus();
                           
 private:                  
                           
@@ -44,7 +46,9 @@ private:
     int                   actualSize;
     Item*                 pActiveItem; // This pointer holds a copy of the item
     int                   activeItemIndex;
-                          
+         
+    bool                  panelActive; // True if panel border contains mouse position related to window
+    bool                  panelHidden;
     sf::Sprite            panelBorder;
     sf::RectangleShape    panelBackground;
     sf::RectangleShape    selectedSlotBackground;

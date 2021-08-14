@@ -10,7 +10,8 @@ class Staff: public RangedWeapon
 {
 public:
                       
-                                 Staff(const sf::Texture& texture, 
+                                 Staff(const sf::Texture& weaponTexture,
+                                       const sf::Texture& unloadedWeaponTexture,
                                        const sf::Texture& projectileTexture,
                                        const int projectileDamageMin,
                                        const int projectileDamageMax, 
@@ -23,6 +24,7 @@ public:
                       
 private:
 
+    const sf::Texture&           unloadedWeaponTexture;
     const sf::Texture&           projectileTexture;
     float                        projectileLifetimeInSeconds;
     float                        projectileSpeed;

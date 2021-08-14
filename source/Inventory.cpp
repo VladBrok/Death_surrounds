@@ -10,7 +10,9 @@ Inventory::Inventory(const sf::RenderWindow& window,
                      )
     : pActiveItem(nullptr), 
       activeItemIndex(0),
-      actualSize(0)
+      actualSize(0),
+      panelActive(false),
+      panelHidden(false)
 {   
     items.assign(INVENTORY_SIZE_MAX, nullptr);
 
@@ -30,33 +32,49 @@ void Inventory::update(const sf::Vector2f& itemPosition,
                        TextTagSystem& textTagSystem
                        )
 {
-    // Selecting the new active item
-    if (panelBorder.getGlobalBounds().contains((float)mousePosWindow.x, (float)mousePosWindow.y) &&
-        sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    if (!panelHidden)
     {
-        int itemIndex = (int)(mousePosWindow.x - panelBorder.getPosition().x) / INVENTORY_SLOT_SIZE;
-        if (activeItemIndex != itemIndex)
+        // Selecting the new active item
+        if (panelBorder.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosWindow))) 
         {
-            setActiveItem(itemIndex);
-            selectedSlotBackground.setPosition(
-                panelBorder.getPosition().x + itemIndex * INVENTORY_SLOT_SIZE, 
-                panelBorder.getPosition().y
-            );
+            panelActive = true;
 
-            if (pActiveItem)
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
-                textTagSystem.addTextTag(
-                    ITEM_NAME_TAG, 
-                    sf::Vector2f(),
-                    pActiveItem->getName()
-                );
-                textTagSystem.setBackElementPosition(
-                    selectedSlotBackground.getPosition().x + selectedSlotBackground.getSize().x / 2.f - textTagSystem.getBackElementSize().x / 2.f,
-                    selectedSlotBackground.getPosition().y - selectedSlotBackground.getSize().y / 1.3f
-                );
+                int itemIndex = (int)(mousePosWindow.x - panelBorder.getPosition().x) / INVENTORY_SLOT_SIZE;
+                if (activeItemIndex != itemIndex)
+                {
+                    setActiveItem(itemIndex);
+                    selectedSlotBackground.setPosition(
+                        panelBorder.getPosition().x + itemIndex * INVENTORY_SLOT_SIZE, 
+                        panelBorder.getPosition().y
+                    );
+
+                    if (pActiveItem)
+                    {
+                        textTagSystem.addTextTag(
+                            ITEM_NAME_TAG, 
+                            sf::Vector2f(),
+                            pActiveItem->getName()
+                        );
+                        textTagSystem.setBackElementPosition(
+                            selectedSlotBackground.getPosition().x + selectedSlotBackground.getSize().x / 2.f - textTagSystem.getBackElementSize().x / 2.f,
+                            selectedSlotBackground.getPosition().y - selectedSlotBackground.getSize().y / 1.3f
+                        );
+                    }
+                }
             }
         }
+        else // if (!panelBorder.getGlobalBounds().contains(mousePosWindow))
+        {
+            panelActive = false;
+        }
     }
+    else // if (panelHidden)
+    {
+        panelActive = false;
+    }
+
 
     if (pActiveItem)
     {
@@ -76,15 +94,18 @@ void Inventory::renderToView(sf::RenderTarget& target)
 
 void Inventory::renderToWindow(sf::RenderTarget& target)
 {
-    target.draw(panelBackground);
-    target.draw(selectedSlotBackground);
-    target.draw(panelBorder);
-
-    for (auto i = items.begin(); i != items.end(); ++i)
+    if (!panelHidden)
     {
-        if (*i)
+        target.draw(panelBackground);
+        target.draw(selectedSlotBackground);
+        target.draw(panelBorder);
+
+        for (auto i = items.begin(); i != items.end(); ++i)
         {
-            (*i)->render(target);
+            if (*i)
+            {
+                (*i)->render(target);
+            }
         }
     }
 }
@@ -205,6 +226,18 @@ Item& Inventory::operator[](const int index)
     }
 
     return *items[index];
+}
+
+
+bool Inventory::panelIsActive() const
+{
+    return panelActive;
+}
+
+
+void Inventory::togglePanelHiddenStatus()
+{
+    panelHidden = !panelHidden;
 }
 
 

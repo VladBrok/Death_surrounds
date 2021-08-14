@@ -242,12 +242,23 @@ bool Player::isAttacking() const
 
 bool Player::canAttack() const
 {
+    if (inventory.panelIsActive())
+    {
+        return false;
+    }
+
     if (pActiveWeapon)
     {
         return pActiveWeapon->canAttack();
     }
 
     return Character::canAttack();
+}
+
+
+void Player::toggleInventoryPanel()
+{
+    inventory.togglePanelHiddenStatus();
 }
 
 

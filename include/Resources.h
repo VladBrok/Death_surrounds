@@ -20,6 +20,7 @@ namespace resources
     std::string        getPlayerExpBarTextureFile();
     std::string        getSwordTextureFile();
     std::string        getStaffTextureFile();
+    std::string        getUnloadedStaffTextureFile();
     std::string        getStaffOrbTextureFile();
     std::string        getFoodTextureFile();
     std::string        getInventoryPanelTextureFile();
