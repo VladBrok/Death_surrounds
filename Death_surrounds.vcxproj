@@ -56,6 +56,7 @@
     <ClCompile Include="source\TextureSelector.cpp" />
     <ClCompile Include="source\Tile.cpp" />
     <ClCompile Include="source\Tilemap.cpp" />
+    <ClCompile Include="source\typedefs.cpp" />
     <ClCompile Include="source\Utils.cpp" />
     <ClCompile Include="source\Weapon.cpp" />
   </ItemGroup>
@@ -103,6 +104,7 @@
     <ClInclude Include="include\TextureSelector.h" />
     <ClInclude Include="include\Tile.h" />
     <ClInclude Include="include\Tilemap.h" />
+    <ClInclude Include="include\typedefs.h" />
     <ClInclude Include="include\Utils.h" />
     <ClInclude Include="include\Weapon.h" />
   </ItemGroup>

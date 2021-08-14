@@ -1,5 +1,6 @@
 #include "precompiled.h"
 #include "PauseMenu.h"
+#include "Button.h"
 
 
 PauseMenu::PauseMenu(const sf::RenderWindow& window, sf::Font& font)

@@ -1,7 +1,7 @@
 #ifndef DROPDOWNLIST_H
 #define DROPDOWNLIST_H
 
-#include "Button.h"
+class Button;
 
 
 class DropDownList: public sf::NonCopyable

@@ -5,7 +5,6 @@
 enum EditorModes
 {
     DEFAULT_MODE,
-    ENEMY_MODE,
     NUMBER_OF_EDITOR_MODES
 };
 

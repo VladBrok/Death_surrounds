@@ -1,7 +1,7 @@
 #ifndef ENEMYSYSTEM_H
 #define ENEMYSYSTEM_H
 
-
+#include "typedefs.h"
 class Enemy;
 class Entity;
 
@@ -20,22 +20,22 @@ class EnemySystem: public sf::NonCopyable
 {
 public:
 
-                                                   EnemySystem(std::list<Enemy*>& activeEnemies, 
-                                                               std::unordered_map<std::string, sf::Texture>& textures,
-                                                               Entity& player
-                                                               );
-     void                                          createEnemy(const float posX,
-                                                               const float posY,
-                                                               const int type
-                                                               );
-     static const std::string                      getEnemyTypeAsString(const int type);
-     int                                           getNumberOfActiveEnemies() const;
-
-private:
-
-    std::list<Enemy*>&                             activeEnemies;
-    std::unordered_map<std::string, sf::Texture>&  textures;
-    Entity&                                        player;
+                                 EnemySystem(std::list<Enemy*>& activeEnemies, 
+                                             std::unordered_map<std::string, sf::Texture>& textures,
+                                             Entity& player
+                                             );
+     void                        createEnemy(const float posX,
+                                             const float posY,
+                                             const int type
+                                             );
+     static const std::string    getEnemyTypeAsString(const int type);
+     int                         getNumberOfActiveEnemies() const;
+                                
+private:                        
+                                
+    std::list<Enemy*>&           activeEnemies;
+    StringToTextureMap&          textures;
+    Entity&                      player;
 };
 
 

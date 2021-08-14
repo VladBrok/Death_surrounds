@@ -4,7 +4,7 @@
 
 
 State::State(sf::RenderWindow& window, 
-             const std::unordered_map<std::string, sf::Keyboard::Key>& supportedKeys,
+             const StringToKeyMap& supportedKeys,
              std::stack<State*>& states
             )
     : window(window), 
@@ -51,7 +51,7 @@ void State::updateMousePosition(sf::View* pView)
         window.setView(*pView);
     }
 
-    mousePosView   = window.mapPixelToCoords(mousePosWindow);
+    mousePosView = window.mapPixelToCoords(mousePosWindow);
     window.setView(window.getDefaultView());
 
     mousePosGrid.x = static_cast<int>(mousePosView.x) / static_cast<int>(GRID_SIZE);
@@ -76,7 +76,8 @@ void State::initKeybinds(const std::string& filePath)
 {
     std::ifstream file(filePath);
 
-    if (file.is_open()) // Loading the keys for this state
+    // Loading the keys for the state
+    if (file.is_open()) 
     {
         std::string action;
         std::string key;

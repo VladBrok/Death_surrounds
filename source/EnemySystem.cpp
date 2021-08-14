@@ -8,12 +8,12 @@
 
 
 EnemySystem::EnemySystem(std::list<Enemy*>& activeEnemies, 
-            std::unordered_map<std::string, sf::Texture>& textures,
-            Entity& player
-            )
-            : activeEnemies(activeEnemies), 
-              textures(textures),
-              player(player)
+                         StringToTextureMap& textures,
+                         Entity& player
+                         )
+ : activeEnemies(activeEnemies), 
+   textures(textures),
+   player(player)
 {
 }
 

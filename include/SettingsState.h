@@ -10,35 +10,35 @@ class SettingsState: public State
 {
 public:
 
-                                                   SettingsState(sf::RenderWindow& window, 
-                                                                 const std::unordered_map<std::string, sf::Keyboard::Key>& supportedKeys,
-                                                                 std::stack<State*>& states
-                                                                 );
-    virtual                                        ~SettingsState();
-    
-    virtual void                                   processEvent(const sf::Event& event);
-    virtual void                                   render(sf::RenderTarget* pTarget = nullptr);
-    void                                           renderGui(sf::RenderTarget& target);
-    void                                           renderOptionsText(sf::RenderTarget& target);
-
-private:
-
-    sf::RectangleShape                             background;
-    sf::Font                                       font;
-    sf::Text                                       optionsText;
-    std::unordered_map<std::string, Button*>       buttons;
-    std::unordered_map<std::string, DropDownList*> dropDownLists;
-
-    void                                           initFont();
-    void                                           initGui();
-    void                                           initBackground();
-    void                                           initOptionsText();
+                               SettingsState(sf::RenderWindow& window, 
+                                             const StringToKeyMap& supportedKeys,
+                                             std::stack<State*>& states
+                                             );
+    virtual                    ~SettingsState();
+                               
+    virtual void               processEvent(const sf::Event& event);
+    virtual void               render(sf::RenderTarget* pTarget = nullptr);
+    void                       renderGui(sf::RenderTarget& target);
+    void                       renderOptionsText(sf::RenderTarget& target);
+                               
+private:                       
+                               
+    sf::RectangleShape         background;
+    sf::Font                   font;
+    sf::Text                   optionsText;
+    StringToButtonMap          buttons;
+    StringToDropDownListMap    dropDownLists;
+                               
+    void                       initFont();
+    void                       initGui();
+    void                       initBackground();
+    void                       initOptionsText();
 
     // String example: 800 x 600
-    sf::Vector2i                                   getResolutionFromString(const std::string& string);
+    sf::Vector2i               getResolutionFromString(const std::string& string);
 
     // Reinitialization of the gui and background
-    void                                           reinitialize();
+    void                       reinitialize();
 };
 
 

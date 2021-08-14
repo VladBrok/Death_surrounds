@@ -65,6 +65,9 @@
     <Filter Include="Items\Food">
       <UniqueIdentifier>{0fe763a8-68c5-47c4-ae35-9688d8959dda}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Typedefs">
+      <UniqueIdentifier>{22970bc4-14ef-40dd-97d8-c49f3fee3d96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
@@ -198,6 +201,9 @@
     </ClCompile>
     <ClCompile Include="source\AiSpawnMinion.cpp">
       <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\typedefs.cpp">
+      <Filter>Typedefs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -335,6 +341,9 @@
     </ClInclude>
     <ClInclude Include="include\AiSpawnMinion.h">
       <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\typedefs.h">
+      <Filter>Typedefs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

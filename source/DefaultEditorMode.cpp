@@ -2,6 +2,9 @@
 #include "DefaultEditorMode.h"
 #include "constants.h"
 #include "EnemySystem.h"
+#include "TextureSelector.h"
+#include "Button.h"
+#include "Tilemap.h"
 
 
 DefaultEditorMode::DefaultEditorMode(sf::Font& font,
@@ -10,7 +13,7 @@ DefaultEditorMode::DefaultEditorMode(sf::Font& font,
                                      sf::Vector2i& mousePosWindow,
                                      sf::Vector2f& mousePosView,
                                      sf::Vector2i& mousePosGrid,
-                                     std::unordered_map<std::string, sf::Keyboard::Key>& keybinds,
+                                     StringToKeyMap& keybinds,
                                      sf::View& view
                                      )
   : font(font),

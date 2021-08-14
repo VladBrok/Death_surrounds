@@ -5,7 +5,7 @@
 
 
 SettingsState::SettingsState(sf::RenderWindow& window,
-                             const std::unordered_map<std::string, sf::Keyboard::Key>& supportedKeys,
+                             const StringToKeyMap& supportedKeys,
                              std::stack<State*>& states
                              )
     : State(window, supportedKeys, states)
