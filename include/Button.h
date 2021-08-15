@@ -16,7 +16,7 @@ public:
 
                           Button(const float posX, const float posY, 
                                  const float width, const float height,
-                                 sf::Font& font, 
+                                 const sf::Font& font, 
                                  const std::string& text,
                           
                                  const sf::Color& textIdleColor, 
@@ -43,7 +43,7 @@ private:
                           
     ButtonState           buttonState;
     sf::RectangleShape    shape;
-    sf::Font&             font;
+    const sf::Font&       font;
     sf::Text              sfText;
     std::string           text;
                           

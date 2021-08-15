@@ -5,6 +5,7 @@
 #include "EnemySystem.h"
 #include "Entity.h"
 #include "Resources.h"
+#include "InfoWindow.h"
 
 
 Tilemap::Tilemap(const int mapGridSizeX, const int mapGridSizeY)
@@ -74,11 +75,6 @@ void Tilemap::render(sf::RenderTarget& target,
                         static_cast<sf::Vector2i>(view.getSize()) / (int)GRID_SIZE
                     );
 
-
-        // DEBUG
-        //std::cout << gridsOnViewAmount.x << ' ' << gridsOnViewAmount.y << '\n';
-
-
         fromX = gridPositionAroundWhichRender.x - gridsOnViewAmount.x / 2;
         toX   = gridPositionAroundWhichRender.x + gridsOnViewAmount.x / 2 + 1;
 
@@ -112,12 +108,6 @@ void Tilemap::render(sf::RenderTarget& target,
             }
             toY = (int)map[0].size();
         }
-
-        // DEBUG
-        //std::cout << "FromX: " << fromX << '\n'
-        //          << "ToX: " << toX << '\n'
-        //          << "FromY: " << fromY << '\n'
-        //          << "ToY: " << toY << '\n';
     }
     
 
@@ -147,7 +137,7 @@ void Tilemap::renderDeferred(sf::RenderTarget& target,
 }
 
 
-void Tilemap::saveToFile(const std::string& fileName)
+void Tilemap::saveToFile(const std::string& fileName, const sf::Font& font)
 {
     /*
         Saving format:
@@ -159,6 +149,17 @@ void Tilemap::saveToFile(const std::string& fileName)
                 2) tile grid position                  - gridPosX gridPosY;
                 3) tile specific (from method getAsString).
     */
+
+
+    InfoWindow popUpWindow(
+        "Info", "Are you sure you want to save the map?\nPrevious map will be deleted.", font, true
+        );
+    bool confirmSaving = popUpWindow.run();
+    if (!confirmSaving)
+    {
+        return;
+    }
+
 
     std::ofstream file;
     file.open(fileName);

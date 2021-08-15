@@ -68,6 +68,9 @@
     <Filter Include="Typedefs">
       <UniqueIdentifier>{22970bc4-14ef-40dd-97d8-c49f3fee3d96}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Windows">
+      <UniqueIdentifier>{9c41fabe-adc8-4e85-87eb-515ad2407a10}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
@@ -213,6 +216,9 @@
     </ClCompile>
     <ClCompile Include="source\RangedWeapon.cpp">
       <Filter>Items\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="source\InfoWindow.cpp">
+      <Filter>Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -362,6 +368,9 @@
     </ClInclude>
     <ClInclude Include="include\RangedWeapon.h">
       <Filter>Items\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InfoWindow.h">
+      <Filter>Windows</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

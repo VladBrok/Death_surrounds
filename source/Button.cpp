@@ -4,7 +4,7 @@
 
 Button::Button(const float posX, const float posY, 
                const float width, const float height,
-               sf::Font& font, 
+               const sf::Font& font, 
                const std::string& text, 
 
                const sf::Color& textIdleColor, 

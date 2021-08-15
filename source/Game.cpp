@@ -124,10 +124,10 @@ void Game::render()
 
 void Game::initWindow()
 {
-    const std::vector<sf::VideoMode>* videoModes = &sf::VideoMode::getFullscreenModes();
+    const std::vector<sf::VideoMode>& videoModes = sf::VideoMode::getFullscreenModes();
 
     // Style "None" is like fullscreen but better
-    window.create((*videoModes)[0],
+    window.create(videoModes[0],
                   "Death surrounds",
                   sf::Style::Close
                   );

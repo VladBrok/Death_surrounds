@@ -95,7 +95,7 @@ void EditorState::processPauseMenuEvent(const sf::Event& event)
 
     else if (pPauseMenu->isButtonPressed("SAVE"))
     {
-        tilemap.saveToFile(resources::getTilemapFile());
+        tilemap.saveToFile(resources::getTilemapFile(), font);
     }
 
     else if (pPauseMenu->isButtonPressed("GO_TO_MAIN_MENU"))

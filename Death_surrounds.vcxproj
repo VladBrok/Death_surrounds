@@ -62,6 +62,7 @@
     <ClCompile Include="source\typedefs.cpp" />
     <ClCompile Include="source\Utils.cpp" />
     <ClCompile Include="source\Weapon.cpp" />
+    <ClCompile Include="source\InfoWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AiFollow.h" />
@@ -113,6 +114,7 @@
     <ClInclude Include="include\typedefs.h" />
     <ClInclude Include="include\Utils.h" />
     <ClInclude Include="include\Weapon.h" />
+    <ClInclude Include="include\InfoWindow.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AD44A273-D811-4496-9635-D5147C651062}</ProjectGuid>
