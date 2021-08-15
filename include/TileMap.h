@@ -30,7 +30,7 @@ public:
                                           sf::Shader* pShader = nullptr,
                                           const sf::Vector2f& shaderLightPosition = sf::Vector2f()                                         
                                           );
-    void                   saveToFile(const std::string& fileName, const sf::Font& font);
+    void                   saveToFile(const std::string& fileName);
     void                   loadFromFile(const std::string& fileName);
     void                   addTile(const int gridPosX, 
                                    const int gridPosY, 

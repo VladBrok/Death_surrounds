@@ -2,18 +2,20 @@
 #include "InfoWindow.h"
 #include "constants.h"
 #include "Utils.h"
+#include "Resources.h"
 
 
 InfoWindow::InfoWindow(const std::string& title, 
                        const std::string& info,
-                       const sf::Font& font,
                        const bool showCancelButton
                        )
                        : SHOW_CANCEL_BUTTON(showCancelButton)
 {
+    font.loadFromFile(resources::getFontFile());
+
     const sf::Vector2u size(
-        sf::VideoMode::getFullscreenModes()[0].width / 3u, 
-        sf::VideoMode::getFullscreenModes()[0].height / 3u
+        (unsigned)(sf::VideoMode::getFullscreenModes()[0].width / 2.5f), 
+        (unsigned)(sf::VideoMode::getFullscreenModes()[0].height / 2.5f)
     );
 
     window.create(sf::VideoMode(size.x, size.y), title, sf::Style::Titlebar);
@@ -51,17 +53,24 @@ bool InfoWindow::run()
 
         window.clear(sf::Color::White);
 
-        window.draw(info);
-        okButton.get()->render(window);
-        if (SHOW_CANCEL_BUTTON)
-        {
-            cancelButton.get()->render(window);
-        }
-
+        render();
+        
         window.display();
     }
 
     return false;
+}
+
+
+void InfoWindow::render()
+{
+    window.draw(info);
+    okButton.get()->render(window);
+    if (SHOW_CANCEL_BUTTON)
+    {
+        cancelButton.get()->render(window);
+    }
+
 }
 
 
@@ -70,10 +79,10 @@ void InfoWindow::initInfo(const sf::Font& font, const std::string& info)
     this->info.setFont(font);
     this->info.setColor(sf::Color::Black);
     this->info.setString(info);
-    this->info.setCharacterSize(utils::percentToPixels(3.5f, (int)(window.getSize().x + window.getSize().y)));
+    this->info.setCharacterSize(utils::percentToPixels(3.f, (int)(window.getSize().x + window.getSize().y)));
     this->info.setPosition(
-        (float)(int)(window.getSize().x / 2 - this->info.getGlobalBounds().width / 2),
-        (float)(int)utils::percentToPixels(3.f, window.getSize().y)
+        (float)(int)utils::percentToPixels(1.f, (int)window.getSize().x),
+        (float)(int)utils::percentToPixels(14.5f, (int)window.getSize().y)
     );
 }
 

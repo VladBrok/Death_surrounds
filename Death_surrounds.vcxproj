@@ -24,6 +24,7 @@
     <ClCompile Include="source\EnemySpawnerTile.cpp" />
     <ClCompile Include="source\EnemySystem.cpp" />
     <ClCompile Include="source\Entity.cpp" />
+    <ClCompile Include="source\ErrorWindow.cpp" />
     <ClCompile Include="source\Food.cpp" />
     <ClCompile Include="source\Game.cpp" />
     <ClCompile Include="source\GameState.cpp" />
@@ -80,6 +81,7 @@
     <ClInclude Include="include\EnemySpawnerTile.h" />
     <ClInclude Include="include\EnemySystem.h" />
     <ClInclude Include="include\Entity.h" />
+    <ClInclude Include="include\ErrorWindow.h" />
     <ClInclude Include="include\Food.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\GameState.h" />

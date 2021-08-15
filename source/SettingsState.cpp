@@ -229,7 +229,7 @@ sf::Vector2i SettingsState::getResolutionFromString(const std::string& string)
     }
     catch (std::logic_error&)
     {
-        throw std::logic_error("ERROR in SettingsState::getResolutionFromString: invalid argument.\n"
+        throw std::logic_error("ERROR in SettingsState::getResolutionFromString: invalid argument string.\n"
                                "Proper string example: 800 x 600"
                                );
     }

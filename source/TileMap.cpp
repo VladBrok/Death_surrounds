@@ -5,7 +5,7 @@
 #include "EnemySystem.h"
 #include "Entity.h"
 #include "Resources.h"
-#include "InfoWindow.h"
+#include "ErrorWindow.h"
 
 
 Tilemap::Tilemap(const int mapGridSizeX, const int mapGridSizeY)
@@ -137,7 +137,7 @@ void Tilemap::renderDeferred(sf::RenderTarget& target,
 }
 
 
-void Tilemap::saveToFile(const std::string& fileName, const sf::Font& font)
+void Tilemap::saveToFile(const std::string& fileName)
 {
     /*
         Saving format:
@@ -152,7 +152,7 @@ void Tilemap::saveToFile(const std::string& fileName, const sf::Font& font)
 
 
     InfoWindow popUpWindow(
-        "Info", "Are you sure you want to save the map?\nPrevious map will be deleted.", font, true
+        "Info", "Are you sure you want to save the map?\nPrevious map will be deleted.", true
         );
     bool confirmSaving = popUpWindow.run();
     if (!confirmSaving)
@@ -160,44 +160,53 @@ void Tilemap::saveToFile(const std::string& fileName, const sf::Font& font)
         return;
     }
 
-
-    std::ofstream file;
-    file.open(fileName);
-
-    if (!file.is_open())
+    try
     {
-        throw std::runtime_error("ERROR in Tilemap::saveToFile: unable to save the tile map to the file " + fileName + "\n");
-    }
+        std::ofstream file;
+        file.open(fileName);
 
-    file << map.size() << ' ' << map[0].size() << '\n';
-
-    for (size_t x = 0; x < map.size(); ++x)
-    {
-        for (size_t y = 0; y < map[x].size(); ++y)
+        if (!file.is_open())
         {
-            for (size_t k = 0; k < map[x][y].size(); ++k)
-            {
-                file << map[x][y][k]->getType() << ' '
-                     << x << ' ' << y << ' '
-                     << map[x][y][k]->getAsString() << ' ';
-            }
+            throw std::runtime_error("ERROR in Tilemap::saveToFile: unable to save the tile map to the file " + fileName + "\n");
         }
-    } 
-    file.close();
+
+        file << map.size() << ' ' << map[0].size() << '\n';
+
+        for (size_t x = 0; x < map.size(); ++x)
+        {
+            for (size_t y = 0; y < map[x].size(); ++y)
+            {
+                for (size_t k = 0; k < map[x][y].size(); ++k)
+                {
+                    file << map[x][y][k]->getType() << ' '
+                         << x << ' ' << y << ' '
+                         << map[x][y][k]->getAsString() << ' ';
+                }
+            }
+        } 
+        file.close();
 
     
-    // Creating a backup file
-    std::ifstream inputFile;
-    inputFile.open(fileName);
-    std::ofstream backupFile;
-    backupFile.open(fileName + std::to_string(time(nullptr)) + "_backup");
+        // Creating a backup file
+        std::ifstream inputFile;
+        inputFile.open(fileName);
+        std::ofstream backupFile;
+        backupFile.open(fileName + std::to_string(time(nullptr)) + "_backup");
 
-    if (!inputFile.is_open() || !backupFile.is_open())
-    {
-        throw std::runtime_error("ERROR in Tilemap::saveToFile: unable to create a backup file\n");
+        if (!inputFile.is_open() || !backupFile.is_open())
+        {
+            throw std::runtime_error("ERROR in Tilemap::saveToFile: unable to create a backup file\n");
+        }
+
+        backupFile << inputFile.rdbuf();
     }
+    catch (const std::runtime_error& err)
+    {
+        std::cout << err.what() << '\n';
 
-    backupFile << inputFile.rdbuf();
+        ErrorWindow errWindow("Map hasn't been saved to file " + fileName + ",\nor backup file hasn't been created.", false);
+        errWindow.run();
+    }
 }
 
 
@@ -206,93 +215,103 @@ void Tilemap::loadFromFile(const std::string& fileName)
     /*
         The loading format is the same as the saving format.
     */
-
-    std::ifstream file;
-    file.open(fileName);
-
-    if (!file.is_open())
+    try
     {
-        throw std::runtime_error("ERROR in Tilemap::loadFromFile: unable to load the tile map from the file " + fileName + "\n");
-    }
+        std::ifstream file;
+        file.open(fileName);
+
+        if (!file.is_open())
+        {
+            throw std::runtime_error("ERROR in Tilemap::loadFromFile: unable to open the file " + fileName + "\n");
+        }
 
 
-    int mapGridSizeX = 0;
-    int mapGridSizeY = 0;
+        int mapGridSizeX = 0;
+        int mapGridSizeY = 0;
 
-    file >> mapGridSizeX >> mapGridSizeY;
+        file >> mapGridSizeX >> mapGridSizeY;
 
-    if (mapGridSizeX <= 0 || mapGridSizeY <= 0 || 
-        mapGridSizeX > TILEMAP_GRID_SIZE_MAX_X || mapGridSizeY > TILEMAP_GRID_SIZE_MAX_Y)
-    {
-        file.setstate(std::ios::failbit);
-    }
+        if (mapGridSizeX <= 0 || mapGridSizeY <= 0 || 
+            mapGridSizeX > TILEMAP_GRID_SIZE_MAX_X || mapGridSizeY > TILEMAP_GRID_SIZE_MAX_Y)
+        {
+            file.setstate(std::ios::failbit);
+        }
 
-    if (!file.fail())
-    {
-         clearMap();
-         createEmptyMap(mapGridSizeX, mapGridSizeY);
-         mapSize = sf::Vector2f(mapGridSizeX * GRID_SIZE, mapGridSizeY * GRID_SIZE);
-         textureSheet.loadFromFile(textureSheetFileName);
-    }
+        if (!file.fail())
+        {
+             clearMap();
+             createEmptyMap(mapGridSizeX, mapGridSizeY);
+             mapSize = sf::Vector2f(mapGridSizeX * GRID_SIZE, mapGridSizeY * GRID_SIZE);
+             textureSheet.loadFromFile(textureSheetFileName);
+        }
     
 
 
-    int gridPosX = 0;
-    int gridPosY = 0;
-    int type = 0;
-    sf::IntRect textureRect(0, 0, (int)GRID_SIZE, (int)GRID_SIZE);
-    bool canCollide = false;
+        int gridPosX = 0;
+        int gridPosY = 0;
+        int type = 0;
+        sf::IntRect textureRect(0, 0, (int)GRID_SIZE, (int)GRID_SIZE);
+        bool canCollide = false;
 
-    while(file >> type >> gridPosX >> gridPosY)
-    {
-        // Loading the enemy spawner
-        if (type == ENEMY_SPAWNER)
+        while(file >> type >> gridPosX >> gridPosY)
         {
-            int enemyType          = 0;
-            int enemyTimeToSpawn   = 0;
+            // Loading the enemy spawner
+            if (type == ENEMY_SPAWNER)
+            {
+                int enemyType          = 0;
+                int enemyTimeToSpawn   = 0;
 
-            file >> textureRect.left >> textureRect.top >> canCollide >> enemyType >> enemyTimeToSpawn;
+                file >> textureRect.left >> textureRect.top >> canCollide >> enemyType >> enemyTimeToSpawn;
 
-            map[gridPosX][gridPosY].push_back(
-                new EnemySpawnerTile(
-                    gridPosX * GRID_SIZE,
-                    gridPosY * GRID_SIZE,
-                    textureSheet,
-                    textureRect,
-                    canCollide,
-                    enemyType,
-                    enemyTimeToSpawn
-                )
-            );
+                map[gridPosX][gridPosY].push_back(
+                    new EnemySpawnerTile(
+                        gridPosX * GRID_SIZE,
+                        gridPosY * GRID_SIZE,
+                        textureSheet,
+                        textureRect,
+                        canCollide,
+                        enemyType,
+                        enemyTimeToSpawn
+                    )
+                );
+            }
+
+            // Loading the regular tile
+            else
+            {
+                file >> textureRect.left >> textureRect.top >> canCollide;
+
+                map[gridPosX][gridPosY].push_back(
+                    new Tile(
+                          static_cast<TileType>(type),
+                          gridPosX * GRID_SIZE, 
+                          gridPosY * GRID_SIZE, 
+                          textureSheet,
+                          textureRect,
+                          canCollide
+                    )
+                );
+            }
+
+            if (file.fail())
+            {
+                throw std::runtime_error("ERROR in Tilemap::loadFromFile: the data in the file " + fileName + " are damaged. Tilemap is not loaded.\n");
+            } 
         }
-
-        // Loading the regular tile
-        else
-        {
-            file >> textureRect.left >> textureRect.top >> canCollide;
-
-            map[gridPosX][gridPosY].push_back(
-                new Tile(
-                      static_cast<TileType>(type),
-                      gridPosX * GRID_SIZE, 
-                      gridPosY * GRID_SIZE, 
-                      textureSheet,
-                      textureRect,
-                      canCollide
-                )
-            );
-        }
-
-        if (file.fail())
+    
+        if (file.fail() && !file.eof())
         {
             throw std::runtime_error("ERROR in Tilemap::loadFromFile: the data in the file " + fileName + " are damaged. Tilemap is not loaded.\n");
         } 
+
     }
-    
-    if (file.fail() && !file.eof())
+    catch (const std::runtime_error& err)
     {
-        throw std::runtime_error("ERROR in Tilemap::loadFromFile: the data in the file " + fileName + " are damaged. Tilemap is not loaded.\n");
-    } 
+        std::cout << err.what() << '\n';
+
+        ErrorWindow errWindow("The map couldn't be loaded from the file: \n" + fileName, false);
+        errWindow.run();
+    }
 }
 
 

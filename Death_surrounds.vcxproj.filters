@@ -220,6 +220,9 @@
     <ClCompile Include="source\InfoWindow.cpp">
       <Filter>Windows</Filter>
     </ClCompile>
+    <ClCompile Include="source\ErrorWindow.cpp">
+      <Filter>Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AnimationComponent.h">
@@ -370,6 +373,9 @@
       <Filter>Items\Weapon</Filter>
     </ClInclude>
     <ClInclude Include="include\InfoWindow.h">
+      <Filter>Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ErrorWindow.h">
       <Filter>Windows</Filter>
     </ClInclude>
   </ItemGroup>

@@ -52,7 +52,7 @@ void EnemySystem::createEnemy(const float posX,
             break;
         }
     default:
-        throw std::runtime_error("ERROR in EnemySystem::createEnemy: invalid enemy type");
+        std::cout << "ERROR in EnemySystem::createEnemy: invalid enemy type\n";
     }
 }
 
