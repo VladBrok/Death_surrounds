@@ -5,7 +5,6 @@
 namespace resources
 {
     std::string        getFontFile();
-    std::string        getPixelFontFile();
     std::string        getTilemapFile();
     std::string        getFragmentShaderFile();
     std::string        getVertexShaderFile();
@@ -14,7 +13,6 @@ namespace resources
     std::string        getSpiderTextureFile();
     std::string        getSkeletonTextureFile();
     std::string        getReaperTextureFile();
-    std::string        getVortexTextureFile();
     std::string        getPlayerTextureFile();
     std::string        getPlayerHpBarTextureFile();
     std::string        getPlayerExpBarTextureFile();

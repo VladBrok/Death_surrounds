@@ -6,13 +6,13 @@
 
 SettingsState::SettingsState(sf::RenderWindow& window,
                              const StringToKeyMap& supportedKeys,
-                             std::stack<State*>& states
+                             std::stack<State*>& states,
+                             bool& settingsChanged
                              )
-    : State(window, supportedKeys, states)
+    : State(window, supportedKeys, states), settingsChanged(settingsChanged)
 {
     stateType = STATE_PROCESSES_EVENTS;
 
-    initFont();
     initGui();
     initBackground();
     initOptionsText();
@@ -58,6 +58,8 @@ void SettingsState::processEvent(const sf::Event& event)
         window.create(sf::VideoMode(resolution.x, resolution.y), "Death surrounds", sf::Style::Close);
 
         reinitialize();
+
+        settingsChanged = true;
     }
     else if (buttons["EXIT_STATE"]->isPressed())
     {
@@ -96,12 +98,6 @@ void SettingsState::renderGui(sf::RenderTarget& target)
 void SettingsState::renderOptionsText(sf::RenderTarget& target)
 {
     target.draw(optionsText);
-}
-
-
-void SettingsState::initFont()
-{
-    font.loadFromFile(resources::getFontFile());
 }
 
 

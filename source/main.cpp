@@ -4,7 +4,8 @@
 
 /* 
     TODO:
-        - i don't like that many classes have a reference to the player!!!
+        - add a companion (bird or dog);
+        - i don't like that many classes have a reference to the player!!!;
 */
 
 

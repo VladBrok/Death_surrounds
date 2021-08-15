@@ -11,7 +11,7 @@ class DefaultEditorMode: public EditorMode
 {
 public:
 
-                          DefaultEditorMode(sf::Font& font, 
+                          DefaultEditorMode(const sf::Font& font, 
                                             Tilemap& tilemap,
                                             sf::RenderWindow& window,
                                             sf::Vector2i& mousePosWindow,
@@ -27,7 +27,7 @@ public:
 
 private:
 
-    sf::Font&             font;
+    const sf::Font&       font;
     StringToButtonMap     buttons;
     sf::View&             view;
                           

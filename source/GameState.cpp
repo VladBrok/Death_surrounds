@@ -22,7 +22,6 @@ GameState::GameState(sf::RenderWindow& window,
     initTilemap();
     initTextures();
     initPlayer();
-    initFont();
     initGui();
     initShader();
     initSystems();
@@ -154,18 +153,25 @@ void GameState::processGameOverEvent(const sf::Event& event)
 
 void GameState::update(const float deltaTime)
 {
-    if (!stateIsPaused && !gameOver)
+    if (!stateIsPaused)
     {
-        updatePlayerKeyboardInput(deltaTime);
-        updateTilemap(deltaTime);
+        if (!gameOver)
+        {
+            updatePlayerKeyboardInput(deltaTime);
+            updateTilemap(deltaTime);
+        }
 
         pPlayer->update(deltaTime, mousePosView, mousePosWindow, *pTextTagSystem); 
-        pTextTagSystem->update(deltaTime);
-        pLootSystem->update(*pPlayer);
 
-        updateView();
-        updateEnemiesAndCombat(deltaTime);
-        updateGui();
+        if (!gameOver)
+        {
+            pTextTagSystem->update(deltaTime);
+            pLootSystem->update(*pPlayer);
+
+            updateView();
+            updateEnemiesAndCombat(deltaTime);
+            updateGui();
+        }
     }
 }
 
@@ -357,9 +363,6 @@ void GameState::updateProjectiles(const float deltaTime)
             ++projectile;
         }
     }
-
-    // DEBUG
-    /*std::cout << projectiles.size(  ) << '\n';*/
 }
 
 
@@ -399,15 +402,13 @@ void GameState::render(sf::RenderTarget* pTarget)
 
     pTilemap->render(target, view, pPlayer->getGridPositionCenter(), &coreShader, pPlayer->getCenter(), false, false);
     pLootSystem->render(target);
-
+    pPlayer->render(target, &coreShader, pPlayer->getCenter(), true);
+    renderEnemies(target);
     if (!gameOver)
     {
-        pPlayer->render(target, &coreShader, pPlayer->getCenter(), true);
+        pTextTagSystem->render(target);
+        renderProjectiles(target);
     }
-    
-    renderEnemies(target);
-    pTextTagSystem->render(target);
-    renderProjectiles(target);
     pTilemap->renderDeferred(target, &coreShader, pPlayer->getCenter());
 
     target.setView(target.getDefaultView());
@@ -415,7 +416,7 @@ void GameState::render(sf::RenderTarget* pTarget)
     pPlayerGui->render(target);
 
 
-    if (gameOver)
+    if (gameOver && pPlayer->deathAnimationIsDone())
     {
         renderGameOverScreen(target);
     }
@@ -459,7 +460,6 @@ void GameState::initTextures()
     textures["ENEMY_SPIDER_SHEET"].loadFromFile(resources::getSpiderTextureFile());
     textures["ENEMY_SKELETON_SHEET"].loadFromFile(resources::getSkeletonTextureFile());
     textures["ENEMY_REAPER_SHEET"].loadFromFile(resources::getReaperTextureFile());
-    textures["VORTEX"].loadFromFile(resources::getVortexTextureFile());
     textures["WEAPON_SWORD"].loadFromFile(resources::getSwordTextureFile());
     textures["WEAPON_STAFF"].loadFromFile(resources::getStaffTextureFile());
     textures["WEAPON_UNLOADED_STAFF"].loadFromFile(resources::getUnloadedStaffTextureFile());
@@ -499,12 +499,6 @@ void GameState::initPlayer()
 
     Staff staff(textures["WEAPON_STAFF"], textures["WEAPON_UNLOADED_STAFF"], textures["STAFF_ORB"], 1, 1);
     pPlayer->addItemToInventory(&staff);
-}
-
-
-void GameState::initFont()
-{
-    font.loadFromFile(resources::getFontFile());
 }
 
 

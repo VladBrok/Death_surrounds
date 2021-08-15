@@ -11,12 +11,11 @@ MainMenuState::MainMenuState(sf::RenderWindow& window,
                              const StringToKeyMap& supportedKeys,
                              std::stack<State*>& states
                              )
-    : State(window, supportedKeys, states)
+    : State(window, supportedKeys, states), needToReinitialize(false)
 {
     stateType = STATE_PROCESSES_EVENTS;
 
     initTextures();
-    initFont();
     initGui();
     initBackground();
 }
@@ -48,9 +47,7 @@ void MainMenuState::processEvent(const sf::Event& event)
     }
     else if (buttons["SETTINGS_STATE"]->isPressed()) // Activating the settings state
     {
-        states.push(new SettingsState(window, supportedKeys, states));
-
-        reinitialize();
+        states.push(new SettingsState(window, supportedKeys, states, needToReinitialize));
     }
     else if (buttons["EDITOR_STATE"]->isPressed()) // Going to the editor state
     {
@@ -61,6 +58,12 @@ void MainMenuState::processEvent(const sf::Event& event)
     else if (buttons["EXIT_STATE"]->isPressed()) // Exiting from the state
     {
         endActivity();
+    }
+
+    if (needToReinitialize)
+    {
+        needToReinitialize = false;
+        reinitialize();
     }
 }
 
@@ -83,12 +86,6 @@ void MainMenuState::renderGui(sf::RenderTarget& target)
     {
         b->second->render(target);
     }
-}
-
-
-void MainMenuState::initFont()
-{
-    font.loadFromFile(resources::getFontFile());
 }
 
 

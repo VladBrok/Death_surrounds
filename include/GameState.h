@@ -55,10 +55,8 @@ private:
     Tilemap*                  pTilemap;
                               
     Player*                   pPlayer;
-    PlayerGui*                pPlayerGui;
-                              
+    PlayerGui*                pPlayerGui; 
     PauseMenu*                pPauseMenu;
-    sf::Font                  font;
     sf::Shader                coreShader;
                               
     sf::RectangleShape        gameOverScreen;
@@ -71,7 +69,6 @@ private:
     void                      initTilemap();
     virtual void              initTextures();
     void                      initPlayer();
-    void                      initFont();
     void                      initGui();
     void                      initShader();
     void                      initSystems();

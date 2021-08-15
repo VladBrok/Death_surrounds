@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "State.h"
 #include "constants.h"
+#include "Resources.h"
 
 
 State::State(sf::RenderWindow& window, 
@@ -14,6 +15,7 @@ State::State(sf::RenderWindow& window,
       stateIsPaused(false),
       stateType(STATE_DEFAULT)
 {
+    initFont();
 }
 
 
@@ -70,6 +72,14 @@ bool State::needToCallProcessEvent() const
     return stateType == STATE_PROCESSES_EVENTS || stateType == STATE_UPDATES_AND_PROCESSES_EVENTS;
 }
 
+
+void State::initFont()
+{
+    if (!font.loadFromFile(resources::getFontFile()))
+    {
+        throw std::runtime_error("ERROR in State::initFont: could not load the font from file " + resources::getFontFile());
+    }
+}
 
 
 void State::initKeybinds(const std::string& filePath)

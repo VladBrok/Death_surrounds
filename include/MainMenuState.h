@@ -23,10 +23,9 @@ public:
 private:                  
                           
     sf::RectangleShape    background;
-    sf::Font              font;
     StringToButtonMap     buttons;
-                          
-    void                  initFont();
+    bool                  needToReinitialize;
+
     void                  initGui();
     void                  initBackground();
     virtual void          initTextures();

@@ -12,7 +12,8 @@ public:
 
                                SettingsState(sf::RenderWindow& window, 
                                              const StringToKeyMap& supportedKeys,
-                                             std::stack<State*>& states
+                                             std::stack<State*>& states,
+                                             bool& settingsChanged
                                              );
     virtual                    ~SettingsState();
                                
@@ -24,12 +25,11 @@ public:
 private:                       
                                
     sf::RectangleShape         background;
-    sf::Font                   font;
     sf::Text                   optionsText;
     StringToButtonMap          buttons;
     StringToDropDownListMap    dropDownLists;
+    bool&                      settingsChanged;
                                
-    void                       initFont();
     void                       initGui();
     void                       initBackground();
     void                       initOptionsText();

@@ -28,7 +28,6 @@ private:
                                 
     sf::View                    view;
     std::vector<EditorMode*>    modes;
-    sf::Font                    font;
     PauseMenu*                  pPauseMenu;
     Tilemap                     tilemap;
     int                         activeMode;
@@ -37,7 +36,6 @@ private:
     void                        processKeyboardEvent(const sf::Event& event);
                                 
     void                        initView();  
-    void                        initFont();
     void                        initModes();
     void                        initGui();
 

@@ -7,7 +7,7 @@
 #include "Tilemap.h"
 
 
-DefaultEditorMode::DefaultEditorMode(sf::Font& font,
+DefaultEditorMode::DefaultEditorMode(const sf::Font& font,
                                      Tilemap& tilemap,
                                      sf::RenderWindow& window,
                                      sf::Vector2i& mousePosWindow,

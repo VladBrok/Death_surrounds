@@ -39,6 +39,7 @@ public:
 protected:
 
     sf::RenderWindow&        window;
+    sf::Font                 font;
     const StringToKeyMap&    supportedKeys;
     std::stack<State*>&      states;
     StringToKeyMap           keybinds;
@@ -52,6 +53,7 @@ protected:
     sf::Vector2f             mousePosView;
     sf::Vector2i             mousePosGrid;
                              
+    void                     initFont();
     virtual void             initTextures() {};
     virtual void             initKeybinds(const std::string& filePath);
 };

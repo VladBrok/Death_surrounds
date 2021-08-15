@@ -16,7 +16,6 @@ EditorState::EditorState(sf::RenderWindow& window,
 
     initKeybinds(resources::getEditorStateKeybindsFile());
     initView();
-    initFont();
     initModes();
     initGui();
 }
@@ -125,13 +124,6 @@ void EditorState::processKeyboardEvent(const sf::Event& event)
 void EditorState::initView()
 {
     view.setSize(sf::Vector2f((float)window.getSize().x, (float)window.getSize().y));
-}
-
-
-
-void EditorState::initFont()
-{
-    font.loadFromFile(resources::getFontFile());
 }
 
 

@@ -23,12 +23,6 @@ namespace resources
     }
 
 
-    std::string getPixelFontFile()
-    {
-        return fontsDirectory + "PixellettersFull.ttf";
-    }
-
-
     std::string getTilemapFile()
     {
         return tilemapsDirectory + "tilemap";
@@ -74,12 +68,6 @@ namespace resources
     std::string getReaperTextureFile()
     {
         return enemiesDirectory + "reaper_39x48.png";
-    }
-
-
-    std::string getVortexTextureFile()
-    {
-        return enemiesDirectory + "vortex.png";
     }
 
 

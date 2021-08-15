@@ -9,7 +9,7 @@ Player::Player(const float posX,
                const sf::Texture& inventoryPanelTexture,
                const sf::RenderWindow& window
                )
-    : Character(textureSheet), inventory(window, inventoryPanelTexture), pActiveWeapon(nullptr)
+    : Character(textureSheet), inventory(window, inventoryPanelTexture), pActiveWeapon(nullptr), deathAnimationDone(false)
 {
 
     createMovementComponent(200.f, 1600.f, 1000.f);
@@ -17,11 +17,13 @@ Player::Player(const float posX,
     createHitboxComponent(18.f, 25.f, 28.f, 30.f);
     createAttributeComponent(1, 10, 1, 2);
 
+    pAnimationComponent->addAnimation("IS_DEAD", textureSheet, sprite, 0, 1, 6, 1, 146, 252, 20.f);
     pAnimationComponent->addAnimation("IDLE", textureSheet, sprite, 0, 0, 8, 0, 64, 64, 9.5f);
     pAnimationComponent->addAnimation("MOVING_DOWN", textureSheet, sprite, 0, 1, 3, 1, 64, 64, 9.5f);
     pAnimationComponent->addAnimation("MOVING_LEFT", textureSheet, sprite, 4, 1, 7, 1, 64, 64, 9.5f);
     pAnimationComponent->addAnimation("MOVING_RIGHT", textureSheet, sprite, 8, 1, 11, 1, 64, 64, 9.5f);
     pAnimationComponent->addAnimation("MOVING_UP", textureSheet, sprite, 12, 1, 15, 1, 64, 64, 9.5f );
+    
 
     setPosition(posX, posY);
 
@@ -35,52 +37,62 @@ void Player::update(const float deltaTime,
                     TextTagSystem& textTagSystem
                     )
 {
-    pMovementComponent->updateMovement(deltaTime);
+    if (!isDead())
+    {
+        pMovementComponent->updateMovement(deltaTime);
 
-    updateAnimation(deltaTime);
+        updateAnimation(deltaTime);
 
-    pHitboxComponent->update();
+        pHitboxComponent->update();
 
-    inventory.update(getCenter(), mousePosView, mousePosWindow, textTagSystem);
+        inventory.update(getCenter(), mousePosView, mousePosWindow, textTagSystem);
 
     
-    if (inventory.getActiveItem())
-    {
-        // Setting the player's weapon
-        if (inventory.getActiveItem()->isWeapon())
+        if (inventory.getActiveItem())
         {
-            pActiveWeapon = static_cast<Weapon*>(inventory.getActiveItem());
+            // Setting the player's weapon
+            if (inventory.getActiveItem()->isWeapon())
+            {
+                pActiveWeapon = static_cast<Weapon*>(inventory.getActiveItem());
+            }
+            else
+            {
+                pActiveWeapon = nullptr;
+            }
+
+            // Eating a food
+            if (inventory.getActiveItem()->isFood() && 
+                pAttributeComponent->hp != pAttributeComponent->hpMax &&
+                sf::Mouse::isButtonPressed(sf::Mouse::Right))
+            {
+                Food* food = static_cast<Food*>(inventory.getActiveItem());
+                int hpToRestore = (int)food->getRestoringHpAmount();
+
+                textTagSystem.addTextTag(
+                    HEALING_TAG, 
+                    getPosition(), 
+                    (hpToRestore + getHp()) > getHpMax() ? (hpToRestore - (getHp() + hpToRestore - getHpMax())): hpToRestore
+                );
+                pAttributeComponent->gainHp(hpToRestore);
+
+                inventory.removeItem(inventory.getActiveItemIndex());
+            } 
         }
         else
         {
             pActiveWeapon = nullptr;
         }
 
-        // Eating the food
-        if (inventory.getActiveItem()->isFood() && 
-            pAttributeComponent->hp != pAttributeComponent->hpMax &&
-            sf::Mouse::isButtonPressed(sf::Mouse::Right))
-        {
-            Food* food = static_cast<Food*>(inventory.getActiveItem());
-            int hpToRestore = (int)food->getRestoringHpAmount();
 
-            textTagSystem.addTextTag(
-                HEALING_TAG, 
-                getPosition(), 
-                (hpToRestore + getHp()) > getHpMax() ? (hpToRestore - (getHp() + hpToRestore - getHpMax())): hpToRestore
-            );
-            pAttributeComponent->gainHp(hpToRestore);
-
-            inventory.removeItem(inventory.getActiveItemIndex());
-        } 
+        Character::updateDamageColor();
     }
-    else
+
+    else if (!deathAnimationDone)
     {
-        pActiveWeapon = nullptr;
+        pAnimationComponent->play("IS_DEAD", deltaTime);
+        deathAnimationDone = pAnimationComponent->isDone("IS_DEAD");
+        sprite.setPosition(getPosition().x - sprite.getTextureRect().width / 2.f, getPosition().y - sprite.getTextureRect().height / 3.f);
     }
-
-
-    Character::updateDamageColor();
 }
 
 
@@ -90,16 +102,21 @@ void Player::render(sf::RenderTarget& target,
                     const bool showHitbox
                     )
 {
-    Entity::render(target, pShader, shaderLightPosition, showHitbox);
+    if (!isDead() || !deathAnimationDone)
+    {
+        Entity::render(target, pShader, shaderLightPosition, showHitbox);
+    }
     
+    if (!isDead())
+    {
+        const sf::View view = target.getView();
 
-    const sf::View view = target.getView();
+        inventory.renderToView(target);
+        target.setView(target.getDefaultView());
+        inventory.renderToWindow(target);
 
-    inventory.renderToView(target);
-    target.setView(target.getDefaultView());
-    inventory.renderToWindow(target);
-
-    target.setView(view);
+        target.setView(view);
+    }
 }
 
 
@@ -253,6 +270,16 @@ bool Player::canAttack() const
     }
 
     return Character::canAttack();
+}
+
+
+bool Player::deathAnimationIsDone() const
+{
+    if (!isDead())
+    {
+        return false;
+    }
+    return deathAnimationDone;
 }
 
 
