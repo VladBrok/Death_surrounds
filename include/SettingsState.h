@@ -19,8 +19,6 @@ public:
                                
     virtual void               processEvent(const sf::Event& event);
     virtual void               render(sf::RenderTarget* pTarget = nullptr);
-    void                       renderGui(sf::RenderTarget& target);
-    void                       renderOptionsText(sf::RenderTarget& target);
                                
 private:                       
                                
@@ -29,6 +27,9 @@ private:
     StringToButtonMap          buttons;
     StringToDropDownListMap    dropDownLists;
     bool&                      settingsChanged;
+
+    void                       renderGui(sf::RenderTarget& target);
+    void                       renderOptionsText(sf::RenderTarget& target);
                                
     void                       initGui();
     void                       initBackground();

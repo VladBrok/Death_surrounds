@@ -22,7 +22,7 @@ Staff::Staff(const sf::Texture& weaponTexture,
 
 
     projectileLifetimeInSeconds = 1.5f;
-    projectileSpeed             = 300.f;
+    projectileSpeed             = 310.f;
 }
 
 
@@ -62,7 +62,7 @@ void Staff::initRange()
 
 void Staff::initAttackTimerMax()
 {
-    attackTimerMax = 1500;
+    attackTimerMax = 1300;
 }
 
 

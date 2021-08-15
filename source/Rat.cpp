@@ -58,14 +58,5 @@ void Rat::initAnimation()
 
 void Rat::initDroppingItem()
 {
-    // FIXME: Remove tmp variable
-    static int tmp = 0;
-
-    droppingItem = std::make_shared<Food>(Food(lootTextureSheet, sf::IntRect(tmp * ONE_FOOD_TEXTURE_SIZE, 0, ONE_FOOD_TEXTURE_SIZE, ONE_FOOD_TEXTURE_SIZE)));
-
-    ++tmp;
-    if (tmp * ONE_FOOD_TEXTURE_SIZE >= (int)lootTextureSheet.getSize().x)
-    {
-        tmp = 0;
-    }
+    droppingItem = std::make_shared<Food>(Food(lootTextureSheet, sf::IntRect(0 * ONE_FOOD_TEXTURE_SIZE, 0, ONE_FOOD_TEXTURE_SIZE, ONE_FOOD_TEXTURE_SIZE)));
 }

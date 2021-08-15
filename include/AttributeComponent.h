@@ -6,17 +6,6 @@ class AttributeComponent
 {
 public:
 
-    // FIXME: decide which class attributes must be private!
-
-    unsigned    level;
-    int         exp;
-    int         expForNextLevel;
-    int         hp;
-    int         hpMax;
-    int         damageMin;
-    int         damageMax;
-
-
                 AttributeComponent(const unsigned level, 
                                    const int hpMax, 
                                    const int damageMin, 
@@ -30,11 +19,24 @@ public:
     void        loseExp(const unsigned exp);
     void        gainExp(const unsigned exp);
 
+    unsigned    getLevel() const;
+    int         getExp() const;
+    int         getExpForNextLevel() const;
+    int         getHp() const;
+    int         getHpMax() const;
+    int         getDamageMin() const;
+    int         getDamageMax() const;
     int         getDamage() const;
 
 private:
 
-
+    unsigned    level;
+    int         exp;
+    int         expForNextLevel;
+    int         hp;
+    int         hpMax;
+    int         damageMin;
+    int         damageMax;
 };
 
 

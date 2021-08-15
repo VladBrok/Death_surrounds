@@ -31,7 +31,6 @@ public:
     void                     endActivity();
     void                     pauseState();
     void                     unpauseState();
-    void                     updateMousePosition(sf::View* pView = nullptr);
                              
     bool                     needToCallUpdate() const;
     bool                     needToCallProcessEvent() const;
@@ -52,6 +51,8 @@ protected:
     sf::Vector2i             mousePosWindow;
     sf::Vector2f             mousePosView;
     sf::Vector2i             mousePosGrid;
+
+    void                     updateMousePosition(sf::View* pView = nullptr);
                              
     void                     initFont();
     virtual void             initTextures() {};

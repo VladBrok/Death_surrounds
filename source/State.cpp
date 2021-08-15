@@ -43,24 +43,6 @@ void State::unpauseState()
 }
 
 
-void State::updateMousePosition(sf::View* pView)
-{
-    mousePosScreen = sf::Mouse::getPosition();
-    mousePosWindow = sf::Mouse::getPosition(window);
-
-    if (pView)
-    {
-        window.setView(*pView);
-    }
-
-    mousePosView = window.mapPixelToCoords(mousePosWindow);
-    window.setView(window.getDefaultView());
-
-    mousePosGrid.x = static_cast<int>(mousePosView.x) / static_cast<int>(GRID_SIZE);
-    mousePosGrid.y = static_cast<int>(mousePosView.y) / static_cast<int>(GRID_SIZE);
-}
-
-
 bool State::needToCallUpdate() const
 {
     return stateType == STATE_UPDATES || stateType == STATE_UPDATES_AND_PROCESSES_EVENTS;
@@ -79,6 +61,24 @@ void State::initFont()
     {
         throw std::runtime_error("ERROR in State::initFont: could not load the font from file " + resources::getFontFile());
     }
+}
+
+
+void State::updateMousePosition(sf::View* pView)
+{
+    mousePosScreen = sf::Mouse::getPosition();
+    mousePosWindow = sf::Mouse::getPosition(window);
+
+    if (pView)
+    {
+        window.setView(*pView);
+    }
+
+    mousePosView = window.mapPixelToCoords(mousePosWindow);
+    window.setView(window.getDefaultView());
+
+    mousePosGrid.x = static_cast<int>(mousePosView.x) / static_cast<int>(GRID_SIZE);
+    mousePosGrid.y = static_cast<int>(mousePosView.y) / static_cast<int>(GRID_SIZE);
 }
 
 

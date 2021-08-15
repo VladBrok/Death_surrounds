@@ -31,9 +31,6 @@ void Game::run()
         processEvents();
         update();
         render();
-
-        // DEBUG
-        //std::cout << deltaTime << '\n';
     }
 }
 
@@ -126,10 +123,9 @@ void Game::initWindow()
 {
     const std::vector<sf::VideoMode>& videoModes = sf::VideoMode::getFullscreenModes();
 
-    // Style "None" is like fullscreen but better
     window.create(videoModes[0],
                   "Death surrounds",
-                  sf::Style::Close
+                  sf::Style::None
                   );
 
     window.setFramerateLimit(FPS_LIMIT);

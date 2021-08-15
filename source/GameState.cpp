@@ -13,7 +13,10 @@ GameState::GameState(sf::RenderWindow& window,
                      std::stack<State*>& states
                      )
     : State(window, supportedKeys, states),
-      gameOver(false)
+      gameOver(false),
+      SHOW_HITBOXES(false),
+      SHOW_COLLIDABLE_TILES(false),
+      SHOW_ENEMY_SPAWNERS(false)
 {
     stateType = STATE_UPDATES_AND_PROCESSES_EVENTS;
 
@@ -117,6 +120,69 @@ void GameState::processEvent(const sf::Event& event)
 }
 
 
+void GameState::update(const float deltaTime)
+{
+    if (!stateIsPaused)
+    {
+        if (!gameOver)
+        {
+            updatePlayerKeyboardInput(deltaTime);
+            updateTilemap(deltaTime);
+        }
+
+        pPlayer->update(deltaTime, mousePosView, mousePosWindow, *pTextTagSystem); 
+
+        if (!gameOver)
+        {
+            pTextTagSystem->update(deltaTime);
+            pLootSystem->update(*pPlayer);
+
+            updateView();
+            updateEnemiesAndCombat(deltaTime);
+            updateGui();
+        }
+    }
+}
+
+
+void GameState::render(sf::RenderTarget* pTarget)
+{
+    if (!pTarget)
+    {
+        pTarget = &window;
+    }
+
+
+    sf::RenderTarget& target = *pTarget;
+    target.setView(view);
+
+    pTilemap->render(target, view, pPlayer->getGridPositionCenter(), &coreShader, pPlayer->getCenter(), SHOW_COLLIDABLE_TILES, SHOW_ENEMY_SPAWNERS);
+    pLootSystem->render(target);
+    pPlayer->render(target, &coreShader, pPlayer->getCenter(), SHOW_HITBOXES);
+    renderEnemies(target);
+    if (!gameOver)
+    {
+        pTextTagSystem->render(target);
+        renderProjectiles(target);
+    }
+    pTilemap->renderDeferred(target, &coreShader, pPlayer->getCenter());
+
+    target.setView(target.getDefaultView());
+
+    pPlayerGui->render(target);
+
+
+    if (gameOver && pPlayer->deathAnimationIsDone())
+    {
+        renderGameOverScreen(target);
+    }
+    if (stateIsPaused)
+    {
+        pPauseMenu->render(target);
+    }
+}
+
+
 void GameState::processPauseMenuEvent(const sf::Event& event)
 {
     pPauseMenu->processEvent(event, mousePosWindow);
@@ -147,31 +213,6 @@ void GameState::processGameOverEvent(const sf::Event& event)
         initPlayer();
         initGui();
         initSystems();
-    }
-}
-
-
-void GameState::update(const float deltaTime)
-{
-    if (!stateIsPaused)
-    {
-        if (!gameOver)
-        {
-            updatePlayerKeyboardInput(deltaTime);
-            updateTilemap(deltaTime);
-        }
-
-        pPlayer->update(deltaTime, mousePosView, mousePosWindow, *pTextTagSystem); 
-
-        if (!gameOver)
-        {
-            pTextTagSystem->update(deltaTime);
-            pLootSystem->update(*pPlayer);
-
-            updateView();
-            updateEnemiesAndCombat(deltaTime);
-            updateGui();
-        }
     }
 }
 
@@ -389,49 +430,11 @@ void GameState::updateIntersectionWithProjectiles(Enemy& enemy)
 }
 
 
-void GameState::render(sf::RenderTarget* pTarget)
-{
-    if (!pTarget)
-    {
-        pTarget = &window;
-    }
-
-
-    sf::RenderTarget& target = *pTarget;
-    target.setView(view);
-
-    pTilemap->render(target, view, pPlayer->getGridPositionCenter(), &coreShader, pPlayer->getCenter(), false, false);
-    pLootSystem->render(target);
-    pPlayer->render(target, &coreShader, pPlayer->getCenter(), true);
-    renderEnemies(target);
-    if (!gameOver)
-    {
-        pTextTagSystem->render(target);
-        renderProjectiles(target);
-    }
-    pTilemap->renderDeferred(target, &coreShader, pPlayer->getCenter());
-
-    target.setView(target.getDefaultView());
-
-    pPlayerGui->render(target);
-
-
-    if (gameOver && pPlayer->deathAnimationIsDone())
-    {
-        renderGameOverScreen(target);
-    }
-    if (stateIsPaused)
-    {
-        pPauseMenu->render(target);
-    }
-}
-
-
 void GameState::renderEnemies(sf::RenderTarget& target)
 {
     for (auto enemy = enemies.begin(); enemy != enemies.end(); ++enemy)
     {
-        (*enemy)->render(target, &coreShader, pPlayer->getCenter(), true);
+        (*enemy)->render(target, &coreShader, pPlayer->getCenter(), SHOW_HITBOXES);
     }
 }
 
@@ -493,7 +496,7 @@ void GameState::initPlayer()
         window
     );
 
-    // FIXME: Maybe don't need to give the weapon to the player from start
+
     Sword sword(textures["WEAPON_SWORD"], 2, 5);
     pPlayer->addItemToInventory(&sword, true);
 

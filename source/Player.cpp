@@ -14,7 +14,7 @@ Player::Player(const float posX,
 
     createMovementComponent(200.f, 1600.f, 1000.f);
     createAnimationComponent(textureSheet);
-    createHitboxComponent(18.f, 25.f, 28.f, 30.f);
+    createHitboxComponent(18.f, 25.f, 28.f, 28.f);
     createAttributeComponent(1, 10, 1, 2);
 
     pAnimationComponent->addAnimation("IS_DEAD", textureSheet, sprite, 0, 1, 6, 1, 146, 252, 20.f);
@@ -62,7 +62,7 @@ void Player::update(const float deltaTime,
 
             // Eating a food
             if (inventory.getActiveItem()->isFood() && 
-                pAttributeComponent->hp != pAttributeComponent->hpMax &&
+                pAttributeComponent->getHp() != pAttributeComponent->getHpMax() &&
                 sf::Mouse::isButtonPressed(sf::Mouse::Right))
             {
                 Food* food = static_cast<Food*>(inventory.getActiveItem());
@@ -152,31 +152,31 @@ Item* Player::getActiveItem() const
 
 int Player::getHp() const
 {
-    return pAttributeComponent->hp;
+    return pAttributeComponent->getHp();
 }
 
 
 int Player::getHpMax() const
 {
-    return pAttributeComponent->hpMax;
+    return pAttributeComponent->getHpMax();
 }
 
 
 int Player::getExp() const
 {
-    return pAttributeComponent->exp;
+    return pAttributeComponent->getExp();
 }
 
 
 int Player::getExpForNextLevel() const
 {
-    return pAttributeComponent->expForNextLevel;
+    return pAttributeComponent->getExpForNextLevel();
 }
 
 
 unsigned Player::getLevel() const
 {
-    return pAttributeComponent->level;
+    return pAttributeComponent->getLevel();
 }
 
 
@@ -204,14 +204,14 @@ const std::string Player::getStatsAsString() const
 {
     std::stringstream stream;
 
-    stream << "Level: " << pAttributeComponent->level << '\n'
-           << "Health: " << pAttributeComponent->hp << '\n'
-           << "Max Health: " << pAttributeComponent->hpMax << '\n'
-           << "Exp: " << pAttributeComponent->exp << '\n'
-           << "Exp for the next level: " << pAttributeComponent->expForNextLevel << "\n\n"
+    stream << "Level: " << pAttributeComponent->getLevel() << '\n'
+           << "Health: " << pAttributeComponent->getHp() << '\n'
+           << "Max Health: " << pAttributeComponent->getHpMax() << '\n'
+           << "Exp: " << pAttributeComponent->getExp() << '\n'
+           << "Exp for the next level: " << pAttributeComponent->getExpForNextLevel() << "\n\n"
            << "Attack range: " << getAttackRange() << '\n'
-           << "Min damage: " << (pActiveWeapon ? (pActiveWeapon->getDamageMin() + pAttributeComponent->damageMin): pAttributeComponent->damageMin) << '\n'
-           << "Max damage: " << (pActiveWeapon ? (pActiveWeapon->getDamageMax() + pAttributeComponent->damageMax): pAttributeComponent->damageMax) << '\n';
+           << "Min damage: " << (pActiveWeapon ? (pActiveWeapon->getDamageMin() + pAttributeComponent->getDamageMin()): pAttributeComponent->getDamageMin()) << '\n'
+           << "Max damage: " << (pActiveWeapon ? (pActiveWeapon->getDamageMax() + pAttributeComponent->getDamageMax()): pAttributeComponent->getDamageMax()) << '\n';
 
     return stream.str();
 }

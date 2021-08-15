@@ -16,7 +16,7 @@ Skeleton::Skeleton(const float posX,
 
     createMovementComponent(80.f, 1200.f, 700.f);
     createAnimationComponent(textureSheet);
-    createHitboxComponent(17.f, 13.f, 30.f, 33.f);
+    createHitboxComponent(17.f, 15.f, 30.f, 30.f);
     createAttributeComponent(1, 7, 1, 3);
 
     initAnimation();

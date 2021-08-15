@@ -23,6 +23,7 @@ private:
     sf::Clock    spawnTimer;
     float        spawnTimerMax;
     int          minionsToSpawnAtOnce;
+    bool         firstSpawn;
 };
 
 

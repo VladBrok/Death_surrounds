@@ -10,7 +10,7 @@ public:
 
                     Character(const sf::Texture& texture);
 
-    virtual void    gainHp(const int hp); // FIXME: Maybe should play some animation when gaining\losing hp (in child classes)
+    virtual void    gainHp(const int hp);
     virtual void    loseHp(const int hp);
     bool            isDead() const;
     virtual int     getDamage() const;

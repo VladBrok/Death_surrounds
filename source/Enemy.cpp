@@ -26,7 +26,7 @@ int Enemy::getExpForKilling() const
 {
     if (pAttributeComponent)
     {
-        return rand() % (expForKillingMax - pAttributeComponent->level * 2 + 1)  + pAttributeComponent->level * 2;
+        return rand() % (expForKillingMax - pAttributeComponent->getLevel() * 2 + 1)  + pAttributeComponent->getLevel() * 2;
     }
     else
     {

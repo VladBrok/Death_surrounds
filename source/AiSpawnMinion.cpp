@@ -12,7 +12,8 @@ AiSpawnMinion::AiSpawnMinion(Entity& self,
     : self(self),
       minionType(minionType), 
       spawnTimerMax(spawnFrequencyInSeconds),
-      minionsToSpawnAtOnce(minionsToSpawnAtOnceFrom1To2)
+      minionsToSpawnAtOnce(minionsToSpawnAtOnceFrom1To2),
+      firstSpawn(true)
 {
     assert(minionsToSpawnAtOnceFrom1To2 >= 1 && minionsToSpawnAtOnceFrom1To2 <= 2);
 }
@@ -20,8 +21,10 @@ AiSpawnMinion::AiSpawnMinion(Entity& self,
 
 void AiSpawnMinion::update(EnemySystem& enemySystem)
 {
-    if (spawnTimer.getElapsedTime().asSeconds() >= spawnTimerMax)
+    if (spawnTimer.getElapsedTime().asSeconds() >= spawnTimerMax || firstSpawn)
     {
+        firstSpawn = false;
+
         spawnTimer.restart();
  
         float spawnOffset = self.getGlobalBounds().height * 1.5f;

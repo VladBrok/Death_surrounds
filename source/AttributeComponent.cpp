@@ -35,15 +35,15 @@ void AttributeComponent::updateLevel()
 
 void AttributeComponent::updateStats()
 {
-    if (level % 5 == 0)
-    {
-        hpMax += 1;
-        damageMin += 1;
-    }
-
     if (level % 3 == 0)
     {
+        damageMin += 1;
         damageMax += 1;
+    }
+
+    if (level % 2 == 0)
+    {
+        hpMax += 1;
     }
 }
 
@@ -88,6 +88,48 @@ void AttributeComponent::gainExp(const unsigned exp)
     this->exp += exp;
 
     updateLevel();
+}
+
+
+unsigned AttributeComponent::getLevel() const
+{
+    return level;
+}
+
+
+int AttributeComponent::getExp() const
+{
+    return exp;
+}
+
+
+int AttributeComponent::getExpForNextLevel() const
+{
+    return expForNextLevel;
+}
+
+
+int AttributeComponent::getHp() const
+{
+    return hp;
+}
+
+
+int AttributeComponent::getHpMax() const
+{
+    return hpMax;
+}
+
+
+int AttributeComponent::getDamageMin() const
+{
+    return damageMin;
+}
+
+
+int AttributeComponent::getDamageMax() const
+{
+    return damageMax;
 }
 
 

@@ -22,7 +22,7 @@ void Character::loseHp(const int hp)
 
 bool Character::isDead() const
 {
-    return pAttributeComponent->hp <= 0;
+    return pAttributeComponent->getHp() <= 0;
 }
 
 

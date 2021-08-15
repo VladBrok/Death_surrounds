@@ -23,24 +23,10 @@ public:
                                         );
     virtual                   ~GameState();
                               
-    virtual void              processEvent(const sf::Event& event);
-    void                      processPauseMenuEvent(const sf::Event& event);
-    void                      processGameOverEvent(const sf::Event& event);
-                              
-    virtual void              update(const float deltaTime);
-    void                      updateView();
-    void                      updatePlayerKeyboardInput(const float deltaTime);
-    void                      updateTilemap(const float deltaTime);
-    void                      updateGui();
-    void                      updateEnemiesAndCombat(const float deltaTime);
-    void                      updateCombat(Enemy& enemy, const float deltaTime);
-    void                      updateProjectiles(const float deltaTime);
-    void                      updateIntersectionWithProjectiles(Enemy& enemy);
-                              
+    virtual void              processEvent(const sf::Event& event);                         
+    virtual void              update(const float deltaTime);                         
     virtual void              render(sf::RenderTarget* pTarget = nullptr);
-    void                      renderEnemies(sf::RenderTarget& target);
-    void                      renderProjectiles(sf::RenderTarget& target);
-    void                      renderGameOverScreen(sf::RenderTarget& target);
+
                               
 private:                      
                               
@@ -62,9 +48,29 @@ private:
     sf::RectangleShape        gameOverScreen;
     sf::Text                  gameOverText;
     sf::Text                  gameOverInfoText;
-    bool                      gameOver;                
+    bool                      gameOver; 
+
+    const bool                SHOW_HITBOXES;
+    const bool                SHOW_COLLIDABLE_TILES;
+    const bool                SHOW_ENEMY_SPAWNERS;
                               
-                              
+
+    void                      processPauseMenuEvent(const sf::Event& event);
+    void                      processGameOverEvent(const sf::Event& event); 
+
+    void                      updateView();
+    void                      updatePlayerKeyboardInput(const float deltaTime);
+    void                      updateTilemap(const float deltaTime);
+    void                      updateGui();
+    void                      updateEnemiesAndCombat(const float deltaTime);
+    void                      updateCombat(Enemy& enemy, const float deltaTime);
+    void                      updateProjectiles(const float deltaTime);
+    void                      updateIntersectionWithProjectiles(Enemy& enemy);
+
+    void                      renderEnemies(sf::RenderTarget& target);
+    void                      renderProjectiles(sf::RenderTarget& target);
+    void                      renderGameOverScreen(sf::RenderTarget& target);
+
     void                      initView();
     void                      initTilemap();
     virtual void              initTextures();
