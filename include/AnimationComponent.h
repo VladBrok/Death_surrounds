@@ -13,16 +13,16 @@ public:
         numbers of the column and the row (starting from 0) in which the starting frame is
         located on the texture sheet
     */  
-    void                    addAnimation(const std::string&    animationKey,
-                                         const sf::Texture&    textureSheet, 
-                                         sf::Sprite&           sprite,
-                                         const int             startFrameX,
-                                         const int             startFrameY,
-                                         const int             endFrameX,
-                                         const int             endFrameY,
-                                         const int             frameWidth,
-                                         const int             frameHeight,
-                                         const float           timeToPlayAnimation
+    void                    addAnimation(const std::string& animationKey,
+                                         const sf::Texture& textureSheet, 
+                                         sf::Sprite&        sprite,
+                                         const int          startFrameX,
+                                         const int          startFrameY,
+                                         const int          endFrameX,
+                                         const int          endFrameY,
+                                         const int          frameWidth,
+                                         const int          frameHeight,
+                                         const float        timeToPlayAnimation
                                          );
                      
     void                    play(const std::string& animationKey,
@@ -42,25 +42,25 @@ private:
     {
     public:
 
-        const sf::Texture&      textureSheet;
-        sf::Sprite&             sprite;
-        sf::IntRect             startRect;
-        sf::IntRect             currentRect;
-        sf::IntRect             endRect;
-        float                   timeToPlayAnimation;
-        float                   animationTimer;
-        bool                    done; // Done is true if animation is finished
+        const sf::Texture&     textureSheet;
+        sf::Sprite&            sprite;
+        sf::IntRect            startRect;
+        sf::IntRect            currentRect;
+        sf::IntRect            endRect;
+        float                  timeToPlayAnimation;
+        float                  animationTimer;
+        bool                   done; // Done is true if animation is finished
 
 
-        Animation(const sf::Texture&    textureSheet, 
-                  sf::Sprite&           sprite,
-                  const int             startFrameX,
-                  const int             startFrameY,
-                  const int             endFrameX,  
-                  const int             endFrameY,  
-                  const int             frameWidth, 
-                  const int             frameHeight,
-                  const float           timeToPlayAnimation  
+        Animation(const sf::Texture& textureSheet, 
+                  sf::Sprite&        sprite,
+                  const int          startFrameX,
+                  const int          startFrameY,
+                  const int          endFrameX,  
+                  const int          endFrameY,  
+                  const int          frameWidth, 
+                  const int          frameHeight,
+                  const float        timeToPlayAnimation  
                   )
                   : textureSheet        (textureSheet),
                     sprite              (sprite),

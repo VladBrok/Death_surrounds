@@ -12,6 +12,7 @@
 #include <cassert>
 #include <iostream>
 #include <utility>
+#include <memory>
 
 #include "SFML/Graphics.hpp"
 

@@ -67,10 +67,7 @@ void Game::processEvents()
         }
 
         
-        if (!states.empty() &&
-            states.top()->needToCallProcessEvent() && 
-            windowHasFocus
-            )
+        if (!states.empty() && windowHasFocus)
         {
             states.top()->processEvent(event);
         }
@@ -87,11 +84,7 @@ void Game::update()
             return;
         }
 
-
-        if (states.top()->needToCallUpdate())
-        {
-            states.top()->update(deltaTime);
-        }
+        states.top()->update(deltaTime);
 
         if (!states.top()->isActive())
         {
@@ -125,7 +118,7 @@ void Game::initWindow()
 
     window.create(videoModes[0],
                   "Death surrounds",
-                  sf::Style::None
+                  sf::Style::Close
                   );
 
     window.setFramerateLimit(FPS_LIMIT);

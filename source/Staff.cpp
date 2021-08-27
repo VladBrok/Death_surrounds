@@ -12,8 +12,8 @@ Staff::Staff(const sf::Texture& weaponTexture,
              const sf::IntRect& textureRect
              )
     : RangedWeapon(weaponTexture, projectileTexture, projectileDamageMin, projectileDamageMax, textureRect),
-      projectileTexture(projectileTexture),
-      unloadedWeaponTexture(unloadedWeaponTexture)
+      pProjectileTexture(&projectileTexture),
+      pUnloadedWeaponTexture(&unloadedWeaponTexture)
 {
     initRange();
     initAttackTimerMax();
@@ -33,11 +33,11 @@ void Staff::update(const sf::Vector2f& weaponPosition, const sf::Vector2f& mouse
 
     if (attackTimer.getElapsedTime().asMilliseconds() < attackTimerMax)
     {
-        sprite.setTexture(unloadedWeaponTexture);
+        sprite.setTexture(*pUnloadedWeaponTexture);
     }
     else
     {
-        sprite.setTexture(texture);
+        sprite.setTexture(*pTexture);
     }
 }
 
@@ -75,7 +75,16 @@ void Staff::initDefaultOriginAndScale()
 }
 
 
+// FIXME: use unique_ptr !!
 Projectile* Staff::allocateNewProjectile(const sf::Vector2f& movementDir, const sf::Vector2f& position)
 {
-    return new Projectile(projectileTexture, position, movementDir, projectileSpeed, projectileLifetimeInSeconds, damageMin, damageMax);
+    return new Projectile(
+                   *pProjectileTexture, 
+                    position,
+                    movementDir, 
+                    projectileSpeed,
+                    projectileLifetimeInSeconds,
+                    damageMin, 
+                    damageMax
+               );
 }

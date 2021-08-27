@@ -3,7 +3,7 @@
 
 
 Item::Item(const sf::Texture& texture, const sf::IntRect& textureRect)
-    : texture(texture), sprite(texture), defaultScale(1.f, 1.f) 
+    : pTexture(&texture), sprite(texture), defaultScale(1.f, 1.f) 
 {
     if (textureRect != sf::IntRect())
     {

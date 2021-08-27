@@ -4,15 +4,6 @@
 #include "typedefs.h"
 
 
-enum StateType
-{
-    STATE_DEFAULT, // Type of base class State
-    STATE_UPDATES, // Has redefined "update" method
-    STATE_PROCESSES_EVENTS, // Has redefined "processEvent" method
-    STATE_UPDATES_AND_PROCESSES_EVENTS // Has both "update" and "processEvent" methods
-};
-
-
 class State: public sf::NonCopyable
 {
 public:
@@ -21,8 +12,8 @@ public:
                                    std::stack<State*>& states
                                    );
     virtual                  ~State() {};
-    virtual void             processEvent(const sf::Event& event) {};
-    virtual void             update(const float deltaTime) {};
+    virtual void             processEvent(const sf::Event& event);
+    virtual void             update(const float deltaTime);
 
     // If pTarget is nullptr, then everything renders to the window
     virtual void             render(sf::RenderTarget* pTarget = nullptr) = 0; 
@@ -31,9 +22,6 @@ public:
     void                     endActivity();
     void                     pauseState();
     void                     unpauseState();
-                             
-    bool                     needToCallUpdate() const;
-    bool                     needToCallProcessEvent() const;
 
 protected:
 
@@ -44,7 +32,6 @@ protected:
     StringToKeyMap           keybinds;
     bool                     stateIsActive;
     bool                     stateIsPaused;
-    StateType                stateType;
     StringToTextureMap       textures;
                                                                
     sf::Vector2i             mousePosScreen;
@@ -55,7 +42,7 @@ protected:
     void                     updateMousePosition(sf::View* pView = nullptr);
                              
     void                     initFont();
-    virtual void             initTextures() {};
+    virtual void             initTextures();
     virtual void             initKeybinds(const std::string& filePath);
 };
 

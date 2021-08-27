@@ -11,8 +11,6 @@ SettingsState::SettingsState(sf::RenderWindow& window,
                              )
     : State(window, supportedKeys, states), settingsChanged(settingsChanged)
 {
-    stateType = STATE_PROCESSES_EVENTS;
-
     initGui();
     initBackground();
     initOptionsText();
@@ -116,8 +114,8 @@ void SettingsState::initGui()
     const sf::Color textHoverColor(sf::Color::White);
     const sf::Color textActiveColor(sf::Color(20, 20, 20, 200));
 
-    buttons["APPLY"] = new Button((float)(int)utils::percentToPixels(50.f, windowSize.x), 
-                                  (float)(int)utils::percentToPixels(87.f, windowSize.y), 
+    buttons["APPLY"] = new Button(std::floor(utils::percentToPixels(50.f, windowSize.x)), 
+                                  std::floor(utils::percentToPixels(87.f, windowSize.y)), 
                                   buttonSize.x,
                                   buttonSize.y, 
                                   font, 
@@ -127,8 +125,8 @@ void SettingsState::initGui()
                                   textActiveColor
                                   );
 
-    buttons["EXIT_STATE"] = new Button((float)(int)utils::percentToPixels(83.f, windowSize.x), 
-                                       (float)(int)utils::percentToPixels(87.f, windowSize.y), 
+    buttons["EXIT_STATE"] = new Button(std::floor(utils::percentToPixels(83.f, windowSize.x)), 
+                                       std::floor(utils::percentToPixels(87.f, windowSize.y)), 
                                        buttonSize.x,
                                        buttonSize.y, 
                                        font, 
@@ -168,8 +166,8 @@ void SettingsState::initGui()
 
     dropDownLists["RESOLUTION"] = 
         new DropDownList(
-             (float)(int)utils::percentToPixels(20.f, windowSize.x), 
-             (float)(int)utils::percentToPixels(6.f, windowSize.y), 
+             std::floor(utils::percentToPixels(20.f, windowSize.x)), 
+             std::floor(utils::percentToPixels(6.f, windowSize.y)), 
              utils::percentToPixels(14.6f, windowSize.x), 
              utils::percentToPixels(6.5f, windowSize.y), 
              font, 
@@ -191,8 +189,8 @@ void SettingsState::initOptionsText()
     optionsText.setFont(font);
     optionsText.setCharacterSize((unsigned)utils::percentToPixels(2.f, window.getSize().x + window.getSize().y));
     optionsText.setPosition(
-        (float)(int)utils::percentToPixels(5.f, window.getSize().x),
-        (float)(int)utils::percentToPixels(5.f, window.getSize().y)
+        std::floor(utils::percentToPixels(5.f, window.getSize().x)),
+        std::floor(utils::percentToPixels(5.f, window.getSize().y))
     );
     optionsText.setString("Resolution: ");
 }

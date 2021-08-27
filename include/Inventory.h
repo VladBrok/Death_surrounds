@@ -54,7 +54,8 @@ private:
     sf::RectangleShape    selectedSlotBackground;
                           
     void                  clear();                     
-    void                  initInventoryPanel(const sf::RenderWindow& window, const sf::Texture& panelBorderTexture);
+    void                  initInventoryPanel(const sf::RenderWindow& window, 
+                                             const sf::Texture& panelBorderTexture);
 };
 
 

@@ -39,13 +39,13 @@ void TextTagSystem::render(sf::RenderTarget& target)
 }
 
 
-const sf::Vector2f& TextTagSystem::getBackElementSize() const
+const sf::Vector2f TextTagSystem::getBackElementSize() const
 {
     if (tags.empty())
     {
         throw std::runtime_error("ERROR in TextTagSystem::getBackElement: the list of tags is empty\n");
     }
-    return tags.back().get()->getSize();
+    return tags.back()->getSize();
 }
 
 

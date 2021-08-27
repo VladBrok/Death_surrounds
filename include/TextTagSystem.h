@@ -21,7 +21,7 @@ public:
                            
     void                   update(const float deltaTime);
     void                   render(sf::RenderTarget& target);
-    const sf::Vector2f&    getBackElementSize() const;
+    const sf::Vector2f     getBackElementSize() const;
     void                   setBackElementPosition(const float x, const float y);
 
     template <class T>
@@ -86,8 +86,8 @@ private:
 
                 // Moving the text
                 sfmlText.setPosition(
-                    (float)(int)(sfmlText.getPosition().x + movementDirX * speed * deltaTime),
-                    (float)(int)(sfmlText.getPosition().y + movementDirY * speed * deltaTime)
+                    std::floor(sfmlText.getPosition().x + movementDirX * speed * deltaTime),
+                    std::floor(sfmlText.getPosition().y + movementDirY * speed * deltaTime)
                  );
 
                 if (speed >= deceleration)

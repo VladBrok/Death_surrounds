@@ -6,15 +6,15 @@ namespace resources
 {
 
 
-    const std::string fontsDirectory       = "Resources\\Fonts\\";
-    const std::string tilemapsDirectory    = "Resources\\Maps\\";
-    const std::string shadersDirectory     = "Resources\\Shaders\\";
-    const std::string backgroundsDirectory = "Resources\\Images\\Backgrounds\\";
-    const std::string enemiesDirectory     = "Resources\\Images\\Entities\\Enemies\\";
-    const std::string playerDirectory      = "Resources\\Images\\Entities\\Player\\";
-    const std::string itemsDirectory       = "Resources\\Images\\Items\\";
-    const std::string tilesDirectory       = "Resources\\Images\\Tiles\\";
-    const std::string configDirectory      = "Config\\";
+    const std::string fontsDirectory       = "Resources/Fonts/";
+    const std::string tilemapsDirectory    = "Resources/Maps/";
+    const std::string shadersDirectory     = "Resources/Shaders/";
+    const std::string backgroundsDirectory = "Resources/Images/Backgrounds/";
+    const std::string enemiesDirectory     = "Resources/Images/Entities/Enemies/";
+    const std::string playerDirectory      = "Resources/Images/Entities/Player/";
+    const std::string itemsDirectory       = "Resources/Images/Items/";
+    const std::string tilesDirectory       = "Resources/Images/Tiles/";
+    const std::string configDirectory      = "Config/";
 
 
     std::string getFontFile()

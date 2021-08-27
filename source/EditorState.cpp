@@ -12,8 +12,6 @@ EditorState::EditorState(sf::RenderWindow& window,
       tilemap(TILEMAP_GRID_SIZE_MAX_X, TILEMAP_GRID_SIZE_MAX_Y),
       activeMode(0)
 {
-    stateType = STATE_UPDATES_AND_PROCESSES_EVENTS;
-
     initKeybinds(resources::getEditorStateKeybindsFile());
     initView();
     initModes();

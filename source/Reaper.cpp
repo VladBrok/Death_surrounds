@@ -33,6 +33,7 @@ Reaper::Reaper(const float posX,
 Reaper::~Reaper()
 {
     delete pAiSpawnMinion;
+    delete pAiFollow;
 }
 
 
@@ -66,5 +67,8 @@ void Reaper::initAnimation()
 
 void Reaper::initDroppingItem()
 {
-    droppingItem = std::make_shared<Food>(Food(lootTextureSheet, sf::IntRect(9 * ONE_FOOD_TEXTURE_SIZE, 0, ONE_FOOD_TEXTURE_SIZE, ONE_FOOD_TEXTURE_SIZE)));
+    sf::Vector2i itemSize(ONE_FOOD_TEXTURE_SIZE, ONE_FOOD_TEXTURE_SIZE);
+    sf::Vector2i itemPosition(9 * ONE_FOOD_TEXTURE_SIZE, 0);
+
+    droppingItem = std::make_shared<Food>(lootTextureSheet, sf::IntRect(itemPosition, itemSize));
 }

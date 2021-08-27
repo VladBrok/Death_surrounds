@@ -27,7 +27,7 @@ public:
     const sf::Vector2f      getCenter() const;
     const sf::Vector2i      getGridPositionCenter() const;
     const sf::FloatRect     getGlobalBounds() const;
-    const sf::FloatRect&    getNextPositionBounds(const float deltaTime) const;
+    const sf::FloatRect     getNextPositionBounds(const float deltaTime) const;
                             
     void                    stopVelocity();
     void                    stopVelocityX();

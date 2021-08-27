@@ -28,7 +28,7 @@ InfoWindow::InfoWindow(const std::string& title,
 
 bool InfoWindow::run()
 {
-    while (true)
+    for (;;)
     {
         sf::Event event;
         while (window.pollEvent(event))
@@ -57,8 +57,6 @@ bool InfoWindow::run()
         
         window.display();
     }
-
-    return false;
 }
 
 
@@ -79,10 +77,10 @@ void InfoWindow::initInfo(const sf::Font& font, const std::string& info)
     this->info.setFont(font);
     this->info.setColor(sf::Color::Black);
     this->info.setString(info);
-    this->info.setCharacterSize(utils::percentToPixels(3.f, (int)(window.getSize().x + window.getSize().y)));
+    this->info.setCharacterSize((unsigned)utils::percentToPixels(3.f, (int)(window.getSize().x + window.getSize().y)));
     this->info.setPosition(
-        (float)(int)utils::percentToPixels(1.f, (int)window.getSize().x),
-        (float)(int)utils::percentToPixels(14.5f, (int)window.getSize().y)
+        std::floor(utils::percentToPixels(1.f, (int)window.getSize().x)),
+        std::floor(utils::percentToPixels(14.5f, (int)window.getSize().y))
     );
 }
 

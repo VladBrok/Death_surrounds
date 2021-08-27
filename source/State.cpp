@@ -12,10 +12,21 @@ State::State(sf::RenderWindow& window,
       supportedKeys(supportedKeys), 
       states(states), 
       stateIsActive(true),
-      stateIsPaused(false),
-      stateType(STATE_DEFAULT)
+      stateIsPaused(false)
 {
     initFont();
+}
+
+
+void State::processEvent(const sf::Event&)
+{
+    // Do nothing by default
+}
+
+
+void State::update(const float)
+{
+    // Do nothing by default
 }
 
 
@@ -43,18 +54,6 @@ void State::unpauseState()
 }
 
 
-bool State::needToCallUpdate() const
-{
-    return stateType == STATE_UPDATES || stateType == STATE_UPDATES_AND_PROCESSES_EVENTS;
-}
-
-
-bool State::needToCallProcessEvent() const
-{
-    return stateType == STATE_PROCESSES_EVENTS || stateType == STATE_UPDATES_AND_PROCESSES_EVENTS;
-}
-
-
 void State::initFont()
 {
     if (!font.loadFromFile(resources::getFontFile()))
@@ -79,6 +78,12 @@ void State::updateMousePosition(sf::View* pView)
 
     mousePosGrid.x = static_cast<int>(mousePosView.x) / static_cast<int>(GRID_SIZE);
     mousePosGrid.y = static_cast<int>(mousePosView.y) / static_cast<int>(GRID_SIZE);
+}
+
+
+void State::initTextures()
+{
+    // Do nothing by default
 }
 
 

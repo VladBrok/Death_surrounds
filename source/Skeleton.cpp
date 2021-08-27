@@ -5,11 +5,11 @@
 
 
 Skeleton::Skeleton(const float posX, 
-         const float posY, 
-         const sf::Texture& textureSheet,
-         const sf::Texture& lootTextureSheet,
-         Entity& player
-         )
+                   const float posY, 
+                   const sf::Texture& textureSheet,
+                   const sf::Texture& lootTextureSheet,
+                   Entity& player
+                   )
     : Enemy(posX, posY, textureSheet, lootTextureSheet)
 {
     expForKillingMax = 12;
@@ -49,14 +49,17 @@ void Skeleton::update(const float deltaTime)
 
 void Skeleton::initAnimation()
 {
-    pAnimationComponent->addAnimation("MOVING_UP", texture, sprite, 0, 0, 8, 0, 64, 64, 11.f );
-    pAnimationComponent->addAnimation("MOVING_LEFT", texture, sprite, 0, 1, 8, 1, 64, 64, 11.f);
-    pAnimationComponent->addAnimation("MOVING_DOWN", texture, sprite, 0, 2, 8, 2, 64, 64, 11.f);
+    pAnimationComponent->addAnimation("MOVING_UP",    texture, sprite, 0, 0, 8, 0, 64, 64, 11.f );
+    pAnimationComponent->addAnimation("MOVING_LEFT",  texture, sprite, 0, 1, 8, 1, 64, 64, 11.f);
+    pAnimationComponent->addAnimation("MOVING_DOWN",  texture, sprite, 0, 2, 8, 2, 64, 64, 11.f);
     pAnimationComponent->addAnimation("MOVING_RIGHT", texture, sprite, 0, 3, 8, 3, 64, 64, 11.f);
 }
 
 
 void Skeleton::initDroppingItem()
 {
-    droppingItem = std::make_shared<Food>(Food(lootTextureSheet, sf::IntRect(1 * ONE_FOOD_TEXTURE_SIZE, 0, ONE_FOOD_TEXTURE_SIZE, ONE_FOOD_TEXTURE_SIZE)));
+    sf::Vector2i itemSize(ONE_FOOD_TEXTURE_SIZE, ONE_FOOD_TEXTURE_SIZE);
+    sf::Vector2i itemPosition(1 * ONE_FOOD_TEXTURE_SIZE, 0);
+
+    droppingItem = std::make_shared<Food>(lootTextureSheet, sf::IntRect(itemPosition, itemSize));
 }

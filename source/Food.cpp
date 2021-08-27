@@ -29,7 +29,7 @@ Food::Food(const sf::Texture& texture, const sf::IntRect& textureRect)
 }
 
 
-void Food::update(const sf::Vector2f& foodPosition, const sf::Vector2f& mousePosView)
+void Food::update(const sf::Vector2f& foodPosition, const sf::Vector2f&)
 {
     sprite.setPosition(foodPosition);
 }

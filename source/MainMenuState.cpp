@@ -13,8 +13,6 @@ MainMenuState::MainMenuState(sf::RenderWindow& window,
                              )
     : State(window, supportedKeys, states), needToReinitialize(false)
 {
-    stateType = STATE_PROCESSES_EVENTS;
-
     initTextures();
     initGui();
     initBackground();

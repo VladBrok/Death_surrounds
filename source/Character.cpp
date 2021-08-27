@@ -77,7 +77,10 @@ void Character::updateAnimation(const float deltaTime)
         const std::string& movementState = pMovementComponent->getMovementState();
 
         // Playing animations using the character's velocity as modifier for animation speed
-        float modifier = (movementState == "MOVING_RIGHT" || movementState == "MOVING_LEFT") ? pMovementComponent->getVelocity().x: pMovementComponent->getVelocity().y;
+        float modifier = (movementState == "MOVING_RIGHT" || movementState == "MOVING_LEFT") 
+                          ? pMovementComponent->getVelocity().x
+                          : pMovementComponent->getVelocity().y;
+
         float modifierMax = pMovementComponent->getMaxVelocity();
 
         pAnimationComponent->play(

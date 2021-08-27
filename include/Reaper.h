@@ -9,13 +9,13 @@
 class Reaper: public Enemy
 {
 public:
-                          Reaper(const float posX, 
-                                 const float posY, 
-                                 const sf::Texture& textureSheet, 
-                                 const sf::Texture& lootTextureSheet, 
-                                 Entity& player,
-                                 EnemySystem& enemySystem
-                                 );
+                      Reaper(const float posX, 
+                             const float posY, 
+                             const sf::Texture& textureSheet, 
+                             const sf::Texture& lootTextureSheet, 
+                             Entity& player,
+                             EnemySystem& enemySystem
+                             );
                       ~Reaper();
     virtual void      update(const float deltaTime);
 

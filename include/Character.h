@@ -15,11 +15,11 @@ public:
     bool            isDead() const;
     virtual int     getDamage() const;
 
-    // The damage timer shold be restarted manually if needed, using the "restartDamageTimer" method
+    // The damage timer should be restarted manually if needed, using the "restartDamageTimer" method
     bool            canBeDamaged() const;
     void            restartDamageTimer();
                     
-    // The attack timer shold be restarted manually if needed, using the "restartAttackTimer" method
+    // The attack timer should be restarted manually if needed, using the "restartAttackTimer" method
     virtual bool    canAttack() const;
     void            restartAttackTimer();
 

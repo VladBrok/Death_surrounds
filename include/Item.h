@@ -6,7 +6,8 @@ class Item
 {
 public:
 
-                                 Item(const sf::Texture& texture, const sf::IntRect& textureRect = sf::IntRect());
+                                 Item(const sf::Texture& texture, 
+                                      const sf::IntRect& textureRect = sf::IntRect());
     virtual                      ~Item() {};
     virtual void                 update(const sf::Vector2f& itemPosition, const sf::Vector2f& mousePosView) = 0;
     virtual void                 render(sf::RenderTarget& target);
@@ -31,7 +32,7 @@ public:
                                  
 protected:                       
                                  
-    const sf::Texture&           texture;
+    const sf::Texture*           pTexture;
     sf::Sprite                   sprite;
 
     sf::Vector2f                 defaultOrigin;

@@ -18,8 +18,6 @@ GameState::GameState(sf::RenderWindow& window,
       SHOW_COLLIDABLE_TILES(false),
       SHOW_ENEMY_SPAWNERS(false)
 {
-    stateType = STATE_UPDATES_AND_PROCESSES_EVENTS;
-
     initKeybinds(resources::getGameStateKeybindsFile());
     initView();
     initTilemap();
@@ -158,8 +156,9 @@ void GameState::render(sf::RenderTarget* pTarget)
 
     pTilemap->render(target, view, pPlayer->getGridPositionCenter(), &coreShader, pPlayer->getCenter(), SHOW_COLLIDABLE_TILES, SHOW_ENEMY_SPAWNERS);
     pLootSystem->render(target);
-    pPlayer->render(target, &coreShader, pPlayer->getCenter(), SHOW_HITBOXES);
     renderEnemies(target);
+    pPlayer->render(target, &coreShader, pPlayer->getCenter(), SHOW_HITBOXES);
+
     if (!gameOver)
     {
         pTextTagSystem->render(target);
@@ -248,8 +247,8 @@ void GameState::updateView()
 
     view.setCenter(
         sf::Vector2f(
-            (float)(int)view.getCenter().x, 
-            (float)(int)view.getCenter().y
+            std::floor(view.getCenter().x), 
+            std::floor(view.getCenter().y)
         )
     );
 }
@@ -350,7 +349,7 @@ void GameState::updateEnemiesAndCombat(const float deltaTime)
 }
 
 
-void GameState::updateCombat(Enemy& enemy, const float deltaTime)
+void GameState::updateCombat(Enemy& enemy, const float)
 {
     // Melee attack of the player
     if (pPlayer->isAttacking() && 

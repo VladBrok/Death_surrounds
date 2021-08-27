@@ -126,12 +126,13 @@ const sf::FloatRect Entity::getGlobalBounds() const
 }
 
 
-const sf::FloatRect& Entity::getNextPositionBounds(const float deltaTime) const
+const sf::FloatRect Entity::getNextPositionBounds(const float deltaTime) const
 {
     if (pHitboxComponent && pMovementComponent)
     {
         return pHitboxComponent->getNextPositionBounds(pMovementComponent->getVelocity() * deltaTime);
     }
+    return sprite.getGlobalBounds();
 }
 
 

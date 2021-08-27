@@ -66,8 +66,8 @@ void PauseMenu::addButton(const std::string& buttonKey,
     const sf::Color textHoverColor(sf::Color::White);
     const sf::Color textActiveColor(sf::Color(20, 20, 20, 200));
 
-    buttons[buttonKey] = new Button((float)(int)(menuContainer.getPosition().x + menuContainer.getSize().x / 2.f - buttonSize.x / 2.f),
-                                    (float)(int)(verticalPositionFrom1To5 * (menuContainer.getSize().y / 7.f) + text.getGlobalBounds().height * 2.3f), 
+    buttons[buttonKey] = new Button(std::floor(menuContainer.getPosition().x + menuContainer.getSize().x / 2.f - buttonSize.x / 2.f),
+                                    std::floor(verticalPositionFrom1To5 * (menuContainer.getSize().y / 7.f) + text.getGlobalBounds().height * 2.3f), 
                                     buttonSize.x, 
                                     buttonSize.y,
                                     font, 

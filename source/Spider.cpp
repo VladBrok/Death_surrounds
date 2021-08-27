@@ -49,15 +49,18 @@ void Spider::update(const float deltaTime)
 
 void Spider::initAnimation()
 {
-    pAnimationComponent->addAnimation("IDLE", texture, sprite, 0, 0, 2, 0, 60, 64, 11.f);
-    pAnimationComponent->addAnimation("MOVING_DOWN", texture, sprite, 0, 0, 2, 0, 60, 64, 11.f);
-    pAnimationComponent->addAnimation("MOVING_LEFT", texture, sprite, 0, 1, 2, 1, 60, 64, 11.f);
+    pAnimationComponent->addAnimation("IDLE",         texture, sprite, 0, 0, 2, 0, 60, 64, 11.f);
+    pAnimationComponent->addAnimation("MOVING_DOWN",  texture, sprite, 0, 0, 2, 0, 60, 64, 11.f);
+    pAnimationComponent->addAnimation("MOVING_LEFT",  texture, sprite, 0, 1, 2, 1, 60, 64, 11.f);
     pAnimationComponent->addAnimation("MOVING_RIGHT", texture, sprite, 0, 2, 2, 2, 60, 64, 11.f);
-    pAnimationComponent->addAnimation("MOVING_UP", texture, sprite, 0, 3, 2, 3, 60, 64, 11.f );
+    pAnimationComponent->addAnimation("MOVING_UP",    texture, sprite, 0, 3, 2, 3, 60, 64, 11.f );
 }
 
 
 void Spider::initDroppingItem()
 {
-    droppingItem = std::make_shared<Food>(Food(lootTextureSheet, sf::IntRect(2 * ONE_FOOD_TEXTURE_SIZE, 0, ONE_FOOD_TEXTURE_SIZE, ONE_FOOD_TEXTURE_SIZE)));
+    sf::Vector2i itemSize(ONE_FOOD_TEXTURE_SIZE, ONE_FOOD_TEXTURE_SIZE);
+    sf::Vector2i itemPosition(2 * ONE_FOOD_TEXTURE_SIZE, 0);
+
+    droppingItem = std::make_shared<Food>(lootTextureSheet, sf::IntRect(itemPosition, itemSize));
 }

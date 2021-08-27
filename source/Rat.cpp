@@ -58,5 +58,8 @@ void Rat::initAnimation()
 
 void Rat::initDroppingItem()
 {
-    droppingItem = std::make_shared<Food>(Food(lootTextureSheet, sf::IntRect(0 * ONE_FOOD_TEXTURE_SIZE, 0, ONE_FOOD_TEXTURE_SIZE, ONE_FOOD_TEXTURE_SIZE)));
+    sf::Vector2i itemSize(ONE_FOOD_TEXTURE_SIZE, ONE_FOOD_TEXTURE_SIZE);
+    sf::Vector2i itemPosition(0 * ONE_FOOD_TEXTURE_SIZE, 0);
+
+    droppingItem = std::make_shared<Food>(lootTextureSheet, sf::IntRect(itemPosition, itemSize));
 }

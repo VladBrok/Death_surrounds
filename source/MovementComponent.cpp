@@ -29,6 +29,10 @@ void MovementComponent::updateMovement(const float deltaTime)
     }
 
     decelerateSpriteAndCheckVelocityBounds(deltaTime);
+    
+    //velocity.x /= sqrtf(2.f);
+    //velocity.y /= sqrtf(2.f);
+    //std::cout << velocity.x << ' ' << velocity.y << '\n';
 
     sprite.move(velocity * deltaTime);
 }

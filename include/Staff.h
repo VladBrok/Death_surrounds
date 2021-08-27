@@ -17,15 +17,17 @@ public:
                                        const int projectileDamageMax, 
                                        const sf::IntRect& textureRect = sf::IntRect()
                                        );
-    virtual void                 update(const sf::Vector2f& weaponPosition, const sf::Vector2f& mousePosView);
+    virtual void                 update(const sf::Vector2f& weaponPosition, 
+                                        const sf::Vector2f& mousePosView);
     virtual Staff*               getClone();
     virtual const std::string    getName() const;
-    virtual Projectile*          allocateNewProjectile(const sf::Vector2f& movementDir, const sf::Vector2f& position);
+    virtual Projectile*          allocateNewProjectile(const sf::Vector2f& movementDir, 
+                                                       const sf::Vector2f& position);
                       
 private:
 
-    const sf::Texture&           unloadedWeaponTexture;
-    const sf::Texture&           projectileTexture;
+    const sf::Texture*           pUnloadedWeaponTexture;
+    const sf::Texture*           pProjectileTexture;
     float                        projectileLifetimeInSeconds;
     float                        projectileSpeed;
                     

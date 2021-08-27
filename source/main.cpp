@@ -18,7 +18,7 @@ int main()
             Game game;
             game.run();
         }
-        catch (const std::bad_alloc& err)
+        catch (std::bad_alloc&)
         {
             ErrorWindow erWindow(
                            "There is not enough RAM for the game to work.\nPlease, close unnesessary programs and restart the game.",

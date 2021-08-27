@@ -17,14 +17,13 @@ Player::Player(const float posX,
     createHitboxComponent(18.f, 25.f, 28.f, 28.f);
     createAttributeComponent(1, 10, 1, 2);
 
-    pAnimationComponent->addAnimation("IS_DEAD", textureSheet, sprite, 0, 1, 6, 1, 146, 252, 20.f);
-    pAnimationComponent->addAnimation("IDLE", textureSheet, sprite, 0, 0, 8, 0, 64, 64, 9.5f);
-    pAnimationComponent->addAnimation("MOVING_DOWN", textureSheet, sprite, 0, 1, 3, 1, 64, 64, 9.5f);
-    pAnimationComponent->addAnimation("MOVING_LEFT", textureSheet, sprite, 4, 1, 7, 1, 64, 64, 9.5f);
-    pAnimationComponent->addAnimation("MOVING_RIGHT", textureSheet, sprite, 8, 1, 11, 1, 64, 64, 9.5f);
-    pAnimationComponent->addAnimation("MOVING_UP", textureSheet, sprite, 12, 1, 15, 1, 64, 64, 9.5f );
+    pAnimationComponent->addAnimation("IS_DEAD",      textureSheet, sprite,  0, 1,  6, 1, 146, 252, 20.0f);
+    pAnimationComponent->addAnimation("IDLE",         textureSheet, sprite,  0, 0,  8, 0,  64,  64,  9.5f);
+    pAnimationComponent->addAnimation("MOVING_DOWN",  textureSheet, sprite,  0, 1,  3, 1,  64,  64,  9.5f);
+    pAnimationComponent->addAnimation("MOVING_LEFT",  textureSheet, sprite,  4, 1,  7, 1,  64,  64,  9.5f);
+    pAnimationComponent->addAnimation("MOVING_RIGHT", textureSheet, sprite,  8, 1, 11, 1,  64,  64,  9.5f);
+    pAnimationComponent->addAnimation("MOVING_UP",    textureSheet, sprite, 12, 1, 15, 1,  64,  64,  9.5f );
     
-
     setPosition(posX, posY);
 
     initTimers();
@@ -40,13 +39,9 @@ void Player::update(const float deltaTime,
     if (!isDead())
     {
         pMovementComponent->updateMovement(deltaTime);
-
         updateAnimation(deltaTime);
-
         pHitboxComponent->update();
-
         inventory.update(getCenter(), mousePosView, mousePosWindow, textTagSystem);
-
     
         if (inventory.getActiveItem())
         {
@@ -66,12 +61,14 @@ void Player::update(const float deltaTime,
                 sf::Mouse::isButtonPressed(sf::Mouse::Right))
             {
                 Food* food = static_cast<Food*>(inventory.getActiveItem());
-                int hpToRestore = (int)food->getRestoringHpAmount();
+                int hpToRestore = food->getRestoringHpAmount();
 
                 textTagSystem.addTextTag(
                     HEALING_TAG, 
                     getPosition(), 
-                    (hpToRestore + getHp()) > getHpMax() ? (hpToRestore - (getHp() + hpToRestore - getHpMax())): hpToRestore
+                    (hpToRestore + getHp()) > getHpMax() 
+                     ? (hpToRestore - (getHp() + hpToRestore - getHpMax()))
+                     : hpToRestore
                 );
                 pAttributeComponent->gainHp(hpToRestore);
 
@@ -87,11 +84,13 @@ void Player::update(const float deltaTime,
         Character::updateDamageColor();
     }
 
-    else if (!deathAnimationDone)
+    else if (!deathAnimationDone) // if (isDead())
     {
         pAnimationComponent->play("IS_DEAD", deltaTime);
         deathAnimationDone = pAnimationComponent->isDone("IS_DEAD");
-        sprite.setPosition(getPosition().x - sprite.getTextureRect().width / 2.f, getPosition().y - sprite.getTextureRect().height / 3.f);
+        sprite.setPosition(getPosition().x - sprite.getTextureRect().width / 2.f, 
+                           getPosition().y - sprite.getTextureRect().height / 3.f
+                           );
     }
 }
 
@@ -210,8 +209,12 @@ const std::string Player::getStatsAsString() const
            << "Exp: " << pAttributeComponent->getExp() << '\n'
            << "Exp for the next level: " << pAttributeComponent->getExpForNextLevel() << "\n\n"
            << "Attack range: " << getAttackRange() << '\n'
-           << "Min damage: " << (pActiveWeapon ? (pActiveWeapon->getDamageMin() + pAttributeComponent->getDamageMin()): pAttributeComponent->getDamageMin()) << '\n'
-           << "Max damage: " << (pActiveWeapon ? (pActiveWeapon->getDamageMax() + pAttributeComponent->getDamageMax()): pAttributeComponent->getDamageMax()) << '\n';
+           << "Min damage: " << (pActiveWeapon 
+                                 ? (pActiveWeapon->getDamageMin() + pAttributeComponent->getDamageMin())
+                                 : pAttributeComponent->getDamageMin()) << '\n'
+           << "Max damage: " << (pActiveWeapon 
+                                 ? (pActiveWeapon->getDamageMax() + pAttributeComponent->getDamageMax())
+                                 : pAttributeComponent->getDamageMax()) << '\n';
 
     return stream.str();
 }
