@@ -35,9 +35,10 @@ void Food::update(const sf::Vector2f& foodPosition, const sf::Vector2f&)
 }
 
 
-Food* Food::getClone()
+std::unique_ptr<Item> Food::getClone()
 {
-    return new Food(*this);
+    std::unique_ptr<Food> clone(new Food(*this));
+    return std::move(clone);
 }
 
 

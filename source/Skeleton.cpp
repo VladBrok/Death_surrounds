@@ -22,25 +22,19 @@ Skeleton::Skeleton(const float posX,
     initAnimation();
     initDroppingItem();
 
-    pAiFollow = new AiFollow(*this, player);
-}
-
-
-Skeleton::~Skeleton()
-{
-    delete pAiFollow;
+    aiFollow.reset(new AiFollow(*this, player));
 }
 
 
 void Skeleton::update(const float deltaTime)
 {
-    pMovementComponent->updateMovement(deltaTime);
+    movementComponent->updateMovement(deltaTime);
 
     updateAnimation(deltaTime);
 
-    pHitboxComponent->update();
+    hitboxComponent->update();
 
-    pAiFollow->update(deltaTime);
+    aiFollow->update(deltaTime);
 
 
     Character::updateDamageColor();
@@ -49,10 +43,10 @@ void Skeleton::update(const float deltaTime)
 
 void Skeleton::initAnimation()
 {
-    pAnimationComponent->addAnimation("MOVING_UP",    texture, sprite, 0, 0, 8, 0, 64, 64, 11.f );
-    pAnimationComponent->addAnimation("MOVING_LEFT",  texture, sprite, 0, 1, 8, 1, 64, 64, 11.f);
-    pAnimationComponent->addAnimation("MOVING_DOWN",  texture, sprite, 0, 2, 8, 2, 64, 64, 11.f);
-    pAnimationComponent->addAnimation("MOVING_RIGHT", texture, sprite, 0, 3, 8, 3, 64, 64, 11.f);
+    animationComponent->addAnimation("MOVING_UP",    texture, sprite, 0, 0, 8, 0, 64, 64, 11.f );
+    animationComponent->addAnimation("MOVING_LEFT",  texture, sprite, 0, 1, 8, 1, 64, 64, 11.f);
+    animationComponent->addAnimation("MOVING_DOWN",  texture, sprite, 0, 2, 8, 2, 64, 64, 11.f);
+    animationComponent->addAnimation("MOVING_RIGHT", texture, sprite, 0, 3, 8, 3, 64, 64, 11.f);
 }
 
 

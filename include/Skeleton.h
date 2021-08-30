@@ -9,21 +9,20 @@ class Skeleton: public Enemy
 {
 public:
 
-                    Skeleton(const float posX, 
-                             const float posY, 
-                             const sf::Texture& textureSheet, 
-                             const sf::Texture& lootTextureSheet, 
-                             Entity& player
-                             );
-                    ~Skeleton();
-    virtual void    update(const float deltaTime);
+                                 Skeleton(const float posX, 
+                                          const float posY, 
+                                          const sf::Texture& textureSheet, 
+                                          const sf::Texture& lootTextureSheet, 
+                                          Entity& player
+                                          );
+    virtual void                 update(const float deltaTime);
 
 private:
 
-    AiFollow*       pAiFollow;
+    std::unique_ptr<AiFollow>    aiFollow;
 
-    virtual void    initAnimation();
-    virtual void    initDroppingItem();
+    virtual void                 initAnimation();
+    virtual void                 initDroppingItem();
 };
 
 

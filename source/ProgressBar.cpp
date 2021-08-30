@@ -3,6 +3,11 @@
 #include "Utils.h"
 
 
+ProgressBar::ProgressBar()
+{
+}
+
+
 void ProgressBar::create(const float posX, 
                          const float posY, 
                          const float width, 

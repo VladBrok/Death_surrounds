@@ -5,9 +5,9 @@
 
 
 EditorState::EditorState(sf::RenderWindow& window,
-                             const StringToKeyMap& supportedKeys,
-                             std::stack<State*>& states
-                             )
+                         const StringToKeyMap& supportedKeys,
+                         std::stack<std::unique_ptr<State>>& states
+                         )
     : State(window, supportedKeys, states), 
       tilemap(TILEMAP_GRID_SIZE_MAX_X, TILEMAP_GRID_SIZE_MAX_Y),
       activeMode(0)
@@ -16,17 +16,6 @@ EditorState::EditorState(sf::RenderWindow& window,
     initView();
     initModes();
     initGui();
-}
-
-
-EditorState::~EditorState()
-{
-    for (size_t i = 0; i < modes.size(); ++i)
-    {
-        delete modes[i];
-    }
-
-    delete pPauseMenu;
 }
 
 
@@ -71,31 +60,31 @@ void EditorState::render(sf::RenderTarget* pTarget)
 
     if (stateIsPaused)
     {
-        pPauseMenu->render(*pTarget);
+        pauseMenu->render(*pTarget);
     }
 }
 
 
 void EditorState::processPauseMenuEvent(const sf::Event& event)
 {
-    pPauseMenu->processEvent(event, mousePosWindow);
+    pauseMenu->processEvent(event, mousePosWindow);
 
 
-    if (pPauseMenu->isButtonPressed("CONTINUE"))
+    if (pauseMenu->isButtonPressed("CONTINUE"))
     {
         unpauseState();
     }
-    else if (pPauseMenu->isButtonPressed("LOAD"))
+    else if (pauseMenu->isButtonPressed("LOAD"))
     {
         tilemap.loadFromFile(resources::getTilemapFile());
     }
 
-    else if (pPauseMenu->isButtonPressed("SAVE"))
+    else if (pauseMenu->isButtonPressed("SAVE"))
     {
         tilemap.saveToFile(resources::getTilemapFile());
     }
 
-    else if (pPauseMenu->isButtonPressed("GO_TO_MAIN_MENU"))
+    else if (pauseMenu->isButtonPressed("GO_TO_MAIN_MENU"))
     {
         endActivity();
     }
@@ -121,24 +110,34 @@ void EditorState::processKeyboardEvent(const sf::Event& event)
 
 void EditorState::initView()
 {
-    view.setSize(sf::Vector2f((float)window.getSize().x, (float)window.getSize().y));
+    view.setSize(sf::Vector2f(window.getSize());
 }
 
 
 void EditorState::initModes()
 {
-    modes.push_back(
-        new DefaultEditorMode(font, tilemap, window, mousePosWindow, mousePosView, mousePosGrid, keybinds, view)
+    std::unique_ptr<DefaultEditorMode> mode(
+        new DefaultEditorMode(
+               font, 
+               tilemap,
+               window, 
+               mousePosWindow, 
+               mousePosView,
+               mousePosGrid,
+               keybinds, 
+               view
+        )
     );
+    modes.push_back(std::move(mode));
 }
 
 
 void EditorState::initGui()
 {
-    pPauseMenu = new PauseMenu(window, font);
+    pauseMenu.reset(new PauseMenu(window, font));
 
-    pPauseMenu->addButton("CONTINUE", "Continue", 1);
-    pPauseMenu->addButton("LOAD", "Load", 2);
-    pPauseMenu->addButton("SAVE", "Save", 3);
-    pPauseMenu->addButton("GO_TO_MAIN_MENU", "Go to main menu", 5);
+    pauseMenu->addButton("CONTINUE", "Continue", 1);
+    pauseMenu->addButton("LOAD", "Load", 2);
+    pauseMenu->addButton("SAVE", "Save", 3);
+    pauseMenu->addButton("GO_TO_MAIN_MENU", "Go to main menu", 5);
 }

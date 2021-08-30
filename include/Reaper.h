@@ -9,24 +9,23 @@
 class Reaper: public Enemy
 {
 public:
-                      Reaper(const float posX, 
-                             const float posY, 
-                             const sf::Texture& textureSheet, 
-                             const sf::Texture& lootTextureSheet, 
-                             Entity& player,
-                             EnemySystem& enemySystem
-                             );
-                      ~Reaper();
-    virtual void      update(const float deltaTime);
+                                      Reaper(const float posX, 
+                                             const float posY, 
+                                             const sf::Texture& textureSheet, 
+                                             const sf::Texture& lootTextureSheet, 
+                                             Entity& player,
+                                             EnemySystem& enemySystem
+                                             );
+    virtual void                      update(const float deltaTime);
 
 private:
 
-    AiSpawnMinion*    pAiSpawnMinion;
-    AiFollow*         pAiFollow;
-    EnemySystem&      enemySystem;
-
-    virtual void      initAnimation();
-    virtual void      initDroppingItem();
+    std::unique_ptr<AiSpawnMinion>    aiSpawnMinion;
+    std::unique_ptr<AiFollow>         aiFollow;
+    EnemySystem&                      enemySystem;
+                                      
+    virtual void                      initAnimation();
+    virtual void                      initDroppingItem();
 };
 
 

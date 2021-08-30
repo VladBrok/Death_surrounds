@@ -42,9 +42,10 @@ void Staff::update(const sf::Vector2f& weaponPosition, const sf::Vector2f& mouse
 }
 
 
-Staff* Staff::getClone()
+std::unique_ptr<Item> Staff::getClone()
 {
-    return new Staff(*this);
+    std::unique_ptr<Staff> clone(new Staff(*this));
+    return std::move(clone);
 }
 
 

@@ -6,20 +6,16 @@
 Entity::Entity(const sf::Texture& texture)
     : texture(texture),
       sprite(texture), 
-      pMovementComponent(nullptr), 
-      pAnimationComponent(nullptr),
-      pHitboxComponent(nullptr),
-      pAttributeComponent(nullptr)
+      movementComponent(nullptr), 
+      animationComponent(nullptr),
+      hitboxComponent(nullptr),
+      attributeComponent(nullptr)
 { 
 }
 
 
 Entity::~Entity()
 {
-    delete pMovementComponent;
-    delete pAnimationComponent;
-    delete pHitboxComponent;
-    delete pAttributeComponent;
 }
 
 
@@ -41,27 +37,27 @@ void Entity::render(sf::RenderTarget& target,
         target.draw(sprite);
     }
 
-    if (pHitboxComponent && showHitbox)
+    if (hitboxComponent && showHitbox)
     {
-        pHitboxComponent->render(target);
+        hitboxComponent->render(target);
     }
 }
 
 
 void Entity::move(const float dirX, const float dirY, const float deltaTime)
 {
-    if (pMovementComponent)
+    if (movementComponent)
     {
-        pMovementComponent->accelerateSprite(sf::Vector2f(dirX, dirY), deltaTime);
+        movementComponent->accelerateSprite(sf::Vector2f(dirX, dirY), deltaTime);
     }
 }
 
 
 void Entity::setPosition(const float posX, const float posY)
 {
-    if (pHitboxComponent)
+    if (hitboxComponent)
     {
-        pHitboxComponent->setPosition(posX, posY);
+        hitboxComponent->setPosition(posX, posY);
     }
     else
     {
@@ -72,9 +68,9 @@ void Entity::setPosition(const float posX, const float posY)
 
 const sf::Vector2f& Entity::getPosition() const
 {
-    if (pHitboxComponent)
+    if (hitboxComponent)
     {
-        return pHitboxComponent->getPosition();
+        return hitboxComponent->getPosition();
     }
     return sprite.getPosition();
 }
@@ -82,10 +78,10 @@ const sf::Vector2f& Entity::getPosition() const
 
 const sf::Vector2i Entity::getGridPosition() const
 {
-    if (pHitboxComponent)
+    if (hitboxComponent)
     {
         return sf::Vector2i(
-            static_cast<sf::Vector2i>(pHitboxComponent->getPosition()) / static_cast<int>(GRID_SIZE)
+            static_cast<sf::Vector2i>(hitboxComponent->getPosition()) / static_cast<int>(GRID_SIZE)
         );
     }
     return static_cast<sf::Vector2i>(sprite.getPosition()) / static_cast<int>(GRID_SIZE);
@@ -94,12 +90,12 @@ const sf::Vector2i Entity::getGridPosition() const
 
 const sf::Vector2f Entity::getCenter() const
 {
-    if (pHitboxComponent)
+    if (hitboxComponent)
     {
-        return pHitboxComponent->getPosition() + 
+        return hitboxComponent->getPosition() + 
                    sf::Vector2f(
-                        pHitboxComponent->getGlobalBounds().width / 2.f,
-                        pHitboxComponent->getGlobalBounds().height / 2.f
+                        hitboxComponent->getGlobalBounds().width / 2.f,
+                        hitboxComponent->getGlobalBounds().height / 2.f
                    );
     }
     return sprite.getPosition() + 
@@ -118,9 +114,9 @@ const sf::Vector2i Entity::getGridPositionCenter() const
 
 const sf::FloatRect Entity::getGlobalBounds() const
 {
-    if (pHitboxComponent)
+    if (hitboxComponent)
     {
-        return pHitboxComponent->getGlobalBounds();
+        return hitboxComponent->getGlobalBounds();
     }
     return sprite.getGlobalBounds();
 }
@@ -128,9 +124,9 @@ const sf::FloatRect Entity::getGlobalBounds() const
 
 const sf::FloatRect Entity::getNextPositionBounds(const float deltaTime) const
 {
-    if (pHitboxComponent && pMovementComponent)
+    if (hitboxComponent && movementComponent)
     {
-        return pHitboxComponent->getNextPositionBounds(pMovementComponent->getVelocity() * deltaTime);
+        return hitboxComponent->getNextPositionBounds(movementComponent->getVelocity() * deltaTime);
     }
     return sprite.getGlobalBounds();
 }
@@ -138,27 +134,27 @@ const sf::FloatRect Entity::getNextPositionBounds(const float deltaTime) const
 
 void Entity::stopVelocity()
 {
-    if (pMovementComponent)
+    if (movementComponent)
     {
-        pMovementComponent->stopVelocity();
+        movementComponent->stopVelocity();
     }
 }
 
 
 void Entity::stopVelocityX()
 {
-    if (pMovementComponent)
+    if (movementComponent)
     {
-        pMovementComponent->stopVelocityX();
+        movementComponent->stopVelocityX();
     }
 }
 
 
 void Entity::stopVelocityY()
 {
-    if (pMovementComponent)
+    if (movementComponent)
     {
-        pMovementComponent->stopVelocityY();
+        movementComponent->stopVelocityY();
     }
 }
 
@@ -168,13 +164,13 @@ void Entity::createMovementComponent(const float maxVelocity,
                                      const float deceleration
                                      )
 {
-    pMovementComponent = new MovementComponent(sprite, maxVelocity, acceleration, deceleration);
+    movementComponent.reset(new MovementComponent(sprite, maxVelocity, acceleration, deceleration));
 }
 
 
 void Entity::createAnimationComponent(const sf::Texture& textureSheet)
 {
-    pAnimationComponent = new AnimationComponent(textureSheet, sprite);
+    animationComponent.reset(new AnimationComponent(textureSheet, sprite));
 }
 
 
@@ -184,13 +180,13 @@ void Entity::createHitboxComponent(const float offsetFromSpritePositionX,
                                    const float hitboxHeight
                                    )
 {
-    pHitboxComponent = new HitboxComponent(
+    hitboxComponent.reset(new HitboxComponent(
                               sprite, 
                               offsetFromSpritePositionX, 
                               offsetFromSpritePositionY,
                               hitboxWidth,
                               hitboxHeight
-                           );
+                           ));
 }
 
 
@@ -200,5 +196,5 @@ void Entity::createAttributeComponent(const unsigned level,
                                       const int damageMax
                                       )
 {
-    pAttributeComponent = new AttributeComponent(level, hpMax, damageMin, damageMax);
+    attributeComponent.reset(new AttributeComponent(level, hpMax, damageMin, damageMax));
 }

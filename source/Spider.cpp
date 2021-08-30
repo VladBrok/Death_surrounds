@@ -22,25 +22,19 @@ Spider::Spider(const float posX,
     initAnimation();
     initDroppingItem();
 
-    pAiFollow = new AiFollow(*this, player);
-}
-
-
-Spider::~Spider()
-{
-    delete pAiFollow;
+    aiFollow = new AiFollow(*this, player);
 }
 
 
 void Spider::update(const float deltaTime)
 {
-    pMovementComponent->updateMovement(deltaTime);
+    movementComponent->updateMovement(deltaTime);
 
     updateAnimation(deltaTime);
 
-    pHitboxComponent->update();
+    hitboxComponent->update();
 
-    pAiFollow->update(deltaTime);
+    aiFollow->update(deltaTime);
 
 
     Character::updateDamageColor();
@@ -49,11 +43,11 @@ void Spider::update(const float deltaTime)
 
 void Spider::initAnimation()
 {
-    pAnimationComponent->addAnimation("IDLE",         texture, sprite, 0, 0, 2, 0, 60, 64, 11.f);
-    pAnimationComponent->addAnimation("MOVING_DOWN",  texture, sprite, 0, 0, 2, 0, 60, 64, 11.f);
-    pAnimationComponent->addAnimation("MOVING_LEFT",  texture, sprite, 0, 1, 2, 1, 60, 64, 11.f);
-    pAnimationComponent->addAnimation("MOVING_RIGHT", texture, sprite, 0, 2, 2, 2, 60, 64, 11.f);
-    pAnimationComponent->addAnimation("MOVING_UP",    texture, sprite, 0, 3, 2, 3, 60, 64, 11.f );
+    animationComponent->addAnimation("IDLE",         texture, sprite, 0, 0, 2, 0, 60, 64, 11.f);
+    animationComponent->addAnimation("MOVING_DOWN",  texture, sprite, 0, 0, 2, 0, 60, 64, 11.f);
+    animationComponent->addAnimation("MOVING_LEFT",  texture, sprite, 0, 1, 2, 1, 60, 64, 11.f);
+    animationComponent->addAnimation("MOVING_RIGHT", texture, sprite, 0, 2, 2, 2, 60, 64, 11.f);
+    animationComponent->addAnimation("MOVING_UP",    texture, sprite, 0, 3, 2, 3, 60, 64, 11.f );
 }
 
 

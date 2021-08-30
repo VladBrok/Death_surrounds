@@ -8,7 +8,7 @@
 Inventory::Inventory(const sf::RenderWindow& window, 
                      const sf::Texture& inventoryPanelBorderTexture
                      )
-    : pActiveItem(nullptr), 
+    : activeItem(nullptr), 
       activeItemIndex(0),
       actualSize(0),
       panelActive(false),
@@ -38,31 +38,29 @@ void Inventory::update(const sf::Vector2f& itemPosition,
         if (panelBorder.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosWindow))) 
         {
             panelActive = true;
+            int itemIndex = (int)(mousePosWindow.x - panelBorder.getPosition().x) / INVENTORY_SLOT_SIZE;
 
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left) &&
+                activeItemIndex != itemIndex)
             {
-                int itemIndex = (int)(mousePosWindow.x - panelBorder.getPosition().x) / INVENTORY_SLOT_SIZE;
-                if (activeItemIndex != itemIndex)
-                {
                     setActiveItem(itemIndex);
                     selectedSlotBackground.setPosition(
                         panelBorder.getPosition().x + itemIndex * INVENTORY_SLOT_SIZE, 
                         panelBorder.getPosition().y
                     );
 
-                    if (pActiveItem)
+                    if (activeItem)
                     {
                         textTagSystem.addTextTag(
                             ITEM_NAME_TAG, 
                             sf::Vector2f(),
-                            pActiveItem->getName()
+                            activeItem->getName()
                         );
                         textTagSystem.setBackElementPosition(
                             selectedSlotBackground.getPosition().x + selectedSlotBackground.getSize().x / 2.f - textTagSystem.getBackElementSize().x / 2.f,
                             selectedSlotBackground.getPosition().y - selectedSlotBackground.getSize().y / 1.3f
                         );
                     }
-                }
             }
         }
         else // if (!panelBorder.getGlobalBounds().contains(mousePosWindow))
@@ -76,18 +74,18 @@ void Inventory::update(const sf::Vector2f& itemPosition,
     }
 
 
-    if (pActiveItem)
+    if (activeItem)
     {
-        pActiveItem->update(itemPosition, mousePosView);
+        activeItem->update(itemPosition, mousePosView);
     }
 }
 
 
 void Inventory::renderToView(sf::RenderTarget& target)
 {
-    if (pActiveItem)
+    if (activeItem)
     {
-        pActiveItem->render(target);
+        activeItem->render(target);
     }
 }
 
@@ -116,6 +114,8 @@ bool Inventory::addItem(Item* pItem)
     assert(pItem != nullptr);
 
     int index = 0;
+
+    // Searching an empty position
     while (items[index])
     {
         ++index;
@@ -123,8 +123,7 @@ bool Inventory::addItem(Item* pItem)
 
     if (index < (int)items.size())
     {
-        items[index] = pItem->getClone();
-
+        items[index] = std::move(pItem->getClone());
 
         // Setting the item's transformation to properly place it to the inventory panel
 
@@ -163,12 +162,10 @@ void Inventory::removeItem(const int index)
 
     if (index == activeItemIndex)
     {
-        delete pActiveItem;
-        pActiveItem = nullptr;
+        activeItem.reset(nullptr);
     }
 
-    delete items[index];
-    items[index] = nullptr;
+    items[index].reset(nullptr);
 
     --actualSize;
 }
@@ -178,21 +175,19 @@ void Inventory::setActiveItem(const int index)
 {
     assert(index >= 0 && index < (int)items.size());
 
-    delete pActiveItem;
-
     if (items[index])
     {
-        pActiveItem = items[index]->getClone();
+        activeItem = std::move(items[index]->getClone());
 
         // Setting origin and scale of the item to default values
-        pActiveItem->setOrigin(pActiveItem->getDefaultOrigin().x, pActiveItem->getDefaultOrigin().y);
-        pActiveItem->setScale(pActiveItem->getDefaultScale().x, pActiveItem->getDefaultScale().y);
+        activeItem->setOrigin(activeItem->getDefaultOrigin().x, activeItem->getDefaultOrigin().y);
+        activeItem->setScale(activeItem->getDefaultScale().x, activeItem->getDefaultScale().y);
 
-        pActiveItem->setPosition(0.f, 0.f);
+        activeItem->setPosition(0.f, 0.f);
     }
     else
     {
-        pActiveItem = nullptr;
+        activeItem.reset(nullptr);
     }
     activeItemIndex = index;
 }
@@ -200,7 +195,7 @@ void Inventory::setActiveItem(const int index)
 
 Item* Inventory::getActiveItem() const
 {
-    return pActiveItem;
+    return activeItem.get();
 }
 
 
@@ -245,12 +240,10 @@ void Inventory::clear()
 {
     for (auto i = items.begin(); i != items.end(); ++i)
     {
-        delete *i;
-        (*i) = nullptr;
+        (*i).reset(nullptr);
     }
 
-    delete pActiveItem;
-    pActiveItem = nullptr;
+    activeItem.reset(nullptr);
 
     actualSize = 0;
 }

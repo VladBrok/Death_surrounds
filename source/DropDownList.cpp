@@ -19,28 +19,29 @@ DropDownList::DropDownList(const float posX,
     {
         if (i == 0) // Creating active list element
         {
-           listElements.push_back(
-                new Button(
-                    posX, posY + elementHeight * i,
-                    elementWidth, elementHeight,
-                    font, 
-                    list[i],
-                    sf::Color::White,
-                    sf::Color::White,
-                    sf::Color::White,
-                    sf::Color(70, 70, 70, 200),
-                    sf::Color(40, 40, 40, 200),
-                    sf::Color(40, 40, 40, 200),
-                    sf::Color(200, 200, 200, 200),
-                    sf::Color(220, 220, 220, 230),
-                    sf::Color::White
-                )
-            );
+           std::unique_ptr<Button> button(
+               new Button(
+                     posX, posY + elementHeight * i,
+                     elementWidth, elementHeight,
+                     font, 
+                     list[i],
+                     sf::Color::White,
+                     sf::Color::White,
+                     sf::Color::White,
+                     sf::Color(70, 70, 70, 200),
+                     sf::Color(40, 40, 40, 200),
+                     sf::Color(40, 40, 40, 200),
+                     sf::Color(200, 200, 200, 200),
+                     sf::Color(220, 220, 220, 230),
+                     sf::Color::White
+               )
+           );
+           listElements.push_back(std::move(button));
         }
         else // Creating regular list element
         {
-            listElements.push_back(
-                new Button(
+           std::unique_ptr<Button> button(
+               new Button(
                     posX, posY + elementHeight * i,
                     elementWidth, elementHeight,
                     font, 
@@ -51,10 +52,10 @@ DropDownList::DropDownList(const float posX,
                     sf::Color(100, 100, 100, 180),
                     sf::Color(150, 150, 150, 200),
                     sf::Color(40, 40, 40, 200)
-                )
-            ); 
+               )
+           );
+           listElements.push_back(std::move(button));
         }
-
     }
 
     if (activeElementIndex != 0)
@@ -64,18 +65,9 @@ DropDownList::DropDownList(const float posX,
 }
 
 
-DropDownList::~DropDownList()
-{
-    for (auto e = listElements.begin(); e != listElements.end(); ++e)
-    {
-        delete *e;
-    }
-}
-
-
 void DropDownList::processEvent(const sf::Event& event,
-                                     const sf::Vector2i& mousePosWindow
-                                     )
+                                const sf::Vector2i& mousePosWindow
+                                )
 {
     // Processing only title element
     if (!showList) 

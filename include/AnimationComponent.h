@@ -7,7 +7,6 @@ class AnimationComponent: sf::NonCopyable
 public:
 
                             AnimationComponent(const sf::Texture& textureSheet, sf::Sprite& sprite);
-                            ~AnimationComponent();
     /*
         Variables startFrameX and startFrameY are 
         numbers of the column and the row (starting from 0) in which the starting frame is
@@ -116,7 +115,7 @@ private:
         }
     };
 
-    typedef std::unordered_map<std::string, Animation*>  StringToAnimationMap;
+    typedef std::unordered_map<std::string, std::unique_ptr<Animation>>  StringToAnimationMap;
 
 
     const sf::Texture&      textureSheet;

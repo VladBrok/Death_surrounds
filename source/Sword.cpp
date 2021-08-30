@@ -38,9 +38,10 @@ void Sword::update(const sf::Vector2f& weaponPosition, const sf::Vector2f& mouse
 }
 
 
-Sword* Sword::getClone()
+std::unique_ptr<Item> Sword::getClone()
 {
-    return new Sword(*this);
+    std::unique_ptr<Sword> clone(new Sword(*this));
+    return std::move(clone);
 }
 
 

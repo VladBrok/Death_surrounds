@@ -20,12 +20,12 @@ Player::Player(const float posX,
     createHitboxComponent(18.f, 25.f, 28.f, 28.f);
     createAttributeComponent(1, 10, 1, 2);
 
-    pAnimationComponent->addAnimation("IS_DEAD",      textureSheet, sprite,  0, 1,  6, 1, 146, 252, 20.0f);
-    pAnimationComponent->addAnimation("IDLE",         textureSheet, sprite,  0, 0,  8, 0,  64,  64,  9.5f);
-    pAnimationComponent->addAnimation("MOVING_DOWN",  textureSheet, sprite,  0, 1,  3, 1,  64,  64,  9.5f);
-    pAnimationComponent->addAnimation("MOVING_LEFT",  textureSheet, sprite,  4, 1,  7, 1,  64,  64,  9.5f);
-    pAnimationComponent->addAnimation("MOVING_RIGHT", textureSheet, sprite,  8, 1, 11, 1,  64,  64,  9.5f);
-    pAnimationComponent->addAnimation("MOVING_UP",    textureSheet, sprite, 12, 1, 15, 1,  64,  64,  9.5f );
+    animationComponent->addAnimation("IS_DEAD",      textureSheet, sprite,  0, 1,  6, 1, 146, 252, 20.0f);
+    animationComponent->addAnimation("IDLE",         textureSheet, sprite,  0, 0,  8, 0,  64,  64,  9.5f);
+    animationComponent->addAnimation("MOVING_DOWN",  textureSheet, sprite,  0, 1,  3, 1,  64,  64,  9.5f);
+    animationComponent->addAnimation("MOVING_LEFT",  textureSheet, sprite,  4, 1,  7, 1,  64,  64,  9.5f);
+    animationComponent->addAnimation("MOVING_RIGHT", textureSheet, sprite,  8, 1, 11, 1,  64,  64,  9.5f);
+    animationComponent->addAnimation("MOVING_UP",    textureSheet, sprite, 12, 1, 15, 1,  64,  64,  9.5f );
     
     setPosition(posX, posY);
 
@@ -41,9 +41,9 @@ void Player::update(const float deltaTime,
 {
     if (!isDead())
     {
-        pMovementComponent->updateMovement(deltaTime);
+        movementComponent->updateMovement(deltaTime);
         updateAnimation(deltaTime);
-        pHitboxComponent->update();
+        hitboxComponent->update();
         inventory.update(getCenter(), mousePosView, mousePosWindow, textTagSystem);
     
         if (inventory.getActiveItem())
@@ -60,7 +60,7 @@ void Player::update(const float deltaTime,
 
             // Eating a food
             if (inventory.getActiveItem()->isFood() && 
-                pAttributeComponent->getHp() != pAttributeComponent->getHpMax() &&
+                attributeComponent->getHp() != attributeComponent->getHpMax() &&
                 sf::Mouse::isButtonPressed(sf::Mouse::Right))
             {
                 Food* food = static_cast<Food*>(inventory.getActiveItem());
@@ -73,12 +73,12 @@ void Player::update(const float deltaTime,
                      ? (hpToRestore - (getHp() + hpToRestore - getHpMax()))
                      : hpToRestore
                 );
-                pAttributeComponent->gainHp(hpToRestore);
+                attributeComponent->gainHp(hpToRestore);
 
                 inventory.removeItem(inventory.getActiveItemIndex());
             } 
         }
-        else
+        else // if (!inventory.getActiveItem())
         {
             pActiveWeapon = nullptr;
         }
@@ -89,8 +89,8 @@ void Player::update(const float deltaTime,
 
     else if (!deathAnimationDone) // if (isDead())
     {
-        pAnimationComponent->play("IS_DEAD", deltaTime);
-        deathAnimationDone = pAnimationComponent->isDone("IS_DEAD");
+        animationComponent->play("IS_DEAD", deltaTime);
+        deathAnimationDone = animationComponent->isDone("IS_DEAD");
         sprite.setPosition(getPosition().x - sprite.getTextureRect().width / 2.f, 
                            getPosition().y - sprite.getTextureRect().height / 3.f
                            );
@@ -154,31 +154,31 @@ Item* Player::getActiveItem() const
 
 int Player::getHp() const
 {
-    return pAttributeComponent->getHp();
+    return attributeComponent->getHp();
 }
 
 
 int Player::getHpMax() const
 {
-    return pAttributeComponent->getHpMax();
+    return attributeComponent->getHpMax();
 }
 
 
 int Player::getExp() const
 {
-    return pAttributeComponent->getExp();
+    return attributeComponent->getExp();
 }
 
 
 int Player::getExpForNextLevel() const
 {
-    return pAttributeComponent->getExpForNextLevel();
+    return attributeComponent->getExpForNextLevel();
 }
 
 
 unsigned Player::getLevel() const
 {
-    return pAttributeComponent->getLevel();
+    return attributeComponent->getLevel();
 }
 
 
@@ -186,7 +186,7 @@ int Player::getDamage() const
 {
     if (pActiveWeapon)
     {
-        return pActiveWeapon->getDamage() + pAttributeComponent->getDamage();  
+        return pActiveWeapon->getDamage() + attributeComponent->getDamage();  
     }
     return Character::getDamage();
 }
@@ -206,18 +206,18 @@ const std::string Player::getStatsAsString() const
 {
     std::stringstream stream;
 
-    stream << "Level: " << pAttributeComponent->getLevel() << '\n'
-           << "Health: " << pAttributeComponent->getHp() << '\n'
-           << "Max Health: " << pAttributeComponent->getHpMax() << '\n'
-           << "Exp: " << pAttributeComponent->getExp() << '\n'
-           << "Exp for the next level: " << pAttributeComponent->getExpForNextLevel() << "\n\n"
+    stream << "Level: " << attributeComponent->getLevel() << '\n'
+           << "Health: " << attributeComponent->getHp() << '\n'
+           << "Max Health: " << attributeComponent->getHpMax() << '\n'
+           << "Exp: " << attributeComponent->getExp() << '\n'
+           << "Exp for the next level: " << attributeComponent->getExpForNextLevel() << "\n\n"
            << "Attack range: " << getAttackRange() << '\n'
            << "Min damage: " << (pActiveWeapon 
-                                 ? (pActiveWeapon->getDamageMin() + pAttributeComponent->getDamageMin())
-                                 : pAttributeComponent->getDamageMin()) << '\n'
+                                 ? (pActiveWeapon->getDamageMin() + attributeComponent->getDamageMin())
+                                 : attributeComponent->getDamageMin()) << '\n'
            << "Max damage: " << (pActiveWeapon 
-                                 ? (pActiveWeapon->getDamageMax() + pAttributeComponent->getDamageMax())
-                                 : pAttributeComponent->getDamageMax()) << '\n';
+                                 ? (pActiveWeapon->getDamageMax() + attributeComponent->getDamageMax())
+                                 : attributeComponent->getDamageMax()) << '\n';
 
     return stream.str();
 }
@@ -231,7 +231,7 @@ int Player::getNumberOfItems() const
 
 void Player::loseExp(const unsigned exp)
 {
-    pAttributeComponent->loseExp(exp);
+    attributeComponent->loseExp(exp);
 }
 
 
@@ -247,7 +247,7 @@ WeaponType Player::getActiveWeaponType() const
 
 void Player::gainExp(const unsigned exp)
 {
-    pAttributeComponent->gainExp(exp);
+    attributeComponent->gainExp(exp);
 }
 
 

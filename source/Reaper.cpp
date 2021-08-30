@@ -25,30 +25,23 @@ Reaper::Reaper(const float posX,
     initAnimation();
     initDroppingItem();
 
-    pAiSpawnMinion = new AiSpawnMinion(*this, SKELETON, 7, 2);
-    pAiFollow = new AiFollow(*this, player);
-}
-
-
-Reaper::~Reaper()
-{
-    delete pAiSpawnMinion;
-    delete pAiFollow;
+    aiSpawnMinion.reset(new AiSpawnMinion(*this, SKELETON, 7, 2));
+    aiFollow.reset(new AiFollow(*this, player));
 }
 
 
 void Reaper::update(const float deltaTime)
 {
-    pMovementComponent->updateMovement(deltaTime);
+    movementComponent->updateMovement(deltaTime);
 
     updateAnimation(deltaTime);
 
-    pHitboxComponent->update();
+    hitboxComponent->update();
 
-    pAiSpawnMinion->update(enemySystem);
-    if (utils::getDistance(getCenter(), pAiFollow->getTargetEntity().getCenter()) > GRID_SIZE * 2)
+    aiSpawnMinion->update(enemySystem);
+    if (utils::getDistance(getCenter(), aiFollow->getTargetEntity().getCenter()) > GRID_SIZE * 2)
     {
-        pAiFollow->update(deltaTime);
+        aiFollow->update(deltaTime);
     }
     
 
@@ -58,10 +51,10 @@ void Reaper::update(const float deltaTime)
 
 void Reaper::initAnimation()
 {
-    pAnimationComponent->addAnimation("MOVING_DOWN",  texture, sprite, 0, 0, 3, 0, 39, 48, 11.f);
-    pAnimationComponent->addAnimation("MOVING_LEFT",  texture, sprite, 0, 1, 3, 1, 39, 48, 11.f);
-    pAnimationComponent->addAnimation("MOVING_RIGHT", texture, sprite, 0, 2, 3, 2, 39, 48, 11.f);
-    pAnimationComponent->addAnimation("MOVING_UP",    texture, sprite, 0, 3, 3, 3, 39, 48, 11.f);
+    animationComponent->addAnimation("MOVING_DOWN",  texture, sprite, 0, 0, 3, 0, 39, 48, 11.f);
+    animationComponent->addAnimation("MOVING_LEFT",  texture, sprite, 0, 1, 3, 1, 39, 48, 11.f);
+    animationComponent->addAnimation("MOVING_RIGHT", texture, sprite, 0, 2, 3, 2, 39, 48, 11.f);
+    animationComponent->addAnimation("MOVING_UP",    texture, sprite, 0, 3, 3, 3, 39, 48, 11.f);
 }
 
 

@@ -12,7 +12,7 @@ public:
 
                                SettingsState(sf::RenderWindow& window, 
                                              const StringToKeyMap& supportedKeys,
-                                             std::stack<State*>& states,
+                                             std::stack<std::unique_ptr<State>>& states,
                                              bool& settingsChanged
                                              );
     virtual                    ~SettingsState();

@@ -3,43 +3,39 @@
 
 
 AnimationComponent::AnimationComponent(const sf::Texture& textureSheet, sf::Sprite& sprite)
-    : textureSheet(textureSheet), sprite(sprite), pLastAnimation(nullptr), pPriorityAnimation(nullptr)
+    : textureSheet(textureSheet), 
+      sprite(sprite), 
+      pLastAnimation(nullptr), 
+      pPriorityAnimation(nullptr)
 {
 }
 
 
-AnimationComponent::~AnimationComponent()
-{
-    for (auto a = animations.begin(); a != animations.end(); ++a)
-    {
-        delete a->second;
-    }
-}
-
-
-void AnimationComponent::addAnimation(const std::string&    animationKey,
-                                      const sf::Texture&    textureSheet, 
-                                      sf::Sprite&           sprite,
-                                      const int             startFrameX,
-                                      const int             startFrameY,
-                                      const int             endFrameX,
-                                      const int             endFrameY,
-                                      const int             frameWidth,
-                                      const int             frameHeight,
-                                      const float           timeToPlayAnimation
+void AnimationComponent::addAnimation(const std::string& animationKey,
+                                      const sf::Texture& textureSheet, 
+                                      sf::Sprite&        sprite,
+                                      const int          startFrameX,
+                                      const int          startFrameY,
+                                      const int          endFrameX,
+                                      const int          endFrameY,
+                                      const int          frameWidth,
+                                      const int          frameHeight,
+                                      const float        timeToPlayAnimation
                                       )
 {
-    animations[animationKey] = new Animation(
-                                      textureSheet, 
-                                      sprite, 
-                                      startFrameX, 
-                                      startFrameY,
-                                      endFrameX,
-                                      endFrameY,
-                                      frameWidth,
-                                      frameHeight,
-                                      timeToPlayAnimation
-                                   );
+    animations[animationKey].reset(
+        new Animation(
+              textureSheet, 
+              sprite, 
+              startFrameX, 
+              startFrameY,
+              endFrameX,
+              endFrameY,
+              frameWidth,
+              frameHeight,
+              timeToPlayAnimation
+        )
+    );
 }
 
 
@@ -57,7 +53,7 @@ void AnimationComponent::addAnimation(const std::string&    animationKey,
         animations[animationKey]->play(deltaTime, std::abs(animationSpeedModifier / animationSpeedModifierMax));
         if (priority)
         {
-            pPriorityAnimation = animations[animationKey];
+            pPriorityAnimation = animations[animationKey].get();
         }
     }
     else
@@ -79,16 +75,18 @@ bool AnimationComponent::isDone(const std::string& animationKey) const
 
  void AnimationComponent::updateLastAnimation(const std::string& animationKey)
  {
-    if (animations.at(animationKey) != pLastAnimation)
+    if (animations.at(animationKey).get() != pLastAnimation)
     {
-        if (!pLastAnimation) // No animations were played before
+        // No animations were played before
+        if (!pLastAnimation) 
         {
-            pLastAnimation = animations[animationKey];
+            pLastAnimation = animations[animationKey].get();
         }
         else
         {
-            pLastAnimation->reset(); // Reseting the last played animation
-            pLastAnimation = animations[animationKey];
+            // Reseting the last played animation
+            pLastAnimation->reset(); 
+            pLastAnimation = animations[animationKey].get();
         }
     }
  }

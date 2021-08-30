@@ -24,9 +24,9 @@ bool Enemy::canBeDespawned(const sf::View& view) const
 
 int Enemy::getExpForKilling() const
 {
-    if (pAttributeComponent)
+    if (attributeComponent)
     {
-        return rand() % (expForKillingMax - pAttributeComponent->getLevel() * 2 + 1)  + pAttributeComponent->getLevel() * 2;
+        return rand() % (expForKillingMax - attributeComponent->getLevel() * 2 + 1)  + attributeComponent->getLevel() * 2;
     }
     else
     {
@@ -43,7 +43,7 @@ Item* Enemy::getDroppingItem() const
 
 void Enemy::updateAnimation(const float deltaTime)
 {
-    if (pMovementComponent->getMovementState() == "IDLE")
+    if (movementComponent->getMovementState() == "IDLE")
     {
         return;
     }

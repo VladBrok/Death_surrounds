@@ -15,12 +15,6 @@ PlayerGui::PlayerGui(const Player& player,
 }
 
 
-PlayerGui::~PlayerGui()
-{
-    delete pPlayerInfoTab;
-}
-
-
 void PlayerGui::update(const Player& player)
 {
     hpBar.update(player.getHp(), player.getHpMax());
@@ -78,5 +72,5 @@ void PlayerGui::initGui(const sf::RenderWindow& window,
 
     /*=============== Player info tab ===============*/
 
-    pPlayerInfoTab = new PlayerInfoTab(window, font, player);
+    playerInfoTab.reset(new PlayerInfoTab(window, font, player));
 }

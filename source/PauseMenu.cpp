@@ -4,7 +4,7 @@
 
 
 PauseMenu::PauseMenu(const sf::RenderWindow& window, sf::Font& font)
-    : background(sf::Vector2f((float)window.getSize().x, (float)window.getSize().y)),
+    : background(sf::Vector2f(window.getSize())),
       menuContainer(sf::Vector2f(window.getSize().x / 3.f, window.getSize().y / 1.12f)),
       font(font)
 {
@@ -17,15 +17,6 @@ PauseMenu::PauseMenu(const sf::RenderWindow& window, sf::Font& font)
     background.setFillColor(sf::Color(20, 20, 20, 110));
 
     initText(window);
-}
-
-
-PauseMenu::~PauseMenu()
-{
-    for (auto b = buttons.begin(); b != buttons.end(); ++b)
-    {
-        delete b->second;
-    }
 }
 
 
@@ -66,7 +57,7 @@ void PauseMenu::addButton(const std::string& buttonKey,
     const sf::Color textHoverColor(sf::Color::White);
     const sf::Color textActiveColor(sf::Color(20, 20, 20, 200));
 
-    buttons[buttonKey] = new Button(std::floor(menuContainer.getPosition().x + menuContainer.getSize().x / 2.f - buttonSize.x / 2.f),
+    buttons[buttonKey].reset(new Button(std::floor(menuContainer.getPosition().x + menuContainer.getSize().x / 2.f - buttonSize.x / 2.f),
                                     std::floor(verticalPositionFrom1To5 * (menuContainer.getSize().y / 7.f) + text.getGlobalBounds().height * 2.3f), 
                                     buttonSize.x, 
                                     buttonSize.y,
@@ -75,7 +66,7 @@ void PauseMenu::addButton(const std::string& buttonKey,
                                     textIdleColor,
                                     textHoverColor,
                                     textActiveColor
-                                    );
+                                    ));
 }
 
 

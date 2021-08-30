@@ -8,21 +8,20 @@
 class Spider: public Enemy
 {
 public:
-                   Spider(const float posX, 
-                          const float posY, 
-                          const sf::Texture& textureSheet, 
-                          const sf::Texture& lootTextureSheet, 
-                          Entity& player
-                          );
-                    ~Spider();
-    virtual void    update(const float deltaTime);
+                                 Spider(const float posX, 
+                                        const float posY, 
+                                        const sf::Texture& textureSheet, 
+                                        const sf::Texture& lootTextureSheet, 
+                                        Entity& player
+                                        );
+    virtual void                 update(const float deltaTime);
 
 private:
 
-    AiFollow*       pAiFollow;
+    std::unique_ptr<AiFollow>    aiFollow;
 
-    virtual void    initAnimation();
-    virtual void    initDroppingItem();
+    virtual void                 initAnimation();
+    virtual void                 initDroppingItem();
 };
 
 

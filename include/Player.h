@@ -33,8 +33,10 @@ public:
                          
     int                  getHp() const;
     int                  getHpMax() const;
+
     int                  getExp() const;
     int                  getExpForNextLevel() const;
+
     unsigned             getLevel() const;
     virtual int          getDamage() const;
     float                getAttackRange() const;

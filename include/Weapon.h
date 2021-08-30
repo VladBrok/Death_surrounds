@@ -21,7 +21,6 @@ public:
                                  const int damageMax, 
                                  const sf::IntRect& textureRect = sf::IntRect()
                                  );
-    virtual               ~Weapon() {};
     virtual void          update(const sf::Vector2f& weaponPosition,
                                  const sf::Vector2f& mousePosView) = 0;
                           
@@ -32,6 +31,7 @@ public:
     int                   getDamage() const;
     int                   getDamageMin() const;
     int                   getDamageMax() const;
+
     float                 getRange() const;
     virtual WeaponType    getWeaponType() const = 0;
                     

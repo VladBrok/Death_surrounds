@@ -231,8 +231,10 @@ void Tilemap::loadFromFile(const std::string& fileName)
 
         file >> mapGridSizeX >> mapGridSizeY;
 
-        if (mapGridSizeX <= 0 || mapGridSizeY <= 0 || 
-            mapGridSizeX > TILEMAP_GRID_SIZE_MAX_X || mapGridSizeY > TILEMAP_GRID_SIZE_MAX_Y)
+        if (mapGridSizeX <= 0 || 
+            mapGridSizeY <= 0 || 
+            mapGridSizeX > TILEMAP_GRID_SIZE_MAX_X || 
+            mapGridSizeY > TILEMAP_GRID_SIZE_MAX_Y)
         {
             file.setstate(std::ios::failbit);
         }
@@ -244,7 +246,6 @@ void Tilemap::loadFromFile(const std::string& fileName)
              mapSize = sf::Vector2f(mapGridSizeX * GRID_SIZE, mapGridSizeY * GRID_SIZE);
              textureSheet.loadFromFile(textureSheetFileName);
         }
-    
 
 
         int gridPosX = 0;

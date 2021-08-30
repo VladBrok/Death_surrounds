@@ -9,7 +9,7 @@ class State: public sf::NonCopyable
 public:
                              State(sf::RenderWindow& window, 
                                    const StringToKeyMap& supportedKeys,
-                                   std::stack<State*>& states
+                                   std::stack<std::unique_ptr<State>>& states
                                    );
     virtual                  ~State() {};
     virtual void             processEvent(const sf::Event& event);
@@ -28,7 +28,7 @@ protected:
     sf::RenderWindow&        window;
     sf::Font                 font;
     const StringToKeyMap&    supportedKeys;
-    std::stack<State*>&      states;
+    std::stack<std::unique_ptr<State>>&      states;
     StringToKeyMap           keybinds;
     bool                     stateIsActive;
     bool                     stateIsPaused;

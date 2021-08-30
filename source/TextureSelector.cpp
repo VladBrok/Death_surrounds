@@ -32,7 +32,7 @@ TextureSelector::TextureSelector(const float posX,
 
 void TextureSelector::processEvent(const sf::Event& event, const sf::Vector2i& mousePosWindow)
 {
-    /* Updating the activity status of the texture selector */
+    // Updating the activity status of the texture selector
     if (event.type == sf::Event::MouseMoved)
     {
         active = bounds.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosWindow));

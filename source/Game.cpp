@@ -13,16 +13,6 @@ Game::Game()
 }
 
 
-Game::~Game()
-{
-    while (!states.empty())
-    {
-        delete states.top();
-        states.pop();
-    }
-}
-
-
 void Game::run()
 {
     while (window.isOpen())
@@ -88,7 +78,6 @@ void Game::update()
 
         if (!states.top()->isActive())
         {
-            delete states.top();
             states.pop();
         }
     }
@@ -149,5 +138,6 @@ void Game::initSupportedKeys()
 
 void Game::initStates()
 {
-    states.push(new MainMenuState(window, supportedKeys, states));
+    std::unique_ptr<MainMenuState> state(new MainMenuState(window, supportedKeys, states));
+    states.push(std::move(state));
 }

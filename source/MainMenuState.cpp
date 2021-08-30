@@ -9,7 +9,7 @@
 
 MainMenuState::MainMenuState(sf::RenderWindow& window,
                              const StringToKeyMap& supportedKeys,
-                             std::stack<State*>& states
+                             std::stack<std::unique_ptr<State>>& states
                              )
     : State(window, supportedKeys, states), needToReinitialize(false)
 {

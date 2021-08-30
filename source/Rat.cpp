@@ -22,25 +22,19 @@ Rat::Rat(const float posX,
     initAnimation();
     initDroppingItem();
 
-    pAiFollow = new AiFollow(*this, player);
-}
-
-
-Rat::~Rat()
-{
-    delete pAiFollow;
+    aiFollow.reset(new AiFollow(*this, player));
 }
 
 
 void Rat::update(const float deltaTime)
 {
-    pMovementComponent->updateMovement(deltaTime);
+    movementComponent->updateMovement(deltaTime);
 
     updateAnimation(deltaTime);
 
-    pHitboxComponent->update();
+    hitboxComponent->update();
 
-    pAiFollow->update(deltaTime);
+    aiFollow->update(deltaTime);
 
 
     Character::updateDamageColor();
@@ -49,10 +43,10 @@ void Rat::update(const float deltaTime)
 
 void Rat::initAnimation()
 {
-    pAnimationComponent->addAnimation("MOVING_DOWN",  texture, sprite, 0, 0, 3, 0, 60, 64, 11.f);
-    pAnimationComponent->addAnimation("MOVING_LEFT",  texture, sprite, 0, 1, 3, 1, 60, 64, 11.f);
-    pAnimationComponent->addAnimation("MOVING_RIGHT", texture, sprite, 0, 2, 3, 2, 60, 64, 11.f);
-    pAnimationComponent->addAnimation("MOVING_UP",    texture, sprite, 0, 3, 3, 3, 60, 64, 11.f );
+    animationComponent->addAnimation("MOVING_DOWN",  texture, sprite, 0, 0, 3, 0, 60, 64, 11.f);
+    animationComponent->addAnimation("MOVING_LEFT",  texture, sprite, 0, 1, 3, 1, 60, 64, 11.f);
+    animationComponent->addAnimation("MOVING_RIGHT", texture, sprite, 0, 2, 3, 2, 60, 64, 11.f);
+    animationComponent->addAnimation("MOVING_UP",    texture, sprite, 0, 3, 3, 3, 60, 64, 11.f );
 }
 
 

@@ -10,25 +10,25 @@ Character::Character(const sf::Texture& texture)
 
 void Character::gainHp(const int hp)
 {
-    pAttributeComponent->gainHp((int)hp);
+    attributeComponent->gainHp((int)hp);
 }
 
 
 void Character::loseHp(const int hp)
 {
-    pAttributeComponent->loseHp((int)hp);
+    attributeComponent->loseHp((int)hp);
 }
 
 
 bool Character::isDead() const
 {
-    return pAttributeComponent->getHp() <= 0;
+    return attributeComponent->getHp() <= 0;
 }
 
 
 int Character::getDamage() const
 {
-    return pAttributeComponent->getDamage();
+    return attributeComponent->getDamage();
 }
 
 
@@ -74,16 +74,16 @@ void Character::updateAnimation(const float deltaTime)
 {
     try
     {
-        const std::string& movementState = pMovementComponent->getMovementState();
+        const std::string& movementState = movementComponent->getMovementState();
 
         // Playing animations using the character's velocity as modifier for animation speed
         float modifier = (movementState == "MOVING_RIGHT" || movementState == "MOVING_LEFT") 
-                          ? pMovementComponent->getVelocity().x
-                          : pMovementComponent->getVelocity().y;
+                          ? movementComponent->getVelocity().x
+                          : movementComponent->getVelocity().y;
 
-        float modifierMax = pMovementComponent->getMaxVelocity();
+        float modifierMax = movementComponent->getMaxVelocity();
 
-        pAnimationComponent->play(
+        animationComponent->play(
             movementState, 
             deltaTime, 
             modifier,

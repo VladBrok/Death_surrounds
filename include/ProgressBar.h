@@ -6,7 +6,7 @@ class ProgressBar
 {
 public:
 
-                           ProgressBar() {};
+                           ProgressBar();
     void                   create(const float posX,
                                   const float posY, 
                                   const float width, 

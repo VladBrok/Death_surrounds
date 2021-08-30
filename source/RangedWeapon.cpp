@@ -8,7 +8,7 @@ RangedWeapon::RangedWeapon(const sf::Texture& texture,
                            const int projectileDamageMax, 
                            const sf::IntRect& textureRect
                            )
-                           : Weapon(texture, projectileDamageMin, projectileDamageMax, textureRect)
+    : Weapon(texture, projectileDamageMin, projectileDamageMax, textureRect)
 {
 }
 
