@@ -9,7 +9,7 @@ class LootSystem
 {
 public:
 
-                         LootSystem(const sf::Texture& lootTextureSheet);
+    explicit             LootSystem(const sf::Texture& lootTextureSheet);
                          ~LootSystem();
     void                 update(Player& player);
     void                 render(sf::RenderTarget& target);

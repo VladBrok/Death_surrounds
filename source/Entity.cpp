@@ -163,7 +163,10 @@ void Entity::stopVelocityY()
 }
 
 
-void Entity::createMovementComponent(const float maxVelocity, const float acceleration, const float deceleration)
+void Entity::createMovementComponent(const float maxVelocity, 
+                                     const float acceleration, 
+                                     const float deceleration
+                                     )
 {
     pMovementComponent = new MovementComponent(sprite, maxVelocity, acceleration, deceleration);
 }

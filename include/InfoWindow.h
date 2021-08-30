@@ -12,6 +12,7 @@ public:
                                          const std::string& info,
                                          const bool showCancelButton
                                          );
+   virtual                    ~InfoWindow() {};
    // Returns true if the "OK" button was pressed, false if the "CANCEL" button was pressed
    bool                       run();
 

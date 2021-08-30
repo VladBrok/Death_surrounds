@@ -7,12 +7,12 @@ AttributeComponent::AttributeComponent(const unsigned level,
                                        const int damageMin, 
                                        const int damageMax
                                        )
-                                       : level(level),
-                                         exp(0),
-                                         expForNextLevel(46),
-                                         hpMax(hpMax),
-                                         damageMin(damageMin),
-                                         damageMax(damageMax)
+    : level(level),
+      exp(0),
+      expForNextLevel(46),
+      hpMax(hpMax),
+      damageMin(damageMin),
+      damageMax(damageMax)
 {
     hp = hpMax;
 }
@@ -20,7 +20,7 @@ AttributeComponent::AttributeComponent(const unsigned level,
 
 void AttributeComponent::updateLevel()
 {
-    // Updating the level depending on the experience
+    // Updating the level and stats depending on the experience
     while (exp >= expForNextLevel)
     {
         ++level;
@@ -50,34 +50,19 @@ void AttributeComponent::updateStats()
 
 void AttributeComponent::loseHp(const unsigned hp)
 {
-    this->hp -= hp;
-    
-    if (this->hp < 0)
-    {
-        this->hp = 0;
-    }
+    this->hp = std::max(this->hp - hp, 0u);
 }
 
 
 void AttributeComponent::gainHp(const unsigned hp)
 {
-    this->hp += hp;
-
-    if (this->hp > hpMax)
-    {
-        this->hp = hpMax;
-    }
+    this->hp = std::min(this->hp + (int)hp, hpMax);
 }
 
 
 void AttributeComponent::loseExp(const unsigned exp)
 {
-    this->exp -= exp;
-
-    if (this->exp < 0)
-    {
-        this->exp = 0;
-    }
+    this->exp = std::max(this->exp - exp, 0u);
 
     updateLevel();
 }

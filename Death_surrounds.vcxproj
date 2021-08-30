@@ -118,6 +118,9 @@
     <ClInclude Include="include\Weapon.h" />
     <ClInclude Include="include\InfoWindow.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="include\TextTagSystem.inl" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AD44A273-D811-4496-9635-D5147C651062}</ProjectGuid>
     <RootNamespace>Death_surrounds</RootNamespace>

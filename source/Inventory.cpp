@@ -184,7 +184,7 @@ void Inventory::setActiveItem(const int index)
     {
         pActiveItem = items[index]->getClone();
 
-        // Setting the origin and scale of the item to default values
+        // Setting origin and scale of the item to default values
         pActiveItem->setOrigin(pActiveItem->getDefaultOrigin().x, pActiveItem->getDefaultOrigin().y);
         pActiveItem->setScale(pActiveItem->getDefaultScale().x, pActiveItem->getDefaultScale().y);
 
@@ -256,7 +256,9 @@ void Inventory::clear()
 }
 
 
-void Inventory::initInventoryPanel(const sf::RenderWindow& window, const sf::Texture& panelBorderTexture)
+void Inventory::initInventoryPanel(const sf::RenderWindow& window, 
+                                   const sf::Texture& panelBorderTexture
+                                   )
 {
     panelBorder.setTexture(panelBorderTexture);
     panelBorder.setPosition(

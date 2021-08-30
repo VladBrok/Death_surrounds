@@ -8,9 +8,13 @@ class Food: public Item
 {
 public:
 
-                                 Food(const sf::Texture& texture, const sf::IntRect& textureRect = sf::IntRect());
+                                 Food(const sf::Texture& texture, 
+                                      const sf::IntRect& textureRect = sf::IntRect()
+                                      );
     virtual                      ~Food() {};
-    virtual void                 update(const sf::Vector2f& foodPosition, const sf::Vector2f& mousePosView);
+    virtual void                 update(const sf::Vector2f& foodPosition, 
+                                        const sf::Vector2f& mousePosView
+                                        );
                                  
     virtual Food*                getClone();
     virtual const std::string    getName() const;

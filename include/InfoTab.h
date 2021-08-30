@@ -7,6 +7,8 @@ class InfoTab: public sf::NonCopyable
 public:
 
                           InfoTab();
+    virtual               ~InfoTab();
+
     virtual void          update() = 0;
     virtual void          render(sf::RenderTarget& target);
     void                  hide();

@@ -20,10 +20,13 @@ public:
     void        gainExp(const unsigned exp);
 
     unsigned    getLevel() const;
+
     int         getExp() const;
     int         getExpForNextLevel() const;
+
     int         getHp() const;
     int         getHpMax() const;
+
     int         getDamageMin() const;
     int         getDamageMax() const;
     int         getDamage() const;

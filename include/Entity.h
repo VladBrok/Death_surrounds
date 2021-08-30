@@ -11,7 +11,7 @@ class Entity: public sf::NonCopyable
 {
 public:
 
-                            Entity(const sf::Texture& texture);
+    explicit                Entity(const sf::Texture& texture);
     virtual                 ~Entity();
                             
     virtual void            render(sf::RenderTarget& target, 
@@ -26,6 +26,7 @@ public:
     const sf::Vector2i      getGridPosition() const;
     const sf::Vector2f      getCenter() const;
     const sf::Vector2i      getGridPositionCenter() const;
+
     const sf::FloatRect     getGlobalBounds() const;
     const sf::FloatRect     getNextPositionBounds(const float deltaTime) const;
                             

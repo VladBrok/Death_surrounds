@@ -8,7 +8,7 @@ class Character: public Entity
 {
 public:
 
-                    Character(const sf::Texture& texture);
+    explicit        Character(const sf::Texture& texture);
 
     virtual void    gainHp(const int hp);
     virtual void    loseHp(const int hp);

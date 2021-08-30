@@ -18,7 +18,8 @@ public:
     virtual WeaponType     getWeaponType() const;
 
     // Returns the new projectile. Allocated memeory must be freed by a caller
-    virtual                Projectile* allocateNewProjectile(const sf::Vector2f& movementDir, const sf::Vector2f& position) = 0;
+    virtual                Projectile* allocateNewProjectile(const sf::Vector2f& movementDir, 
+                                                             const sf::Vector2f& position) = 0;
 };
 
 

@@ -3,7 +3,10 @@
 #include "Utils.h"
 
 
-PlayerInfoTab::PlayerInfoTab(const sf::RenderWindow& window, const sf::Font& font, const Player& player)
+PlayerInfoTab::PlayerInfoTab(const sf::RenderWindow& window,
+                             const sf::Font& font,
+                             const Player& player
+                             )
     : InfoTab(), player(player)
 {
     initInfoTab(window, font);
@@ -29,9 +32,10 @@ void PlayerInfoTab::initInfoTab(const sf::RenderWindow& window, const sf::Font& 
     );
 
     tabText.setFont(font);
-    tabText.setCharacterSize((unsigned)utils::percentToPixels(2.8f, (int)(tabBackground.getSize().x + tabBackground.getSize().y)));
+    sf::Vector2i backgroundSize(tabBackground.getSize());
+    tabText.setCharacterSize((unsigned)utils::percentToPixels(2.8f, backgroundSize.x + backgroundSize.y));
     tabText.setPosition(
-        std::floor(tabBackground.getPosition().x + utils::percentToPixels(20.f, (int)tabBackground.getSize().x)),
-        std::floor(tabBackground.getPosition().y + utils::percentToPixels(18.f, (int)tabBackground.getSize().y))
+        std::floor(tabBackground.getPosition().x + utils::percentToPixels(20.f, backgroundSize.x)),
+        std::floor(tabBackground.getPosition().y + utils::percentToPixels(18.f, backgroundSize.y))
     );
 }

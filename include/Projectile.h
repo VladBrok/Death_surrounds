@@ -31,6 +31,7 @@ private:
     float        movementDirX;
     float        movementDirY;
     float        speed;
+
     int          damageMin;
     int          damageMax;
 };

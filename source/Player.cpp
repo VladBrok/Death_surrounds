@@ -9,7 +9,10 @@ Player::Player(const float posX,
                const sf::Texture& inventoryPanelTexture,
                const sf::RenderWindow& window
                )
-    : Character(textureSheet), inventory(window, inventoryPanelTexture), pActiveWeapon(nullptr), deathAnimationDone(false)
+    : Character(textureSheet), 
+      inventory(window, inventoryPanelTexture), 
+      pActiveWeapon(nullptr),
+      deathAnimationDone(false)
 {
 
     createMovementComponent(200.f, 1600.f, 1000.f);

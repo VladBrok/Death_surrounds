@@ -13,7 +13,9 @@ public:
                                        const int damageMax, 
                                        const sf::IntRect& textureRect = sf::IntRect()
                                        );
-    virtual void                 update(const sf::Vector2f& weaponPosition, const sf::Vector2f& mousePosView);
+    virtual void                 update(const sf::Vector2f& weaponPosition,
+                                        const sf::Vector2f& mousePosView
+                                        );
     virtual Sword*               getClone();
     virtual const std::string    getName() const;
     virtual WeaponType           getWeaponType() const;

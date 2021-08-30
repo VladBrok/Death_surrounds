@@ -9,7 +9,10 @@ class PlayerInfoTab: public InfoTab
 {
 public:
 
-                     PlayerInfoTab(const sf::RenderWindow& window, const sf::Font& font, const Player& player);
+                     PlayerInfoTab(const sf::RenderWindow& window, 
+                                   const sf::Font& font, 
+                                   const Player& player
+                                   );
     virtual void     update();
                      
 private:             

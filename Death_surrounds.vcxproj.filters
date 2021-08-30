@@ -47,9 +47,6 @@
     <Filter Include="Systems">
       <UniqueIdentifier>{9d20ad90-5390-4dd6-833d-b72f7e26f22a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Items\Inventory">
-      <UniqueIdentifier>{fe94fc18-e1b1-48d2-b746-7e272096446e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{246ba4f3-5a7a-4bcd-baf8-adf9d9e315c8}</UniqueIdentifier>
     </Filter>
@@ -70,6 +67,9 @@
     </Filter>
     <Filter Include="Windows">
       <UniqueIdentifier>{9c41fabe-adc8-4e85-87eb-515ad2407a10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inventory">
+      <UniqueIdentifier>{dc90dfa1-4d9e-4396-9715-2d7c617bcf57}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -163,9 +163,6 @@
     <ClCompile Include="source\EnemySystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
-    <ClCompile Include="source\Inventory.cpp">
-      <Filter>Items\Inventory</Filter>
-    </ClCompile>
     <ClCompile Include="source\Utils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -222,6 +219,9 @@
     </ClCompile>
     <ClCompile Include="source\ErrorWindow.cpp">
       <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Inventory.cpp">
+      <Filter>Inventory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -318,9 +318,6 @@
     <ClInclude Include="include\EnemySystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="include\Inventory.h">
-      <Filter>Items\Inventory</Filter>
-    </ClInclude>
     <ClInclude Include="include\Utils.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -378,5 +375,13 @@
     <ClInclude Include="include\ErrorWindow.h">
       <Filter>Windows</Filter>
     </ClInclude>
+    <ClInclude Include="include\Inventory.h">
+      <Filter>Inventory</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\TextTagSystem.inl">
+      <Filter>Systems</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -2,12 +2,6 @@
 #include "Game.h"
 #include "ErrorWindow.h"
 
-/* 
-    TODO:
-        - add a companion (bird or dog);
-        - i don't like that many classes have a reference to the player!!!;
-*/
-
 
 int main()
 {
@@ -20,25 +14,21 @@ int main()
         }
         catch (std::bad_alloc&)
         {
-            ErrorWindow erWindow(
-                           "There is not enough RAM for the game to work.\nPlease, close unnesessary programs and restart the game.",
-                           false
-                        );
+            std::string msg("There is not enough RAM for the game to work.\n\
+                             Please, close unnesessary programs and restart the game.");
+            ErrorWindow erWindow(msg, false);
             erWindow.run();
         }
         catch (const std::exception& err)
         {
             std::cout << err.what() << '\n';
 
-            throw;
+            throw; // Forwarding the error to an outer 'catch' block
         }
     }
     catch (...)
     {
-        ErrorWindow erWindow(
-                        "Fatal error. Please, try to reinstall the game.",
-                         false
-                    );
+        ErrorWindow erWindow("Fatal error. Please, try to reinstall the game.", false);
         erWindow.run();
     }
   

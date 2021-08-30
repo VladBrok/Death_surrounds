@@ -13,9 +13,11 @@ class EditorMode: public sf::NonCopyable
 {
 public:
 
-    virtual void processEvent(const sf::Event& event) = 0;
-    virtual void update(const float deltaTime) = 0;
-    virtual void render(sf::RenderTarget& target) = 0;
+    virtual         ~EditorMode() {};
+                    
+    virtual void    processEvent(const sf::Event& event) = 0;
+    virtual void    update(const float deltaTime) = 0;
+    virtual void    render(sf::RenderTarget& target) = 0;
 };
 
 

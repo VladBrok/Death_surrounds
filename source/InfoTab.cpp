@@ -8,6 +8,11 @@ InfoTab::InfoTab()
 }
 
 
+InfoTab::~InfoTab()
+{
+}
+
+
 void InfoTab::render(sf::RenderTarget& target)
 {
     if (!hidden)

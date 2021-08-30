@@ -22,7 +22,8 @@ public:
                                  const sf::IntRect& textureRect = sf::IntRect()
                                  );
     virtual               ~Weapon() {};
-    virtual void          update(const sf::Vector2f& weaponPosition, const sf::Vector2f& mousePosView) = 0;
+    virtual void          update(const sf::Vector2f& weaponPosition,
+                                 const sf::Vector2f& mousePosView) = 0;
                           
     bool                  canAttack();
     void                  restartAttackTimer();

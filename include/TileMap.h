@@ -11,7 +11,7 @@ class Tilemap
 public:
 
                            Tilemap(const int mapGridSizeX, const int mapGridSizeY);
-                           Tilemap(const std::string& fileName);
+    explicit               Tilemap(const std::string& fileName);
                            ~Tilemap();
 
     void                   update(Entity& entity,
@@ -73,6 +73,7 @@ private:
                            
     void                   updateCollisionWithMapBounds(Entity& entity, const float deltaTime);
     void                   updateTiles(Entity& entity, const float deltaTime, EnemySystem& enemySystem);
+
     void                   handleCollision(const Tile& tile, Entity& entity);
     void                   renderTile(sf::RenderTarget& target, 
                                       Tile& tile,
