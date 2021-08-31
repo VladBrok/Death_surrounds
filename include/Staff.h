@@ -22,9 +22,9 @@ public:
                                                );
     virtual std::unique_ptr<Item>       getClone();
     virtual const std::string           getName() const;
-    virtual std::unique_ptr<Projectile> allocateNewProjectile(const sf::Vector2f& movementDir, 
-                                                              const sf::Vector2f& position
-                                                              );
+    virtual std::unique_ptr<Projectile> getNewProjectile(const sf::Vector2f& movementDir, 
+                                                         const sf::Vector2f& position
+                                                         );
                                    
 private:                           
                                    

@@ -138,6 +138,6 @@ void Game::initSupportedKeys()
 
 void Game::initStates()
 {
-    std::unique_ptr<MainMenuState> state(new MainMenuState(window, supportedKeys, states));
+    std::unique_ptr<State> state(new MainMenuState(window, supportedKeys, states));
     states.push(std::move(state));
 }

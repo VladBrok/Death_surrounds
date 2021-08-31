@@ -4,17 +4,9 @@
 
 
 LootSystem::LootSystem(const sf::Texture& lootTextureSheet)
-    : lootSprite(lootTextureSheet), eliminationTimerMax(120.f)
+    : lootSprite(lootTextureSheet), 
+      eliminationTimerMax(120.f)
 {
-}
-
-
-LootSystem::~LootSystem()
-{
-    for (auto bounty = loot.begin(); bounty != loot.end(); ++bounty)
-    {
-        delete bounty->pItem;
-    }
 }
 
 
@@ -24,16 +16,16 @@ void LootSystem::update(Player& player)
     while (bounty != loot.end())
     {
         bool intersectsWithPlayer = 
-                player.getGlobalBounds().intersects((bounty->pItem)->getGlobalBounds()) &&
+                player.getGlobalBounds().intersects((bounty->item)->getGlobalBounds()) &&
                 player.getNumberOfItems() < INVENTORY_SIZE_MAX;
 
         if (intersectsWithPlayer)
         {
-            player.addItemToInventory(bounty->pItem);
+            player.addItemToInventory(bounty->item.get());
         }
-        if (intersectsWithPlayer || bounty->eliminationTimer.getElapsedTime().asSeconds() >= eliminationTimerMax)
+        if (intersectsWithPlayer ||
+            bounty->eliminationTimer.getElapsedTime().asSeconds() >= eliminationTimerMax)
         {
-            delete bounty->pItem;
             bounty = loot.erase(bounty);
         }
         else
@@ -48,16 +40,16 @@ void LootSystem::render(sf::RenderTarget& target)
 {
     for (auto bounty = loot.begin(); bounty != loot.end(); ++bounty)
     {
-        (bounty->pItem)->render(target);
+        (bounty->item)->render(target);
     }
 }
 
 
 void LootSystem::addLoot(const float posX, const float posY, Item* pLoot)
 {
-    assert(pLoot != nullptr);
+    assert(pLoot);
 
-    loot.push_back(Bounty(pLoot->getClone(), sf::Clock()));
+    loot.push_back(Bounty(pLoot->getClone().release(), sf::Clock()));
 
-    loot.back().pItem->setPosition(posX, posY);
+    loot.back().item->setPosition(posX, posY);
 }

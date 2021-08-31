@@ -9,25 +9,12 @@ SettingsState::SettingsState(sf::RenderWindow& window,
                              std::stack<std::unique_ptr<State>>& states,
                              bool& settingsChanged
                              )
-    : State(window, supportedKeys, states), settingsChanged(settingsChanged)
+    : State(window, supportedKeys, states), 
+      settingsChanged(settingsChanged)
 {
     initGui();
     initBackground();
     initOptionsText();
-}
-
-
-SettingsState::~SettingsState()
-{
-    for (auto b = buttons.begin(); b != buttons.end(); ++b)
-    {
-        delete b->second;
-    }    
-
-    for (auto d = dropDownLists.begin(); d != dropDownLists.end(); ++d)
-    {
-        delete d->second;
-    } 
 }
 
 
@@ -114,27 +101,32 @@ void SettingsState::initGui()
     const sf::Color textHoverColor(sf::Color::White);
     const sf::Color textActiveColor(sf::Color(20, 20, 20, 200));
 
-    buttons["APPLY"] = new Button(std::floor(utils::percentToPixels(50.f, windowSize.x)), 
-                                  std::floor(utils::percentToPixels(87.f, windowSize.y)), 
-                                  buttonSize.x,
-                                  buttonSize.y, 
-                                  font, 
-                                  "Apply",
-                                  textIdleColor,
-                                  textHoverColor,
-                                  textActiveColor
-                                  );
-
-    buttons["EXIT_STATE"] = new Button(std::floor(utils::percentToPixels(83.f, windowSize.x)), 
-                                       std::floor(utils::percentToPixels(87.f, windowSize.y)), 
-                                       buttonSize.x,
-                                       buttonSize.y, 
-                                       font, 
-                                       "Back",
-                                       textIdleColor,
-                                       textHoverColor,
-                                       textActiveColor
-                                       );
+    buttons["APPLY"].reset(
+        new Button(
+              std::floor(utils::percentToPixels(50.f, windowSize.x)), 
+              std::floor(utils::percentToPixels(87.f, windowSize.y)), 
+              buttonSize.x,
+              buttonSize.y, 
+              font, 
+              "Apply",
+              textIdleColor,
+              textHoverColor,
+              textActiveColor
+        )
+    );
+    buttons["EXIT_STATE"].reset(
+        new Button(
+              std::floor(utils::percentToPixels(83.f, windowSize.x)), 
+              std::floor(utils::percentToPixels(87.f, windowSize.y)), 
+              buttonSize.x,
+              buttonSize.y, 
+              font, 
+              "Back",
+              textIdleColor,
+              textHoverColor,
+              textActiveColor
+        )
+    );
 
 
     /*=============== Drop down lists ===============*/
@@ -164,7 +156,7 @@ void SettingsState::initGui()
         }
     }
 
-    dropDownLists["RESOLUTION"] = 
+    dropDownLists["RESOLUTION"].reset(
         new DropDownList(
              std::floor(utils::percentToPixels(20.f, windowSize.x)), 
              std::floor(utils::percentToPixels(6.f, windowSize.y)), 
@@ -173,7 +165,8 @@ void SettingsState::initGui()
              font, 
              resolutions, 
              activeResolutionIndex
-        );
+        )
+    );
 }
 
 
@@ -201,16 +194,16 @@ sf::Vector2i SettingsState::getResolutionFromString(const std::string& string)
     try
     {
         std::string data(string);
-        int x_pos = data.find('x');
+        int xPos = data.find('x');
 
-        if (x_pos == -1)
+        if (xPos == -1)
         {
             throw std::logic_error("");
         }
 
         int width = 0;
         int height = 0;
-        data[x_pos] = ' ';
+        data[xPos] = ' ';
         std::stringstream str(data);
         str >> width >> height;
 
@@ -223,25 +216,17 @@ sf::Vector2i SettingsState::getResolutionFromString(const std::string& string)
     }
     catch (std::logic_error&)
     {
-        throw std::logic_error("ERROR in SettingsState::getResolutionFromString: invalid argument string.\n"
-                               "Proper string example: 800 x 600"
-                               );
+        throw std::logic_error(
+                  "ERROR in SettingsState::getResolutionFromString: invalid argument string.\n"
+                  "Proper string example: 800 x 600"
+              );
     }
 }
 
 
 void SettingsState::reinitialize()
-{
-    for (auto b = buttons.begin(); b != buttons.end(); ++b)
-    {
-        delete b->second;
-    }    
+{ 
     buttons.clear();
-
-    for (auto d = dropDownLists.begin(); d != dropDownLists.end(); ++d)
-    {
-        delete d->second;
-    } 
     dropDownLists.clear();
 
     initGui();

@@ -14,7 +14,7 @@ Inventory::Inventory(const sf::RenderWindow& window,
       panelActive(false),
       panelHidden(false)
 {   
-    items.assign(INVENTORY_SIZE_MAX, nullptr);
+    items.resize(INVENTORY_SIZE_MAX);
 
     initInventoryPanel(window, inventoryPanelBorderTexture);
 }
@@ -123,7 +123,7 @@ bool Inventory::addItem(Item* pItem)
 
     if (index < (int)items.size())
     {
-        items[index] = std::move(pItem->getClone());
+        items[index].reset(pItem->getClone().release());
 
         // Setting the item's transformation to properly place it to the inventory panel
 
@@ -177,7 +177,7 @@ void Inventory::setActiveItem(const int index)
 
     if (items[index])
     {
-        activeItem = std::move(items[index]->getClone());
+        activeItem.reset(items[index]->getClone().release());
 
         // Setting origin and scale of the item to default values
         activeItem->setOrigin(activeItem->getDefaultOrigin().x, activeItem->getDefaultOrigin().y);
@@ -208,19 +208,6 @@ int Inventory::getActiveItemIndex() const
 int Inventory::getSize() const
 {
     return actualSize;
-}
-
-
-Item& Inventory::operator[](const int index)
-{
-    assert(index >= 0 && index < (int)items.size());
-
-    if (!items[index])
-    {
-        throw std::runtime_error("ERROR in Inventory::operator[]: there is no item at that index");
-    }
-
-    return *items[index];
 }
 
 

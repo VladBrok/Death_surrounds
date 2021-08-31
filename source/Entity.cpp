@@ -180,13 +180,15 @@ void Entity::createHitboxComponent(const float offsetFromSpritePositionX,
                                    const float hitboxHeight
                                    )
 {
-    hitboxComponent.reset(new HitboxComponent(
-                              sprite, 
-                              offsetFromSpritePositionX, 
-                              offsetFromSpritePositionY,
-                              hitboxWidth,
-                              hitboxHeight
-                           ));
+    hitboxComponent.reset(
+        new HitboxComponent(
+              sprite, 
+              offsetFromSpritePositionX, 
+              offsetFromSpritePositionY,
+              hitboxWidth,
+              hitboxHeight
+        )
+    );
 }
 
 

@@ -95,6 +95,7 @@ private:
                     speed -= deceleration;
                 }
 
+                // Making the text slowly disappear
                 if (fadeValue > 0 && sfmlText.getColor().a >= fadeValue)
                 {
                     sfmlText.setColor(
@@ -145,7 +146,7 @@ private:
         }
     };
 
-    typedef std::list<std::shared_ptr<TextTag>> TagsContainer;
+    typedef std::list<std::shared_ptr<TextTag>>   TagsContainer;
     typedef std::vector<std::shared_ptr<TextTag>> PresetTagsContainer;
 
 

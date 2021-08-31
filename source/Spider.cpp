@@ -22,7 +22,7 @@ Spider::Spider(const float posX,
     initAnimation();
     initDroppingItem();
 
-    aiFollow = new AiFollow(*this, player);
+    aiFollow.reset(new AiFollow(*this, player));
 }
 
 

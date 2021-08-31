@@ -46,15 +46,15 @@ void GameState::processEvent(const sf::Event& event)
         if (player->getActiveWeaponType() == RANGED_WEAPON)
         {
             RangedWeapon* pRangedWeapon = dynamic_cast<RangedWeapon*>(player->getActiveItem());
-            if (pRangedWeapon)
-            {
-                projectiles.push_back(
-                    pRangedWeapon->allocateNewProjectile(
+            assert(pRangedWeapon);
+            projectiles.push_back(
+                std::move(
+                    pRangedWeapon->getNewProjectile(
                         utils::getNormalizedDirection(player->getCenter(), mousePosView), 
                         player->getCenter()
                     )
-                );
-            }
+                )
+            );
         }
     }
     else if (event.type == sf::Event::MouseButtonReleased &&
@@ -64,7 +64,7 @@ void GameState::processEvent(const sf::Event& event)
     }
 
 
-    if (stateIsPaused)
+    if (isPaused())
     {
         processPauseMenuEvent(event);
     }
@@ -72,7 +72,7 @@ void GameState::processEvent(const sf::Event& event)
     {
         processGameOverEvent(event);
     }
-    else if (!gameOver && !stateIsPaused && event.type == sf::Event::KeyPressed)
+    else if (!gameOver && !isPaused() && event.type == sf::Event::KeyPressed)
     {
         if (event.key.code == keybinds.at("TOGGLE_PLAYER_INFO_TAB"))
         {
@@ -80,9 +80,10 @@ void GameState::processEvent(const sf::Event& event)
         }
         else if (event.key.code == keybinds.at("DROP_ITEM") && player->getActiveItem())
         {
-            lootSystem->addLoot(player->getCenter().x + GRID_SIZE, 
-                                player->getCenter().y, player->getActiveItem()
-                                );
+            lootSystem->addLoot(
+                player->getCenter().x + GRID_SIZE, 
+                player->getCenter().y, player->getActiveItem()
+            );
             player->removeActiveItem();
         }
         else if (event.key.code == keybinds.at("TOGGLE_INVENTORY_PANEL")) 
@@ -96,14 +97,14 @@ void GameState::processEvent(const sf::Event& event)
     if (event.type == sf::Event::KeyPressed &&
         event.key.code == keybinds.at("PAUSE"))
     {
-        stateIsPaused ? unpauseState(): pauseState();
+        isPaused() ? unpauseState(): pauseState();
     }
 }
 
 
 void GameState::update(const float deltaTime)
 {
-    if (!stateIsPaused)
+    if (!isPaused())
     {
         if (!gameOver)
         {
@@ -111,7 +112,7 @@ void GameState::update(const float deltaTime)
             updateTilemap(deltaTime);
         }
 
-        player->update(deltaTime, mousePosView, mousePosWindow, *textTagSystem); 
+        player->update(deltaTime, mousePosView, mousePosWindow, *textTagSystem);
 
         if (!gameOver)
         {
@@ -120,7 +121,7 @@ void GameState::update(const float deltaTime)
 
             updateView();
             updateEnemiesAndCombat(deltaTime);
-            updateGui();
+            playerGui->update(*player);
         }
     }
 }
@@ -137,7 +138,15 @@ void GameState::render(sf::RenderTarget* pTarget)
     sf::RenderTarget& target = *pTarget;
     target.setView(view);
 
-    tilemap->render(target, view, player->getGridPositionCenter(), &coreShader, player->getCenter(), SHOW_COLLIDABLE_TILES, SHOW_ENEMY_SPAWNERS);
+    tilemap->render(
+        target,
+        view, 
+        player->getGridPositionCenter(),
+        &coreShader,
+        player->getCenter(),
+        SHOW_COLLIDABLE_TILES, 
+        SHOW_ENEMY_SPAWNERS
+    );
     lootSystem->render(target);
     renderEnemies(target);
     player->render(target, &coreShader, player->getCenter(), SHOW_HITBOXES);
@@ -158,7 +167,7 @@ void GameState::render(sf::RenderTarget* pTarget)
     {
         renderGameOverScreen(target);
     }
-    if (stateIsPaused)
+    if (isPaused())
     {
         pauseMenu->render(target);
     }
@@ -199,7 +208,7 @@ void GameState::updateView()
 {
     view.setCenter(player->getCenter());
 
-    // Don't letting the view to go outside the tilemap bounds
+    // Don't letting the view go outside the tilemap bounds
     if (tilemap->getMapSize().x >= view.getSize().x)
     {
         if (view.getCenter().x - view.getSize().x / 2.f < 0.f)
@@ -222,7 +231,6 @@ void GameState::updateView()
             view.setCenter(view.getCenter().x, tilemap->getMapSize().y - view.getSize().y / 2.f);
         }
     }
-
 
     view.setCenter(
         sf::Vector2f(
@@ -260,12 +268,6 @@ void GameState::updateTilemap(const float deltaTime)
 }
 
 
-void GameState::updateGui()
-{
-    playerGui->update(*player);
-}
-
-
 void GameState::updateEnemiesAndCombat(const float deltaTime)
 {
     updateProjectiles(deltaTime);
@@ -280,7 +282,7 @@ void GameState::updateEnemiesAndCombat(const float deltaTime)
         if ((*enemy)->isDead())
         {
             // Checking for the level up and gaining the player's exp
-            int exp = (int)((*enemy)->getExpForKilling());
+            int exp = ((*enemy)->getExpForKilling());
             if (player->getExp() + exp >= player->getExpForNextLevel())
             {
                 textTagSystem->addTextTag(
@@ -295,7 +297,9 @@ void GameState::updateEnemiesAndCombat(const float deltaTime)
             textTagSystem->addTextTag(
                 EXPERIENCE_TAG, 
                 sf::Vector2f(), 
-                exp, "+ ", " exp"
+                exp, 
+                "+ ", 
+                " exp"
             );
             textTagSystem->setBackElementPosition(
                 player->getCenter().x - textTagSystem->getBackElementSize().x / 2.f, 
@@ -344,7 +348,7 @@ void GameState::updateCombat(Enemy& enemy, const float)
 
         enemy.restartDamageTimer();
 
-        // Adding new pop-up text
+        // Adding the new pop-up text
         textTagSystem->addTextTag(DAMAGE_TAG, enemy.getPosition(), damage);       
     }
 
@@ -369,17 +373,17 @@ void GameState::updateCombat(Enemy& enemy, const float)
 
 void GameState::updateProjectiles(const float deltaTime)
 {
-    auto projectile = projectiles.begin();
-    while (projectile != projectiles.end())
+    auto p = projectiles.begin();
+    while (p != projectiles.end())
     {
-        (*projectile)->update(deltaTime);
-        if ((*projectile)->canBeRemoved())
+        (*p)->update(deltaTime);
+        if ((*p)->canBeRemoved())
         {
-            projectile = projectiles.erase(projectile);
+            p = projectiles.erase(p);
         }
         else
         {
-            ++projectile;
+            ++p;
         }
     }
 }
@@ -409,18 +413,18 @@ void GameState::updateIntersectionWithProjectiles(Enemy& enemy)
 
 void GameState::renderEnemies(sf::RenderTarget& target)
 {
-    for (auto enemy = enemies.begin(); enemy != enemies.end(); ++enemy)
+    for (auto e = enemies.begin(); e != enemies.end(); ++e)
     {
-        (*enemy)->render(target, &coreShader, player->getCenter(), SHOW_HITBOXES);
+        (*e)->render(target, &coreShader, player->getCenter(), SHOW_HITBOXES);
     }
 }
 
 
 void GameState::renderProjectiles(sf::RenderTarget& target)
 {
-    for (auto projectile = projectiles.begin(); projectile != projectiles.end(); ++ projectile)
+    for (auto p = projectiles.begin(); p != projectiles.end(); ++p)
     {
-        (*projectile)->render(target);
+        (*p)->render(target);
     }
 }
 
@@ -465,14 +469,15 @@ void GameState::initTilemap()
 
 void GameState::initPlayer()
 {
-    player.reset(new Player(
-        GRID_SIZE * 2, 
-        GRID_SIZE * 2, 
-        textures["PLAYER_SHEET"],
-        textures["INVENTORY_PANEL"],
-        window
-    ));
-
+    player.reset(
+        new Player(
+              GRID_SIZE * 2, 
+              GRID_SIZE * 2, 
+              textures["PLAYER_SHEET"],
+              textures["INVENTORY_PANEL"],
+              window
+        )
+    );
 
     Sword sword(textures["WEAPON_SWORD"], 2, 5);
     player->addItemToInventory(&sword, true);

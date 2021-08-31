@@ -59,7 +59,6 @@ private:
     void                                   updateView();
     void                                   updatePlayerKeyboardInput(const float deltaTime);
     void                                   updateTilemap(const float deltaTime);
-    void                                   updateGui();
     void                                   updateEnemiesAndCombat(const float deltaTime);
     void                                   updateCombat(Enemy& enemy, const float deltaTime);
     void                                   updateProjectiles(const float deltaTime);

@@ -20,22 +20,22 @@ class EnemySystem: public sf::NonCopyable
 {
 public:
 
-                                 EnemySystem(std::list<Enemy*>& activeEnemies, 
-                                             std::unordered_map<std::string, sf::Texture>& textures,
-                                             Entity& player
-                                             );
-     void                        createEnemy(const float posX,
-                                             const float posY,
-                                             const int type
-                                             );
-     static const std::string    getEnemyTypeAsString(const int type);
-     int                         getNumberOfActiveEnemies() const;
+                                       EnemySystem(std::list<std::unique_ptr<Enemy>>& activeEnemies, 
+                                                   std::unordered_map<std::string, sf::Texture>& textures,
+                                                   Entity& player
+                                                   );
+     void                              createEnemy(const float posX,
+                                                   const float posY,
+                                                   const int type
+                                                   );
+     static const std::string          getEnemyTypeAsString(const int type);
+     int                               getNumberOfActiveEnemies() const;
                                 
 private:                        
                                 
-    std::list<Enemy*>&           activeEnemies;
-    StringToTextureMap&          textures;
-    Entity&                      player;
+    std::list<std::unique_ptr<Enemy>>& activeEnemies;
+    StringToTextureMap&                textures;
+    Entity&                            player;
 };
 
 

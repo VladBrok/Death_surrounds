@@ -9,7 +9,7 @@ InfoWindow::InfoWindow(const std::string& title,
                        const std::string& info,
                        const bool showCancelButton
                        )
-                       : SHOW_CANCEL_BUTTON(showCancelButton)
+    : SHOW_CANCEL_BUTTON(showCancelButton)
 {
     font.loadFromFile(resources::getFontFile());
 
@@ -105,21 +105,21 @@ void InfoWindow::initButtons(const sf::Font& font)
 
     okButton.reset(
         new Button(
-                okButtonPos.x,
-                okButtonPos.y,
-                buttonSize.x,
-                buttonSize.y,
-                font,
-                "OK",
-                sf::Color::Black,
-                sf::Color::Black,
-                sf::Color::Black,
-                sf::Color(130, 130, 130, 160),
-                sf::Color(180, 180, 180, 200),
-                sf::Color(220, 220, 220, 255),
-                sf::Color(40, 40, 40, 255),
-                sf::Color(80, 80, 80, 255),
-                sf::Color(120, 120, 120, 255)
+               okButtonPos.x,
+               okButtonPos.y,
+               buttonSize.x,
+               buttonSize.y,
+               font,
+               "OK",
+               sf::Color::Black,
+               sf::Color::Black,
+               sf::Color::Black,
+               sf::Color(130, 130, 130, 160),
+               sf::Color(180, 180, 180, 200),
+               sf::Color(220, 220, 220, 255),
+               sf::Color(40, 40, 40, 255),
+               sf::Color(80, 80, 80, 255),
+               sf::Color(120, 120, 120, 255)
         )
     );  
 
@@ -127,21 +127,21 @@ void InfoWindow::initButtons(const sf::Font& font)
     {
         cancelButton.reset(
             new Button(
-                    cancelButtonPos.x,
-                    cancelButtonPos.y,
-                    buttonSize.x,
-                    buttonSize.y,
-                    font,
-                    "CANCEL",
-                    sf::Color::Black,
-                    sf::Color::Black,
-                    sf::Color::Black,
-                    sf::Color(130, 130, 130, 160),
-                    sf::Color(180, 180, 180, 200),
-                    sf::Color(220, 220, 220, 255),
-                    sf::Color(40, 40, 40, 255),
-                    sf::Color(50, 50, 50, 255),
-                    sf::Color(60, 60, 60, 255)
+                   cancelButtonPos.x,
+                   cancelButtonPos.y,
+                   buttonSize.x,
+                   buttonSize.y,
+                   font,
+                   "CANCEL",
+                   sf::Color::Black,
+                   sf::Color::Black,
+                   sf::Color::Black,
+                   sf::Color(130, 130, 130, 160),
+                   sf::Color(180, 180, 180, 200),
+                   sf::Color(220, 220, 220, 255),
+                   sf::Color(40, 40, 40, 255),
+                   sf::Color(50, 50, 50, 255),
+                   sf::Color(60, 60, 60, 255)
             )
         );  
     }

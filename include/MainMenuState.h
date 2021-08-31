@@ -13,7 +13,6 @@ public:
                                         const StringToKeyMap& supportedKeys,
                                         std::stack<std::unique_ptr<State>>& states
                                         );
-    virtual               ~MainMenuState();
                           
     virtual void          processEvent(const sf::Event& event);
     virtual void          render(sf::RenderTarget* pTarget = nullptr);

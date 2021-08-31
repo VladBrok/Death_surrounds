@@ -27,16 +27,15 @@ public:
     // Default view of the target must be set before calling this function
     void                               renderToWindow(sf::RenderTarget& target);
                                        
-    bool                               addItem(Item*);
+    bool                               addItem(Item* item);
     void                               removeItem(const int index);
     void                               setActiveItem(const int index);
-    Item*                              getActiveItem() const; // FIXME: return shared ptr ?
+    Item*                              getActiveItem() const;
     int                                getActiveItemIndex() const;
 
     // Returns the current number of items in the inventory (actual size)
     int                                getSize() const; 
                                        
-    Item&                              operator[](const int index);
     bool                               panelIsActive() const;
     void                               togglePanelHiddenStatus();
                           

@@ -229,7 +229,7 @@ int Player::getNumberOfItems() const
 }
 
 
-void Player::loseExp(const unsigned exp)
+void Player::loseExp(const int exp)
 {
     attributeComponent->loseExp(exp);
 }
@@ -245,7 +245,7 @@ WeaponType Player::getActiveWeaponType() const
 }
 
 
-void Player::gainExp(const unsigned exp)
+void Player::gainExp(const int exp)
 {
     attributeComponent->gainExp(exp);
 }

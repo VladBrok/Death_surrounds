@@ -37,7 +37,11 @@ const std::string EnemySpawnerTile::getAsString() const
 {
     std::stringstream stream;
 
-    stream << textureRect.left << ' ' << textureRect.top << ' ' << canCollide << ' ' << enemyType << ' ' << ' ' << enemyTimeToSpawn;
+    stream << textureRect.left << ' '
+           << textureRect.top << ' '
+           << canCollide << ' '
+           << enemyType << ' ' 
+           << enemyTimeToSpawn;
 
     return stream.str();
 }

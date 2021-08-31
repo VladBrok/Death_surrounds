@@ -11,7 +11,9 @@ public:
                                              const float acceleration, 
                                              const float deceleration
                                              );
-    void                   accelerateSprite(const sf::Vector2f& movementDirection, const float deltaTime);
+    void                   accelerateSprite(const sf::Vector2f& movementDirection,
+                                            const float deltaTime
+                                            );
 	
     // Decelerates and moves the sprite 
     void                   updateMovement(const float deltaTime);    
@@ -38,8 +40,13 @@ private:
     float                  deceleration;
     sf::Vector2f           velocity;
 
-    void                   decelerateSpriteAndCheckVelocityBounds(const float deltaTime);
-
+    void                   decelerateAndCheckVelocityBounds(const float deltaTime);
+    void                   deceleratePositiveVelocity(float& velocity, 
+                                                      const float deltaTime
+                                                      );
+    void                   decelerateNegativeVelocity(float& velocity, 
+                                                      const float deltaTime
+                                                      );
 };
 
 

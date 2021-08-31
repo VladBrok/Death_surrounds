@@ -20,9 +20,9 @@ void PlayerGui::update(const Player& player)
     hpBar.update(player.getHp(), player.getHpMax());
     expBar.update(player.getExp(), player.getExpForNextLevel());
 
-    if (!pPlayerInfoTab->isHidden())
+    if (!playerInfoTab->isHidden())
     {
-        pPlayerInfoTab->update();
+        playerInfoTab->update();
     }
 }
 
@@ -31,13 +31,13 @@ void PlayerGui::render(sf::RenderTarget& target)
 {
     hpBar.render(target);
     expBar.render(target);
-    pPlayerInfoTab->render(target);
+    playerInfoTab->render(target);
 }
 
 
 void PlayerGui::toggleInfoTab()
 {
-    pPlayerInfoTab->toggle();
+    playerInfoTab->toggle();
 }
 
 

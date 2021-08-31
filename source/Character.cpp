@@ -3,20 +3,21 @@
 
 
 Character::Character(const sf::Texture& texture)
-    : Entity(texture), justSpawned(true)
+    : Entity(texture), 
+      justSpawned(true)
 {
 }
 
 
 void Character::gainHp(const int hp)
 {
-    attributeComponent->gainHp((int)hp);
+    attributeComponent->gainHp(hp);
 }
 
 
 void Character::loseHp(const int hp)
 {
-    attributeComponent->loseHp((int)hp);
+    attributeComponent->loseHp(hp);
 }
 
 

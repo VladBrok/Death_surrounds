@@ -55,7 +55,7 @@ void TextTagSystem::setBackElementPosition(const float x, const float y)
     {
         throw std::runtime_error("ERROR in TextTagSystem::setBackElementPosition: the list of tags is empty\n");
     }
-    tags.back().get()->setPosition(sf::Vector2f(x, y));
+    tags.back()->setPosition(sf::Vector2f(x, y));
 }
 
 

@@ -21,8 +21,8 @@ protected:
    sf::RenderWindow           window;
    sf::Font                   font;
    sf::Text                   info;
-   std::shared_ptr<Button>    okButton;
-   std::shared_ptr<Button>    cancelButton;
+   std::unique_ptr<Button>    okButton;
+   std::unique_ptr<Button>    cancelButton;
    const bool                 SHOW_CANCEL_BUTTON;
 
    virtual void               render();

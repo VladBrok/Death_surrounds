@@ -44,8 +44,8 @@ public:
     int                  getNumberOfItems() const;
     WeaponType           getActiveWeaponType() const;
 
-    void                 loseExp(const unsigned exp);
-    void                 gainExp(const unsigned exp);
+    void                 loseExp(const int exp);
+    void                 gainExp(const int exp);
                          
     void                 setAttackStatus(const bool attacking);
     bool                 isAttacking() const;

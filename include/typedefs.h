@@ -1,8 +1,8 @@
 #ifndef TYPEDEFS_H
 #define TYPEDEFS_H
 
-class Button;
-class DropDownList;
+#include "Button.h"
+#include "DropDownList.h"
 
 
 typedef std::unordered_map<std::string, sf::Keyboard::Key>             StringToKeyMap;

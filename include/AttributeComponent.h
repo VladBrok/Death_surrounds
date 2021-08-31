@@ -14,10 +14,10 @@ public:
     void        updateLevel();
     void        updateStats();
 
-    void        loseHp(const unsigned hp);
-    void        gainHp(const unsigned hp);
-    void        loseExp(const unsigned exp);
-    void        gainExp(const unsigned exp);
+    void        loseHp(const int hp);
+    void        gainHp(const int hp);
+    void        loseExp(const int exp);
+    void        gainExp(const int exp);
 
     unsigned    getLevel() const;
 

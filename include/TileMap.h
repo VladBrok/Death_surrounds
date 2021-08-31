@@ -12,8 +12,7 @@ public:
 
                            Tilemap(const int mapGridSizeX, const int mapGridSizeY);
     explicit               Tilemap(const std::string& fileName);
-                           ~Tilemap();
-
+                           
     void                   update(Entity& entity,
                                   const float deltaTime, 
                                   EnemySystem& enemySystem
@@ -46,7 +45,7 @@ public:
                                                const int enemyTimeToSpawn
                                                );
     void                   removeTile(const int gridPosX, const int gridPosY);
-
+                           
     const sf::Texture&     getTextureSheet() const;
     int                    getNumberOfTilesAtPosition(const sf::Vector2i& gridPosition);
     int                    getTileType(const int gridPosX, const int gridPosY);
@@ -54,7 +53,7 @@ public:
     const sf::Vector2f&    getMapSize() const;
 
 private:
-    typedef std::vector< std::vector< std::vector< Tile* > > > TilemapContainer;
+    typedef std::vector< std::vector< std::vector< std::unique_ptr<Tile> > > > TilemapContainer;
 
 
     TilemapContainer       map;
@@ -64,16 +63,18 @@ private:
                            
     sf::RectangleShape     collisionBox;
     sf::RectangleShape     enemySpawnerBox;
-                           
+                             
     std::stack<Tile*>      tilesForDeferredRender;
-
+                           
     bool                   positionsAreCorrect(const int gridPosX, const int gridPosY) const;
-    void                   clearMap();
     void                   createEmptyMap(const int mapSizeX, const int mapSizeY);
                            
     void                   updateCollisionWithMapBounds(Entity& entity, const float deltaTime);
-    void                   updateTiles(Entity& entity, const float deltaTime, EnemySystem& enemySystem);
-
+    void                   updateTiles(Entity& entity, 
+                                       const float deltaTime,
+                                       EnemySystem& enemySystem
+                                       );
+                           
     void                   handleCollision(const Tile& tile, Entity& entity);
     void                   renderTile(sf::RenderTarget& target, 
                                       Tile& tile,
@@ -82,7 +83,7 @@ private:
                                       const bool showCollisionBox = false,
                                       const bool showEnemySpawnerBox = false
                                       );
-
+                           
     void                   initCollisionBox();
     void                   initEnemySpawnerBox();
 };

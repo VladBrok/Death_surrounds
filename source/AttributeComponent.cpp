@@ -28,7 +28,8 @@ void AttributeComponent::updateLevel()
         updateStats();
 
         exp -= expForNextLevel;
-        expForNextLevel = (int)((50 * std::powl(level, 3) - 150 * std::powl(level, 2) + 400 * level) / 3);
+        expForNextLevel = 
+            (int)((50 * std::powl(level, 3) - 150 * std::powl(level, 2) + 400 * level) / 3);
     }
 }
 
@@ -48,27 +49,27 @@ void AttributeComponent::updateStats()
 }
 
 
-void AttributeComponent::loseHp(const unsigned hp)
+void AttributeComponent::loseHp(const int hp)
 {
-    this->hp = std::max(this->hp - hp, 0u);
+    this->hp = std::max(this->hp - hp, 0);
 }
 
 
-void AttributeComponent::gainHp(const unsigned hp)
+void AttributeComponent::gainHp(const int hp)
 {
-    this->hp = std::min(this->hp + (int)hp, hpMax);
+    this->hp = std::min(this->hp + hp, hpMax);
 }
 
 
-void AttributeComponent::loseExp(const unsigned exp)
+void AttributeComponent::loseExp(const int exp)
 {
-    this->exp = std::max(this->exp - exp, 0u);
+    this->exp = std::max(this->exp - exp, 0);
 
     updateLevel();
 }
 
 
-void AttributeComponent::gainExp(const unsigned exp)
+void AttributeComponent::gainExp(const int exp)
 {
     this->exp += exp;
 

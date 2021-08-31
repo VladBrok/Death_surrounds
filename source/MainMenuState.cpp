@@ -11,20 +11,12 @@ MainMenuState::MainMenuState(sf::RenderWindow& window,
                              const StringToKeyMap& supportedKeys,
                              std::stack<std::unique_ptr<State>>& states
                              )
-    : State(window, supportedKeys, states), needToReinitialize(false)
+    : State(window, supportedKeys, states), 
+      needToReinitialize(false)
 {
     initTextures();
     initGui();
     initBackground();
-}
-
-
-MainMenuState::~MainMenuState()
-{
-    for (auto b = buttons.begin(); b != buttons.end(); ++b)
-    {
-        delete b->second;
-    }    
 }
 
 
@@ -41,18 +33,19 @@ void MainMenuState::processEvent(const sf::Event& event)
 
     if (buttons["GAME_STATE"]->isPressed()) // Starting new game
     {
-        states.push(new GameState(window, supportedKeys, states));
+        std::unique_ptr<State> state(new GameState(window, supportedKeys, states));
+        states.push(std::move(state));
     }
     else if (buttons["SETTINGS_STATE"]->isPressed()) // Activating the settings state
     {
-        states.push(new SettingsState(window, supportedKeys, states, needToReinitialize));
+        std::unique_ptr<State> state(new SettingsState(window, supportedKeys, states, needToReinitialize));
+        states.push(std::move(state));
     }
     else if (buttons["EDITOR_STATE"]->isPressed()) // Going to the editor state
     {
-        states.push(new EditorState(window, supportedKeys, states));
+        std::unique_ptr<State> state(new EditorState(window, supportedKeys, states));
+        states.push(std::move(state));
     }
-
-    
     else if (buttons["EXIT_STATE"]->isPressed()) // Exiting from the state
     {
         endActivity();
@@ -102,54 +95,64 @@ void MainMenuState::initGui()
     const sf::Color textHoverColor(sf::Color::White);
     const sf::Color textActiveColor(sf::Color(20, 20, 20, 200));
 
-    buttons["GAME_STATE"] = new Button(utils::percentToPixels(16.7f, windowSize.x), 
-                                       utils::percentToPixels(43.5f, windowSize.y), 
-                                       buttonSize.x, 
-                                       buttonSize.y,
-                                       font, 
-                                       "New game",
-                                       textIdleColor,
-                                       textHoverColor,
-                                       textActiveColor
-                                       );
-
-    buttons["SETTINGS_STATE"] = new Button(utils::percentToPixels(16.7f, windowSize.x), 
-                                           utils::percentToPixels(55.5f, windowSize.y), 
-                                           buttonSize.x, 
-                                           buttonSize.y,
-                                           font, 
-                                           "Settings",
-                                           textIdleColor,
-                                           textHoverColor,
-                                           textActiveColor
-                                           );
-    buttons["EDITOR_STATE"] = new Button(utils::percentToPixels(16.7f, windowSize.x),
-                                         utils::percentToPixels(66.6f, windowSize.y), 
-                                         buttonSize.x, 
-                                         buttonSize.y,
-                                         font, 
-                                         "Editor",
-                                         textIdleColor,
-                                         textHoverColor,
-                                         textActiveColor
-                                         );
-
-    buttons["EXIT_STATE"] = new Button(utils::percentToPixels(16.7f, windowSize.x), 
-                                       utils::percentToPixels(87.f, windowSize.y), 
-                                       buttonSize.x, 
-                                       buttonSize.y, 
-                                       font, 
-                                       "Quit",
-                                       textIdleColor,
-                                       textHoverColor,
-                                       textActiveColor
-                                       );
+    buttons["GAME_STATE"].reset(
+        new Button(
+               utils::percentToPixels(16.7f, windowSize.x), 
+               utils::percentToPixels(43.5f, windowSize.y), 
+               buttonSize.x, 
+               buttonSize.y,
+               font, 
+               "New game",
+               textIdleColor,
+               textHoverColor,
+               textActiveColor
+        )
+    );
+    buttons["SETTINGS_STATE"].reset(
+        new Button(
+               utils::percentToPixels(16.7f, windowSize.x), 
+               utils::percentToPixels(55.5f, windowSize.y), 
+               buttonSize.x, 
+               buttonSize.y,
+               font, 
+               "Settings",
+               textIdleColor,
+               textHoverColor,
+               textActiveColor
+        )
+    );
+    buttons["EDITOR_STATE"].reset(
+        new Button(
+               utils::percentToPixels(16.7f, windowSize.x),
+               utils::percentToPixels(66.6f, windowSize.y), 
+               buttonSize.x, 
+               buttonSize.y,
+               font, 
+               "Editor",
+               textIdleColor,
+               textHoverColor,
+               textActiveColor
+        )
+    );
+    buttons["EXIT_STATE"].reset(
+        new Button(
+              utils::percentToPixels(16.7f, windowSize.x), 
+              utils::percentToPixels(87.f, windowSize.y), 
+              buttonSize.x, 
+              buttonSize.y, 
+              font, 
+              "Quit",
+              textIdleColor,
+              textHoverColor,
+              textActiveColor
+        )
+    );
 }
 
 
 void MainMenuState::initBackground()
 {
-    background.setSize(sf::Vector2f((float)window.getSize().x, (float)window.getSize().y));
+    background.setSize(sf::Vector2f(window.getSize()));
     background.setTexture(&textures.at("BACKGROUND"));
 }
 
@@ -162,10 +165,7 @@ void MainMenuState::initTextures()
 
 void MainMenuState::reinitialize()
 {
-    for (auto b = buttons.begin(); b != buttons.end(); ++b)
-    {
-        delete b->second;
-    } 
+    buttons.clear();
 
     initGui();
     initBackground();

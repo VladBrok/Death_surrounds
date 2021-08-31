@@ -7,7 +7,7 @@
 State::State(sf::RenderWindow& window, 
              const StringToKeyMap& supportedKeys,
              std::stack<std::unique_ptr<State>>& states
-            )
+             )
     : window(window), 
       supportedKeys(supportedKeys), 
       states(states), 
@@ -39,6 +39,12 @@ bool State::isActive() const
 void State::endActivity()
 {
     stateIsActive = false;
+}
+
+
+bool State::isPaused() const
+{
+    return stateIsPaused;
 }
 
 
@@ -108,7 +114,7 @@ void State::initKeybinds(const std::string& filePath)
             throw std::runtime_error(
                       "ERROR in State::initKeybinds: "
                       "the required keys could not be found among the supported ones\n"
-                       );
+                  );
         }
     }
     else

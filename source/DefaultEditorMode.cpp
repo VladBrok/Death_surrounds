@@ -316,34 +316,38 @@ void DefaultEditorMode::initGui()
 {
     /*=============== Buttons ===============*/
 
-    buttons["TEXTURE_SELECTOR"].reset(new Button(
-                                          0.f, 
-                                          0.f,
-                                          sideBar.getSize().x,
-                                          GRID_SIZE / 1.2f,
-                                          font,
-                                          "TS",
-                                          sf::Color::White,
-                                          sf::Color::White,
-                                          sf::Color::White,
-                                          sf::Color(130, 130, 130, 100),
-                                          sf::Color(160, 160, 160, 170),
-                                          sf::Color(190, 190, 190, 190),
-                                          sf::Color(200, 200, 200, 220),
-                                          sf::Color(220, 220, 220, 240),
-                                          sf::Color(240, 240, 240, 240)
-                                       ));
+    buttons["TEXTURE_SELECTOR"].reset(
+        new Button(
+               0.f, 
+               0.f,
+               sideBar.getSize().x,
+               GRID_SIZE / 1.2f,
+               font,
+               "TS",
+               sf::Color::White,
+               sf::Color::White,
+               sf::Color::White,
+               sf::Color(130, 130, 130, 100),
+               sf::Color(160, 160, 160, 170),
+               sf::Color(190, 190, 190, 190),
+               sf::Color(200, 200, 200, 220),
+               sf::Color(220, 220, 220, 240),
+               sf::Color(240, 240, 240, 240)
+        )
+    );
 
 
     /*=============== Texture selector ===============*/
 
-    textureSelector.reset(new TextureSelector(
-                               sideBar.getSize().x + 2.5f, 
-                               GRID_SIZE / 2.f, 
-                               (float)tilemap.getTextureSheet().getSize().x, 
-                               (float)tilemap.getTextureSheet().getSize().y, 
-                               tilemap.getTextureSheet()
-                         ));
+    textureSelector.reset(
+        new TextureSelector(
+              sideBar.getSize().x + 2.5f, 
+              GRID_SIZE / 2.f, 
+              (float)tilemap.getTextureSheet().getSize().x, 
+              (float)tilemap.getTextureSheet().getSize().y, 
+              tilemap.getTextureSheet()
+        )
+    );
 }
 
 

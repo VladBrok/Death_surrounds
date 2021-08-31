@@ -15,7 +15,6 @@ public:
                                              std::stack<std::unique_ptr<State>>& states,
                                              bool& settingsChanged
                                              );
-    virtual                    ~SettingsState();
                                
     virtual void               processEvent(const sf::Event& event);
     virtual void               render(sf::RenderTarget* pTarget = nullptr);

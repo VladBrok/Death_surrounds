@@ -10,7 +10,6 @@ class LootSystem
 public:
 
     explicit             LootSystem(const sf::Texture& lootTextureSheet);
-                         ~LootSystem();
     void                 update(Player& player);
     void                 render(sf::RenderTarget& target);
 
@@ -23,12 +22,13 @@ private:
     struct Bounty
     {
         Bounty(Item* pItem, sf::Clock eliminationTimer)
-            : pItem(pItem), eliminationTimer(eliminationTimer)
+            : eliminationTimer(eliminationTimer)
         {
+            item.reset(pItem);
         }
 
-        Item* pItem;
-        sf::Clock eliminationTimer;
+        std::shared_ptr<Item> item;
+        sf::Clock             eliminationTimer;
     };
 
 

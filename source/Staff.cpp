@@ -76,16 +76,20 @@ void Staff::initDefaultOriginAndScale()
 }
 
 
-// FIXME: use unique_ptr !!
-Projectile* Staff::allocateNewProjectile(const sf::Vector2f& movementDir, const sf::Vector2f& position)
+std::unique_ptr<Projectile> Staff::getNewProjectile(const sf::Vector2f& movementDir,
+                                                    const sf::Vector2f& position
+                                                    )
 {
-    return new Projectile(
-                   *pProjectileTexture, 
-                    position,
-                    movementDir, 
-                    projectileSpeed,
-                    projectileLifetimeInSeconds,
-                    damageMin, 
-                    damageMax
-               );
+    std::unique_ptr<Projectile> projectile(
+        new Projectile(
+              *pProjectileTexture, 
+               position,
+               movementDir, 
+               projectileSpeed,
+               projectileLifetimeInSeconds,
+               damageMin, 
+               damageMax
+        )
+    );
+    return std::move(projectile);
 }

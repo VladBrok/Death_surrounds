@@ -3,7 +3,7 @@
 #include "constants.h"
 
 
-const std::string Tile::strTypes[NUMBER_OF_TILE_TYPES] = 
+const std::string Tile::STR_TYPES[NUMBER_OF_TILE_TYPES] = 
 {
     "Default",
     "Rendering_deferred",
@@ -83,7 +83,7 @@ const std::string& Tile::getTypeAsString(const TileType type)
 {
     assert(type >= 0 && type < NUMBER_OF_TILE_TYPES);
 
-    return strTypes[type];
+    return STR_TYPES[type];
 }
 
 

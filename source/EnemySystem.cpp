@@ -7,13 +7,13 @@
 #include "Reaper.h"
 
 
-EnemySystem::EnemySystem(std::list<Enemy*>& activeEnemies, 
+EnemySystem::EnemySystem(std::list<std::unique_ptr<Enemy>>& activeEnemies, 
                          StringToTextureMap& textures,
                          Entity& player
                          )
- : activeEnemies(activeEnemies), 
-   textures(textures),
-   player(player)
+   : activeEnemies(activeEnemies), 
+     textures(textures),
+     player(player)
 {
 }
 
@@ -28,31 +28,36 @@ void EnemySystem::createEnemy(const float posX,
         return;
     }
 
-
+    // TODO: Refactor
     switch (type)
     {
     case RAT:
         {
-            activeEnemies.push_back(new Rat(posX, posY, textures.at("ENEMY_RAT_SHEET"), textures.at("FOOD"), player));
+            std::unique_ptr<Enemy> rat(new Rat(posX, posY, textures.at("ENEMY_RAT_SHEET"), textures.at("FOOD"), player));
+            activeEnemies.push_back(std::move(rat));
             break;
         }
     case SPIDER:
         {
-            activeEnemies.push_back(new Spider(posX, posY, textures.at("ENEMY_SPIDER_SHEET"), textures.at("FOOD"), player));
+            std::unique_ptr<Enemy> spider(new Spider(posX, posY, textures.at("ENEMY_SPIDER_SHEET"), textures.at("FOOD"), player));
+            activeEnemies.push_back(std::move(spider));
             break;
         }
     case SKELETON:
         {
-            activeEnemies.push_back(new Skeleton(posX, posY, textures.at("ENEMY_SKELETON_SHEET"), textures.at("FOOD"), player));
+            std::unique_ptr<Enemy> skeleton(new Skeleton(posX, posY, textures.at("ENEMY_SKELETON_SHEET"), textures.at("FOOD"), player));
+            activeEnemies.push_back(std::move(skeleton));
             break;
         }
     case REAPER:
         {
-            activeEnemies.push_back(new Reaper(posX, posY, textures.at("ENEMY_REAPER_SHEET"), textures.at("FOOD"), player, *this));
+            std::unique_ptr<Enemy> reaper(new Reaper(posX, posY, textures.at("ENEMY_REAPER_SHEET"), textures.at("FOOD"), player, *this));
+            activeEnemies.push_back(std::move(reaper));
             break;
         }
     default:
         std::cout << "ERROR in EnemySystem::createEnemy: invalid enemy type\n";
+        assert(false);
     }
 }
 

@@ -17,8 +17,8 @@ public:
                                                      );
     virtual WeaponType                  getWeaponType() const;
 
-    virtual std::unique_ptr<Projectile> allocateNewProjectile(const sf::Vector2f& movementDir, 
-                                                              const sf::Vector2f& position) = 0;
+    virtual std::unique_ptr<Projectile> getNewProjectile(const sf::Vector2f& movementDir, 
+                                                         const sf::Vector2f& position) = 0;
 };
 
 

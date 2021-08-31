@@ -49,7 +49,8 @@ protected:
     sf::IntRect                  textureRect;
     TileType                     type;
     bool                         canCollide;
-    static const std::string     strTypes[NUMBER_OF_TILE_TYPES];
+
+    static const std::string     STR_TYPES[NUMBER_OF_TILE_TYPES];
 };
 
 

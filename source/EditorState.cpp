@@ -21,7 +21,7 @@ EditorState::EditorState(sf::RenderWindow& window,
 
 void EditorState::processEvent(const sf::Event& event)
 {
-    if (stateIsPaused)
+    if (isPaused())
     {
         processPauseMenuEvent(event);
     }
@@ -35,7 +35,7 @@ void EditorState::processEvent(const sf::Event& event)
     if (event.type == sf::Event::KeyPressed &&
         event.key.code == keybinds.at("PAUSE"))
     {
-        stateIsPaused ? unpauseState(): pauseState();
+        isPaused() ? unpauseState(): pauseState();
     }
 }
 
@@ -58,7 +58,7 @@ void EditorState::render(sf::RenderTarget* pTarget)
     
     modes[activeMode]->render(*pTarget);
 
-    if (stateIsPaused)
+    if (isPaused())
     {
         pauseMenu->render(*pTarget);
     }
@@ -110,13 +110,13 @@ void EditorState::processKeyboardEvent(const sf::Event& event)
 
 void EditorState::initView()
 {
-    view.setSize(sf::Vector2f(window.getSize());
+    view.setSize(sf::Vector2f(window.getSize()));
 }
 
 
 void EditorState::initModes()
 {
-    std::unique_ptr<DefaultEditorMode> mode(
+    std::unique_ptr<EditorMode> mode(
         new DefaultEditorMode(
                font, 
                tilemap,
