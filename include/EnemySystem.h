@@ -21,7 +21,7 @@ class EnemySystem: public sf::NonCopyable
 public:
 
                                        EnemySystem(std::list<std::unique_ptr<Enemy>>& activeEnemies, 
-                                                   std::unordered_map<std::string, sf::Texture>& textures,
+                                                   StringToTextureMap& textures,
                                                    Entity& player
                                                    );
      void                              createEnemy(const float posX,
