@@ -421,7 +421,7 @@ void Tilemap::createEmptyMap(const int mapSizeX, const int mapSizeY)
     assert(mapSizeX > 0 && mapSizeY > 0);
 
     map.resize(mapSizeX);
-    for (std::size_t y = 0; y < mapSizeY; ++y)
+    for (int y = 0; y < mapSizeY; ++y)
     {
         map[y].resize(mapSizeY);
     }    

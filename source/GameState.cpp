@@ -97,7 +97,7 @@ void GameState::processEvent(const sf::Event& event)
     if (event.type == sf::Event::KeyPressed &&
         event.key.code == keybinds.at("PAUSE"))
     {
-        isPaused() ? unpauseState(): pauseState();
+        isPaused() ? unpause(): pause();
     }
 }
 
@@ -180,7 +180,7 @@ void GameState::processPauseMenuEvent(const sf::Event& event)
 
     if (pauseMenu->isButtonPressed("CONTINUE"))
     {
-        unpauseState();
+        unpause();
     }
     else if (pauseMenu->isButtonPressed("GO_TO_MAIN_MENU"))
     {

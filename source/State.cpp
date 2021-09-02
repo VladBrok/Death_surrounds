@@ -48,13 +48,13 @@ bool State::isPaused() const
 }
 
 
-void State::pauseState()
+void State::pause()
 {
     stateIsPaused = true;
 }
 
 
-void State::unpauseState()
+void State::unpause()
 {
     stateIsPaused = false;
 }

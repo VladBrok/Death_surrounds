@@ -35,7 +35,7 @@ void EditorState::processEvent(const sf::Event& event)
     if (event.type == sf::Event::KeyPressed &&
         event.key.code == keybinds.at("PAUSE"))
     {
-        isPaused() ? unpauseState(): pauseState();
+        isPaused() ? unpause(): pause();
     }
 }
 
@@ -72,7 +72,7 @@ void EditorState::processPauseMenuEvent(const sf::Event& event)
 
     if (pauseMenu->isButtonPressed("CONTINUE"))
     {
-        unpauseState();
+        unpause();
     }
     else if (pauseMenu->isButtonPressed("LOAD"))
     {

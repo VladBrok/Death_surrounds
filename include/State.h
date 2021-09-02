@@ -21,8 +21,8 @@ public:
     bool                                isActive() const;
     void                                endActivity();
     bool                                isPaused() const;
-    void                                pauseState();
-    void                                unpauseState();
+    void                                pause();
+    void                                unpause();
                                         
 protected:                              
                                         
