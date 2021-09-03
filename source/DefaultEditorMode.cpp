@@ -244,19 +244,18 @@ void DefaultEditorMode::updateView(const float deltaTime)
 
 void DefaultEditorMode::updateCursorText()
 {
-    // FIXME: use iomanip
     std::stringstream sstream;
-    sstream << "Grid position:       (" << mousePosGrid.x << ';' << mousePosGrid.y << ")\n"
-            << "Tile can collide:    " << (tileCanCollide ? "true": "false") << '\n'
-            << "Tile type:                " << tilemap.getTileTypeAsString(static_cast<TileType>(tileType)) << '\n';
+    sstream << "Grid position: (" << mousePosGrid.x << ';' << mousePosGrid.y << ")\n"
+            << "Tile can collide: " << (tileCanCollide ? "true": "false") << '\n'
+            << "Tile type: " << tilemap.getTileTypeAsString(static_cast<TileType>(tileType)) << '\n';
 
     if (tileType == ENEMY_SPAWNER)
     {
-        sstream << "     Enemy type:                     " << EnemySystem::getEnemyTypeAsString(enemyType) << '\n'
-                << "     Spawn frequency:          " << enemyTimeToSpawn << " s" << '\n';
+        sstream << "     Enemy type: " << EnemySystem::getEnemyTypeAsString(enemyType) << '\n'
+                << "     Spawn frequency: " << enemyTimeToSpawn << " s" << '\n';
     } 
 
-    sstream << "Number of tiles:   " << tilemap.getNumberOfTilesAtPosition(mousePosGrid) << '\n';
+    sstream << "Number of tiles: " << tilemap.getNumberOfTilesAtPosition(mousePosGrid) << '\n';
 
     cursorText.setString(sstream.str());
     cursorText.setPosition(mousePosView.x + 15.f, mousePosView.y);

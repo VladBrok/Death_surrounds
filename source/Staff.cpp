@@ -63,7 +63,7 @@ void Staff::initRange()
 
 void Staff::initAttackTimerMax()
 {
-    attackTimerMax = 1300;
+    attackTimerMax = 1100;
 }
 
 

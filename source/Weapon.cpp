@@ -19,13 +19,10 @@ bool Weapon::canAttack()
 {
     if (attackTimer.getElapsedTime().asMilliseconds() >= attackTimerMax)
     {
-        attackTimer.restart(); // FIXME: remove this or remove 'restartAttackTimer'
+        attackTimer.restart();
         return true;
     }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 
 

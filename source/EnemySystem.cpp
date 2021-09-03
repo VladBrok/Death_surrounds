@@ -28,7 +28,6 @@ void EnemySystem::createEnemy(const float posX,
         return;
     }
 
-    // TODO: Refactor
     switch (type)
     {
     case RAT:
